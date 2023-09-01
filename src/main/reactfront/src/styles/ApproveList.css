@@ -1,0 +1,17 @@
+.handle {width: 8%;}
+.atatable-sorter {height: 10px;}
+
+.approveBtn {
+  border: none;
+  border-radius: 5px;
+}
+
+.datatable-sorter::after {
+  top: 0px;
+}
+.datatable-sorter::before {
+  bottom: 0px;
+}
+.table  a {color: black;}
+
+.table {vertical-align:middle;}
