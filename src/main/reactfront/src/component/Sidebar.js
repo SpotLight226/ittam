@@ -129,9 +129,9 @@ function Sidebar() {
                 </Link>
               </li>
               <li>
-                <Link to="####">
+                <Link to="/approveHandle">
                   <i className="bi bi-circle"></i>
-                  <span>ApexCharts</span>
+                    <span>처리 목록</span>
                 </Link>
               </li>
             </ul>
