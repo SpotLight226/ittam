@@ -1,0 +1,96 @@
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ittam.web.itassets.service.ITAssetsMapper">
+    <select id="getITList">
+        SELECT
+            a.*,
+            pc.*,
+            sw.*,
+            etc.*,
+            sv.*
+        FROM ITASSETS a
+                 LEFT JOIN PCSPEC pc ON (a.assets_name LIKE '%노트북%' OR a.assets_name LIKE '%데스크탑%') AND a.spec_num = pc.spec_num
+                 LEFT JOIN SWSPEC sw ON (a.assets_name LIKE '%소프트웨어%') AND a.spec_num = sw.spec_num
+                 LEFT JOIN SERVERSPEC sv ON (a.assets_name LIKE '%서버%') AND a.spec_num = sv.spec_num
+                 LEFT JOIN ETCSPEC etc ON a.spec_num = etc.spec_num AND a.assets_name NOT LIKE '%노트북%' AND a.assets_name NOT LIKE '%데스크탑%' AND a.assets_name NOT LIKE '%서버%' AND a.assets_name NOT LIKE '%소프트웨어%'
+    </select>
+
+    <insert id="SWSpecInsert" parameterType="com.ittam.web.command.SWSpecVO">
+        INSERT INTO SWSPEC(spec_num, sw_mfg, sw_spec_seriel, sw_spec_warranty) VALUES(0, #{sw_mfg}, #{sw_spec_seriel}, DATE_ADD(NOW(), INTERVAL 2 YEAR) )
+    </insert>
+
+    <insert id="ETCSpecInsert" parameterType="com.ittam.web.command.ETCSpecVO">
+        INSERT INTO ETCSPEC(spec_num, etc_mfg, etc_spec_warranty) VALUES (0, #{etc_mfg}, DATE_ADD(NOW(), INTERVAL 2 YEAR))
+
+    </insert>
+
+    <insert id="PCSpecInsert" parameterType="com.ittam.web.command.PCSpecVO">
+        INSERT INTO PCSPEC(spec_num, spec_cpu, spec_ram, spec_mainboard, spec_power, spec_gpu, spec_hdd, spec_ssd, spec_ops, spec_mfg, spec_seriel, spec_warranty)
+        values
+            (0, #{spec_cpu}, #{spec_ram}, #{spec_mainboard}, #{spec_power}, #{spec_gpu}, #{spec_hdd}, #{spec_ssd}, #{spec_ops}, #{spec_mfg}, #{spec_seriel}, DATE_ADD(NOW(), INTERVAL 2 YEAR))
+
+    </insert>
+
+    <insert id="ServerSpecInsert" parameterType="com.ittam.web.command.ServerSpecVO">
+        INSERT INTO SERVERSPEC(spec_num, server_mfg, server_spec_warranty, server_capa)
+        values
+            (0, #{server_mfg}, DATE_ADD(NOW(), INTERVAL 2 YEAR), #{server_capa})
+    </insert>
+
+
+    <insert id="createTable">
+        CREATE TEMPORARY TABLE TempCategoryPath AS
+WITH RECURSIVE CategoryPath AS (
+    SELECT id, name, parent_id, CAST(name AS CHAR(255)) AS path
+    FROM categories
+    WHERE parent_id IS NULL
+
+    UNION ALL
+
+    SELECT c.id, c.name, c.parent_id, CONCAT(cp.path, ' > ', c.name)
+    FROM categories c
+    JOIN CategoryPath cp ON c.parent_id = cp.id
+)
+        SELECT * FROM CategoryPath
+
+    </insert>
+
+    <insert id="ITAssetsInsertSW" parameterType="com.ittam.web.command.ITAssetsVO">
+        INSERT INTO ITASSETS( category_num, assets_name, assets_status, spec_num)
+        SELECT id, #{assets_name}, '사용가능', (SELECT MAX(spec_num) FROM SWSPEC)
+        FROM TempCategoryPath
+        WHERE path LIKE concat('%', #{assets_name})
+
+    </insert>
+
+    <insert id="ITAssetsInsertETC" parameterType="com.ittam.web.command.ITAssetsVO">
+        INSERT INTO ITASSETS( category_num, assets_name, assets_status, spec_num)
+        SELECT id, #{assets_name}, '사용가능', (SELECT MAX(spec_num) FROM ETCSPEC)
+        FROM TempCategoryPath
+        WHERE path LIKE concat('%', #{assets_name})
+
+    </insert>
+
+    <insert id="ITAssetsInsertPC" parameterType="com.ittam.web.command.ITAssetsVO">
+        INSERT INTO ITASSETS( category_num, assets_name, assets_status, spec_num)
+        SELECT id, #{assets_name}, '사용가능', (SELECT MAX(spec_num) FROM PCSPEC)
+        FROM TempCategoryPath
+        WHERE path LIKE concat('%', #{assets_name})
+
+    </insert>
+
+    <insert id="ITAssetsInsertServer" parameterType="com.ittam.web.command.ITAssetsVO">
+        INSERT INTO ITASSETS( category_num, assets_name, assets_status, spec_num)
+        SELECT id, #{assets_name}, '사용가능', (SELECT MAX(spec_num) FROM SERVERSPEC)
+        FROM TempCategoryPath
+        WHERE path LIKE concat('%', #{assets_name})
+
+    </insert>
+
+    <delete id="deleteTable">
+        -- 임시 테이블 삭제
+        DROP TEMPORARY TABLE IF EXISTS TempCategoryPath
+    </delete>
+</mapper>
