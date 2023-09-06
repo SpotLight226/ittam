@@ -13,17 +13,17 @@ import java.time.LocalDate;
 @Builder
 public class UserRequestVO {
 
-    private Integer USERQ_NUM;
-    private String USER_ID;
-    private Integer CATEGORY_NUM;
-    private String USERQ_TITLE;
-    private LocalDate USERQ_REGDATE;
-    private String USERQ_KIND;
-    private String USERQ_COMMENT;
-    private String USERQ_YN;
-    private String USERQ_GRANTOR;
-    private LocalDate USERQ_OKDATE;
-    private Integer USERQ_COUNT;
+    private Integer userq_num;
+    private String user_id;
+    private Integer category_num;
+    private String userq_title;
+    private LocalDate userq_regdate;
+    private String userq_kind;
+    private String userq_comment;
+    private String userq_yn;
+    private String userq_grantor;
+    private LocalDate userq_okdate;
+    private Integer userq_count;
 
 
 }

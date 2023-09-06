@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import axios from 'axios';
 import ApproveTable from "./ApproveTable";
+import { BsArrowClockwise } from "react-icons/bs";
+
 
 
 function Approve() {
@@ -118,9 +120,7 @@ function Approve() {
   }
   const activeEnter = (e) => { // Enter 눌렀을 때 axios 함수 호출
     if(e.key === 'Enter'){
-      let searchInput = document.getElementById("search-input");
       SearchForm(inputText);
-      searchInput.value = "";
     }
   }
   const SearchForm = (inputText) => { // 검색 String boot로 전달
@@ -138,6 +138,13 @@ function Approve() {
         alert("검색에 실패하였습니다.");
       });
   };
+  const resetBtn = () => { // 리셋 버튼
+    let searchInput = document.getElementById("search-input"); 
+    setInputInnerDate([]);
+    searchInput.value = "";
+
+  }
+
   useEffect(() => { // 랜더링
     if(inputInnerData.userID === "" || inputInnerData.length === 0){
       // axios.get('http://localhost:9191/UserRequest/UserRequestList').then(res => console.log(res.data));
@@ -183,6 +190,9 @@ function Approve() {
                         </label>
                       </div>
                       <div className="datatable-search">
+                        <button type="button" className="btn btn-primary reset-btn"><BsArrowClockwise style={{width : "30px", height : "30px", color : "gray"}}
+                        onClick={resetBtn}/></button>
+
                         <input
                           className="datatable-input"
                           placeholder="검색"
