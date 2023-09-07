@@ -11,5 +11,6 @@ public interface UserRequestService {
     public int UserRequestreturn(int userq_NUM);
     public ArrayList<UserRequestVO> UserRequestSearch (String inputText);
     public ArrayList<UserRequestVO> UserRequestHandle();
-    public ArrayList<UserRequestVO> UserRequestHandleSearch(String inputText);
+    public ArrayList<UserRequestVO> UserRequestHandleSearch(String inputText, ArrayList<String> pageNav);
+    public ArrayList<UserRequestVO> UserRequestNavSearch(ArrayList<String> navText);
 }

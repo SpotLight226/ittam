@@ -10,12 +10,12 @@
     </select>
 
     <update id="UserRequestApprove" parameterType="int">
-        update USER_REQUEST set userq_yn = '관리자승인', userq_grantor = '관리자', userq_okdate = now()
+        update USER_REQUEST set userq_yn = '관리자사용승인', userq_grantor = '관리자', userq_okdate = now()
         where userq_NUM = #{userq_NUM}
     </update>
 
     <update id="UserRequestreturn" parameterType="int">
-        update USER_REQUEST set userq_yn = '관리자반려', userq_grantor = '관리자', userq_okdate = now()
+        update USER_REQUEST set userq_yn = '관리자사용반려', userq_grantor = '관리자', userq_okdate = now()
         where userq_NUM = #{userq_NUM}
     </update>
 
@@ -24,11 +24,24 @@
     </select>
 
     <select id="UserRequestHandle" resultType="UserRequestVO">
-        select * from USER_REQUEST WHERE userq_yn in ('관리자승인', '관리자반려')
+        select * from USER_REQUEST WHERE userq_yn in ('관리자사용승인', '관리자사용반려')
     </select>
 
     <select id="UserRequestHandleSearch" resultType="UserRequestVO">
-        select * from USER_REQUEST WHERE (user_id = #{inputText} or userq_kind = #{inputText}) and userq_yn in ('관리자승인', '관리자반려')
+        SELECT * FROM USER_REQUEST
+        WHERE (user_id = #{inputText} OR userq_kind = #{inputText})
+        AND userq_yn IN
+        <foreach collection="pageNav" item="item" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </select>
+
+    <select id="UserRequestNavSearch" resultType="UserRequestVO">
+        SELECT * FROM USER_REQUEST
+        WHERE userq_yn IN
+        <foreach collection="navText" item="item" open="(" separator="," close=")">
+            #{item}
+        </foreach>
     </select>
 
 </mapper>

@@ -15,3 +15,8 @@
 .table  a {color: black;}
 
 .table {vertical-align:middle;}
+.reset-btn {
+  background-color: white;
+  border-color: gray;
+  margin-right: 8px;
+}
