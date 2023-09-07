@@ -10,8 +10,9 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Builder
 public class SWSpecVO {
-    private int spec_num;
     private String sw_mfg;
-    private String sw_spec_seriel;
     private String sw_spec_warranty;
+    private String sw_spec_seriel;
+    private String sw_purchase_date;
+    private String sw_price;
 }
