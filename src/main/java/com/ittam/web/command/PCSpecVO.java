@@ -20,6 +20,6 @@ public class PCSpecVO {
     private String spec_ops;
     private String spec_mfg;
     private String spec_seriel;
-    //private String spec_warranty;
+    private String spec_warranty;
     private String spec_purchase_date;
 }
