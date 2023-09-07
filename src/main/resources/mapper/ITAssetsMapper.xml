@@ -18,25 +18,25 @@
     </select>
 
     <insert id="SWSpecInsert" parameterType="com.ittam.web.command.SWSpecVO">
-        INSERT INTO SWSPEC(spec_num, sw_mfg, sw_spec_seriel, sw_spec_warranty) VALUES(0, #{sw_mfg}, #{sw_spec_seriel}, DATE_ADD(NOW(), INTERVAL 2 YEAR) )
+        INSERT INTO SWSPEC(spec_num, sw_mfg, sw_spec_seriel, sw_spec_warranty) VALUES(0, #{sw_mfg}, #{sw_spec_seriel}, #{sw_spec_warranty} )
     </insert>
 
     <insert id="ETCSpecInsert" parameterType="com.ittam.web.command.ETCSpecVO">
-        INSERT INTO ETCSPEC(spec_num, etc_mfg, etc_spec_warranty) VALUES (0, #{etc_mfg}, DATE_ADD(NOW(), INTERVAL 2 YEAR))
+        INSERT INTO ETCSPEC(spec_num, etc_mfg, etc_spec_warranty) VALUES (0, #{etc_mfg}, #{etc_spec_warranty})
 
     </insert>
 
     <insert id="PCSpecInsert" parameterType="com.ittam.web.command.PCSpecVO">
-        INSERT INTO PCSPEC(spec_num, spec_cpu, spec_ram, spec_mainboard, spec_power, spec_gpu, spec_hdd, spec_ssd, spec_ops, spec_mfg, spec_seriel, spec_warranty)
+        INSERT INTO PCSPEC(spec_num, spec_cpu, spec_ram, spec_mainboard, spec_power, spec_gpu, spec_hdd, spec_ssd, spec_ops, spec_mfg, spec_seriel)
         values
-            (0, #{spec_cpu}, #{spec_ram}, #{spec_mainboard}, #{spec_power}, #{spec_gpu}, #{spec_hdd}, #{spec_ssd}, #{spec_ops}, #{spec_mfg}, #{spec_seriel}, DATE_ADD(NOW(), INTERVAL 2 YEAR))
+            (0, #{spec_cpu}, #{spec_ram}, #{spec_mainboard}, #{spec_power}, #{spec_gpu}, #{spec_hdd}, #{spec_ssd}, #{spec_ops}, #{spec_mfg}, #{spec_seriel})
 
     </insert>
 
     <insert id="ServerSpecInsert" parameterType="com.ittam.web.command.ServerSpecVO">
         INSERT INTO SERVERSPEC(spec_num, server_mfg, server_spec_warranty, server_capa)
         values
-            (0, #{server_mfg}, DATE_ADD(NOW(), INTERVAL 2 YEAR), #{server_capa})
+            (0, #{server_mfg}, #{server_spec_warranty}, #{server_capa})
     </insert>
 
 
