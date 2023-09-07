@@ -14,7 +14,7 @@ public class ServerSpecVO {
     private String server_spec_warranty;
     private String server_capa;
     private String server_price;
-    private String server_purchase_data;
+    private String server_purchase_date;
     private String server_interface;
     private String server_average_life;
     private String server_rpm;

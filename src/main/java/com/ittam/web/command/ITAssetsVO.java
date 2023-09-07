@@ -14,6 +14,7 @@ public class ITAssetsVO {
     private int assets_num;
     private int category_num;
     private String assets_name;
+    private String test;
     private String assets_status;
     private int spec_num;
     private String user_id;
@@ -30,7 +31,7 @@ public class ITAssetsVO {
     private String spec_ops;
     private String spec_mfg;
     private String spec_seriel;
-    //private String spec_warranty;
+    private String spec_warranty;
     private String spec_purchase_date;
 
 
@@ -52,7 +53,7 @@ public class ITAssetsVO {
     private String server_spec_warranty;
     private String server_capa;
     private String server_price;
-    private String server_purchase_data;
+    private String server_purchase_date;
     private String server_interface;
     private String server_average_life;
     private String server_rpm;
