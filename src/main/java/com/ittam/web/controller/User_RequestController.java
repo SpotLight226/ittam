@@ -74,7 +74,7 @@ public class User_RequestController {
         }
     }
 
-    @GetMapping("/UserRequestHandlePage")
+    @GetMapping("/UserRequestHandlePage") // (관리자 처리 페이지) 목록 리스트
     @CrossOrigin(origins = "*", allowedHeaders = "*")
     public ResponseEntity<ArrayList<UserRequestVO>> UserRequestHandle(){
         ArrayList<UserRequestVO> list = userRequestService.UserRequestHandle();
@@ -82,12 +82,21 @@ public class User_RequestController {
 
     }
 
-    @PostMapping("/UserRequestHandleSearch") // (관리자 페이지) 검색 리스트
+    @PostMapping("/UserRequestHandleSearch") // (관리자 신청 페이지) 검색 리스트
     @CrossOrigin(origins = "*", allowedHeaders = "*")
     public ResponseEntity<ArrayList<UserRequestVO>> UserRequestHandleSearch(@RequestBody Map<String, String> requestBody){
-        System.out.println(requestBody.toString());
+        ArrayList pageNav = new ArrayList();
+        if (requestBody.get("pageNav").equals("관리자전체")){
+            pageNav.add("관리자사용승인");
+            pageNav.add("관리자사용반려");
+        } else if (requestBody.get("pageNav").equals("관리자승인")){
+            pageNav.add("관리자사용승인");
+        } else if (requestBody.get("pageNav").equals("관리자반려")){
+            pageNav.add("관리자사용반려");
+        }
+
         try {
-            ArrayList<UserRequestVO> vo = userRequestService.UserRequestHandleSearch(requestBody.get("inputText"));
+            ArrayList<UserRequestVO> vo = userRequestService.UserRequestHandleSearch(requestBody.get("inputText"), pageNav);
             return ResponseEntity.ok(vo);
         } catch (Exception e) {
             String errorMessage = "자산 사용 반려 중 오류가 발생했습니다.";
@@ -96,5 +105,27 @@ public class User_RequestController {
         }
     }
 
+    @PostMapping("/UserRequestNavSearch")
+    @CrossOrigin(origins = "*", allowedHeaders = "*")
+    public ResponseEntity<ArrayList<UserRequestVO>> UserRequestNavSearch(@RequestBody Map<String, String> requestBody){
+        ArrayList navText = new ArrayList();
+        if (requestBody.get("navText").equals("관리자전체")){
+            navText.add("관리자사용승인");
+            navText.add("관리자사용반려");
+        } else if (requestBody.get("navText").equals("관리자승인")){
+            navText.add("관리자사용승인");
+        } else if (requestBody.get("navText").equals("관리자반려")){
+            navText.add("관리자사용반려");
+        }
+
+        try {
+            ArrayList<UserRequestVO> vo = userRequestService.UserRequestNavSearch(navText);
+            return ResponseEntity.ok(vo);
+        } catch (Exception e) {
+            String errorMessage = "자산 사용 반려 중 오류가 발생했습니다.";
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(new ArrayList<UserRequestVO>());
+        }
+    }
 
 }

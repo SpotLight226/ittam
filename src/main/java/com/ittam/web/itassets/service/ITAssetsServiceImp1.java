@@ -25,15 +25,18 @@ public class ITAssetsServiceImp1 implements ITAssetsService{
         vo.setSw_spec_seriel((String)requestData.get("sw_spec_seriel") );
         vo.setSw_spec_warranty((String) requestData.get("sw_spec_warranty"));
         vo.setSw_mfg((String) requestData.get("sw_mfg"));
+        vo.setSw_purchase_date((String) requestData.get("sw_purchase_date"));
+        vo.setSw_price((String) requestData.get("sw_price"));
         return iTAssetsMapper.SWSpecInsert(vo );
     }
 
     @Override
     public int ETCSpecInsert(Map<String, Object> requestData) {
         ETCSpecVO vo = new ETCSpecVO();
-        //vo.setEtc_spec_siriel((String) requestData.get("etc_spec_siriel"));
         vo.setEtc_spec_warranty((String) requestData.get("etc_spec_warranty"));
         vo.setEtc_mfg((String) requestData.get("etc_mfg"));
+        vo.setEtc_price((String) requestData.get("etc_price"));
+        vo.setEtc_purchase_date((String) requestData.get("etc_purchase_date"));
 
         return iTAssetsMapper.ETCSpecInsert(vo);
     }
@@ -62,6 +65,12 @@ public class ITAssetsServiceImp1 implements ITAssetsService{
         vo.setServer_mfg((String) requestData.get("server_mfg"));
         vo.setServer_spec_warranty((String) requestData.get("server_spec_warranty"));
         vo.setServer_capa((String) requestData.get("server_capa"));
+        vo.setServer_price((String) requestData.get("server_price"));
+        vo.setServer_purchase_date((String) requestData.get("server_purchase_date"));
+        vo.setServer_interface((String) requestData.get("server_interface"));
+        vo.setServer_average_life((String) requestData.get("server_average_life"));
+        vo.setServer_rpm((String) requestData.get("server_rpm"));
+        vo.setServer_datarecovery_life((String) requestData.get("server_datarecovery_life"));
 
         return iTAssetsMapper.ServerSpecInsert(vo);
     }
