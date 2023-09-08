@@ -39,7 +39,7 @@ public class ITAssetsController {
         }else if ("기타".equals(requestData.get("assets_name"))) {
             data = iTAssetsService.ETCSpecInsert(requestData);
             iTAssetsService.ITAssetsInsertETC(requestData);
-        }else if("PC".equals(requestData.get("assets_name"))){
+        }else if("데스크탑".equals(requestData.get("assets_name"))){
             data = iTAssetsService.PCSpecInsert(requestData);
             iTAssetsService.ITAssetsInsertPC(requestData);
         }else if("서버".equals(requestData.get("assets_name"))){

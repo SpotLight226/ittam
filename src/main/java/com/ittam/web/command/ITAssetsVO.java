@@ -14,7 +14,7 @@ public class ITAssetsVO {
     private int assets_num;
     private int category_num;
     private String assets_name;
-    private String test;
+    private String assets_detail_name;
     private String assets_status;
     private int spec_num;
     private String user_id;

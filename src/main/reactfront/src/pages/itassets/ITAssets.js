@@ -19,7 +19,7 @@ function ITAssets() {
       .catch((error) => {
         console.error(error);
       });
-  }, []);
+  }, [setData]);
   /* 카테고리테이블 데이터 가져오기 */
 
   /* 검색기능 */
@@ -121,42 +121,52 @@ function ITAssets() {
           // 폼 데이터 초기화
           assets_name: selectedType,
           /* swspec */
-          /* swspec */
-    sw_mfg: '',
-    sw_spec_seriel: '',
-    sw_spec_warranty: '',
-    sw_purchase_date: '',
-    sw_price: '',
+          sw_mfg: '',
+          sw_spec_seriel: '',
+          sw_spec_warranty: '',
+          sw_purchase_date: '',
+          sw_price: '',
 
-    /* etcspec */
-    etc_mfg: '',
-    etc_spec_warranty: '',
-    etc_purchase_date: '',
-    etc_price: '',
-    /* pcspec */
-    spec_cpu: '',
-    spec_ram: '',
-    spec_mainboard: '',
-    spec_power: '',
-    spec_gpu: '',
-    spec_hdd: '',
-    spec_ssd: '',
-    spec_ops: '',
-    spec_mfg: '',
-    spec_seriel: '',
-    spec_purchase_date: '',
-    /* serverspec */
-    server_mfg: '',
-    server_spec_warranty: '',
-    server_capa: '',
-    server_price: '',
-    server_purchase_date: '',
-    server_interface: '',
-    server_average_life: '',
-    server_rpm: '',
-    server_datarecovery_life: '',
+          /* etcspec */
+          etc_mfg: '',
+          etc_spec_warranty: '',
+          etc_purchase_date: '',
+          etc_price: '',
+          /* pcspec */
+          spec_cpu: '',
+          spec_ram: '',
+          spec_mainboard: '',
+          spec_power: '',
+          spec_gpu: '',
+          spec_hdd: '',
+          spec_ssd: '',
+          spec_ops: '',
+          spec_mfg: '',
+          spec_seriel: '',
+          spec_purchase_date: '',
+          /* serverspec */
+          server_mfg: '',
+          server_spec_warranty: '',
+          server_capa: '',
+          server_price: '',
+          server_purchase_date: '',
+          server_interface: '',
+          server_average_life: '',
+          server_rpm: '',
+          server_datarecovery_life: '',
         });
-        // 필요한 경우, 페이지 새로고침 또는 추가 동작
+      }
+      // setIsModalOpen(false);
+      const scrollingModal = document.getElementById('scrollingModal');
+      scrollingModal.style.display = 'none';
+      scrollingModal.classList.toggle('show');
+      document.body.style = 'none';
+      document.body.classList.remove('modal-open');
+      scrollingModal.removeAttribute('aria-modal');
+      scrollingModal.setAttribute('aria-hidden', 'true');
+      let backdrop = document.querySelector('.modal-backdrop');
+      if (backdrop) {
+        backdrop.remove();
       }
     } catch (error) {
       console.error('Error during data submission:', error);
@@ -171,7 +181,7 @@ function ITAssets() {
       assets_name: e.target.value,
     }));
   };
-
+  // const [isModalOpen, setIsModalOpen] = useState(false);
   return (
     <main id="main" className="main">
       <div className="pagetitle">
@@ -188,21 +198,20 @@ function ITAssets() {
       </div>
       {/* <!-- End Page Title --> */}
       {/* 등록하기 모달창 */}
-      <button
-        type="button"
-        className="btn btn-primary"
-        data-bs-toggle="modal"
-        data-bs-target="#scrollingModal"
-      >
-        등록하기
-      </button>
+      <div className="text-end" style={{ marginBottom: '10px' }}>
+        <button
+          type="button"
+          className="btn btn-primary"
+          data-bs-toggle="modal"
+          data-bs-target="#scrollingModal"
+        >
+          등록하기
+        </button>
+      </div>
       {/* 등록하기 모달 정보 */}
       <div className="modal fade" id="scrollingModal" tabIndex="-1">
         <div className="modal-dialog">
-          <div
-            className="modal-content"
-            
-          >
+          <div className="modal-content">
             <ITAssetsInsert
               handleSubmit={handleSubmit}
               handleSelectChange={handleSelectChange}
@@ -255,13 +264,41 @@ function ITAssets() {
                 <table className="table datatable">
                   <thead>
                     <tr>
-                      <th scope="col">#</th>
-                      <th scope="col">ASSETS_NUM(나중에 안보이게)</th>
-                      <th scope="col">CATEGORY_NUM(나중에안보이게)</th>
-                      <th scope="col">자산 이름</th>
-                      <th scope="col">자산 상태</th>
-                      <th scope="col">사용중인 사원번호</th>
-                      <th scope="col">SPEC_NUM(나중에안보이게)</th>
+                      <th scope="col">
+                        <Link to="#" className="datatable-sorter">
+                          #
+                        </Link>
+                      </th>
+                      <th scope="col">
+                        <Link to="#" className="datatable-sorter">
+                          ASSETS_NUM(나중에 안보이게)
+                        </Link>
+                      </th>
+                      <th scope="col">
+                        <Link to="#" className="datatable-sorter">
+                          CATEGORY_NUM(나중에안보이게)
+                        </Link>
+                      </th>
+                      <th scope="col">
+                        <Link to="#" className="datatable-sorter">
+                          자산 이름
+                        </Link>
+                      </th>
+                      <th scope="col">
+                        <Link to="#" className="datatable-sorter">
+                          자산 상태
+                        </Link>
+                      </th>
+                      <th scope="col">
+                        <Link to="#" className="datatable-sorter">
+                          사용중인 사원번호
+                        </Link>
+                      </th>
+                      <th scope="col">
+                        <a href="#" className="datatable-sorter">
+                          spec_num(나중에안보이게)
+                        </a>
+                      </th>
                     </tr>
                   </thead>
                   <tbody>
@@ -285,7 +322,7 @@ function ITAssets() {
                               data-bs-toggle="modal"
                               data-bs-target="#modalDialogScrollable"
                             >
-                              {item.assets_name+item.test}
+                              {item.assets_name + item.assets_detail_name}
                             </Link>
                           </td>
                           <td>{item.assets_status}</td>
@@ -300,9 +337,7 @@ function ITAssets() {
                     id="modalDialogScrollable"
                     tabIndex="-1"
                   >
-                    <ITAssetsInfo
-                      selectedItem={selectedItem}
-                    />
+                    <ITAssetsInfo selectedItem={selectedItem} />
                   </div>
                 </table>
                 {/* <!-- End Table with stripped rows --> */}
@@ -312,7 +347,7 @@ function ITAssets() {
         </div>
       </section>
       {/* 페이징네이션 */}
-      
+
       <Pagenation
         currentPage={currentPage}
         totalPages={totalPages}
