@@ -163,6 +163,21 @@ function ITAssetsInfo({ selectedItem }) {
               <br />
             </>
           ) : null}
+          {selectedItem && selectedItem.spec_purchase_date ? (
+            <>
+              <span>구매일:</span>
+              <input
+                className="modal-body"
+                style={{
+                  border: '0 solid black',
+                  outline: 'none',
+                }}
+                value={selectedItem.spec_purchase_date}
+                readOnly
+              />
+              <br />
+            </>
+          ) : null}
           {selectedItem && selectedItem.spec_warranty ? (
             <>
               <span>AS 보증기간:</span>
@@ -194,6 +209,21 @@ function ITAssetsInfo({ selectedItem }) {
               <br />
             </>
           ) : null}
+          {selectedItem && selectedItem.sw_price ? (
+            <>
+              <span>가격:</span>
+              <input
+                className="modal-body"
+                style={{
+                  border: '0 solid black',
+                  outline: 'none',
+                }}
+                value={selectedItem.sw_price}
+                readOnly
+              />
+              <br />
+            </>
+          ) : null}
           {selectedItem && selectedItem.sw_spec_seriel ? (
             <>
               <span>시리얼 번호:</span>
@@ -204,6 +234,21 @@ function ITAssetsInfo({ selectedItem }) {
                   outline: 'none',
                 }}
                 value={selectedItem.sw_spec_seriel}
+                readOnly
+              />
+              <br />
+            </>
+          ) : null}
+          {selectedItem && selectedItem.sw_purchase_date ? (
+            <>
+              <span>구매일:</span>
+              <input
+                className="modal-body"
+                style={{
+                  border: '0 solid black',
+                  outline: 'none',
+                }}
+                value={selectedItem.sw_purchase_date}
                 readOnly
               />
               <br />
@@ -240,6 +285,36 @@ function ITAssetsInfo({ selectedItem }) {
               <br />
             </>
           ) : null}
+          {selectedItem && selectedItem.etc_price ? (
+            <>
+              <span>가격:</span>
+              <input
+                className="modal-body"
+                style={{
+                  border: '0 solid black',
+                  outline: 'none',
+                }}
+                value={selectedItem.etc_price}
+                readOnly
+              />
+              <br />
+            </>
+          ) : null}
+          {selectedItem && selectedItem.etc_purchase_date ? (
+            <>
+              <span>구매일:</span>
+              <input
+                className="modal-body"
+                style={{
+                  border: '0 solid black',
+                  outline: 'none',
+                }}
+                value={selectedItem.etc_purchase_date}
+                readOnly
+              />
+              <br />
+            </>
+          ) : null}
           {selectedItem && selectedItem.etc_spec_warranty ? (
             <>
               <span>AS 보증기간:</span>
@@ -271,21 +346,6 @@ function ITAssetsInfo({ selectedItem }) {
               <br />
             </>
           ) : null}
-          {selectedItem && selectedItem.server_spec_warranty ? (
-            <>
-              <span>AS보증기간:</span>
-              <input
-                className="modal-body"
-                style={{
-                  border: '0 solid black',
-                  outline: 'none',
-                }}
-                value={selectedItem.server_spec_warranty}
-                readOnly
-              />
-              <br />
-            </>
-          ) : null}
           {selectedItem && selectedItem.server_capa ? (
             <>
               <span>서버 용량:</span>
@@ -296,6 +356,111 @@ function ITAssetsInfo({ selectedItem }) {
                   outline: 'none',
                 }}
                 value={selectedItem.server_capa}
+                readOnly
+              />
+              <br />
+            </>
+          ) : null}
+          {selectedItem && selectedItem.server_price ? (
+            <>
+              <span>가격:</span>
+              <input
+                className="modal-body"
+                style={{
+                  border: '0 solid black',
+                  outline: 'none',
+                }}
+                value={selectedItem.server_price}
+                readOnly
+              />
+              <br />
+            </>
+          ) : null}
+          {selectedItem && selectedItem.server_interface ? (
+            <>
+              <span>연결방식:</span>
+              <input
+                className="modal-body"
+                style={{
+                  border: '0 solid black',
+                  outline: 'none',
+                }}
+                value={selectedItem.server_interface}
+                readOnly
+              />
+              <br />
+            </>
+          ) : null}
+          {selectedItem && selectedItem.server_rpm ? (
+            <>
+              <span>분당회전수:</span>
+              <input
+                className="modal-body"
+                style={{
+                  border: '0 solid black',
+                  outline: 'none',
+                }}
+                value={selectedItem.server_rpm}
+                readOnly
+              />
+              <br />
+            </>
+          ) : null}
+          {selectedItem && selectedItem.server_average_life ? (
+            <>
+              <span>분당회전수:</span>
+              <input
+                className="modal-body"
+                style={{
+                  border: '0 solid black',
+                  outline: 'none',
+                }}
+                value={selectedItem.server_average_life}
+                readOnly
+              />
+              <br />
+            </>
+          ) : null}
+          {selectedItem && selectedItem.server_datarecovery_life ? (
+            <>
+              <span>데이터복구 유지시간:</span>
+              <input
+                className="modal-body"
+                style={{
+                  border: '0 solid black',
+                  outline: 'none',
+                }}
+                value={selectedItem.server_datarecovery_life}
+                readOnly
+              />
+              <br />
+            </>
+          ) : null}
+          {selectedItem && selectedItem.server_purchase_date ? (
+            <>
+              <span>구매일:</span>
+              <input
+                className="modal-body"
+                style={{
+                  border: '0 solid black',
+                  outline: 'none',
+                }}
+                value={selectedItem.server_purchase_date}
+                readOnly
+              />
+              <br />
+            </>
+          ) : null}
+          {selectedItem && selectedItem.server_spec_warranty ? (
+            <>
+              <span>AS보증기간:</span>
+              <input
+                className="modal-body"
+                style={{
+                  border: '0 solid black',
+                  outline: 'none',
+                }}
+                value={selectedItem.server_spec_warranty}
                 readOnly
               />
               <br />
