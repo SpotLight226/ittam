@@ -1,10 +1,16 @@
+
 function ITAssetsInsert({
   handleSubmit,
   handleSelectChange,
   handleChange,
   selectedType,
   formData,
+  selectedParent,
+  handleParentChange,
+  categories,
+  
 }) {
+  
   return (
     <div>
       <div className="modal-header">
@@ -19,25 +25,26 @@ function ITAssetsInsert({
       {/* 모달 안쪽 내용 */}
       <div className="modal-body">
         <form method="POST" onSubmit={handleSubmit}>
-          <select
-            onChange={handleSelectChange}
-            value={selectedType}
-            style={{ marginBottom: '10px' }}
-          >
-            <option value="데스크탑">데스크탑</option>
-            <option value="노트북">노트북</option>
-            <option value="Microsoft Office">Microsoft Office</option>
-            <option value="파워포인트">파워포인트</option>
-            <option value="엑셀">엑셀</option>
-            <option value="워드">워드</option>
-            <option value="한글과컴퓨터">한글과컴퓨터</option>
-            <option value="인텔리제이">인텔리제이</option>
-            <option value="키보드">키보드</option>
-            <option value="마우스">마우스</option>
-            <option value="서버용하드">서버용하드</option>
-          </select>
+        {/* 부모 카테고리 선택 */}
+        <select onChange={handleParentChange} value={selectedParent}>
+            <option>선택하지않음</option>
+          {categories.filter(cat => !cat.category_parent_num).map(cat => (
+            <option key={cat.category_num} value={cat.category_num}>
+              {cat.category_name}
+            </option>
+          ))}
+        </select>
+
+        <select onChange={handleSelectChange} value={selectedType}>
+        <option>선택하지않음</option>
+        {categories.filter(cat => selectedParent && cat.category_parent_num === selectedParent).map(cat => (
+  <option key={cat.category_num} value={cat.category_name}>
+    {cat.category_name}
+  </option>
+))}
+        </select>
           {/* SWSPEC FORM태그 */}
-          {selectedType === '소프트웨어' && (
+          {selectedParent === '2' && selectedType !== '선택하지않음' &&(
             <>
               <div className="row mb-3">
                 <label for="inputText" className="col-sm-2 col-form-label">
@@ -121,7 +128,7 @@ function ITAssetsInsert({
             </>
           )}
           {/* 기타 form태그 */}
-          {selectedType === '기타' && (
+          {selectedParent === '3' && selectedType !== '선택하지않음' &&(
             <>
               <div className="row mb-3">
                 <label for="inputPassword" className="col-sm-2 col-form-label">
@@ -189,7 +196,7 @@ function ITAssetsInsert({
             </>
           )}
           {/* PCSPEC FORM 태그 */}
-          {selectedType === '데스크탑' && (
+          {selectedParent === '1' && selectedType !== '선택하지않음' &&(
             <>
               <div className="row mb-3">
                 <label for="inputNumber" className="col-sm-2 col-form-label">
@@ -385,7 +392,7 @@ function ITAssetsInsert({
             </>
           )}
           {/* 서버 */}
-          {selectedType === '서버' && (
+          {selectedParent === '4' && selectedType !== '선택하지않음' &&(
             <>
               <div className="row mb-3">
                 <label for="inputNumber" className="col-sm-2 col-form-label">
@@ -510,7 +517,7 @@ function ITAssetsInsert({
                     placeholder="PURCHASE_DATE"
                     name="server_purchase_date"
                     onChange={handleChange}
-                    value={formData.server_datarecovery_life}
+                    value={formData.server_purchase_date}
                   />
                 </div>
               </div>

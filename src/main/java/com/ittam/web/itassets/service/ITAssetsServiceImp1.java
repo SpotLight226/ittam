@@ -6,12 +6,25 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 
 @Service("iTAssetsService")
 public class ITAssetsServiceImp1 implements ITAssetsService{
 
     @Autowired
     private ITAssetsMapper iTAssetsMapper;
+
+    private String randomString(int length) {
+        String characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+        StringBuilder sb = new StringBuilder(length);
+        Random rd = new Random();
+
+        for(int i = 0; i< length; i++) {
+            sb.append(characters.charAt(rd.nextInt(characters.length())));
+        }
+
+        return sb.toString();
+    }
 
     @Override
     public List<ITAssetsVO> getITList() {
@@ -79,7 +92,7 @@ public class ITAssetsServiceImp1 implements ITAssetsService{
     public int ITAssetsInsertSW(Map<String, Object> requestData) {
         ITAssetsVO vo = new ITAssetsVO();
         vo.setAssets_name((String) requestData.get("assets_name"));
-
+        vo.setAssets_detail_name(randomString(4));
 
         return iTAssetsMapper.ITAssetsInsertSW(vo);
     }
@@ -88,7 +101,7 @@ public class ITAssetsServiceImp1 implements ITAssetsService{
     public int ITAssetsInsertETC(Map<String, Object> requestData) {
         ITAssetsVO vo = new ITAssetsVO();
         vo.setAssets_name((String) requestData.get("assets_name"));
-
+        vo.setAssets_detail_name(randomString(4));
         return iTAssetsMapper.ITAssetsInsertETC(vo);
     }
 
@@ -96,7 +109,7 @@ public class ITAssetsServiceImp1 implements ITAssetsService{
     public int ITAssetsInsertPC(Map<String, Object> requestData) {
         ITAssetsVO vo = new ITAssetsVO();
         vo.setAssets_name((String) requestData.get("assets_name"));
-
+        vo.setAssets_detail_name(randomString(4));
         return iTAssetsMapper.ITAssetsInsertPC(vo);
     }
 
@@ -104,7 +117,7 @@ public class ITAssetsServiceImp1 implements ITAssetsService{
     public int ITAssetsInsertServer(Map<String, Object> requestData) {
         ITAssetsVO vo = new ITAssetsVO();
         vo.setAssets_name((String) requestData.get("assets_name"));
-
+        vo.setAssets_detail_name(randomString(4));
         return iTAssetsMapper.ITAssetsInsertServer(vo);
     }
 

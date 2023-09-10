@@ -7,7 +7,8 @@ import ITAssetsInsert from './ITAssetsInsert';
 import ITAssetsInfo from './ITAssetsInfo';
 
 function ITAssets() {
-  const [selectedType, setSelectedType] = useState('데스크탑');
+  const [selectedType, setSelectedType] = useState("선택하지않음");
+  
   /* ITAssets테이블 데이터가져오기 */
   const [data, setData] = useState([]);
   useEffect(() => {
@@ -21,14 +22,79 @@ function ITAssets() {
       });
   }, [setData]);
   /* 카테고리테이블 데이터 가져오기 */
+  const [category, setCategory] = useState([]);
+  const [categories, setCategories] = useState([]);
+  const [selectedParent, setSelectedParent] = useState(null);
+  const [selectedChild, setSelectedChild] = useState(null);
+  useEffect(() => {
+    axios.get('/categories/categories').then(response => {
+      setCategories(response.data);
+      const parents = response.data.filter(category => !category.parent_id);
+      
+    }).catch((error) => {
+      console.log(error);
+    });
+  }, []);
+  const parentCategories = categories.filter(category => !category.parent_id);
+  const childCategories = categories.filter(category => category.parent_id === selectedParent);
+  /* insert모달창에 비동기데이터 보내기 */
+  const [selectCategory, setSelectCategory] = useState(null);
+  const sendModal = (category) => {
+    setSelectCategory(category);
+  }
+
+  const handleParentChange = (e) => {
+    setSelectedParent(e.target.value);
+    setSelectedType('선택하지않음');
+    setFormData((prevData) => ({
+      ...prevData,
+      assets_tag: e.target.value,
+    }));
+    
+  };
+
+  const handleChildChange = (e) => {
+    const selectedValue = parseInt(e.target.value);
+    setSelectedChild(selectedValue);
+  };
+  /* 체크박스 */
+  const [statusFilters, setStatusFilters] = useState({
+    사용가능: false,
+    사용중: false
+  });
+
+  const handleCheckboxChange = (e) => {
+    const {name, checked} = e.target;
+    setStatusFilters((prev) => ({
+      ...prev,
+      [name]: checked
+    }));
+    setCurrentPage(1);
+  };
+
 
   /* 검색기능 */
   const [searchTerm, setSearchTerm] = useState('');
-  const filteredData = data.filter(
-    (item) =>
-      item.assets_name.includes(searchTerm) ||
-      item.assets_status.includes(searchTerm)
-  );
+  const filteredData = data.filter((item) => {
+    const matchesSearchTerm =
+    item.assets_name.includes(searchTerm) ||
+    item.assets_status.includes(searchTerm);
+
+    /* 체크박스  */
+    const statusList = ["사용가능", "사용중"];
+    const nameList = ["노트북", "데스크탑"];
+
+    const statusFilter = statusList.some(status =>
+      statusFilters[status] ? item.assets_status === status : false) ||
+      !statusList.some(status => statusFilters[status]);
+
+    const nameFilter = nameList.some(name =>
+      statusFilters[name] ? item.assets_name === name : false) ||
+      !nameList.some(name => statusFilters[name]);
+        
+
+      return matchesSearchTerm && statusFilter && nameFilter;
+  });
 
   const [searchInput, setSearchInput] = useState('');
 
@@ -36,6 +102,7 @@ function ITAssets() {
     if (event.key === 'Enter') {
       setSearchTerm(searchInput);
     }
+    setCurrentPage(1);
   };
 
   /* 몇개씩 보이고 싶은지 */
@@ -44,15 +111,23 @@ function ITAssets() {
     setItemPerPage(Number(event.target.value));
   };
 
-  const totalPages = Math.ceil(filteredData.length / itemsPerPage);
+
+  
+  //const totalPages = Math.ceil(filteredData.length / itemsPerPage);
   /* 페이지네이션 */
   const [currentPage, setCurrentPage] = useState(1); // 현재 페이지
+  const [totalPages, setTotalPages] = useState(1);
   /* const totalPages = Math.ceil(data.length / itemsPerPage); */
   const pagesPerGroup = 10; // 한 그룹에 표시할 페이지 수
   const currentGroup = Math.ceil(currentPage / pagesPerGroup); // 현재 페이지 그룹
 
   const startPage = (currentGroup - 1) * pagesPerGroup; // 시작 페이지
   const endPage = Math.min(currentGroup * pagesPerGroup, totalPages); // 끝 페이지
+
+  useEffect(() => {
+    const calculatedTotalPages = Math.ceil(filteredData.length/itemsPerPage);
+    setTotalPages(calculatedTotalPages);
+  },[filteredData, itemsPerPage,setData]);
 
   const handleClick = (pageNumber) => {
     setCurrentPage(pageNumber);
@@ -66,6 +141,7 @@ function ITAssets() {
 
   /* 비동기로 db에 (insert)등록하기 */
   const [formData, setFormData] = useState({
+    assets_tag: '',
     assets_name: '',
     /* swspec */
     sw_mfg: '',
@@ -108,6 +184,7 @@ function ITAssets() {
     setFormData((prevData) => ({
       ...prevData,
       [name]: value,
+      
     }));
   };
 
@@ -119,6 +196,7 @@ function ITAssets() {
         alert('등록완료');
         setFormData({
           // 폼 데이터 초기화
+          assets_tag: '',
           assets_name: selectedType,
           /* swspec */
           sw_mfg: '',
@@ -168,6 +246,7 @@ function ITAssets() {
       if (backdrop) {
         backdrop.remove();
       }
+
     } catch (error) {
       console.error('Error during data submission:', error);
     }
@@ -180,6 +259,7 @@ function ITAssets() {
       ...prevData,
       assets_name: e.target.value,
     }));
+    
   };
   // const [isModalOpen, setIsModalOpen] = useState(false);
   return (
@@ -204,6 +284,7 @@ function ITAssets() {
           className="btn btn-primary"
           data-bs-toggle="modal"
           data-bs-target="#scrollingModal"
+          onClick={() => sendModal(category)}
         >
           등록하기
         </button>
@@ -218,6 +299,13 @@ function ITAssets() {
               handleChange={handleChange}
               selectedType={selectedType}
               formData={formData}
+              handleChildChange={handleChildChange}
+              parentCategories={parentCategories}
+              childCategories={childCategories}
+              selectedParent={selectedParent}
+              handleParentChange={handleParentChange}
+              selectedChild={selectedChild}
+              categories={categories}
             />
           </div>
         </div>
@@ -245,6 +333,12 @@ function ITAssets() {
                       </label>
                     </div>
                     {/* 검색바 */}
+                    
+                    <input type='checkbox' name="사용가능" onChange={handleCheckboxChange}  value="사용가능"/>사용가능
+                    <input type='checkbox' name="사용중" onChange={handleCheckboxChange}  value="사용중"/>사용중
+                    <input type='checkbox' name='노트북' onChange={handleCheckboxChange} value="노트북" />노트북
+                    <input type='checkbox' name='데스크탑' onChange={handleCheckboxChange} value="데스크탑"/>데스크탑
+
                     <div className="datatable-search">
                       <input
                         className="datatable-input"
