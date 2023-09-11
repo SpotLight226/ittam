@@ -20,3 +20,12 @@
   border-color: gray;
   margin-right: 8px;
 }
+
+.datatable-top {overflow: hidden; padding: 4px 10px 10px 10px;}
+.page-nav{
+  float: left;
+  overflow: hidden;
+}
+
+.page-nav-li { float: left;}
+

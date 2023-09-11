@@ -7,6 +7,7 @@ import ApproveList from "./pages/approve/ApproveList"
 import UserList from "./pages/users/UserList";
 import ApproveHandleList from "./pages/approve/ApproveHandleList"
 import ITAssets from "./pages/itassets/ITAssets"
+import LoginHome from "./pages/login/LoginHome";
 
 
 
@@ -22,6 +23,7 @@ function App() {
                 <Route path="/approveHandle" element={<ApproveHandleList/>}/>
                 <Route path="/users" element={<UserList/>}/>
                 <Route path="/itassets" element={<ITAssets/>}/>
+                <Route path="/login" element={<LoginHome/>}/>
                 
             </Routes>
         </BrowserRouter>
