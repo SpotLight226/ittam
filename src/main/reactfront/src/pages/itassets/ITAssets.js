@@ -8,19 +8,44 @@ import ITAssetsInfo from './ITAssetsInfo';
 
 function ITAssets() {
   const [selectedType, setSelectedType] = useState('선택하지않음');
+  /* 폼데이터 초기화 */
+  const resetFormdata = {
+    sw_mfg: '',
+      sw_spec_seriel: '',
+      sw_spec_warranty: '',
+      sw_purchase_date: '',
+      sw_price: '',
+      /* etcspec */
+      etc_mfg: '',
+      etc_spec_warranty: '',
+      etc_purchase_date: '',
+      etc_price: '',
+      /* pcspec */
+      spec_cpu: '',
+      spec_ram: '',
+      spec_mainboard: '',
+      spec_power: '',
+      spec_gpu: '',
+      spec_hdd: '',
+      spec_ssd: '',
+      spec_ops: '',
+      spec_mfg: '',
+      spec_seriel: '',
+      spec_purchase_date: '',
+      /* serverspec */
+      server_mfg: '',
+      server_spec_warranty: '',
+      server_capa: '',
+      server_price: '',
+      server_purchase_date: '',
+      server_interface: '',
+      server_average_life: '',
+      server_rpm: '',
+      server_datarecovery_life: '',
+  }
 
   /* ITAssets테이블 데이터가져오기 */
   const [data, setData] = useState([]);
-  /* useEffect(() => {
-    axios
-      .get('/assets/getITList')
-      .then((response) => {
-        setData(response.data);
-      })
-      .catch((error) => {
-        console.error(error);
-      });
-  }, []); */
   const itassetList = () => {
     axios
       .get('/assets/getITList')
@@ -71,39 +96,8 @@ function ITAssets() {
     console.log(e.target.value);
     setFormData({
       /* swspec */
+      ...resetFormdata,
       assets_tag: e.target.value,
-      sw_mfg: '',
-      sw_spec_seriel: '',
-      sw_spec_warranty: '',
-      sw_purchase_date: '',
-      sw_price: '',
-      /* etcspec */
-      etc_mfg: '',
-      etc_spec_warranty: '',
-      etc_purchase_date: '',
-      etc_price: '',
-      /* pcspec */
-      spec_cpu: '',
-      spec_ram: '',
-      spec_mainboard: '',
-      spec_power: '',
-      spec_gpu: '',
-      spec_hdd: '',
-      spec_ssd: '',
-      spec_ops: '',
-      spec_mfg: '',
-      spec_seriel: '',
-      spec_purchase_date: '',
-      /* serverspec */
-      server_mfg: '',
-      server_spec_warranty: '',
-      server_capa: '',
-      server_price: '',
-      server_purchase_date: '',
-      server_interface: '',
-      server_average_life: '',
-      server_rpm: '',
-      server_datarecovery_life: '',
     });
   };
 
@@ -111,7 +105,6 @@ function ITAssets() {
     const selectedValue = parseInt(e.target.value);
     setSelectedChild(selectedValue);
   };
-  /* 모달창닫기누를때 기존 입력데이터 초기화 */
 
   /* 체크박스 */
   const [statusFilters, setStatusFilters] = useState({
@@ -189,42 +182,10 @@ function ITAssets() {
 
   /* 비동기로 db에 (insert)등록하기 */
   const [formData, setFormData] = useState({
+    ...resetFormdata,
     assets_tag: '',
     assets_name: '',
-    /* swspec */
-    sw_mfg: '',
-    sw_spec_seriel: '',
-    sw_spec_warranty: '',
-    sw_purchase_date: '',
-    sw_price: '',
-
-    /* etcspec */
-    etc_mfg: '',
-    etc_spec_warranty: '',
-    etc_purchase_date: '',
-    etc_price: '',
-    /* pcspec */
-    spec_cpu: '',
-    spec_ram: '',
-    spec_mainboard: '',
-    spec_power: '',
-    spec_gpu: '',
-    spec_hdd: '',
-    spec_ssd: '',
-    spec_ops: '',
-    spec_mfg: '',
-    spec_seriel: '',
-    spec_purchase_date: '',
-    /* serverspec */
-    server_mfg: '',
-    server_spec_warranty: '',
-    server_capa: '',
-    server_price: '',
-    server_purchase_date: '',
-    server_interface: '',
-    server_average_life: '',
-    server_rpm: '',
-    server_datarecovery_life: '',
+    
   });
 
   const handleChange = (e) => {
@@ -236,52 +197,20 @@ function ITAssets() {
   };
 
   const handleSubmit = async (e) => {
-    e.preventDefault(); // 폼의 기본 제출 행동을 방지
+    e.preventDefault(); 
     try {
       const response = await axios.post('/assets/specInsert', formData);
       if (response.data) {
         alert('등록완료');
         setFormData({
           // 폼 데이터 초기화
+          ...resetFormdata,
           assets_tag: '',
           assets_name: selectedType,
-          /* swspec */
-          sw_mfg: '',
-          sw_spec_seriel: '',
-          sw_spec_warranty: '',
-          sw_purchase_date: '',
-          sw_price: '',
-
-          /* etcspec */
-          etc_mfg: '',
-          etc_spec_warranty: '',
-          etc_purchase_date: '',
-          etc_price: '',
-          /* pcspec */
-          spec_cpu: '',
-          spec_ram: '',
-          spec_mainboard: '',
-          spec_power: '',
-          spec_gpu: '',
-          spec_hdd: '',
-          spec_ssd: '',
-          spec_ops: '',
-          spec_mfg: '',
-          spec_seriel: '',
-          spec_purchase_date: '',
-          /* serverspec */
-          server_mfg: '',
-          server_spec_warranty: '',
-          server_capa: '',
-          server_price: '',
-          server_purchase_date: '',
-          server_interface: '',
-          server_average_life: '',
-          server_rpm: '',
-          server_datarecovery_life: '',
+          
         });
       }
-      // setIsModalOpen(false);
+      
       const scrollingModal = document.getElementById('scrollingModal');
       scrollingModal.style.display = 'none';
       scrollingModal.classList.toggle('show');
@@ -307,7 +236,7 @@ function ITAssets() {
       assets_name: e.target.value,
     }));
   };
-  // const [isModalOpen, setIsModalOpen] = useState(false);
+
   return (
     <main id="main" className="main">
       <div className="pagetitle">
