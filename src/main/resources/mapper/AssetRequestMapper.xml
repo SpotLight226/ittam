@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+    <mapper namespace="com.ittam.web.asset_request.service.AssetRequestMapper">
+
+<!--  전체 자산 목록  -->
+    <select id="AssetAllList">
+        SELECT
+            a.*,
+            pc.*,
+            sw.*,
+            etc.*,
+            sv.*,
+            c.name AS category_name
+        FROM ITASSETS a
+                 LEFT JOIN PCSPEC pc ON (a.assets_name LIKE '%노트북%' OR a.assets_name LIKE '%데스크탑%') AND a.spec_num = pc.spec_num
+                 LEFT JOIN SWSPEC sw ON (a.assets_name LIKE '%소프트웨어%') AND a.spec_num = sw.spec_num
+                 LEFT JOIN SERVERSPEC sv ON (a.assets_name LIKE '%서버%') AND a.spec_num = sv.spec_num
+                 LEFT JOIN ETCSPEC etc ON a.spec_num = etc.spec_num AND a.assets_name NOT LIKE '%노트북%' AND a.assets_name NOT LIKE '%데스크탑%' AND a.assets_name NOT LIKE '%서버%' AND a.assets_name NOT LIKE '%소프트웨어%'
+                 LEFT JOIN categories c ON a.CATEGORY_NUM = c.id;
+    </select>
+
+<!-- 검색 -->
+    <select id="AssetRequestSearch" resultType="ITAssetsVO">
+        SELECT
+            a.*,
+            pc.*,
+            sw.*,
+            etc.*,
+            sv.*,
+            c.name AS category_name
+        FROM ITASSETS a
+                 LEFT JOIN PCSPEC pc ON (a.assets_name LIKE '%노트북%' OR a.assets_name LIKE '%데스크탑%') AND a.spec_num = pc.spec_num
+                 LEFT JOIN SWSPEC sw ON (a.assets_name LIKE '%소프트웨어%') AND a.spec_num = sw.spec_num
+                 LEFT JOIN SERVERSPEC sv ON (a.assets_name LIKE '%서버%') AND a.spec_num = sv.spec_num
+                 LEFT JOIN ETCSPEC etc ON a.spec_num = etc.spec_num AND a.assets_name NOT LIKE '%노트북%' AND a.assets_name NOT LIKE '%데스크탑%' AND a.assets_name NOT LIKE '%서버%' AND a.assets_name NOT LIKE '%소프트웨어%'
+                 LEFT JOIN categories c ON a.CATEGORY_NUM = c.id
+        WHERE assets_name = #{inputText};
+
+    </select>
+
+    <select id="ITAssetsVO">
+
+        SELECT
+            a.*,
+            pc.*,
+            c.name AS category_name
+        FROM ITASSETS a
+                 LEFT JOIN PCSPEC pc ON (a.assets_name LIKE '%laptop%' OR a.assets_name LIKE '%desktop%') AND a.spec_num = pc.spec_num
+                 LEFT JOIN categories c ON a.CATEGORY_NUM = c.id
+        WHERE a.assets_name NOT LIKE '%server%' AND a.assets_name NOT LIKE '%software%';
+
+    </select>
+
+
+
+
+</mapper>

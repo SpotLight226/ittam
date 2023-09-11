@@ -11,7 +11,6 @@ function Sidebar() {
               <span>메인페이지</span>
             </Link>
           </li>
-          {/* <!-- End Dashboard Nav --> */}
 
           <li className="nav-item">
             <Link to="/"
@@ -29,20 +28,55 @@ function Sidebar() {
                 data-bs-parent="#sidebar-nav"
             >
               <li>
-                <Link to="####">
-                  <i className="bi bi-circle"></i>
-                  <span>Alerts</span>
+                <Link to="/itassets">
+                  <span>전체 목록</span>
                 </Link>
               </li>
-              <li>
-                <Link to="####">
-                  <i className="bi bi-circle"></i>
-                  <span>Accordion</span>
-                </Link>
+              <hr/>
+              <li className="accordion-item" style={{ border: "none" }}>
+                <button className="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseOne" aria-expanded="false" aria-controls="flush-collapseOne">
+                  <span className="nav-category-sidebar">카테고리별</span>
+                </button>
+                <div id="flush-collapseOne" class="accordion-collapse collapse" aria-labelledby="flush-headingOne" data-bs-parent="#accordionFlushExample">
+                  <Link to="/itassets/pc">
+                    <div className="accordion-body nav-category-sidebar">PC/노트북</div>
+                  </Link>
+                </div>
+                <div id="flush-collapseOne" className="accordion-collapse collapse" aria-labelledby="flush-headingOne" data-bs-parent="#accordionFlushExample">
+                  <Link to="/itassets/sw">
+                    <div className="accordion-body nav-category-sidebar">소프트웨어</div>
+                  </Link>
+                </div>
+                <div id="flush-collapseOne" className="accordion-collapse collapse" aria-labelledby="flush-headingOne" data-bs-parent="#accordionFlushExample">
+                  <Link to="/itassets/server">
+                    <div className="accordion-body nav-category-sidebar">서버</div>
+                  </Link>
+                </div>
+                <div id="flush-collapseOne" className="accordion-collapse collapse" aria-labelledby="flush-headingOne" data-bs-parent="#accordionFlushExample">
+                  <Link to="/itassets/etc">
+                    <div className="accordion-body nav-category-sidebar">기타</div>
+                  </Link>
+                </div>
               </li>
+              <hr/>
+              <Link to="/itassets/use">
+                <span>자산 사용 일괄 신청</span>
+              </Link>
             </ul>
           </li>
+
+          {/*자산 사용 신청*/}
+          <li className="nav-item">
+            <Link to="/itassets/use"
+                  className="nav-link collapsed"
+            >
+              <i className="bi bi-menu-button-wide"></i>
+              <span>자산 사용 신청</span>
+              <i className="bi bi-chevron-down ms-auto"></i>
+            </Link>
+          </li>
           {/* <!-- End Components Nav --> */}
+
 
           <li className="nav-item">
             <Link to="####"
@@ -131,7 +165,7 @@ function Sidebar() {
               <li>
                 <Link to="/approveHandle">
                   <i className="bi bi-circle"></i>
-                    <span>처리 목록</span>
+                  <span>처리 목록</span>
                 </Link>
               </li>
             </ul>
