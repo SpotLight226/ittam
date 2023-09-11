@@ -120,7 +120,9 @@ function Approve() {
   }
   const activeEnter = (e) => { // Enter 눌렀을 때 axios 함수 호출
     if(e.key === 'Enter'){
+      let searchInput = document.getElementById("search-input");
       SearchForm(inputText);
+      searchInput.value = "";
     }
   }
   const SearchForm = (inputText) => { // 검색 String boot로 전달
@@ -139,7 +141,7 @@ function Approve() {
       });
   };
   const resetBtn = () => { // 리셋 버튼
-    let searchInput = document.getElementById("search-input"); 
+    let searchInput = document.getElementById("search-input");
     setInputInnerDate([]);
     searchInput.value = "";
 

@@ -19,6 +19,9 @@ public class ITAssetsVO {
     private int spec_num;
     private String user_id;
 
+    //카테고리 네임
+    private String category_name;
+
 
     //컴퓨터,노트북 SPEC 테이블
     private String spec_cpu;
