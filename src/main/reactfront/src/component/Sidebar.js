@@ -2,6 +2,9 @@ import { Link } from "react-router-dom";
 import "../styles/Style.css";
 
 function Sidebar() {
+
+  if(window.location.pathname === '/login') return null
+  
   return (
       <aside id="sidebar" className="sidebar">
         <ul className="sidebar-nav" id="sidebar-nav">

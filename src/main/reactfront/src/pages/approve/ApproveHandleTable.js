@@ -8,6 +8,7 @@ const ApproveHandleTable = ({index, userq_yn, userq_num, user_id, userq_count, u
       <td className="userq_COUNT">{userq_count}</td>
       <td className="userq_REGDATE">{userq_regdate}</td>
       <td className="userq_YN">{userq_yn}</td>
+      <td className="userq_grantor">{userq_grantor}</td>
 
       <th className="userq_TITLE" style={{display :"none"}}>{userq_title}</th>
       <th className="userq_COMMENT" style={{display :"none"}}>{userq_comment}</th>

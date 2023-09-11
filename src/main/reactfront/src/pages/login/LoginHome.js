@@ -173,7 +173,7 @@ function LoginHome (){
 
                     <div className="d-flex justify-content-center py-4" >
                       <a href="index.html" className="logo d-flex align-items-center w-auto">
-                        <img src="assets/img/ittamdog.png" alt=""></img>
+                        <img src="assets/img/ittam2.png" alt=""></img>
                         <span className="d-none d-lg-block">Ittam</span>
                       </a>
                     </div>
