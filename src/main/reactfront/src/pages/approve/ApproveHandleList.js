@@ -1,7 +1,8 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import axios from 'axios';
 import ApproveHandleTable from "./ApproveHandleTable";
-
+import { BsArrowClockwise } from "react-icons/bs";
+import Pagenation from "../../component/Pagenation";
 
 function Approve() { // 관리자 사용 신청 내역 조회 페이지
 
@@ -33,7 +34,7 @@ function Approve() { // 관리자 사용 신청 내역 조회 페이지
   const handleToggle = (e) => { // 승인 모달창 핸들러
     let basicModal = document.getElementById("basicModal");
     basicModal.classList.toggle("show");
-    basicModal.style.display = ((basicModal.style.display !== 'none') ? 'none' : 'block'); 
+    basicModal.style.display = ((basicModal.style.display !== 'none') ? 'none' : 'block');
     setInnerDate({
       ...innerData,
       userqKIND : e.target.closest(".prod-box").querySelector(".userq_KIND").textContent,
@@ -41,12 +42,12 @@ function Approve() { // 관리자 사용 신청 내역 조회 페이지
       userID : e.target.closest(".prod-box").querySelector(".user_ID").textContent,
       userqTITLE : e.target.closest(".prod-box").querySelector(".userq_TITLE").textContent,
       userqCOMMENT : e.target.closest(".prod-box").querySelector(".userq_COMMENT").textContent,
-      userqNUM : e.target.closest(".prod-box").querySelector(".userq_NUM").textContent, 
+      userqNUM : e.target.closest(".prod-box").querySelector(".userq_NUM").textContent,
       userqOKDATE : e.target.closest(".prod-box").querySelector(".userq_OKDATE").textContent,
       userqGRANTOR : e.target.closest(".prod-box").querySelector(".userq_GRANTOR").textContent,
       userqYN : e.target.closest(".prod-box").querySelector(".userq_YN").textContent
     });
-   };
+  };
   const handleClose =() =>  { // 승인 모달창 닫는 핸들러
     let basicModal = document.getElementById("basicModal");
     basicModal.style.display = "none";
@@ -54,26 +55,116 @@ function Approve() { // 관리자 사용 신청 내역 조회 페이지
   };
   const activeEnter = (e) => { // Enter 눌렀을 때 axios 함수 호출
     if(e.key === 'Enter'){
-      let searchInput = document.getElementById("search-input");
       SearchForm(inputText);
-      searchInput.value = "";
     }
   }
   const SearchForm = (inputText) => { // 검색 String boot로 전달
+    let pageNav = document.getElementById("pills-tab").querySelector(".active").textContent;
     axios({
       url: 'http://localhost:9191/UserRequest/UserRequestHandleSearch',
       method: 'post',
       data: {
-        inputText: inputText
+        inputText: inputText,
+        pageNav : "관리자" + pageNav
       }
     })
-      .then((response) => {
-        setInputInnerDate(response.data);
-      })
-      .catch((error) => {
-        alert("검색에 실패하였습니다.");
-      });
+        .then((response) => {
+          setInputInnerDate(response.data);
+        })
+        .catch((error) => {
+          alert("검색에 실패하였습니다.");
+        });
   };
+
+
+  const resetBtn = () => { // 검색 초기화 버튼
+    let searchInput = document.getElementById("search-input");
+    let assets_select = document.getElementById("assets-select");
+    setInputInnerDate([]);
+    searchInput.value = ""; // 검색 내용 비우기
+    assets_select.value = 0;
+
+    let allNav = document.getElementById("pills-home-tab"); // 전체 버튼
+    let ulTag = document.querySelector('.page-nav');
+    let liTag = ulTag.querySelectorAll('.nav-item');
+    let activeClass = null;
+
+    liTag.forEach((li) => {
+      if(li.querySelector(".nav-link").classList.contains('active')){
+        activeClass = li;
+      }
+    })
+    activeClass.querySelector('button').classList.remove('active'); // 기존 포커스 버튼 active class remove
+    allNav.classList.add('active');
+  }
+
+  const kindBtn = (e) =>  { // 종류 버튼 (전체, 승인, 반려)
+    let navText = e.target.innerText;
+
+    axios({
+      url: 'http://localhost:9191/UserRequest/UserRequestNavSearch',
+      method: 'post',
+      data: {
+        navText : "관리자" + navText
+      }
+    })
+        .then((response) => {
+          setInputInnerDate(response.data);
+        })
+        .catch((error) => {
+          alert("검색에 실패하였습니다.");
+        });
+
+  }
+  //////////////////////////////////////////////// page
+  const handleClick = (pageNumber) => {
+    setCurrentPage(pageNumber);
+  };
+  /* 몇개씩 보이고 싶은지 */
+  const [itemsPerPage, setItemPerPage] = useState(10); // 페이지당 10개의 아이템  useState(처음에 보이고싶은 개수)
+  // const handleSelectorChange = (event) => {
+  //   setItemPerPage(Number(event.target.value));
+  // };
+  const totalPages = Math.ceil(userRequest.length / itemsPerPage); // 총 버튼 수
+  const [currentPage, setCurrentPage] = useState(1); // 현재 페이지
+  const pagesPerGroup = 10; // 한 그룹에 표시할 페이지 수
+  const currentGroup = Math.ceil(currentPage / pagesPerGroup); // 현재 페이지 그룹
+  const startPage = (currentGroup - 1) * pagesPerGroup; // 시작 페이지
+  const endPage = Math.min(currentGroup * pagesPerGroup, totalPages);
+
+  const assetsSelect = (e) =>  { // 자산별 조회 select
+    if(e.target.value !== "0"){
+      let ulTag = document.querySelector('.page-nav');
+      let liTag = ulTag.querySelectorAll('.nav-item');
+      let activeClass = null;
+      liTag.forEach((li) => {
+        if(li.querySelector(".nav-link").classList.contains('active')){
+          activeClass = li;
+        }
+      })
+
+      axios({
+        url: 'http://localhost:9191/UserRequest/UserRequestCategorySearch',
+        method: 'post',
+        data: {
+          category_num : e.target.value,
+          navText : activeClass.textContent
+        }
+      })
+          .then((response) => {
+            if(response.data.length === 0){
+              alert("검색된 데이터가 없습니다.")
+              e.target.value = 0;
+            }
+            setInputInnerDate(response.data);
+          })
+          .catch((error) => {
+            alert("검색에 실패하였습니다.");
+          });
+    } else {
+      setInputInnerDate([]);
+    }
+  }
 
   useEffect(() => { // 랜더링
     if(inputInnerData.userID === "" || inputInnerData.length === 0){
@@ -85,59 +176,82 @@ function Approve() { // 관리자 사용 신청 내역 조회 페이지
   },[msg, inputInnerData]);
 
   return (
-    <div>
-      <main id="main" className="main">
-        <div className="pagetitle">
-          <h1>사용 처리내역 조회</h1>
-          <nav>
-            <ol className="breadcrumb">
-              <li className="breadcrumb-item">
-                <a href="index.html">Home</a>
-              </li>
-              <li className="breadcrumb-item">Tables</li>
-              <li className="breadcrumb-item active">Data</li>
-            </ol>
-          </nav>
-        </div>
+      <div>
+        <main id="main" className="main">
+          <div className="pagetitle">
+            <h1>사용 처리내역 조회</h1>
+            <nav>
+              <ol className="breadcrumb">
+                <li className="breadcrumb-item">
+                  <a href="index.html">Home</a>
+                </li>
+                <li className="breadcrumb-item">Tables</li>
+                <li className="breadcrumb-item active">Data</li>
+              </ol>
+            </nav>
+          </div>
 
-        <section className="section">
-          <div className="row">
-            <div className="col-lg-12">
-              <div className="card">
-                <div className="card-body">
-                  <h5 className="card-title">자산 사용 처리내역 조회</h5>
-                  <div className="datatable-wrapper datatable-loading nofooter sortable searchable fixed-columns">
-                    <div className="datatable-top">
-                      <div className="datatable-dropdown">
-                        <label htmlFor="">
-                          <select className="datatable-selector">
-                            <option value="5">5</option>
-                            <option value="10">10</option>
-                            <option value="15">15</option>
-                            <option value="20">20</option>
-                            <option value="25">25</option>
-                          </select>
-                        </label>
-                      </div>
+          <section className="section">
+            <div className="row">
+              <div className="col-lg-12">
+                <div className="card">
+                  <div className="card-body">
+                    <h5 className="card-title">자산 사용 처리내역 조회</h5>
+                    <div className="datatable-wrapper datatable-loading nofooter sortable searchable fixed-columns">
+                      <div className="datatable-top">
+                        <div className="datatable-dropdown">
+                          <ul className="nav nav-pills mb-3 page-nav" id="pills-tab" role="tablist">
+                            <li className="nav-item page-nav-li" role="presentation">
+                              <button className="nav-link active" id="pills-home-tab" data-bs-toggle="pill" data-bs-target="#pills-home" type="button" role="tab" aria-controls="pills-home" aria-selected="true" onClick={kindBtn}>전체</button>
+                            </li>
+                            <li className="nav-item page-nav-li" role="presentation">
+                              <button className="nav-link" id="pills-profile-tab" data-bs-toggle="pill" data-bs-target="#pills-profile" type="button" role="tab" aria-controls="pills-profile" aria-selected="false" onClick={kindBtn}>승인</button>
+                            </li>
+                            <li className="nav-item page-nav-li" role="presentation">
+                              <button className="nav-link" id="pills-contact-tab" data-bs-toggle="pill" data-bs-target="#pills-contact" type="button" role="tab" aria-controls="pills-contact" aria-selected="false" onClick={kindBtn}>반려</button>
+                            </li>
+                          </ul>
+                          <div className="datatable-top">
 
-                      <div>
-                        
-                      </div>
-                      <div className="datatable-search">
-                        <input
-                          className="datatable-input"
-                          placeholder="검색"
-                          type="search"
-                          title="Search within table"
-                          id="search-input"
-                          onChange={(e) => setInputText(e.target.value)}
-                          onKeyPress={(e) => activeEnter(e)} 
-                        />
+                            <div className="datatable-dropdown assetsDrop">
+                              <label htmlFor="">
+                                <select className="datatable-selector" id="assets-select" onChange={assetsSelect}>
+                                  <option value="0">자산별 조회</option>
+                                  <option value="1">PC</option>
+                                  <option value="2">소프트웨어</option>
+                                  <option value="3">주변기기</option>
+                                  <option value="4">서버</option>
+                                </select>
+                              </label>
+                            </div>
+                          </div>
+
+                        </div>
+
+
+
+
+
+
+                        <div className="datatable-search">
+
+                          <button type="button" className="btn btn-primary reset-btn"><BsArrowClockwise style={{width : "30px", height : "30px", color : "gray"}}
+                                                                                                        onClick={resetBtn}/></button>
+
+                          <input
+                              className="datatable-input"
+                              placeholder="검색"
+                              type="search"
+                              title="Search within table"
+                              id="search-input"
+                              onChange={(e) => setInputText(e.target.value)}
+                              onKeyPress={(e) => activeEnter(e)}
+                          />
+                        </div>
                       </div>
                     </div>
-                  </div>
-                  <table className="table datatable">
-                    <thead>
+                    <table className="table datatable">
+                      <thead>
                       <tr>
                         <th data-sortable="true">
                           <a href="#" className="datatable-sorter">
@@ -164,10 +278,16 @@ function Approve() { // 관리자 사용 신청 내역 조회 페이지
                             처리날짜
                           </a>
                         </th>
-                        
+
                         <th data-sortable="true">
                           <a href="#" className="datatable-sorter">
                             처리상태
+                          </a>
+                        </th>
+
+                        <th data-sortable="true">
+                          <a href="#" className="datatable-sorter">
+                            처리자
                           </a>
                         </th>
 
@@ -176,58 +296,69 @@ function Approve() { // 관리자 사용 신청 내역 조회 페이지
                             조회
                           </a>
                         </th>
-                        
+
                       </tr>
-                    </thead>
-                    <tbody>
-                      
+                      </thead>
+                      <tbody>
+
                       {/* 테이블리스트 */}
 
 
-                      {userRequest.map((item,index) => (
-                        <ApproveHandleTable key={index} {...item} index={index} func={handleToggle}/> 
+                      {userRequest.slice(
+                          (currentPage - 1) * itemsPerPage,
+                          currentPage * itemsPerPage
+                      ).map((item,index) => (
+                          <ApproveHandleTable key={index} {...item} index={index} func={handleToggle}/>
                       ))}
 
 
-                    </tbody>
-                  </table>
+                      </tbody>
+                    </table>
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
-        </section>
-      </main>
+          </section>
+          <Pagenation
+              currentPage={currentPage}
+              totalPages={totalPages}
+              startPage={startPage}
+              endPage={endPage}
+              handleClick={handleClick}
+          />
+        </main>
 
-      {/* 승인 모달창 */}
-      <div className="modal fade" id="basicModal" tabIndex="-1" style={{display : "none"}} 
-      aria-modal="true"  role="dialog" >
-                <div className="modal-dialog">
-                  <div className="modal-content">
-                    <div className="modal-header">
-                      <h5 className="modal-title">처리 상태 확인</h5>
-                      <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close" onClick={handleClose}></button>
-                    </div>
-                    
-                      <form action="#" name="ApproveForm">
-                        <div className="modal-body">
-                          <p>처리상태 : {innerData.userqYN}</p>
-                          <hr />
-                          <p>신청자명 : {innerData.userID}</p>
-                          <p>자산명 : {innerData.userqKIND}</p>
-                          <p>수량 : {innerData.userqCOUNT}개</p>
-                          <p>처리 날짜 : {innerData.userqOKDATE}</p>
-                          <p>처리 담당자 : {innerData.userqGRANTOR}</p>
-                        </div>
-                        <div className="modal-footer">
-                          <button type="button" className="btn btn-secondary" data-bs-dismiss="modal" onClick={handleClose}>닫기</button>
-                        </div>
-                     </form>
-                  </div>
+        {/* 승인 모달창 */}
+        <div className="modal fade" id="basicModal" tabIndex="-1" style={{display : "none"}}
+             aria-modal="true"  role="dialog" >
+          <div className="modal-dialog">
+            <div className="modal-content">
+              <div className="modal-header">
+                <h5 className="modal-title">처리 상태 확인</h5>
+                <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close" onClick={handleClose}></button>
+              </div>
+
+              <form action="#" name="ApproveForm">
+                <div className="modal-body">
+                  <p>처리상태 : {innerData.userqYN}</p>
+                  <hr />
+                  <p>신청자명 : {innerData.userID}</p>
+                  <p>자산명 : {innerData.userqKIND}</p>
+                  <p>수량 : {innerData.userqCOUNT}개</p>
+                  <p>처리 날짜 : {innerData.userqOKDATE}</p>
+                  <p>처리 담당자 : {innerData.userqGRANTOR}</p>
                 </div>
-      </div>
+                <div className="modal-footer">
+                  <button type="button" className="btn btn-secondary" data-bs-dismiss="modal" onClick={handleClose}>닫기</button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
 
-      
-    </div>
+
+
+      </div>
   );
 }
 export default Approve;

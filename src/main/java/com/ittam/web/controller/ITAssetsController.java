@@ -33,16 +33,16 @@ public class ITAssetsController {
         int data = 0;
 
         iTAssetsService.createTable();
-        if("소프트웨어".equals(requestData.get("assets_name"))) {
+        if("2".equals(requestData.get("assets_tag"))) {
             data = iTAssetsService.SWSpecInsert(requestData);
             iTAssetsService.ITAssetsInsertSW(requestData);
-        }else if ("기타".equals(requestData.get("assets_name"))) {
+        }else if ("3".equals(requestData.get("assets_tag"))) {
             data = iTAssetsService.ETCSpecInsert(requestData);
             iTAssetsService.ITAssetsInsertETC(requestData);
-        }else if("PC".equals(requestData.get("assets_name"))){
+        }else if("1".equals(requestData.get("assets_tag"))){
             data = iTAssetsService.PCSpecInsert(requestData);
             iTAssetsService.ITAssetsInsertPC(requestData);
-        }else if("서버".equals(requestData.get("assets_name"))){
+        }else if("4".equals(requestData.get("assets_tag"))){
             data = iTAssetsService.ServerSpecInsert(requestData);
             iTAssetsService.ITAssetsInsertServer(requestData);
         }

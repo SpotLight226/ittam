@@ -11,7 +11,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Builder
 public class ETCSpecVO {
-    private int spec_num;
     private String etc_mfg;
     private String etc_spec_warranty;
+    private String etc_purchase_date;
+    private String etc_price;
 }

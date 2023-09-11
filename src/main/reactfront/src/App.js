@@ -1,11 +1,13 @@
-import Layout from "../../../../../ittam/src/main/reactfront/src/pages/Layout";
-import Header from "../../../../../ittam/src/main/reactfront/src/component/Header";
-import Sidebar from "../../../../../ittam/src/main/reactfront/src/component/Sidebar";
+import Layout from "./pages/Layout";
+import Header from "./component/Header";
+import Sidebar from "./component/Sidebar";
 import {Route, Routes, BrowserRouter} from "react-router-dom";
-import "../../../../../ittam/src/main/reactfront/src/App.css";
-import ApproveList from "../../../../../ittam/src/main/reactfront/src/pages/approve/ApproveList"
-import UserList from "../../../../../ittam/src/main/reactfront/src/pages/users/UserList";
-import ApproveHandleList from "../../../../../ittam/src/main/reactfront/src/pages/approve/ApproveHandleList"
+import "./App.css";
+import ApproveList from "./pages/approve/ApproveList"
+import UserList from "./pages/users/UserList";
+import ApproveHandleList from "./pages/approve/ApproveHandleList"
+import ITAssets from "./pages/itassets/ITAssets"
+import LoginHome from "./pages/login/LoginHome";
 import AssetDetail from "./pages/itassets/AssetDetail";
 import PurchaseRequest from "./pages/itassets/PurchaseRequest";
 import UseRequest from "./pages/itassets/UseRequest";
@@ -26,6 +28,9 @@ function App() {
                 <Route path="/itassets/use" element={<UseRequest/>} />
                 <Route path="/itassets/purchase" element={<PurchaseRequest/>} />
                 <Route path="/itassets/detail" element={<AssetDetail/>} />
+                <Route path="/adminitassets" element={<ITAssets/>}/>
+                <Route path="/login" element={<LoginHome/>}/>
+
             </Routes>
         </BrowserRouter>
     );

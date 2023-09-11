@@ -40,8 +40,13 @@ public class UserRequestServiceImpl implements UserRequestService{
     }
 
     @Override
-    public ArrayList<UserRequestVO> UserRequestHandleSearch(String inputText) {
-        return userRequestMapper.UserRequestHandleSearch(inputText);
+    public ArrayList<UserRequestVO> UserRequestHandleSearch(String inputText, ArrayList<String> pageNav) {
+        return userRequestMapper.UserRequestHandleSearch(inputText, pageNav);
+    }
+
+    @Override
+    public ArrayList<UserRequestVO> UserRequestNavSearch(ArrayList<String> navText) {
+        return userRequestMapper.UserRequestNavSearch(navText);
     }
 
 

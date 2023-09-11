@@ -15,13 +15,13 @@ import java.util.List;
 public class CategoriesVO {
     /*dsada*/
 
-    private String id;
+    private String category_num;
 
-    private String name;
+    private String category_name;
 
-    private String parent_id;
+    private String category_parent_num;
 
-    private String path;
+
 
 
 }

@@ -10,7 +10,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Builder
 public class PCSpecVO {
-    private int spec_num;
     private String spec_cpu;
     private String spec_ram;
     private String spec_mainboard;
@@ -22,4 +21,5 @@ public class PCSpecVO {
     private String spec_mfg;
     private String spec_seriel;
     private String spec_warranty;
+    private String spec_purchase_date;
 }

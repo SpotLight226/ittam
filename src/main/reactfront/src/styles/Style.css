@@ -12,6 +12,7 @@
 @import "./Header.css";
 @import "./Sidebar.css";
 @import "./ApproveList.css";
+@import "./Login.css";
 
 :root {
   scroll-behavior: smooth;
