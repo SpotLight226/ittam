@@ -39,6 +39,15 @@ dependencies {
     implementation 'org.bgee.log4jdbc-log4j2:log4jdbc-log4j2-jdbc4.1:1.16'
     // email 보내기
     implementation 'javax.mail:mail:1.4.7'
+
+    // security
+    implementation 'org.springframework.boot:spring-boot-starter-security'
+    implementation 'org.thymeleaf.extras:thymeleaf-extras-springsecurity5'
+    testImplementation 'org.springframework.security:spring-security-test'
+
+
+    // jwt
+    implementation 'com.auth0:java-jwt:4.4.0'
 }
 
 tasks.named('test') {
