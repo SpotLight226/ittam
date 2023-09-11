@@ -3,6 +3,9 @@ import { Link } from "react-router-dom";
 import "../styles/Style.css";
 
 function Header() {
+
+  if(window.location.pathname === '/login') return null
+
   const handleToggleClick = () => {
     // React에서는 body에 직접 접근하지 않고, 상태를 사용하여 UI를 변경합니다.
     // 여기에서는 상태를 토글하는 방식으로 body의 classList를 변경하는 효과를 달성합니다.

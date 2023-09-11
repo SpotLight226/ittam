@@ -25,6 +25,7 @@ public class UserVO {
     private Integer assets_num;
     private String user_leave_yn;
     private LocalDate user_leavedate;
+    private String role;
 
 
 

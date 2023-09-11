@@ -63,19 +63,19 @@ public class UserController {
         }
     }
 
-    @PostMapping("/login")
-    public ResponseEntity<String> login(@RequestBody Map<String, String> request) {
-        System.out.println(request.toString());
-
-
-        try {
-            return ResponseEntity.ok("비밀번호가 정상적으로 변경되었습니다.");
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body("비밀번호 변경 중 오류가 발생했습니다.");
-        }
-
-
-    }
+//    @PostMapping("/login")
+//    public ResponseEntity<String> login(@RequestBody Map<String, String> request) {
+//        System.out.println(request.toString());
+//
+//
+//        try {
+//            return ResponseEntity.ok("비밀번호가 정상적으로 변경되었습니다.");
+//        } catch (Exception e) {
+//            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+//                    .body("비밀번호 변경 중 오류가 발생했습니다.");
+//        }
+//
+//
+//    }
 
 }

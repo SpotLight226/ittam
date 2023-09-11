@@ -11,5 +11,5 @@ public interface UserMapper {
 
     public ArrayList<UserVO> passwordFind(String email);
     public void UserPasswordReset(@Param("passwordReset")String passwordReset, @Param("emailInput")String emailInput);
-
+    public UserVO login (String username);
 }
