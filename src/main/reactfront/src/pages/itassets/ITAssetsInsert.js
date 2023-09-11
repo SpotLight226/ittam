@@ -1,3 +1,4 @@
+import Validation from "../../component/Validation";
 function ITAssetsInsert({
   handleSubmit,
   handleSelectChange,
@@ -7,7 +8,9 @@ function ITAssetsInsert({
   selectedParent,
   handleParentChange,
   categories,
+  
 }) {
+  const { validationhandleChange, validationhandleSubmit, values, errors } = Validation(initialState, Validate);
   return (
     <div>
       <div className="modal-header">
@@ -79,6 +82,7 @@ function ITAssetsInsert({
                     onChange={handleChange}
                     value={formData.sw_price}
                   />
+                  {errors.sw_price && <p>{errors.sw_price}</p>}
                 </div>
               </div>
 

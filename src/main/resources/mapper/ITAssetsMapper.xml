@@ -38,9 +38,9 @@
     </insert>
 
     <insert id="ServerSpecInsert" parameterType="com.ittam.web.command.ServerSpecVO">
-        INSERT INTO SERVERSPEC(spec_num, server_mfg, server_spec_warranty, server_capa, server_price, server_purchase_date, server_interface, server_average_life, server_rpm, server_daterecovery_life )
+        INSERT INTO SERVERSPEC(spec_num, server_mfg, server_spec_warranty, server_capa, server_price, server_purchase_date, server_interface, server_average_life, server_rpm, server_datarecovery_life )
         values
-            (0, #{server_mfg}, #{server_spec_warranty}, #{server_capa}, #{server_price}, #{server_purchase_date}, #{server_interface}, #{server_average_life}, #{server_rpm}, #{server_daterecovery_life})
+            (0, #{server_mfg}, #{server_spec_warranty}, #{server_capa}, #{server_price}, #{server_purchase_date}, #{server_interface}, #{server_average_life}, #{server_rpm}, #{server_datarecovery_life})
     </insert>
 
 
