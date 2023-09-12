@@ -11,38 +11,38 @@ function ITAssets() {
   /* 폼데이터 초기화 */
   const resetFormdata = {
     sw_mfg: '',
-      sw_spec_seriel: '',
-      sw_spec_warranty: '',
-      sw_purchase_date: '',
-      sw_price: '',
-      /* etcspec */
-      etc_mfg: '',
-      etc_spec_warranty: '',
-      etc_purchase_date: '',
-      etc_price: '',
-      /* pcspec */
-      spec_cpu: '',
-      spec_ram: '',
-      spec_mainboard: '',
-      spec_power: '',
-      spec_gpu: '',
-      spec_hdd: '',
-      spec_ssd: '',
-      spec_ops: '',
-      spec_mfg: '',
-      spec_seriel: '',
-      spec_purchase_date: '',
-      /* serverspec */
-      server_mfg: '',
-      server_spec_warranty: '',
-      server_capa: '',
-      server_price: '',
-      server_purchase_date: '',
-      server_interface: '',
-      server_average_life: '',
-      server_rpm: '',
-      server_datarecovery_life: '',
-  }
+    sw_spec_seriel: '',
+    sw_spec_warranty: '',
+    sw_purchase_date: '',
+    sw_price: '',
+    /* etcspec */
+    etc_mfg: '',
+    etc_spec_warranty: '',
+    etc_purchase_date: '',
+    etc_price: '',
+    /* pcspec */
+    spec_cpu: '',
+    spec_ram: '',
+    spec_mainboard: '',
+    spec_power: '',
+    spec_gpu: '',
+    spec_hdd: '',
+    spec_ssd: '',
+    spec_ops: '',
+    spec_mfg: '',
+    spec_seriel: '',
+    spec_purchase_date: '',
+    /* serverspec */
+    server_mfg: '',
+    server_spec_warranty: '',
+    server_capa: '',
+    server_price: '',
+    server_purchase_date: '',
+    server_interface: '',
+    server_average_life: '',
+    server_rpm: '',
+    server_datarecovery_life: '',
+  };
 
   /* ITAssets테이블 데이터가져오기 */
   const [data, setData] = useState([]);
@@ -82,8 +82,18 @@ function ITAssets() {
   );
   /* insert모달창에 비동기데이터 보내기 */
   const [selectCategory, setSelectCategory] = useState(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+  };
+
+  const openModal = () => {
+    setIsModalOpen(true);
+  };
   const sendModal = (category) => {
     setSelectCategory(category);
+    closeModal();
   };
 
   const handleParentChange = (e) => {
@@ -185,7 +195,6 @@ function ITAssets() {
     ...resetFormdata,
     assets_tag: '',
     assets_name: '',
-    
   });
 
   const handleChange = (e) => {
@@ -197,7 +206,7 @@ function ITAssets() {
   };
 
   const handleSubmit = async (e) => {
-    e.preventDefault(); 
+    e.preventDefault();
     try {
       const response = await axios.post('/assets/specInsert', formData);
       if (response.data) {
@@ -207,11 +216,10 @@ function ITAssets() {
           ...resetFormdata,
           assets_tag: '',
           assets_name: selectedType,
-          
         });
       }
-      
-      const scrollingModal = document.getElementById('scrollingModal');
+
+      /* const scrollingModal = document.getElementById('scrollingModal');
       scrollingModal.style.display = 'none';
       scrollingModal.classList.toggle('show');
       document.body.style = 'none';
@@ -221,7 +229,8 @@ function ITAssets() {
       let backdrop = document.querySelector('.modal-backdrop');
       if (backdrop) {
         backdrop.remove();
-      }
+      } */
+      closeModal();
       itassetList();
     } catch (error) {
       console.error('Error during data submission:', error);
@@ -285,6 +294,52 @@ function ITAssets() {
           </div>
         </div>
       </div>
+      <div>
+        <input
+          type="checkbox"
+          name="사용가능"
+          onChange={handleCheckboxChange}
+          value="사용가능"
+        />
+        사용가능
+        <input
+          type="checkbox"
+          name="사용중"
+          onChange={handleCheckboxChange}
+          value="사용중"
+        />
+        사용중
+        {/* <input
+                      type="checkbox"
+                      name="노트북"
+                      onChange={handleCheckboxChange}
+                      value="노트북"
+                    />
+                    노트북
+                    <input
+                      type="checkbox"
+                      name="데스크탑"
+                      onChange={handleCheckboxChange}
+                      value="데스크탑"
+                    />
+                    데스크탑 */}
+        {categories
+          .filter((cat) => cat.category_parent_num !== null)
+          .map((cat) => (
+            <>
+              <input
+                type="checkbox"
+                key={cat.category_num}
+                value={cat.category_name}
+                name={cat.category_name}
+                onChange={handleCheckboxChange}
+                style={{ marginLeft: '5px' }}
+              />
+
+              {cat.category_name}
+            </>
+          ))}
+      </div>
       <section className="section">
         <div className="row">
           <div className="col-lg-12">
@@ -298,6 +353,7 @@ function ITAssets() {
                           className="datatable-selector"
                           value={itemsPerPage}
                           onChange={handleSelectorChange}
+                          style={{ marginRight: '10px' }}
                         >
                           <option value="5">5</option>
                           <option value="10">10</option>
@@ -308,34 +364,7 @@ function ITAssets() {
                       </label>
                     </div>
                     {/* 검색바 */}
-                    <input
-                      type="checkbox"
-                      name="사용가능"
-                      onChange={handleCheckboxChange}
-                      value="사용가능"
-                    />
-                    사용가능
-                    <input
-                      type="checkbox"
-                      name="사용중"
-                      onChange={handleCheckboxChange}
-                      value="사용중"
-                    />
-                    사용중
-                    <input
-                      type="checkbox"
-                      name="노트북"
-                      onChange={handleCheckboxChange}
-                      value="노트북"
-                    />
-                    노트북
-                    <input
-                      type="checkbox"
-                      name="데스크탑"
-                      onChange={handleCheckboxChange}
-                      value="데스크탑"
-                    />
-                    데스크탑
+
                     <div className="datatable-search">
                       <input
                         className="datatable-input"
@@ -386,9 +415,9 @@ function ITAssets() {
                         </Link>
                       </th>
                       <th scope="col">
-                        <a href="#" className="datatable-sorter">
+                        <Link href="#" className="datatable-sorter">
                           spec_num(나중에안보이게)
-                        </a>
+                        </Link>
                       </th>
                     </tr>
                   </thead>
@@ -413,12 +442,21 @@ function ITAssets() {
                               data-bs-toggle="modal"
                               data-bs-target="#modalDialogScrollable"
                             >
-                              {item.assets_name + item.assets_detail_name}
+                              {item.assets_name + ' ' + item.assets_detail_name}
                             </Link>
                           </td>
                           <td>{item.assets_status}</td>
                           <td>{item.user_id}</td>
                           <td>{item.spec_num}</td>
+                          <td>
+                            <button
+                              className="btn btn-primary"
+                              data-bs-toggle="modal"
+                              data-bs-target="#scrollingModal"
+                            >
+                              수정하기
+                            </button>
+                          </td>
                         </tr>
                       ))}
                   </tbody>
@@ -438,7 +476,6 @@ function ITAssets() {
         </div>
       </section>
       {/* 페이징네이션 */}
-
       <Pagenation
         currentPage={currentPage}
         totalPages={totalPages}
