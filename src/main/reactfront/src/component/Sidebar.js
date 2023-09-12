@@ -9,9 +9,15 @@ function Sidebar() {
       <aside id="sidebar" className="sidebar">
         <ul className="sidebar-nav" id="sidebar-nav">
           <li className="nav-item">
-            <Link to="/" className="nav-link">
+            <Link to="/userMain" className="nav-link">
               <i className="bi bi-grid"></i>
-              <span>메인페이지</span>
+              <span>사원메인페이지</span>
+            </Link>
+          </li>
+          <li className="nav-item">
+            <Link to="/adminMain" className="nav-link">
+              <i className="bi bi-grid"></i>
+              <span>관리자메인페이지</span>
             </Link>
           </li>
 
@@ -97,9 +103,9 @@ function Sidebar() {
                 data-bs-parent="#sidebar-nav"
             >
               <li>
-                <Link to="####">
+                <Link to="/####">
                   <i className="bi bi-circle"></i>
-                  <span>Form Elements</span>
+                  <span>Form Eleme</span>
                 </Link>
               </li>
               <li>

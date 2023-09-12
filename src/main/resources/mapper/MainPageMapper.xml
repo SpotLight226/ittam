@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ittam.web.mainPage.service.MainPageMapper">
+    <select id="getUsereqNum" resultType="integer">
+        select count(*) from USER_REQUEST where USERQ_YN = '사원요청'
+    </select>
+    <select id="getAdminOkNum" resultType="integer">
+        select count(*) from USER_REQUEST where USERQ_YN = '관리자사용승인'
+    </select>
+    <select id="getYetOkNum">
+        select count(*) from STOCK_RETURN where return_status = '승인대기'
+    </select>
+    <insert id="registReturnReq">
+        insert into STOCK_RETURN(assets_num, user_id, return_kind, return_title, return_comment) values(#{assets_num}, #{user_id}, #{return_kind}, #{return_title}, #{return_comment});
+    </insert>
+    <select id="getReturnList" resultType="map">
+        select * from STOCK_RETURN as sr
+            left join ITASSETS as it on sr.ASSETS_NUM = it.ASSETS_NUM
+            left join USER as us on sr.USER_ID = us.USER_ID
+            ORDER BY RETURN_DATE DESC;
+    </select>
+    <select id="getUserInfo" resultType="UserVO">
+        select * from USER where user_id = #{user_id}
+    </select>
+    <update id="modifyProfile">
+        update USER set user_name=#{user_name}, user_phone=#{user_phone}, user_address=#{user_address}, user_email=#{user_email} where user_id = #{user_id};
+    </update>
+    <select id="getUserCnt_using">
+        select count(*) from ITASSETS where user_id=#{user_id}
+    </select>
+    <select id="getUserCnt_exchange">
+        select count(*) from STOCK_RETURN where return_kind='교환' and RETURN_STATUS='승인대기' and user_id=#{user_id}
+    </select>
+    <select id="getUserCnt_return">
+        select count(*) from STOCK_RETURN where return_kind='반납' and RETURN_STATUS='승인대기' and user_id=#{user_id}
+    </select>
+    <select id="getMyAssetList">
+        SELECT *
+        FROM ITASSETS a
+                 LEFT JOIN PCSPEC pc ON (a.assets_name LIKE '%노트북%' OR a.assets_name LIKE '%데스크탑%') AND a.spec_num = pc.spec_num
+                 LEFT JOIN SWSPEC sw ON (a.assets_name LIKE '%Microsoft Office%' OR a.assets_name LIKE '%파워포인트%' OR a.assets_name LIKE '엑셀' OR a.assets_name LIKE '워드' OR a.assets_name LIKE '한글과컴퓨터' OR a.assets_name LIKE '인텔리제이' ) AND a.spec_num = sw.spec_num
+                 LEFT JOIN SERVERSPEC sv ON (a.assets_name LIKE '%서버용하드%') AND a.spec_num = sv.spec_num
+                 LEFT JOIN ETCSPEC etc ON a.spec_num = etc.spec_num AND a.assets_name NOT LIKE '%노트북%' AND a.assets_name NOT LIKE '%데스크탑%' AND a.assets_name NOT LIKE '%서버용하드%' AND a.assets_name NOT LIKE '%Microsoft Office%' AND a.assets_name NOT LIKE '%파워포인트%' AND a.assets_name NOT LIKE '%워드%' AND a.assets_name NOT LIKE '%워드%' AND a.assets_name NOT LIKE '%한글과컴퓨터%' AND a.assets_name NOT LIKE '%인텔리제이%'
+                 LEFT JOIN STOCK_RETURN sr on a.ASSETS_NUM = sr.ASSETS_NUM
+        where a.user_id=#{user_id}
+    </select>
+
+    <update id="updateReturn_yn">
+        update STOCK_RETURN set return_status = #{return_status} where return_num = #{return_num}
+
+    </update>
+
+    <update id="updateAssetUsing">
+        update ITASSETS set ASSETS_STATUS = '사용보류' where ASSETS_NUM = #{assets_num}
+
+    </update>
+
+    <delete id="deleteCancelReq">
+        delete from STOCK_RETURN where RETURN_NUM = #{return_num}
+    </delete>
+
+
+
+</mapper>
