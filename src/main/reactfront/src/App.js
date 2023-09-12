@@ -12,6 +12,13 @@ import AssetDetail from "./pages/itassets/AssetDetail";
 import PurchaseRequest from "./pages/itassets/PurchaseRequest";
 import UseRequest from "./pages/itassets/UseRequest";
 import AssetAllList from "./pages/itassets/AssetAllList";
+import AdminMain from "./pages/mainPage/AdminMain";
+import Mypage from "./pages/mainPage/Mypage";
+import Reports from "./pages/mainPage/Reports";
+import UserMain from "./pages/mainPage/UserMain";
+import ReturnExchange from "./pages/mainPage/ReturnExchange";
+import UserMain_using from "./pages/mainPage/UserMain_using";
+import UserMain_request from "./pages/mainPage/UserMain_request";
 
 function App() {
 
@@ -30,6 +37,13 @@ function App() {
                 <Route path="/itassets/detail" element={<AssetDetail/>} />
                 <Route path="/adminitassets" element={<ITAssets/>}/>
                 <Route path="/login" element={<LoginHome/>}/>
+                <Route path="/adminMain" element={<AdminMain />} />
+                <Route path="/mypage" element={<Mypage />} />
+                <Route path="/reports" element={<Reports />} />
+                <Route path="/userMain" element={<UserMain />} />
+                <Route path="/returnExchange" element={<ReturnExchange />} />
+                <Route path="/userMain_using" element={<UserMain_using />} />
+                <Route path="/userMain_request" element={<UserMain_request />} />
 
             </Routes>
         </BrowserRouter>
