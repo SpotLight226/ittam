@@ -408,7 +408,7 @@ function ITAssetsInfo({ selectedItem }) {
           ) : null}
           {selectedItem && selectedItem.server_average_life ? (
             <>
-              <span>분당회전수:</span>
+              <span>평균수명:</span>
               <input
                 className="modal-body"
                 style={{

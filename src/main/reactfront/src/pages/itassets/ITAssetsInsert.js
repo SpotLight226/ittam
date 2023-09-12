@@ -62,6 +62,7 @@ function ITAssetsInsert({
                     name="sw_mfg"
                     onChange={handleChange}
                     value={formData.sw_mfg}
+                    required
                   />
                 </div>
               </div>
@@ -78,6 +79,7 @@ function ITAssetsInsert({
                     name="sw_price"
                     onChange={handleChange}
                     value={formData.sw_price}
+                    required
                   />
                 </div>
               </div>
@@ -94,6 +96,9 @@ function ITAssetsInsert({
                     name="sw_spec_seriel"
                     onChange={handleChange}
                     value={formData.sw_spec_seriel}
+                    required
+                    pattern="[a-zA-Z0-9]{12}$"
+                    maxLength="12"
                   />
                 </div>
               </div>
@@ -110,6 +115,7 @@ function ITAssetsInsert({
                     name="sw_purchase_date"
                     onChange={handleChange}
                     value={formData.sw_purchase_date}
+                    required
                   />
                 </div>
               </div>
@@ -126,6 +132,7 @@ function ITAssetsInsert({
                     name="sw_spec_warranty"
                     onChange={handleChange}
                     value={formData.sw_spec_warranty}
+                    required
                   />
                 </div>
               </div>
@@ -146,6 +153,7 @@ function ITAssetsInsert({
                     name="etc_mfg"
                     onChange={handleChange}
                     value={formData.etc_mfg}
+                    required
                   />
                 </div>
               </div>
@@ -162,6 +170,7 @@ function ITAssetsInsert({
                     name="etc_price"
                     onChange={handleChange}
                     value={formData.etc_price}
+                    required
                   />
                 </div>
               </div>
@@ -178,6 +187,7 @@ function ITAssetsInsert({
                     name="etc_purchase_date"
                     onChange={handleChange}
                     value={formData.etc_purchase_date}
+                    required
                   />
                 </div>
               </div>
@@ -194,6 +204,7 @@ function ITAssetsInsert({
                     name="etc_spec_warranty"
                     onChange={handleChange}
                     value={formData.etc_spec_warranty}
+                    required
                   />
                 </div>
               </div>
@@ -214,6 +225,7 @@ function ITAssetsInsert({
                     name="spec_cpu"
                     onChange={handleChange}
                     value={formData.spec_cpu}
+                    required
                   />
                 </div>
               </div>
@@ -230,6 +242,7 @@ function ITAssetsInsert({
                     name="spec_ram"
                     onChange={handleChange}
                     value={formData.spec_ram}
+                    required
                   />
                 </div>
               </div>
@@ -246,6 +259,7 @@ function ITAssetsInsert({
                     name="spec_mainboard"
                     onChange={handleChange}
                     value={formData.spec_mainboard}
+                    required
                   />
                 </div>
               </div>
@@ -262,6 +276,7 @@ function ITAssetsInsert({
                     name="spec_power"
                     onChange={handleChange}
                     value={formData.spec_power}
+                    required
                   />
                 </div>
               </div>
@@ -278,6 +293,7 @@ function ITAssetsInsert({
                     name="spec_gpu"
                     onChange={handleChange}
                     value={formData.spec_gpu}
+                    required
                   />
                 </div>
               </div>
@@ -294,6 +310,7 @@ function ITAssetsInsert({
                     name="spec_hdd"
                     onChange={handleChange}
                     value={formData.spec_hdd}
+                    required
                   />
                 </div>
               </div>
@@ -310,6 +327,7 @@ function ITAssetsInsert({
                     name="spec_ssd"
                     onChange={handleChange}
                     value={formData.spec_ssd}
+                    required
                   />
                 </div>
               </div>
@@ -326,6 +344,7 @@ function ITAssetsInsert({
                     name="spec_ops"
                     onChange={handleChange}
                     value={formData.spec_ops}
+                    required
                   />
                 </div>
               </div>
@@ -342,6 +361,9 @@ function ITAssetsInsert({
                     name="spec_seriel"
                     onChange={handleChange}
                     value={formData.spec_seriel}
+                    required
+                    pattern="[a-zA-Z0-9]{12}$"
+                    maxLength="12"
                   />
                 </div>
               </div>
@@ -358,6 +380,7 @@ function ITAssetsInsert({
                     name="spec_mfg"
                     onChange={handleChange}
                     value={formData.spec_mfg}
+                    required
                   />
                 </div>
               </div>
@@ -374,6 +397,7 @@ function ITAssetsInsert({
                     name="spec_purchase_date"
                     onChange={handleChange}
                     value={formData.spec_purchase_date}
+                    required
                   />
                 </div>
               </div>
@@ -390,6 +414,7 @@ function ITAssetsInsert({
                     name="spec_warranty"
                     onChange={handleChange}
                     value={formData.spec_warranty}
+                    required
                   />
                 </div>
               </div>
@@ -410,6 +435,7 @@ function ITAssetsInsert({
                     name="server_mfg"
                     onChange={handleChange}
                     value={formData.server_mfg}
+                    required
                   />
                 </div>
               </div>
@@ -426,6 +452,7 @@ function ITAssetsInsert({
                     name="server_capa"
                     onChange={handleChange}
                     value={formData.server_capa}
+                    required
                   />
                 </div>
               </div>
@@ -442,6 +469,7 @@ function ITAssetsInsert({
                     name="server_price"
                     onChange={handleChange}
                     value={formData.server_price}
+                    required
                   />
                 </div>
               </div>
@@ -458,6 +486,7 @@ function ITAssetsInsert({
                     name="server_interface"
                     onChange={handleChange}
                     value={formData.server_interface}
+                    required
                   />
                 </div>
               </div>
@@ -474,6 +503,7 @@ function ITAssetsInsert({
                     name="server_rpm"
                     onChange={handleChange}
                     value={formData.server_rpm}
+                    required
                   />
                 </div>
               </div>
@@ -490,6 +520,7 @@ function ITAssetsInsert({
                     name="server_average_life"
                     onChange={handleChange}
                     value={formData.server_average_life}
+                    required
                   />
                 </div>
               </div>
@@ -506,6 +537,7 @@ function ITAssetsInsert({
                     name="server_datarecovery_life"
                     onChange={handleChange}
                     value={formData.server_datarecovery_life}
+                    required
                   />
                 </div>
               </div>
@@ -522,6 +554,7 @@ function ITAssetsInsert({
                     name="server_purchase_date"
                     onChange={handleChange}
                     value={formData.server_purchase_date}
+                    required
                   />
                 </div>
               </div>
@@ -538,6 +571,7 @@ function ITAssetsInsert({
                     name="server_spec_warranty"
                     onChange={handleChange}
                     value={formData.server_spec_warranty}
+                    required
                   />
                 </div>
               </div>
