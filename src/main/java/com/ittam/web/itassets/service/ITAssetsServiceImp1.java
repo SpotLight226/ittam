@@ -67,6 +67,7 @@ public class ITAssetsServiceImp1 implements ITAssetsService{
         vo.setSpec_ops((String) requestData.get("spec_ops"));
         vo.setSpec_mfg((String) requestData.get("spec_mfg"));
         vo.setSpec_seriel((String) requestData.get("spec_seriel"));
+        vo.setSpec_purchase_date((String) requestData.get("spec_purchase_date"));
         vo.setSpec_warranty((String) requestData.get("spec_warranty"));
 
         return iTAssetsMapper.PCSpecInsert(vo);
