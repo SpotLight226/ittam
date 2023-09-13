@@ -13,6 +13,38 @@ function AdminMain() {
     axios.get('/mainPage/adminMain').then(response => {setDataa(response.data);});
   }, [setDataa]);
 
+  //////////차~~~트///////////
+  const [all, setAll] = useState({});
+  const [today_all, setToday_all] = useState(0);
+  const [using, setUsing] = useState({});
+  const [today_using, setToday_using]  = useState(0);
+
+
+  const getAssetChartAllNum = () => {
+     axios.get("/mainPage/getAssetChartAllNum")
+        .then(response => {
+          setAll(response.data);
+          setToday_all(response.data.today);
+          console.log(response.data);})
+        .catch(error => console.log(error))
+
+  }
+  const getAssetChartUsingNum = () => {
+    axios.get("/mainPage/getAssetChartUsingNum")
+        .then(response => {
+          setUsing(response.data);
+          setToday_using(response.data.today)
+        })
+        .catch(error => console.log(error))
+  }
+  useEffect(() => {
+
+    getAssetChartAllNum();
+    getAssetChartUsingNum();
+  }, [])
+
+
+
   return (
       <main id="main" className="main">
 
@@ -136,7 +168,7 @@ function AdminMain() {
                       <Link to="/reports"><h5 className="card-title" style={{fontWeight: "800"}}>자산 사용률 <span>| 전체통계보기</span></h5></Link>
 
                       {/*  <!-- Line Chart --> */}
-                      <div id="reportsChart"><AreaChart /></div>
+                      {today_all!==0 && today_using!==0 && <div id="reportsChart"><AreaChart all={all} using={using}/></div>}
 
 
 

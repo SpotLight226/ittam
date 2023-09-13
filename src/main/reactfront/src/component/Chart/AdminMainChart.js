@@ -1,10 +1,12 @@
 
-import { useState } from 'react';
+import {useEffect, useState} from 'react';
 import ReactApexChart from 'react-apexcharts';
+import axios from "axios";
 
 
 
-function AreaChart() {
+function AreaChart({all, using}) {
+
 
 const date_n = (n) => {
   const today = new Date();
@@ -20,65 +22,74 @@ const month_n = (n) => {
 }
 
 
-  const x = {
+   const xxx = {
 
-    series: [{
-      name: '총 자산 갯수',
-      data: [31, 40, 70, 50, 42, 60, 65]
-    }, {
-      name: '사용중인 자산',
-      data: [11, 32, 45, 32, 34, 52, 41]
-    },
-    {
-      name: '폐기된 자산',
-      data: [5, 20, 40, 20, 15, 40, 30]
-    },
-    
-  ],
+     series: [{
+       name: '총 자산',
+       data: [all.day6, all.day5, all.day4, all.day3, all.day2, all.day1, all.today]
+       //data: [day6, day6, 70, 50, 42, 60, 65]
+     }, {
+       name: '사용중인 자산',
+       data: [using.day6, using.day5, using.day4, using.day3, using.day2, using.day1, using.today]
+     },
+     {
+       name: '폐기된 자산',
+       data: [5, 20, 40, 20, 15, 30, 20]
+     },
 
-    options: {
-      chart: {
-        height: 250,
-        type: 'area'
-      },
-      dataLabels: {
-        enabled: true,
+   ],
 
-      },
-      stroke: {
-        curve: 'smooth'
-      },
-      xaxis: {
-        type: 'text',
-        categories: [date_n(6),date_n(5), date_n(4), date_n(3), date_n(2), date_n(1), date_n(0)]
-        // categories: [month_n(6),month_n(5), month_n(4), month_n(3), month_n(2), month_n(1), month_n(0)]
-      },
-      tooltip: {
-        x: {
-          format: 'yy/MM/dd'
-        },
-      },
-    },
+     options: {
+       chart: {
+         height: 250,
+         type: 'area'
+       },
+       dataLabels: {
+         enabled: true,
 
-
-  };
+       },
+       stroke: {
+         curve: 'smooth'
+       },
+       xaxis: {
+         type: 'text',
+         categories: [date_n(6),date_n(5), date_n(4), date_n(3), date_n(2), date_n(1), date_n(0)]
+         //categories: [month_n(6),month_n(5), month_n(4), month_n(3), month_n(2), month_n(1), month_n(0)]
+       },
+       tooltip: {
+         x: {
+           format: 'yy/MM/dd'
+         },
+       },
+     },
 
 
+   };
 
-  const [datas, setData] = useState(x);
+  const [datas, setDatas] = useState(xxx);
+  useEffect(() => {
+    setDatas(xxx);
+  }, []);
+
+
+
+
+
 
 
 
   return (
     <div className="app">
-     
+
       <div id="chart">
-        <ReactApexChart options={datas.options} series={datas.series} type="area" height={250} />
+         <ReactApexChart options={datas.options} series={datas.series} type="area" height={250} />
       </div>
 
 
     </div>
   )
+
+
 
 
 }

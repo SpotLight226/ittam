@@ -74,11 +74,6 @@ public class MainPageServiceImpl implements MainPageService{
 
     @Override
     public void updateReturn_yn( Map<String, Object> map) {
-//        StockReturnVO vo = new StockReturnVO();
-//        vo.setAssets_num((int) map.get("assets_num"));
-//        vo.setReturn_status((String) map.get("return_status"));
-//        ITAssetsVO vo2 = new ITAssetsVO();
-//        vo2.setAssets_num((int)map.get("assets_num"));
 
         mainPageMapper.updateReturn_yn(map);
     }
@@ -91,5 +86,16 @@ public class MainPageServiceImpl implements MainPageService{
     @Override
     public void deleteCancelReq(Integer return_num) {
         mainPageMapper.deleteCancelReq(return_num);
+    }
+
+    @Override
+    public Map<Object, Object> getAssetChartAllNum() {
+
+        return mainPageMapper.getAssetChartAllNum();
+    }
+
+    @Override
+    public Map<Object, Object> getAssetChartUsingNum() {
+        return mainPageMapper.getAssetChartUsingNum();
     }
 }

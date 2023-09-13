@@ -96,6 +96,19 @@ public class MainPageController {
         return new ResponseEntity<>("삭제완료", HttpStatus.OK);
     }
 
+    @GetMapping("/getAssetChartAllNum")
+    public ResponseEntity<Map<Object, Object>> getAssetChartAllNum() {
+        Map<Object, Object> map = mainPageService.getAssetChartAllNum();
+        System.out.println(map.toString());
+        return new ResponseEntity<>(map, HttpStatus.OK);
+    }
+
+    @GetMapping("/getAssetChartUsingNum")
+    public ResponseEntity<Map<Object, Object>> getAssetChartUsingNum() {
+        Map<Object, Object> map = mainPageService.getAssetChartUsingNum();
+        return new ResponseEntity<>(map, HttpStatus.OK);
+    }
+
 
 
 
