@@ -19,7 +19,7 @@ import UserMain from "./pages/mainPage/UserMain";
 import ReturnExchange from "./pages/mainPage/ReturnExchange";
 import UserMain_using from "./pages/mainPage/UserMain_using";
 import UserMain_request from "./pages/mainPage/UserMain_request";
-
+import Users from "./pages/users/Users";
 function App() {
 
     return (
@@ -44,7 +44,7 @@ function App() {
                 <Route path="/returnExchange" element={<ReturnExchange />} />
                 <Route path="/userMain_using" element={<UserMain_using />} />
                 <Route path="/userMain_request" element={<UserMain_request />} />
-
+                <Route path="/:page/:subPage/*" element={<Users />} />
             </Routes>
         </BrowserRouter>
     );
