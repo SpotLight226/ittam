@@ -197,15 +197,21 @@ function Sidebar() {
                 data-bs-parent="#sidebar-nav"
             >
               <li>
-                <Link to="/users">
+                <Link to="users/userReg">
+                  <i className="bi bi-circle"></i>
+                  <span>사용자 등록</span>
+                </Link>
+              </li>
+              <li>
+                <Link to="users/userList">
                   <i className="bi bi-circle"></i>
                   <span>사용자 목록</span>
                 </Link>
               </li>
               <li>
-                <Link to="####">
+                <Link to="users/userLeave">
                   <i className="bi bi-circle"></i>
-                  <span>Remix Icons</span>
+                  <span>퇴사 신청</span>
                 </Link>
               </li>
             </ul>

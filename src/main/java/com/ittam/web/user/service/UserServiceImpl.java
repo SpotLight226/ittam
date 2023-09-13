@@ -11,7 +11,19 @@ public class UserServiceImpl implements UserService{
 
     @Autowired
     private UserMapper userMapper;
+    
+    // 사용자 목록
+    @Override
+    public ArrayList<UserVO> userList() {
+        return userMapper.userList();
+    }
+    
+    // 사용자 등록
+    @Override
+    public int userRegist(UserVO vo) {
 
+        return userMapper.userRegist(vo);
+    }
 
     @Override
     public ArrayList<UserVO> passwordFind(String email) {
