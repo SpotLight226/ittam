@@ -8,22 +8,43 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.Map;
 
 @Controller
-@RequestMapping("/login")
-@CrossOrigin(origins = "http://localhost:3000")
+//@RequestMapping("/login")
+@RequestMapping("/User")
 public class UserController {
 
     @Autowired
     @Qualifier("userService")
     private UserService userService;
+
+    // 사용자 목록
+    @CrossOrigin(origins = "*", allowedHeaders = "*")
+    @GetMapping("/UserList")
+    public ResponseEntity<ArrayList<UserVO>> userList(){
+        ArrayList<UserVO> list = userService.userList();
+        return ResponseEntity.ok(list);
+    }
+    
+    // 사용자 등록
+    @CrossOrigin(origins = "*", allowedHeaders = "*")
+    @PostMapping("/UserRegist")
+    public ResponseEntity<Integer> userRegist(@RequestBody UserVO userVO){
+
+        int data = userService.userRegist(userVO);
+
+        System.out.println("data = " + data);
+
+        if(data == 1){
+            return new ResponseEntity<>(data, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(data, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
 
     @PostMapping("/passwordFind")
     public ResponseEntity<ArrayList<UserVO >> PasswordFind(@RequestBody Map<String, String> requestBody){

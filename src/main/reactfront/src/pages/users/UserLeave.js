@@ -1,23 +1,22 @@
-import React, { useContext, useState } from "react";
+import { useContext, useState } from "react";
 
 import { UserStateContext } from "./Users";
 import UserItem from "./UserItem";
 import Pagenation from "../../component/Pagenation";
-import ControlMenu from "../../component/ControlMenu";
 import { UserOptionList } from "../../constants/OptionList"; // 옵션들을 정의해둔 list에서 객체로 사용할 옵션을 가져온다
+import ControlMenu from "../../component/ControlMenu";
 
-// 비구조 할당으로 subPage 주소 받아옴
-const UserList = () => {
+const UserLeave = () => {
   const userList = useContext(UserStateContext);
 
+  const filteredList = userList.filter((it) => it.user_leave_yn === "Y"); // 퇴사 신청한 리스트
+
+  // 옵션에 필터를 걸어서 필요한 것만
   const getProcessedOption = () => {
     const copyOptionList = JSON.parse(JSON.stringify(UserOptionList));
 
     return copyOptionList.filter(
-      (it) =>
-        it.value !== "leaveDate" &&
-        it.value !== "detail" &&
-        it.value !== "process"
+      (it) => it.value !== "auth" && it.value !== "email" && it.value !== "date"
     );
   };
 
@@ -28,7 +27,7 @@ const UserList = () => {
   // 2. 각 정렬 선택에 따른 데이터 정렬 함수
   const getProcessedList = () => {
     // 기존 리스트는 수정하지 않기 위해서 깊은 복사
-    const copyList = JSON.parse(JSON.stringify(userList));
+    const copyList = JSON.parse(JSON.stringify(filteredList));
 
     // 각 선택된 링크에 대한 비교함수
     const compare = (a, b) => {
@@ -69,23 +68,7 @@ const UserList = () => {
             return a.user_depart.localeCompare(b.user_depart);
           }
         }
-        case "auth": {
-          // 권한
-          if (checkClass) {
-            return b.user_auth.localeCompare(a.user_auth);
-          } else {
-            return a.user_auth.localeCompare(b.user_auth);
-          }
-        }
-        case "email": {
-          // 이메일
-          if (checkClass) {
-            return b.user_email.localeCompare(a.user_email);
-          } else {
-            return a.user_email.localeCompare(b.user_email);
-          }
-        }
-        case "date": {
+        case "leaveDate": {
           // 입사일 : Date 를 비교해야 하므로 state의 날짜 문자열을 가지고 와서 새로운 Date 객체에 넣고 getTime()을 사용해 ms로 변환 후 비교
           const a_date = new Date(a.user_joindate).getTime();
           const b_date = new Date(b.user_joindate).getTime();
@@ -111,10 +94,9 @@ const UserList = () => {
   const [itemsPerPage, setItemPerPage] = useState(10); // 페이지당 10개의 아이템  useState(처음에 보이고싶은 개수)
   const handleSelectorChange = (event) => {
     setItemPerPage(parseInt(event.target.value));
-    setCurrentPage(1);
   };
 
-  const totalPages = Math.ceil(userList.length / itemsPerPage);
+  const totalPages = Math.ceil(filteredList.length / itemsPerPage);
   /* 페이지네이션 */
   const [currentPage, setCurrentPage] = useState(1); // 현재 페이지
   /* const totalPages = Math.ceil(data.length / itemsPerPage); */
@@ -129,7 +111,7 @@ const UserList = () => {
   };
 
   return (
-    <div className="UserList">
+    <div className="UserLeave">
       <section className="section">
         <div className="row">
           <div className="col-lg-12">
@@ -163,8 +145,8 @@ const UserList = () => {
                     </div>
                   </div>
                 </div>
+
                 <table className="table datatable">
-                  {/* 리스트 정렬 기준 */}
                   <thead>
                     <tr>
                       {/* 리스트 헤드, 각 state와 변환함수를 넘긴다 */}
@@ -180,16 +162,14 @@ const UserList = () => {
                       ))}
                     </tr>
                   </thead>
-
-                  {/* 리스트 */}
                   <tbody>
                     {getProcessedList()
                       .slice(
                         (currentPage - 1) * itemsPerPage,
                         currentPage * itemsPerPage
                       )
-                      .map((it) => (
-                        <UserItem key={it.id} isUser={true} {...it} />
+                      .map((it, idx) => (
+                        <UserItem key={idx} {...it} idx={idx} />
                       ))}
                   </tbody>
                 </table>
@@ -209,4 +189,4 @@ const UserList = () => {
   );
 };
 
-export default UserList;
+export default UserLeave;
