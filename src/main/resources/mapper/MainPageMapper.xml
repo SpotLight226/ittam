@@ -19,14 +19,14 @@
     <select id="getReturnList" resultType="map">
         select * from STOCK_RETURN as sr
             left join ITASSETS as it on sr.ASSETS_NUM = it.ASSETS_NUM
-            left join USER as us on sr.USER_ID = us.USER_ID
+            left join USER as us on sr.USER_ID = us.username
             ORDER BY RETURN_DATE DESC;
     </select>
     <select id="getUserInfo" resultType="UserVO">
-        select * from USER where user_id = #{user_id}
+        select * from USER where username = #{username}
     </select>
     <update id="modifyProfile">
-        update USER set user_name=#{user_name}, user_phone=#{user_phone}, user_address=#{user_address}, user_email=#{user_email} where user_id = #{user_id};
+        update USER set user_name=#{user_name}, user_phone=#{user_phone}, user_address=#{user_address}, user_email=#{user_email} where username = #{username};
     </update>
     <select id="getUserCnt_using">
         select count(*) from ITASSETS where user_id=#{user_id}
@@ -55,12 +55,35 @@
 
     <update id="updateAssetUsing">
         update ITASSETS set ASSETS_STATUS = '사용보류' where ASSETS_NUM = #{assets_num}
-
     </update>
 
     <delete id="deleteCancelReq">
         delete from STOCK_RETURN where RETURN_NUM = #{return_num}
     </delete>
+
+    <select id="getAssetChartAllNum">
+        SELECT
+            SUM(CASE WHEN ADD_DATE <![CDATA[<=]]> DATE_SUB(NOW(), INTERVAL 6 DAY) THEN 1 ELSE 0 END) AS day6,
+            SUM(CASE WHEN ADD_DATE <![CDATA[<=]]> DATE_SUB(NOW(), INTERVAL 5 DAY) THEN 1 ELSE 0 END) AS day5,
+            SUM(CASE WHEN ADD_DATE <![CDATA[<=]]> DATE_SUB(NOW(), INTERVAL 4 DAY) THEN 1 ELSE 0 END) AS day4,
+            SUM(CASE WHEN ADD_DATE <![CDATA[<=]]> DATE_SUB(NOW(), INTERVAL 3 DAY) THEN 1 ELSE 0 END) AS day3,
+            SUM(CASE WHEN ADD_DATE <![CDATA[<=]]> DATE_SUB(NOW(), INTERVAL 2 DAY) THEN 1 ELSE 0 END) AS day2,
+            SUM(CASE WHEN ADD_DATE <![CDATA[<=]]> DATE_SUB(NOW(), INTERVAL 1 DAY) THEN 1 ELSE 0 END) AS day1,
+            SUM(CASE WHEN ADD_DATE <![CDATA[<=]]> DATE_SUB(NOW(), INTERVAL 0 DAY) THEN 1 ELSE 0 END) AS today
+        FROM ITASSETS
+    </select>
+
+    <select id="getAssetChartUsingNum">
+        SELECT
+        SUM(CASE WHEN ADD_DATE <![CDATA[<=]]> DATE_SUB(NOW(), INTERVAL 6 DAY) THEN 1 ELSE 0 END) AS day6,
+        SUM(CASE WHEN ADD_DATE <![CDATA[<=]]> DATE_SUB(NOW(), INTERVAL 5 DAY) THEN 1 ELSE 0 END) AS day5,
+        SUM(CASE WHEN ADD_DATE <![CDATA[<=]]> DATE_SUB(NOW(), INTERVAL 4 DAY) THEN 1 ELSE 0 END) AS day4,
+        SUM(CASE WHEN ADD_DATE <![CDATA[<=]]> DATE_SUB(NOW(), INTERVAL 3 DAY) THEN 1 ELSE 0 END) AS day3,
+        SUM(CASE WHEN ADD_DATE <![CDATA[<=]]> DATE_SUB(NOW(), INTERVAL 2 DAY) THEN 1 ELSE 0 END) AS day2,
+        SUM(CASE WHEN ADD_DATE <![CDATA[<=]]> DATE_SUB(NOW(), INTERVAL 1 DAY) THEN 1 ELSE 0 END) AS day1,
+        SUM(CASE WHEN ADD_DATE <![CDATA[<=]]> DATE_SUB(NOW(), INTERVAL 0 DAY) THEN 1 ELSE 0 END) AS today
+        FROM ITASSETS where ASSETS_STATUS = '사용중';
+    </select>
 
 
 
