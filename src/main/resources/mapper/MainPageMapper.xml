@@ -22,6 +22,16 @@
             left join USER as us on sr.username = us.username
             ORDER BY RETURN_DATE DESC;
     </select>
+    <select id="getSelectAssetList">
+        SELECT *
+        FROM ITASSETS a
+                 LEFT JOIN PCSPEC pc ON (a.assets_name LIKE '%노트북%' OR a.assets_name LIKE '%데스크탑%') AND a.spec_num = pc.spec_num
+                 LEFT JOIN SWSPEC sw ON (a.assets_name LIKE '%Microsoft Office%' OR a.assets_name LIKE '%파워포인트%' OR a.assets_name LIKE '엑셀' OR a.assets_name LIKE '워드' OR a.assets_name LIKE '한글과컴퓨터' OR a.assets_name LIKE '인텔리제이' ) AND a.spec_num = sw.spec_num
+                 LEFT JOIN SERVERSPEC sv ON (a.assets_name LIKE '%서버용하드%') AND a.spec_num = sv.spec_num
+                 LEFT JOIN ETCSPEC etc ON a.spec_num = etc.spec_num AND a.assets_name NOT LIKE '%노트북%' AND a.assets_name NOT LIKE '%데스크탑%' AND a.assets_name NOT LIKE '%서버용하드%' AND a.assets_name NOT LIKE '%Microsoft Office%' AND a.assets_name NOT LIKE '%파워포인트%' AND a.assets_name NOT LIKE '%워드%' AND a.assets_name NOT LIKE '%워드%' AND a.assets_name NOT LIKE '%한글과컴퓨터%' AND a.assets_name NOT LIKE '%인텔리제이%'
+                 LEFT JOIN STOCK_RETURN sr on a.ASSETS_NUM = sr.ASSETS_NUM
+        where a.CATEGORY_NUM= #{category_num} and a.ASSETS_STATUS = '사용가능';
+    </select>
     <select id="getUserInfo" resultType="UserVO">
         select * from USER where username = #{username}
     </select>
@@ -130,6 +140,14 @@
 --         FROM ITASSETS
 --         WHERE ASSETS_STATUS = '폐기'
     </select>
+
+    <update id="exchangeAsset_exchange">
+        update ITASSETS set assets_status='사용중', username=#{username} where assets_num = #{assets_num_later}
+    </update>
+
+    <update id="exchangeAsset_cancel">
+        update ITASSETS set assets_status='사용보류', username="" where assets_num = #{assets_num_now}
+    </update>
 
 
 

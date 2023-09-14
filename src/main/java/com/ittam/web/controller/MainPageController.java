@@ -1,5 +1,6 @@
 package com.ittam.web.controller;
 
+import com.ittam.web.command.ITAssetsVO;
 import com.ittam.web.command.StockReturnVO;
 import com.ittam.web.command.UserVO;
 import com.ittam.web.mainPage.service.MainPageService;
@@ -78,8 +79,8 @@ public class MainPageController {
 
     //내 사용중인 자산 리스트 가져오기
     @GetMapping("/getMyAssetList")
-    public ResponseEntity<List<Map<Object, Object>>> getMyAssetList(@RequestParam String username) {
-        List<Map<Object, Object>> list = mainPageService.getMyAssetList(username);
+    public ResponseEntity<List<Map<String, Object>>> getMyAssetList(@RequestParam String username) {
+        List<Map<String, Object>> list = mainPageService.getMyAssetList(username);
         return new ResponseEntity<>(list, HttpStatus.OK);
     }
 
@@ -96,6 +97,7 @@ public class MainPageController {
         return new ResponseEntity<>("삭제완료", HttpStatus.OK);
     }
 
+////////////////////////관리자 페이지 차트 데이터 불러오기///////////////////////////////////
     @GetMapping("/getAssetChartAllNum")
     public ResponseEntity<Map<Object, Object>> getAssetChartAllNum() {
         Map<Object, Object> map = mainPageService.getAssetChartAllNum();
@@ -114,7 +116,25 @@ public class MainPageController {
         return new ResponseEntity<>(map, HttpStatus.OK);
     }
 
+///////////////////////////////////////////////////////////////////////////////////////
 
+    //교환가능한 자산 리스트 가져오기
+    @GetMapping("/getSelectAssetList")
+    public ResponseEntity<List<Map<Object, Object>>> getSelectAssetList(Integer category_num) {
+        List<Map<Object, Object>> map = mainPageService.getSelectAssetList(category_num);
+        return new ResponseEntity<>(map, HttpStatus.OK);
+    }
+
+    //교환신청 승인처리하기
+    @PostMapping ("/exchangeAsset")
+    public ResponseEntity<String> exchangeAsset(@RequestBody Map<String, Object> map) {
+        mainPageService.exchangeAsset_exchange(map);
+        mainPageService.exchangeAsset_cancel(map);
+        mainPageService.updateReturn_yn(map);
+        System.out.println("assets_num_now:   " + map.get("assets_num_later"));
+        System.out.println("assets_num_now:   " + map.get("assets_num_now"));
+        return new ResponseEntity<>("승인처리되었습니다", HttpStatus.OK);
+    }
 
 
 

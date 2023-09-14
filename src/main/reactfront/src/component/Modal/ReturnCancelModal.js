@@ -9,6 +9,19 @@ function ReturnCancelModal({ setOpenCancelModal, myAssetList, myAssetNum, getMyA
     return myAssetList.find(x => x.ASSETS_NUM == myAssetNum)
   }
 
+  const reqTime = () => {
+    let now = new Date(thisList().RETURN_DATE);
+    let todayYear = now.getFullYear();
+    let todayMonth = now.getMonth();
+    let todayDate = now.getDate();
+    const week = ['(일)', '(월)', '(화)', '(수)', '(목)', '(금)', '(토)'];
+    let dayOfWeek = week[now.getDay()];
+    let hours = now.getHours();
+    let minutes = now.getMinutes();
+
+    return todayYear + "년 " + todayMonth + "월 " + todayDate + "일 " + dayOfWeek + " " +  hours + "시 " + minutes + "분";
+  }
+
 
   const cancelReq = () => {
     if(window.confirm('정말 요청을 취소하시겠습니까?')) {
@@ -69,7 +82,7 @@ function ReturnCancelModal({ setOpenCancelModal, myAssetList, myAssetNum, getMyA
               <div className="row mb-3">
                 <label for="inputText" className="col-sm-2 col-form-label">신청날짜</label>
                 <div className="col-sm-10">
-                  <input type="email" className="form-control" value={thisList().RETURN_DATE} disabled />
+                  <input type="email" className="form-control" value={reqTime()} disabled />
                 </div>
               </div>
 

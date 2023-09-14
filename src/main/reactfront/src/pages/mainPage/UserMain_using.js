@@ -67,7 +67,7 @@ function UserMain_using() {
         .post("/mainPage/returnForm", returnForm)
         .then((response) => {
           alert('신청완료되었습니다.');
-          console.log(response);
+          console.log(response.data);
 
           setOpenModal(false);
           getMyAssetList();
@@ -150,7 +150,7 @@ function UserMain_using() {
                 myAssetList.map((a, i) => {
                   return <tr key={i}>
                 <th scope="row">{i + 1}</th>
-                <td>{a.ASSETS_NAME}{a.ASSETS_DETAIL_NAME}</td>
+                <td>{a.ASSETS_NAME}{a.ASSETS_DETAIL_NAME}|{a.ASSETS_NUM}</td>
                 <td style={{fontSize:"14px", color: "gray", width: '800px'}}>{a.SPEC_CPU!==undefined? a.SPEC_CPU+' |':''}
                                                                               {a.SPEC_RAM!==undefined? a.SPEC_RAM+" |":''}
                                                                               {a.SPEC_MAINBOARD!==undefined? a.SPEC_MAINBOARD+" |":''}
