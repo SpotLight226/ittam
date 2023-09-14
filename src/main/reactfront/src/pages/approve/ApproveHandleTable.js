@@ -1,4 +1,4 @@
-const ApproveHandleTable = ({index, userq_yn, userq_num, user_id, userq_count, userq_kind, userq_regdate, userq_title, userq_comment, userq_okdate, userq_grantor, func, }) => {
+const ApproveHandleTable = ({index, userq_yn, userq_num, user_id, userq_count, userq_kind, userq_regdate, userq_title, userq_comment, userq_okdate, userq_grantor, category_num, func, }) => {
   return(
 
     <tr className="prod-box">
@@ -15,6 +15,8 @@ const ApproveHandleTable = ({index, userq_yn, userq_num, user_id, userq_count, u
       <th className="userq_NUM" style={{display :"none"}}>{userq_num}</th>
       <th className="userq_OKDATE" style={{display :"none"}}>{userq_okdate}</th>
       <th className="userq_GRANTOR" style={{display :"none"}}>{userq_grantor}</th>
+      <th className="category_NUM" style={{display :"none"}}>{category_num}</th>
+
 
       <td>
       <button className="btn btn-primary approveBtn" type="button"  data-bs-formtarget="#basicModal" onClick={func} id="approveBtn">조회</button>

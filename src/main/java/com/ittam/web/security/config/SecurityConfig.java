@@ -1,6 +1,7 @@
 package com.ittam.web.security.config;
 
 
+import com.ittam.web.security.filter.CustomLoginFilter;
 import com.ittam.web.security.filter.JwtAuthorizationFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -34,6 +35,7 @@ public class SecurityConfig {
 
         // 1. 기본 로그인 방식, 세션, 베이직인증, csrf토큰 전부 사용하지 않음
         http.csrf().disable();
+        http.cors();
         http.formLogin().disable(); // form기반으로 로그인을 사용하지 않음
         http.httpBasic().disable(); // Authorization : 아이디 형식으로 넘어오는 basic인증을 사용하지 않음
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS); // 세션인증 기반을 사용하지 않고, JWT사용해서 인증
@@ -65,7 +67,7 @@ public class SecurityConfig {
         http.requestMatchers()
                 .antMatchers("/login")
                 .and()
-                .addFilter(new JwtAuthorizationFilter(authenticationManager));
+                .addFilter(new CustomLoginFilter(authenticationManager));
 
         // api로 시작하는 요청에만 jwt필터가 실행됩니다.
         http.requestMatchers()
@@ -82,8 +84,6 @@ public class SecurityConfig {
     public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
         return authenticationConfiguration.getAuthenticationManager();
     }
-
-
 
 
     // 크로스 오리진 필터

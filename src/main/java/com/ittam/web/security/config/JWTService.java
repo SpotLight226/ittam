@@ -25,8 +25,8 @@ public class JWTService {
         JWTCreator.Builder builder = JWT.create().withSubject(username) // 주제
                 .withIssuedAt(new Date()) // 발행일
                 .withExpiresAt(new Date(expire)) // 만료시간
-                .withIssuer("chanhan") // 발행자
-                .withClaim("admin", "공개클레임 홍길동 !"); // + 공개 클레임
+                .withIssuer("chanhan"); // 발행자
+                // .withClaim("admin", "공개클레임 홍길동 !"); // + 공개 클레임
 
         return builder.sign(alg); // 빌더객체 생성
     }

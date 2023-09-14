@@ -166,15 +166,27 @@ function Sidebar() {
                 data-bs-parent="#sidebar-nav"
             >
               <li>
-                <Link to="/approve">
+                <Link to="/approveList">
                   <i className="bi bi-circle"></i>
-                  <span>신청 목록</span>
+                  <span>사용 신청 목록</span>
                 </Link>
               </li>
               <li>
                 <Link to="/approveHandle">
                   <i className="bi bi-circle"></i>
-                  <span>처리 목록</span>
+                  <span>사용 처리 목록</span>
+                </Link>
+              </li>
+              <li>
+                <Link to="/approveBuyList">
+                  <i className="bi bi-circle"></i>
+                  <span>구매 신청 목록</span>
+                </Link>
+              </li>
+              <li>
+                <Link to="/approveBuyHandle">
+                  <i className="bi bi-circle"></i>
+                  <span>구매 처리 목록</span>
                 </Link>
               </li>
             </ul>
