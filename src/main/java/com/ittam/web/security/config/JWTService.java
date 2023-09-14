@@ -5,11 +5,13 @@ import com.auth0.jwt.JWTCreator;
 import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTVerificationException;
+import org.springframework.beans.factory.annotation.Value;
 
 import java.util.Date;
 
 public class JWTService {
 
+    @Value("${secretKey}")
     private static String secretKey = "coding404";
 
     // 토큰생성

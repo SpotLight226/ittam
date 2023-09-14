@@ -51,8 +51,8 @@ const UserLeave = () => {
         }
         case "id": {
           // 사원번호 : 부서 빼고 번호만 비교
-          const a_id = parseInt(a.user_id.slice(3, a.user_id.length));
-          const b_id = parseInt(b.user_id.slice(3, b.user_id.length));
+          const a_id = parseInt(a.username.slice(3, a.username.length));
+          const b_id = parseInt(b.username.slice(3, b.username.length));
 
           if (checkClass) {
             return b_id - a_id;
