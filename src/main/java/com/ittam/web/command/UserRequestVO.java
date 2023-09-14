@@ -14,7 +14,7 @@ import java.time.LocalDate;
 public class UserRequestVO {
 
     private Integer userq_num;
-    private String user_id;
+    private String username;
     private Integer category_num;
     private String userq_title;
     private LocalDate userq_regdate;

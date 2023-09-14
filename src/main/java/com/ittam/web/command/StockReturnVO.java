@@ -14,7 +14,7 @@ public class StockReturnVO {
 
     private int return_num;
     private int assets_num;
-    private String user_id;
+    private String username;
     private String return_kind;
     private String return_title;
     private String return_comment;

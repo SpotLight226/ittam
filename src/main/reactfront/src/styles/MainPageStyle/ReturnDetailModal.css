@@ -70,3 +70,9 @@
 #cancelBtn {
   background-color: rgb(36, 56, 236);
 }
+
+.select-assets {
+  width: 480px;
+  height: 40px;
+  border-radius: 8px;
+}

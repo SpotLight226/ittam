@@ -9,12 +9,12 @@ import DounutChart_user from "../../component/Chart/DonutChart";
 function UserMain() {
 
 
-  const user_id = 'DE0003';
+  const username = 'DE0003';
   const [userCnt, setUserCnt] = useState({});
 
   useEffect(() => {
     axios.get("/mainPage/getUserCnt", {
-      params: {user_id: user_id}
+      params: {username: username}
     }).then(response => setUserCnt(response.data))
         .catch(error => console.log(error))
   },[])

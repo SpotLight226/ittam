@@ -5,7 +5,7 @@
 
 <mapper namespace="com.ittam.web.mainPage.service.MainPageMapper">
     <select id="getUsereqNum" resultType="integer">
-        select count(*) from USER_REQUEST where USERQ_YN = '사원요청'
+        select count(*) from USER_REQUEST where USERQ_YN = '사원사용요청'
     </select>
     <select id="getAdminOkNum" resultType="integer">
         select count(*) from USER_REQUEST where USERQ_YN = '관리자사용승인'
@@ -14,12 +14,12 @@
         select count(*) from STOCK_RETURN where return_status = '승인대기'
     </select>
     <insert id="registReturnReq">
-        insert into STOCK_RETURN(assets_num, user_id, return_kind, return_title, return_comment) values(#{assets_num}, #{user_id}, #{return_kind}, #{return_title}, #{return_comment});
+        insert into STOCK_RETURN(assets_num, username, return_kind, return_title, return_comment) values(#{assets_num}, #{username}, #{return_kind}, #{return_title}, #{return_comment});
     </insert>
     <select id="getReturnList" resultType="map">
         select * from STOCK_RETURN as sr
             left join ITASSETS as it on sr.ASSETS_NUM = it.ASSETS_NUM
-            left join USER as us on sr.USER_ID = us.username
+            left join USER as us on sr.username = us.username
             ORDER BY RETURN_DATE DESC;
     </select>
     <select id="getUserInfo" resultType="UserVO">
@@ -29,13 +29,13 @@
         update USER set user_name=#{user_name}, user_phone=#{user_phone}, user_address=#{user_address}, user_email=#{user_email} where username = #{username};
     </update>
     <select id="getUserCnt_using">
-        select count(*) from ITASSETS where user_id=#{user_id}
+        select count(*) from ITASSETS where username=#{username}
     </select>
     <select id="getUserCnt_exchange">
-        select count(*) from STOCK_RETURN where return_kind='교환' and RETURN_STATUS='승인대기' and user_id=#{user_id}
+        select count(*) from STOCK_RETURN where return_kind='교환' and RETURN_STATUS='승인대기' and username=#{username}
     </select>
     <select id="getUserCnt_return">
-        select count(*) from STOCK_RETURN where return_kind='반납' and RETURN_STATUS='승인대기' and user_id=#{user_id}
+        select count(*) from STOCK_RETURN where return_kind='반납' and RETURN_STATUS='승인대기' and username=#{username}
     </select>
     <select id="getMyAssetList">
         SELECT *
@@ -45,7 +45,7 @@
                  LEFT JOIN SERVERSPEC sv ON (a.assets_name LIKE '%서버용하드%') AND a.spec_num = sv.spec_num
                  LEFT JOIN ETCSPEC etc ON a.spec_num = etc.spec_num AND a.assets_name NOT LIKE '%노트북%' AND a.assets_name NOT LIKE '%데스크탑%' AND a.assets_name NOT LIKE '%서버용하드%' AND a.assets_name NOT LIKE '%Microsoft Office%' AND a.assets_name NOT LIKE '%파워포인트%' AND a.assets_name NOT LIKE '%워드%' AND a.assets_name NOT LIKE '%워드%' AND a.assets_name NOT LIKE '%한글과컴퓨터%' AND a.assets_name NOT LIKE '%인텔리제이%'
                  LEFT JOIN STOCK_RETURN sr on a.ASSETS_NUM = sr.ASSETS_NUM
-        where a.user_id=#{user_id}
+        where a.username=#{username}
     </select>
 
     <update id="updateReturn_yn">
