@@ -22,6 +22,7 @@ import ReturnExchange from "./pages/mainPage/ReturnExchange";
 import UserMain_using from "./pages/mainPage/UserMain_using";
 import UserMain_request from "./pages/mainPage/UserMain_request";
 import Users from "./pages/users/Users";
+import ITAssetsApproval from "./pages/itassets/ITAssetsApproval";
 function App() {
 
     return (
@@ -40,6 +41,7 @@ function App() {
                 <Route path="/itassets/purchase" element={<PurchaseRequest/>} />
                 <Route path="/itassets/detail" element={<AssetDetail/>} />
                 <Route path="/adminitassets" element={<ITAssets/>}/>
+                <Route path="itassetsapproval" element={<ITAssetsApproval/>}/>
                 <Route path="/login" element={<LoginHome/>}/>
                 <Route path="/adminMain" element={<AdminMain />} />
                 <Route path="/mypage" element={<Mypage />} />
