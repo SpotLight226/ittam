@@ -13,21 +13,20 @@ import java.time.LocalDate;
 @Builder
 public class UserVO {
 
-    private String user_id; // PK
-    private String user_pw;
+    private String username;
+    private String password;
     private String user_name;
     private String user_email;
     private String user_depart;
     private String user_phone;
     private String user_address;
-    private String user_auth;
+    private String role;
     private LocalDate user_joindate;
+    private Integer assets_num;
     private String user_leave_yn;
     private LocalDate user_leavedate;
-    private String role;
 
-    // FK : 자산 연결을 위한 키
-    private Integer assets_num;
+
 
 
 

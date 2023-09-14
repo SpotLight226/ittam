@@ -41,12 +41,12 @@ public class MyUserDetails implements UserDetails {
 
     @Override
     public String getPassword() {
-        return userVO.getUser_pw();
+        return userVO.getPassword();
     }
 
     @Override
     public String getUsername() {
-        return userVO.getUser_id();
+        return userVO.getUsername();
     }
 
     // 계정의 만료 여부

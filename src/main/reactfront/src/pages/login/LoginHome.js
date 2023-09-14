@@ -126,32 +126,42 @@ function LoginHome (){
 
   }
 
-  const login = async(e) => { // login form
+  const login = async (e) => { // 로그인
     e.preventDefault();
     const formData = new FormData();
     formData.append("username", username);
     formData.append("password", password);
-    console.log("username : " + username);
-    console.log("password : " + password);
+
     try {
       const response = await fetch("http://localhost:9191/login", {
         method: "POST",
         body: formData,
-        credentials: "include", // 이 옵션을 설정하여 쿠키가 전송되도록 합니다.
       });
-  
-      if (response.status === 200) {
-        alert("로그인 성공")
+      const data = await response.json(); // JSON으로 파싱
+
+        const role = data.role; // role
+        const username = data.username; // username
+        const token = data.token; // 암호된 토큰
+        let payload = token.substring(token.indexOf('.')+1,token.lastIndexOf('.')); // 토큰 진짜 값 자르기
+        if (response.status === 200) {
+        if (payload) {
+          console.log(payload); // 토큰 출력
+          localStorage.setItem("token", token);
+          alert("로그인 성공");
+          window.location.href = "/";
+
+        } else {
+          alert("권한이 없습니다.");
+        }
       } else {
         alert("로그인 실패");
       }
     } catch (error) {
       console.error("로그인 요청 중 오류 발생:", error);
     }
-
-
-  };
-
+};
+  
+  
 
   useEffect(() => {
     //console.log(authResponse);
@@ -237,7 +247,7 @@ function LoginHome (){
         </main>
 
         {/* 비밀번호 찾기 모달창 */}
-        <div className="modal fade" id="verticalycentered" tabIndex="-1">
+        <div className="modal fade" id="verticalycentered" tabIndex="-1" style={{display : "none"}}>
                 <div className="modal-dialog modal-dialog-centered">
                   <div className="modal-content">
                     <div className="modal-header">
@@ -267,7 +277,7 @@ function LoginHome (){
               </div>
 
               {/* 비밀번호 초기화 모달창 */}
-              <div className="modal fade" id="passwordReset" tabIndex="-2">
+              <div className="modal fade" id="passwordReset" tabIndex="-2" style={{display : "none"}}>
                 <div className="modal-dialog modal-dialog-centered">
                   <div className="modal-content">
                     <div className="modal-header">
