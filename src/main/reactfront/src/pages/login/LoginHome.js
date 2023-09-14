@@ -2,6 +2,8 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { BsFillPersonCheckFill } from "react-icons/bs";
+import EmailAuthTime from './EmailAuthTime';
+
 
 
 function LoginHome (){
@@ -9,14 +11,28 @@ function LoginHome (){
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [passwordMismatch, setPasswordMismatch] = useState(false); // 비밀번호 변경 시 비밀번호 불일치 여부 저장
+  const [emailAuthCompleted, setEmailAuthCompleted] = useState(false); // 이메일 인증 완려 여부
+  const [isTimerActive, setIsTimerActive] = useState(false); // 타이머 활성화 여부
+  const [emailAuth, SetEmailAuth] = useState("");
+   // 이메일 인증 타임아웃 처리
+   const handleEmailAuthTimeout = () => {
+    let yourPassword3 = document.getElementById("yourPassword3");
+
+    setEmailAuthCompleted(true); // 이메일 인증 타임아웃 발생 시 처리할 로직
+    setIsTimerActive(false); // 타이머 비활성화
+    yourPassword3.disabled = true;
+
+  };
 
 
-  let authResponse = ""
+  // 인증 버튼 클릭 시 타이머 시작
   const authBtn = (e) => { // 비밀번호 찾기 인증번호 요청
     let target = e.target;
     if(target.innerText === "인증번호 확인"){ // 인증번호 확인 버튼
+      target.setAttribute("data-bs-dismiss", "modal");
       let authNum = document.getElementById("yourPassword3").value;
-      if(authNum == authResponse){
+      console.log("입력한 인증번호 : " + authNum);
+      if(authNum == emailAuth){
         alert("인증번호가 확인되었습니다.");
         let passwordReset = document.getElementById("passwordReset");
         let verticalycentered = document.getElementById("verticalycentered");
@@ -24,15 +40,17 @@ function LoginHome (){
         passwordReset.style.display = "block";
         verticalycentered.classList.remove("show");
         verticalycentered.style.display = "none";
+        
+        
         return;
       }
-    }
+    };
 
     if(target.classList.contains("auth")){ // 이메일 입력 후 인증번호 요청 버튼 클릭
       let emailInput = document.getElementById("yourPassword2").value;
 
       axios({ // 등록되어있는 이메일 여부 확인
-        url : 'http://localhost:9191/login/passwordFind',
+        url : 'http://localhost:9191/User/passwordFind',
         method : 'post',
         data : {
           emailInput : emailInput
@@ -47,14 +65,16 @@ function LoginHome (){
         open.disabled= ""; // 인증번호 비활성화 풀기
 
         axios({ // 인증번호 전송 axios
-          url : 'http://localhost:9191/login/authSend',
+          url : 'http://localhost:9191/User/authSend',
           method : 'post',
           data : {
             emailInput : emailInput
           }
         })
         .then((response) => { // 인증번호 전송
-            authResponse = response.data
+          console.log("전달된 인증번호 : " +response.data)
+            SetEmailAuth(response.data);
+            setIsTimerActive(true); // 타이머 활성화
             return;        
         })
         .catch((error) => { // 등록되지 않은 이메일
@@ -80,7 +100,7 @@ function LoginHome (){
 
     if (passwordReset1 === passwordReset2 && passwordReset1 !== "") {
       axios({ // 인증번호 전송 axios
-        url : 'http://localhost:9191/login/passwordModify',
+        url : 'http://localhost:9191/User/passwordModify',
         method : 'post',
         data : {
           passwordReset : passwordReset1,
@@ -92,7 +112,7 @@ function LoginHome (){
           closeBtn();
       })
       .catch((error) => { // 등록되지 않은 이메일
-        alert("인증번호 전송에 실패하였습니다.");
+        alert("비밀번호 변경에 실패하였습니다.");
       });
 
       setPasswordMismatch(false); // 비밀번호가 일치하면 상태를 초기화
@@ -265,12 +285,25 @@ function LoginHome (){
                       </div>
 
                       <div className="col-12 emailAuth">
-                            <button className="btn btn-primary w-100 auth" type="submit" onClick={authBtn} id="authBtnContext">인증번호 받기</button>
+                      {!emailAuthCompleted ? (
+                          <div>
+                            {/* 이메일 인증 타이머 컴포넌트 */}
+                           
+                            {isTimerActive && <EmailAuthTime onTimeout={handleEmailAuthTimeout} authBtn={authBtn}/>}
+                            <button className="btn btn-primary w-100 auth" type="submit" onClick={authBtn} id="authBtnContext" >인증번호 받기</button>
+                          </div>
+                        ) : (
+                          <div>
+                              <button className="btn btn-primary w-100 auth" type="submit" onClick={authBtn} id="authBtnContext">인증번호 받기</button>
+                            {/* 이메일 인증 완료 후 표시할 내용 */}
+                          </div>
+                        )}
                       </div>
-            
                       </div>
+                      
+                     
                     <div className="modal-footer">
-                      <button type="button" className="btn btn-secondary modalClose" data-bs-dismiss="modal">취소</button>
+                      <button type="button" className="btn btn-secondary modalClose" data-bs-dismiss="modal" onClick={handleEmailAuthTimeout}>취소</button>
                     </div>
                   </div>
                 </div>

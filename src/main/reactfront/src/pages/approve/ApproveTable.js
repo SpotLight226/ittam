@@ -1,11 +1,11 @@
-const ApproveTable = ({index, userq_num, user_id, userq_count, userq_kind, userq_regdate, userq_title, userq_comment, category_num, func, funcClose}) => {
+const ApproveTable = ({index, userq_num, username, userq_count, userq_kind, userq_regdate, userq_title, userq_comment, category_num, func, funcClose}) => {
  
 
   return (
    
     <tr className="prod-box">
       <th scope="row">{index + 1}</th>
-      <td className="user_ID">{user_id}</td>
+      <td className="user_name">{username}</td>
       <td className="userq_KIND">{userq_kind}</td>
       <td className="userq_COUNT">{userq_count}</td>
       <td className="userq_REGDATE">{userq_regdate}</td>
