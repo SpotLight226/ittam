@@ -28,7 +28,7 @@ function UserMain_using() {
 
   const [data, setData] = useState({
     assets_num: "",
-    user_id: "DE0003",
+    username: "DE0003",
     return_kind: "교환",
     return_title: "",
     return_comment: "",
@@ -55,7 +55,7 @@ function UserMain_using() {
     e.preventDefault();
     const returnForm = {
       assets_num: assets_num,
-      user_id: data.user_id,
+      username: data.username,
       return_kind: data.return_kind,
       return_title: inputTitle,
       return_comment: inputComment,
@@ -89,7 +89,7 @@ function UserMain_using() {
 
   const getMyAssetList = () => {
     axios.get("/mainPage/getMyAssetList", {
-      params: {user_id: 'DE0003'}
+      params: {username: 'DE0003'}
     }).then(response => {setMyAssetList(response.data); console.log(response.data)})
         .catch(error => console.log(error))
   }

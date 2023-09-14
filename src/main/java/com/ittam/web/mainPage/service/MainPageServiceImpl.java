@@ -42,8 +42,8 @@ public class MainPageServiceImpl implements MainPageService{
     }
 
     @Override
-    public UserVO getUserInfo(String user_id) {
-        UserVO vo = mainPageMapper.getUserInfo(user_id);
+    public UserVO getUserInfo(String username) {
+        UserVO vo = mainPageMapper.getUserInfo(username);
         return vo;
     }
 
@@ -53,23 +53,23 @@ public class MainPageServiceImpl implements MainPageService{
     }
 
     @Override
-    public Integer getUserCnt_using(String user_id) {
-        return mainPageMapper.getUserCnt_using(user_id);
+    public Integer getUserCnt_using(String username) {
+        return mainPageMapper.getUserCnt_using(username);
     }
 
     @Override
-    public Integer getUserCnt_exchange(String user_id) {
-        return mainPageMapper.getUserCnt_exchange(user_id);
+    public Integer getUserCnt_exchange(String username) {
+        return mainPageMapper.getUserCnt_exchange(username);
     }
 
     @Override
-    public Integer getUserCnt_return(String user_id) {
-        return mainPageMapper.getUserCnt_return(user_id);
+    public Integer getUserCnt_return(String username) {
+        return mainPageMapper.getUserCnt_return(username);
     }
 
     @Override
-    public List<Map<Object, Object>> getMyAssetList(String user_id) {
-        return mainPageMapper.getMyAssetList(user_id);
+    public List<Map<Object, Object>> getMyAssetList(String username) {
+        return mainPageMapper.getMyAssetList(username);
     }
 
     @Override

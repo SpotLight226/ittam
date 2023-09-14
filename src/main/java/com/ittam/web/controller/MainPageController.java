@@ -53,9 +53,9 @@ public class MainPageController {
 
     //마이페이지 정보 가져오기
     @GetMapping("/getUserInfo")
-    public ResponseEntity<UserVO> getUserInfo(@RequestParam String user_id) {
-        System.out.println(user_id);
-        UserVO vo = mainPageService.getUserInfo(user_id);
+    public ResponseEntity<UserVO> getUserInfo(@RequestParam String username) {
+        System.out.println(username);
+        UserVO vo = mainPageService.getUserInfo(username);
         return new ResponseEntity<>(vo, HttpStatus.OK);
     }
     //마이페이지 수정하기
@@ -67,19 +67,19 @@ public class MainPageController {
 
     //유저 자산 사용정보 가져오기
     @GetMapping("/getUserCnt")
-    public ResponseEntity<Map<String, Integer>> getUserCnt(@RequestParam String user_id) {
+    public ResponseEntity<Map<String, Integer>> getUserCnt(@RequestParam String username) {
         Map<String, Integer> map = new HashMap<>();
-        map.put("using", mainPageService.getUserCnt_using(user_id));
-        map.put("exchange", mainPageService.getUserCnt_exchange(user_id));
-        map.put("return", mainPageService.getUserCnt_return(user_id));
+        map.put("using", mainPageService.getUserCnt_using(username));
+        map.put("exchange", mainPageService.getUserCnt_exchange(username));
+        map.put("return", mainPageService.getUserCnt_return(username));
 
         return new ResponseEntity<>(map , HttpStatus.OK);
     }
 
     //내 사용중인 자산 리스트 가져오기
     @GetMapping("/getMyAssetList")
-    public ResponseEntity<List<Map<Object, Object>>> getMyAssetList(@RequestParam String user_id) {
-        List<Map<Object, Object>> list = mainPageService.getMyAssetList(user_id);
+    public ResponseEntity<List<Map<Object, Object>>> getMyAssetList(@RequestParam String username) {
+        List<Map<Object, Object>> list = mainPageService.getMyAssetList(username);
         return new ResponseEntity<>(list, HttpStatus.OK);
     }
 

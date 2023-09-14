@@ -89,7 +89,13 @@ function ReturnDetailModal({ setOpenModal_exchange, num, returnList, getreturnLi
             <div className="row mb-3">
               <label htmlFor="" className="col-sm-2 col-form-label">신청자산</label>
               <div className="col-sm-10">
-                <input type="text" className="form-control" value={thisList().ASSETS_NAME} disabled />
+                <select name="" id=""  className="select-assets">
+                  <option value="">dfffdfd</option>
+                  <option value="">dfffdfd</option>
+                  <option value="">dfffdfd</option>
+                  <option value="">dfffdfd</option>
+                  <option value="">dfffdfd</option>
+                </select>
 
               </div>
             </div>
