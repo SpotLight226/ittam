@@ -8,6 +8,7 @@ function ReturnDetailModal_return({ setOpenModal_return, num, returnList, getret
     return returnList.find(x => x.RETURN_NUM == num)
   }
 
+
   const reqTime = () => {
     let now = new Date(thisList().RETURN_DATE);
     let todayYear = now.getFullYear();
@@ -21,10 +22,10 @@ function ReturnDetailModal_return({ setOpenModal_return, num, returnList, getret
     return todayYear + "년 " + todayMonth + "월 " + todayDate + "일 " + dayOfWeek + " " +  hours + "시 " + minutes + "분";
   }
 
-  const return_yn = (aaa) => {
-    axios.post('mainPage/return_yn', {return_status: aaa, return_num: thisList().RETURN_NUM, assets_num: thisList().ASSETS_NUM}).then(response => {console.log(response.data); getreturnList();})
+  const return_yn = (return_status) => {
+    axios.post('mainPage/return_yn', {return_status: return_status, return_num: thisList().RETURN_NUM, assets_num: thisList().ASSETS_NUM})
+        .then(response => {console.log(response.data); getreturnList();})
         .catch(error => console.log(error));
-
   }
 
 
@@ -103,9 +104,8 @@ function ReturnDetailModal_return({ setOpenModal_return, num, returnList, getret
             thisList().RETURN_STATUS==='승인대기' ?
                 <>
                 <button onClick={() => { alert('승인처리되었습니다'); setOpenModal_return(false); return_yn('승인')}} id="cancelBtn">승인</button>
-                 {/*<button onClick={() => { alert('반려처리되었습니다.'); setOpenModal_return(false); return_yn('반려')}}>반려</button>*/}
                 </>
-              : <button style={{backgroundColor: 'gray'}}>{thisList().RETURN_STATUS}처리</button>
+              : <button style={{backgroundColor: 'gray'}} disabled>{thisList().RETURN_STATUS}처리</button>
         }
         </div>
 

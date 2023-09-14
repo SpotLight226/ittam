@@ -42,6 +42,12 @@ public class MainPageServiceImpl implements MainPageService{
     }
 
     @Override
+    public List<Map<Object, Object>> getSelectAssetList(Integer category_num) {
+        List<Map<Object, Object>> map = mainPageMapper.getSelectAssetList(category_num);
+        return map;
+    }
+
+    @Override
     public UserVO getUserInfo(String username) {
         UserVO vo = mainPageMapper.getUserInfo(username);
         return vo;
@@ -68,7 +74,7 @@ public class MainPageServiceImpl implements MainPageService{
     }
 
     @Override
-    public List<Map<Object, Object>> getMyAssetList(String username) {
+    public List<Map<String, Object>> getMyAssetList(String username) {
         return mainPageMapper.getMyAssetList(username);
     }
 
@@ -103,4 +109,16 @@ public class MainPageServiceImpl implements MainPageService{
     public Map<Object, Object> getAssetChartDisposeNum() {
         return mainPageMapper.getAssetChartDisposeNum();
     }
+
+    @Override
+    public void exchangeAsset_exchange(Map<String, Object> map) {
+        mainPageMapper.exchangeAsset_exchange(map);
+    }
+
+    @Override
+    public void exchangeAsset_cancel(Map<String, Object> map) {
+        mainPageMapper.exchangeAsset_cancel(map);
+    }
+
+
 }

@@ -15,10 +15,14 @@ function ReturnExchange() {
   const [openModal_exchange, setOpenModal_exchange] = useState(false);
   const [num, setNum] = useState(null);
 
+
   const getreturnList = () => {
-    axios.get('/mainPage/returnList').then(response => { setReturnList(response.data); console.log(response.data); })
+    axios.get('/mainPage/returnList')
+        .then(response => { setReturnList(response.data); console.log(response.data); })
         .catch(error => console.log(error))
   }
+
+
 
   useEffect(() => {
     getreturnList();
@@ -62,7 +66,7 @@ function ReturnExchange() {
           <h5 className="card-title">교환 및 반납 요청건</h5>
 
           {/* <!-- Default Table --> */}
-          <table className="table table-bordered" style={{ textAlign: 'center' }}>
+          <table className="table table-borderless" style={{ textAlign: 'center' }}>
             <thead>
               <tr className="table-success">
                 <th scope="col">#</th>
@@ -89,7 +93,7 @@ function ReturnExchange() {
                     <td>{a.RETURN_TITLE}</td>
                     <td>{yyyymmdd(a.RETURN_DATE)}</td>
                     <td><button type="button" className="userMain-ask userMain-modalBtn" onClick={() => {a.RETURN_KIND==='반납' ? setOpenModal_return(true) : setOpenModal_exchange(true); setNum(a.RETURN_NUM); console.log(a.RETURN_NUM)}} >상세보기</button></td>
-                    <td>{a.RETURN_STATUS}</td>
+                    <td style={{color: 'blue', fontWeight: '800'}}>{a.RETURN_STATUS}</td>
                   </tr>
                 }
 
@@ -107,7 +111,7 @@ function ReturnExchange() {
                   <td>{a.RETURN_TITLE}</td>
                   <td>{yyyymmdd(a.RETURN_DATE)}</td>
                   <td><button type="button" className="userMain-ask userMain-modalBtn" onClick={() => {  setNum(a.RETURN_NUM); a.RETURN_KIND==='반납' ? setOpenModal_return(true) : setOpenModal_exchange(true);} } >상세보기</button></td>
-                  <td>{a.RETURN_STATUS}</td>
+                  <td style={{color: 'darkgray'}}>{a.RETURN_STATUS}</td>
                 </tr>
 
                 })
@@ -123,9 +127,9 @@ function ReturnExchange() {
 
 
 
-    </main>
     {openModal_return && <ReturnDetailModal_return setOpenModal_return={setOpenModal_return} num={num} returnList={returnList} getreturnList={getreturnList}/>}
-      {openModal_exchange && <ReturnDetailModal_exchange setOpenModal_exchange={setOpenModal_exchange} num={num} returnList={returnList} getreturnList={{getreturnList}}/>}
+      {openModal_exchange && <ReturnDetailModal_exchange setOpenModal_exchange={setOpenModal_exchange} num={num} returnList={returnList} getreturnList={getreturnList}/>}
+    </main>
     </>
   );
 }

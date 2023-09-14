@@ -1,11 +1,16 @@
 import "../../styles/Style.css";
 import "../../styles/MainPageStyle/ReturnDetailModal.css";
+import axios from "axios";
+import {useEffect, useState} from "react";
 
 function ReturnDetailModal({ setOpenModal_exchange, num, returnList, getreturnList }) {
+
+    const [mustChoice, setMustChoice] = useState("선택하기");
 
   let thisList = () => {
     return returnList.find(x => x.RETURN_NUM == num)
   }
+
 
   const reqTime = () => {
     let now = new Date(thisList().RETURN_DATE);
@@ -19,6 +24,56 @@ function ReturnDetailModal({ setOpenModal_exchange, num, returnList, getreturnLi
 
     return todayYear + "년 " + todayMonth + "월 " + todayDate + "일 " + dayOfWeek + " " +  hours + "시 " + minutes + "분";
   }
+
+  const [selectAssetList, setSelectAssestList] = useState([]);
+  const getSelectAssetList = (category_num) => {
+    axios.get('/mainPage/getSelectAssetList', {params: {category_num: category_num}})
+        .then(response => {setSelectAssestList(response.data); console.log(response.data)})
+        .catch(error => console.log(error))
+  }
+
+
+  const exchangeAsset = (return_status) => {
+    const exchangeForm = {
+      assets_num_now: thisList().ASSETS_NUM,
+      assets_num_later: mustChoice,
+      username : thisList().username,
+      return_num: thisList().RETURN_NUM,
+      return_status: return_status
+    }
+    axios.post("/mainPage/exchangeAsset", exchangeForm)
+        .then(response => {
+          alert("교환승인이 완료되었습니다");
+          console.log(response.data);
+          setOpenModal_exchange(false);
+            getreturnList();
+
+        }).catch(error => {
+          console.log(error);
+    })
+
+  }
+
+  const return_yn = (return_status) => {
+    axios.post('mainPage/return_yn', {return_status: return_status, return_num: thisList().RETURN_NUM})
+        .then(response => {
+          console.log(response.data);
+          alert('반려처리되었습니다.');
+          setOpenModal_exchange(false);
+            getreturnList();
+        })
+        .catch(error => console.log(error));
+  }
+
+
+
+  useEffect(() => {
+
+    getSelectAssetList(thisList().CATEGORY_NUM);
+  }, []);
+
+
+
 
 
   return (
@@ -44,58 +99,37 @@ function ReturnDetailModal({ setOpenModal_exchange, num, returnList, getreturnLi
             <hr/>
         </div>
         <div className="body">
-          {/*<div className="tab-pane fade show active profile-overview" id="profile-overview">*/}
-
-          {/*  /!* <div className="card-title" style={{ fontWeight: "800", paddingTop: '0px' }}></div> *!/*/}
-          {/*  <div className="row" style={{ marginBottom: "20px" }}>*/}
-          {/*    <div className="col-lg-3 col-md-4 label">요청종류</div>*/}
-          {/*    <div className="col-lg-9 col-md-8">{thisList().RETURN_KIND}</div>*/}
-          {/*  </div>*/}
-
-          {/*  <div className="row" style={{ marginBottom: "20px" }}>*/}
-          {/*    <div className="col-lg-3 col-md-4 label">사원명</div>*/}
-          {/*    <div className="col-lg-9 col-md-8">{thisList().USER_NAME}</div>*/}
-          {/*  </div>*/}
-
-          {/*  <div className="row" style={{ marginBottom: "20px" }}>*/}
-          {/*    <div className="col-lg-3 col-md-4 label">신청날짜</div>*/}
-          {/*    <div className="col-lg-9 col-md-8">{reqTime()}</div>*/}
-          {/*  </div>*/}
-
-          {/*  <div className="row" style={{ marginBottom: "20px" }}>*/}
-          {/*    <div className="col-lg-3 col-md-4 label">제목</div>*/}
-          {/*    <div className="col-lg-9 col-md-8">{thisList().RETURN_TITLE}</div>*/}
-          {/*  </div>*/}
-
-          {/*  <div className="row" style={{ marginBottom: "20px" }}>*/}
-          {/*    <div className="col-lg-3 col-md-4 label">사유</div>*/}
-          {/*    <div className="col-lg-9 col-md-8">{thisList().RETURN_COMMENT}</div>*/}
-          {/*  </div>*/}
-
-
-          {/*</div>*/}
 
 
 
-          <form>
+
 
             <div className="row mb-3">
               <label htmlFor="" className="col-sm-2 col-form-label">신청자산</label>
               <div className="col-sm-10">
-                <input type="text" className="form-control" value={thisList().ASSETS_NAME} disabled />
+                <input type="text" className="form-control" value={`${thisList().ASSETS_NAME}|${thisList().ASSETS_DETAIL_NAME}|${thisList().ASSETS_NUM}`} disabled />
 
               </div>
             </div>
             <div className="row mb-3">
-              <label htmlFor="" className="col-sm-2 col-form-label">신청자산</label>
+              <label htmlFor="" className="col-sm-2 col-form-label">교환자산</label>
               <div className="col-sm-10">
-                <select name="" id=""  className="select-assets">
-                  <option value="">dfffdfd</option>
-                  <option value="">dfffdfd</option>
-                  <option value="">dfffdfd</option>
-                  <option value="">dfffdfd</option>
-                  <option value="">dfffdfd</option>
+                  {
+                      thisList().RETURN_STATUS==='승인대기' ?
+
+                <select name="" id="mustChoice"  className="select-assets" onChange={(e) => {setMustChoice(e.target.value);}}>
+                  <option value="선택하기">선택하기</option>
+                  {
+                    selectAssetList.map((a, i) => {
+                          return <option key={i} value={a.ASSETS_NUM}>{a.ASSETS_NAME}|{a.ASSETS_DETAIL_NAME|a.ASSETS_NUM}</option>
+                    }
+
+                    )
+                  }
                 </select>
+                          :
+                          <input type="text" className="form-control" disabled />
+                  }
 
               </div>
             </div>
@@ -136,26 +170,17 @@ function ReturnDetailModal({ setOpenModal_exchange, num, returnList, getreturnLi
 
 
 
-
-
-          </form>{/* <!-- End General Form Elements --> */}
-
-
-
-
-
-
-
-
-
-
-
-
-
         </div>
         <div className="footer">
-          <button onClick={() => { alert('승인처리되었습니다'); setOpenModal_exchange(false); }} id="cancelBtn">승인</button>
-          <button onClick={() => { alert('반려처리되었습니다.'); setOpenModal_exchange(false) }}>반려</button>
+            {
+                thisList().RETURN_STATUS==='승인대기'?
+                    <>
+          <button onClick={() => {mustChoice!=='선택하기' ? exchangeAsset('승인') : alert('교환할 자산을 선택하세요')}} id="cancelBtn">승인</button>
+          <button onClick={() => return_yn('반려')}>반려</button>
+                    </>
+                : <button style={{backgroundColor: 'gray'}} disabled>{thisList().RETURN_STATUS}처리</button>
+
+            }
         </div>
       </div>
     </div>
