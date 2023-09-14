@@ -12,7 +12,7 @@ function ReturnReqModal({ setOpenModal, handleChange, handleSubmit, todayTime, i
 
 
 
-      <div className="modal" onClick={() => { setOpenModal(false); }}>
+      <div className="modal modalmodal" onClick={() => { setOpenModal(false); }}>
 
         {/* <div className="modalContainer" onClick={(e) => e.stopPropagation()}> */}
 

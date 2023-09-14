@@ -5,7 +5,7 @@ import axios from "axios";
 
 
 
-function AreaChart({all, using}) {
+function AreaChart({all, using, dispose}) {
 
 
 const date_n = (n) => {
@@ -34,7 +34,7 @@ const month_n = (n) => {
      },
      {
        name: '폐기된 자산',
-       data: [5, 20, 40, 20, 15, 30, 20]
+       data: [dispose.day6, dispose.day5, dispose.day4, dispose.day3, dispose.day2, dispose.day1, dispose.today]
      },
 
    ],

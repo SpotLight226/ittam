@@ -108,6 +108,11 @@ public class MainPageController {
         Map<Object, Object> map = mainPageService.getAssetChartUsingNum();
         return new ResponseEntity<>(map, HttpStatus.OK);
     }
+    @GetMapping("/getAssetChartDisposeNum")
+    public ResponseEntity<Map<Object, Object>> getAssetChartDisposeNum() {
+        Map<Object, Object> map = mainPageService.getAssetChartDisposeNum();
+        return new ResponseEntity<>(map, HttpStatus.OK);
+    }
 
 
 

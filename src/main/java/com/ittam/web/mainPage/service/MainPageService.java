@@ -24,5 +24,6 @@ public interface MainPageService {
     public void deleteCancelReq(Integer return_num); //교환반납 요청 취소하기
     public Map<Object, Object> getAssetChartAllNum(); //날짜별로 전체 자산 개수 가져오기
     public Map<Object, Object> getAssetChartUsingNum(); //날짜별로 전체 사용중인 자산 개수 가져오기
+    public Map<Object, Object> getAssetChartDisposeNum(); //날짜별로 전체 사용중인 자산 개수 가져오기
 
 }

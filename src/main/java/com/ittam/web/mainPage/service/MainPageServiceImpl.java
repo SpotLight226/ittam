@@ -98,4 +98,9 @@ public class MainPageServiceImpl implements MainPageService{
     public Map<Object, Object> getAssetChartUsingNum() {
         return mainPageMapper.getAssetChartUsingNum();
     }
+
+    @Override
+    public Map<Object, Object> getAssetChartDisposeNum() {
+        return mainPageMapper.getAssetChartDisposeNum();
+    }
 }

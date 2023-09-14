@@ -8,9 +8,6 @@ import DounutChart_user from "../../component/Chart/DonutChart";
 
 function UserMain() {
 
-  //select count(*) from STOCK_RETURN where return_kind='교환' and RETURN_STATUS='승인대기' and user_id='PE0002';
-  //select count(*) from STOCK_RETURN where return_kind='반납' and RETURN_STATUS='승인대기' and user_id='PE0002';
-  //select count(*) from ITASSETS where user_id='DE0003';
 
   const user_id = 'DE0003';
   const [userCnt, setUserCnt] = useState({});
@@ -21,6 +18,8 @@ function UserMain() {
     }).then(response => setUserCnt(response.data))
         .catch(error => console.log(error))
   },[])
+
+
 
   return (
     <main id="main" className="main">
