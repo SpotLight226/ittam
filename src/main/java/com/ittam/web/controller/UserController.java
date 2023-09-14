@@ -16,6 +16,7 @@ import java.util.Map;
 @Controller
 //@RequestMapping("/login")
 @RequestMapping("/User")
+@CrossOrigin(origins = "http://localhost:3000")
 public class UserController {
 
     @Autowired

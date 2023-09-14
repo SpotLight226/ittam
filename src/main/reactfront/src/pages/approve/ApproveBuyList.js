@@ -15,7 +15,7 @@ function Approve() {
     userqNUM : "",
     userqKIND : "",
     userqCOUNT : "",
-    userID : "",
+    username : "",
     userqTITLE : "",
     userqCOMMENT : "",
     categoryNUM : ""
@@ -24,7 +24,7 @@ function Approve() {
     userqNUM : "",
     userqKIND : "",
     userqCOUNT : "",
-    userID : "",
+    username : "",
     userqTITLE : "",
     userqCOMMENT : "",
     categoryNUM : ""
@@ -37,7 +37,7 @@ function Approve() {
       ...innerData,
       userqKIND : e.target.closest(".prod-box").querySelector(".userq_KIND").textContent,
       userqCOUNT : e.target.closest(".prod-box").querySelector(".userq_COUNT").textContent,
-      userID : e.target.closest(".prod-box").querySelector(".user_ID").textContent,
+      username : e.target.closest(".prod-box").querySelector(".user_name").textContent,
       userqTITLE : e.target.closest(".prod-box").querySelector(".userq_TITLE").textContent,
       userqCOMMENT : e.target.closest(".prod-box").querySelector(".userq_COMMENT").textContent,
       userqNUM : e.target.closest(".prod-box").querySelector(".userq_NUM").textContent,
@@ -52,7 +52,7 @@ function Approve() {
       ...innerData,
       userqKIND : e.target.closest(".prod-box").querySelector(".userq_KIND").textContent,
       userqCOUNT : e.target.closest(".prod-box").querySelector(".userq_COUNT").textContent,
-      userID : e.target.closest(".prod-box").querySelector(".user_ID").textContent,
+      username : e.target.closest(".prod-box").querySelector(".user_name").textContent,
       userqTITLE : e.target.closest(".prod-box").querySelector(".userq_TITLE").textContent,
       userqCOMMENT : e.target.closest(".prod-box").querySelector(".userq_COMMENT").textContent,
       userqNUM : e.target.closest(".prod-box").querySelector(".userq_NUM").textContent,
@@ -172,7 +172,7 @@ function Approve() {
   const endPage = Math.min(currentGroup * pagesPerGroup, totalPages);
 
   useEffect(() => { // 랜더링
-    if(inputInnerData.userID === "" || inputInnerData.length === 0){
+    if(inputInnerData.username === "" || inputInnerData.length === 0){
       axios.get('http://localhost:9191/UserRequest/UserRequestBuyList').then(res => setUserRequest(res.data));
     } else {
       setUserRequest(inputInnerData);
@@ -311,7 +311,7 @@ function Approve() {
                         <div className="modal-body">
                           <p>제목 : {innerData.userqTITLE}</p>
                           <hr />
-                          <p>신청자명 : {innerData.userID}</p>
+                          <p>신청자명 : {innerData.username}</p>
                           <p>내용 : {innerData.userqCOMMENT}</p>
                           <p>자산명 : {innerData.userqKIND}</p>
                           <p>수량 : {innerData.userqCOUNT}개</p>
@@ -344,7 +344,7 @@ function Approve() {
                         <div className="modal-body">
                           <p>제목 : {innerData.userqTITLE}</p>
                           <hr />
-                          <p>신청자명 : {innerData.userID}</p>
+                          <p>신청자명 : {innerData.username}</p>
                           <p>내용 : {innerData.userqCOMMENT}</p>
                           <p>자산명 : {innerData.userqKIND}</p>
                           <p>수량 : {innerData.userqCOUNT}개</p>
@@ -355,7 +355,7 @@ function Approve() {
                         </div>
                         <div className="modal-footer">
                           <button type="button" className="btn btn-secondary" data-bs-dismiss="modal" onClick={handleBackClose}>취소</button>
-                          <button type="button" className="btn btn-primary" onClick={(e) => returnForm(e, innerData.userqNUM)}>승인</button>
+                          <button type="button" className="btn btn-primary" onClick={(e) => returnForm(e, innerData.userqNUM)}>반려</button>
                         </div>
                      </form>
 

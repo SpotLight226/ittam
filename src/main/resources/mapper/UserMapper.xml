@@ -35,7 +35,7 @@
     </select>
 
     <update id="UserPasswordReset" >
-        update USER set user_pw = #{passwordReset} where user_email = #{emailInput}
+        update USER set password = #{passwordReset} where user_email = #{emailInput}
     </update>
 
     <select id="login" resultType="UserVO">
