@@ -15,14 +15,14 @@ const UserReg = () => {
 
   // 새로 작성된 state
   const [content, setContent] = useState({
-    user_id: "",
-    user_pw: "",
+    username: "",
+    password: "",
     user_name: "",
     user_email: "",
     user_depart: "",
     user_phone: "",
     user_address: "",
-    user_auth: "",
+    role: "",
     user_joindate: "",
   });
 
@@ -131,14 +131,14 @@ const UserReg = () => {
     const TempPw = `010${state.firstPhoneInput}${state.secondPhoneInput}`;
 
     setContent({
-      user_id: state.userId,
-      user_pw: TempPw,
+      username: state.userId,
+      password: TempPw,
       user_name: state.name,
       user_depart: selectedDepart.depart_descript,
       user_email: newEmail,
       user_phone: joinPhone,
       user_address: state.address,
-      user_auth: state.auth,
+      role: state.auth,
       user_joindate: state.date,
     });
   };
@@ -151,7 +151,7 @@ const UserReg = () => {
 
   // 비동기로 content가 업데이트 될 수 있는 시간을 벌어줌
   useEffect(() => {
-    if (content.user_id !== "") {
+    if (content.username !== "") {
       // content가 업데이트되었을 때만 onCreate 함수를 호출
       onCreate(content);
       navigate("/users/userList", { replace: true });

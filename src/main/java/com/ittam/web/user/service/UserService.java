@@ -1,6 +1,7 @@
 package com.ittam.web.user.service;
 
 import com.ittam.web.command.UserVO;
+import org.springframework.beans.factory.annotation.Value;
 
 import java.util.ArrayList;
 

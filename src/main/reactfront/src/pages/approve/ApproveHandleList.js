@@ -13,7 +13,7 @@ function Approve() { // 관리자 사용 신청 내역 조회 페이지
     userqNUM : "",
     userqKIND : "",
     userqCOUNT : "",
-    userID : "",
+    username : "",
     userqTITLE : "",
     userqCOMMENT : "",
     userqOKDATE : "",
@@ -25,7 +25,7 @@ function Approve() { // 관리자 사용 신청 내역 조회 페이지
     userqNUM : "",
     userqKIND : "",
     userqCOUNT : "",
-    userID : "",
+    username : "",
     userqTITLE : "",
     userqCOMMENT : "",
     userqOKDATE : "",
@@ -41,7 +41,7 @@ function Approve() { // 관리자 사용 신청 내역 조회 페이지
       ...innerData,
       userqKIND : e.target.closest(".prod-box").querySelector(".userq_KIND").textContent,
       userqCOUNT : e.target.closest(".prod-box").querySelector(".userq_COUNT").textContent,
-      userID : e.target.closest(".prod-box").querySelector(".user_ID").textContent,
+      username : e.target.closest(".prod-box").querySelector(".user_name").textContent,
       userqTITLE : e.target.closest(".prod-box").querySelector(".userq_TITLE").textContent,
       userqCOMMENT : e.target.closest(".prod-box").querySelector(".userq_COMMENT").textContent,
       userqNUM : e.target.closest(".prod-box").querySelector(".userq_NUM").textContent,
@@ -179,7 +179,7 @@ function Approve() { // 관리자 사용 신청 내역 조회 페이지
   }
 
   useEffect(() => { // 랜더링
-    if(inputInnerData.userID === "" || inputInnerData.length === 0){
+    if(inputInnerData.username === "" || inputInnerData.length === 0){
       // axios.get('http://localhost:9191/UserRequest/UserRequestHandlePage').then(res => console.log(res.data));
       axios.get('http://localhost:9191/UserRequest/UserRequestHandlePage').then(res => setUserRequest(res.data));
     } else {
@@ -354,7 +354,7 @@ function Approve() { // 관리자 사용 신청 내역 조회 페이지
                 <div className="modal-body">
                   <p>처리상태 : {innerData.userqYN}</p>
                   <hr />
-                  <p>신청자명 : {innerData.userID}</p>
+                  <p>신청자명 : {innerData.username}</p>
                   <p>자산명 : {innerData.userqKIND}</p>
                   <p>수량 : {innerData.userqCOUNT}개</p>
                   <p>카테고리 번호 : {innerData.categoryNUM}번</p>

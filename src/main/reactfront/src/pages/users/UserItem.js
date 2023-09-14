@@ -1,8 +1,8 @@
 const UserItem = ({
   user_email,
-  user_id,
+  username,
   user_name,
-  user_auth,
+  role,
   user_depart,
   user_joindate,
   user_leavedate,
@@ -14,12 +14,12 @@ const UserItem = ({
     <tr className="prod-box">
       <th scope="row">{isUser ? id : idx + 1}</th>
       <td className="userName">{user_name}</td>
-      <td className="userId">{user_id}</td>
+      <td className="userId">{username}</td>
       <td className="userDepart">{user_depart}</td>
       {isUser ? (
         <>
           <td className="userAuth">
-            {user_auth === "ROLE_USER" ? "사용자" : "관리자"}
+            {role === "ROLE_USER" ? "사용자" : "관리자"}
           </td>
           <td className="userEmail" style={{ whiteSpace: "nowrap" }}>
             {user_email}
