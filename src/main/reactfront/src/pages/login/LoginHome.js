@@ -161,6 +161,7 @@ function LoginHome (){
 
         const role = data.role; // role
         const username = data.username; // username
+        localStorage.setItem("username", username);
         const token = data.token; // 암호된 토큰
         let payload = token.substring(token.indexOf('.')+1,token.lastIndexOf('.')); // 토큰 진짜 값 자르기
         if (response.status === 200) {
