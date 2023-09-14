@@ -15,18 +15,18 @@ function AdminMain() {
 
   //////////차~~~트///////////
   const [all, setAll] = useState();
-  const [today_all, setToday_all] = useState();
+  //const [today_all, setToday_all] = useState();
   const [using, setUsing] = useState();
-  const [today_using, setToday_using]  = useState();
+  //const [today_using, setToday_using]  = useState();
   const [dispose, setDispose] = useState();
-  const [today_dispose, setToday_dispose] = useState();
+  //const [today_dispose, setToday_dispose] = useState();
 
 
   const getAssetChartAllNum = () => {
      axios.get("/mainPage/getAssetChartAllNum")
         .then(response => {
           setAll(response.data);
-          setToday_all(response.data.today);
+          //setToday_all(response.data.today);
           console.log(response.data);})
         .catch(error => console.log(error))
 
@@ -35,7 +35,7 @@ function AdminMain() {
     axios.get("/mainPage/getAssetChartUsingNum")
         .then(response => {
           setUsing(response.data);
-          setToday_using(response.data.today)
+          //setToday_using(response.data.today)
         })
         .catch(error => console.log(error))
   }
@@ -43,7 +43,7 @@ function AdminMain() {
     axios.get("/mainPage/getAssetChartDisposeNum")
         .then(response => {
           setDispose(response.data);
-          setToday_dispose(response.data.today)
+          //setToday_dispose(response.data.today)
         })
         .catch(error => console.log(error))
   }
@@ -85,7 +85,7 @@ function AdminMain() {
                   <div className="card info-card sales-card">
 
 
-                    <Link to="/approve">
+                    <Link to="/approveList">
                     <div className="card-body">
                       <h5 className="card-title" style={{fontWeight: "800"}}>자산사용요청 미승인건 <span>| Today</span></h5>
 

@@ -16,7 +16,7 @@ export const UserOptionList = [
     name: "부서",
   },
   {
-    value: "auth",
+    value: "role",
     name: "권한",
   },
   {

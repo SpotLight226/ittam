@@ -17,7 +17,7 @@ public class ITAssetsVO {
     private String assets_detail_name;
     private String assets_status;
     private int spec_num;
-    private String user_id;
+    private String username;
 
     //카테고리 네임
     private String category_name;

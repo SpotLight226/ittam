@@ -10,23 +10,23 @@
     </select>
 
     <insert id="userRegist" parameterType="userVO">
-        INSERT INTO ittam.USER(USER_ID,
-                               USER_PW,
+        INSERT INTO ittam.USER(USERNAME,
+                               PASSWORD,
                                USER_NAME,
                                USER_EMAIL,
                                USER_DEPART,
                                USER_PHONE,
                                USER_ADDRESS,
-                               USER_AUTH,
+                               ROLE,
                                USER_JOINDATE)
-        VALUES(#{user_id},
-               #{user_pw},
+        VALUES(#{username},
+               #{password},
                #{user_name},
                #{user_email},
                #{user_depart},
                #{user_phone},
                #{user_address},
-               #{user_auth},
+               #{role},
                #{user_joindate})
     </insert>
 

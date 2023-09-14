@@ -5,14 +5,13 @@ import axios from 'axios';
 
 function Mypage() {
   const [userInfo, setUserInfo] = useState({});
-  const [user_id, setUser_id] = useState("");
-  const [user_pw, setUser_pw] = useState("");
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
   const [user_name, setUser_name] = useState("");
   const [user_depart, setUser_depart] = useState("");
   const [user_phone, setUser_phone] = useState("");
   const [user_address, setUser_address] = useState("");
   const [user_email, setUser_email] = useState("");
-  const [user_auth, setUser_auth] = useState("");
   const [user_joindate, setUser_joindate] = useState("");
   const [modifyPage, setModifyPage] = useState(false);
 
@@ -21,16 +20,15 @@ function Mypage() {
 
   const getUserInfo = () => {
     axios.get('mainPage/getUserInfo', {
-      params: {user_id: 'RD0009'}
+      params: {username: 'RD0009'}
     }).then(response => {setUserInfo(response.data);
       setUser_name(response.data.user_name);
       setUser_depart(response.data.user_depart);
       setUser_phone(response.data.user_phone);
       setUser_address(response.data.user_address);
       setUser_email(response.data.user_email);
-      setUser_auth(response.data.user_auth);
       setUser_joindate(response.data.user_joindate);
-      setUser_id(response.user_id);
+      setUsername(response.data.username);
     })
         .catch(error => console.log(error))
 
@@ -42,7 +40,7 @@ function Mypage() {
 
   // useEffect(() => {
   //   axios.get('mainPage/getUserInfo', {
-  //     params: {user_id: 'RD0009'}
+  //     params: {username: 'RD0009'}
   //   }).then(response => {setUserInfo(response.data);
   //     setUser_name(response.data.user_name);
   //     setUser_depart(response.data.user_depart);
@@ -51,7 +49,7 @@ function Mypage() {
   //     setUser_email(response.data.user_email);
   //     setUser_auth(response.data.user_auth);
   //     setUser_joindate(response.data.user_joindate);
-  //     setUser_id(response.user_id);
+  //     setUser_id(response.username);
   //   })
   //       .catch(error => console.log(error))
   // },[])
@@ -74,7 +72,7 @@ function Mypage() {
   const handleModify = (e) => {
     e.preventDefault();
     const modifyForm = {
-      user_id: user_id,
+      username: username,
       user_name: user_name,
       user_phone: user_phone,
       user_address: user_address,
@@ -148,7 +146,7 @@ function Mypage() {
                         setUser_address(userInfo.user_address);
                         setUser_phone(userInfo.user_phone);
                         setUser_email(userInfo.user_email);
-                        setUser_id(userInfo.user_id);
+                        setUsername(userInfo.username);
                         setModifyPage(true)}}>내 정보수정하기</button>
                     </li>
 
@@ -180,7 +178,7 @@ function Mypage() {
 
                       <div className="row">
                         <div className="col-lg-3 col-md-4 label ">사원번호</div>
-                        <div className="col-lg-9 col-md-8">{userInfo.user_id}</div>
+                        <div className="col-lg-9 col-md-8">{userInfo.username}</div>
                       </div>
 
 
@@ -237,7 +235,7 @@ function Mypage() {
                         <div className="row mb-3">
                           <label htmlFor="fullName" className="col-md-4 col-lg-3 col-form-label">사원번호</label>
                           <div className="col-md-8 col-lg-9">
-                            <input name="fullName" type="text" className="form-control" id="fullName" value={user_id} onChange={(e) => {setUser_id(e.target.value)}} disabled/>
+                            <input name="fullName" type="text" className="form-control" id="fullName" value={username} onChange={(e) => {setUsername(e.target.value)}} disabled/>
                           </div>
                         </div>
 
