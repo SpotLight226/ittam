@@ -14,10 +14,12 @@ function AdminMain() {
   }, [setDataa]);
 
   //////////차~~~트///////////
-  const [all, setAll] = useState({});
-  const [today_all, setToday_all] = useState(0);
-  const [using, setUsing] = useState({});
-  const [today_using, setToday_using]  = useState(0);
+  const [all, setAll] = useState();
+  const [today_all, setToday_all] = useState();
+  const [using, setUsing] = useState();
+  const [today_using, setToday_using]  = useState();
+  const [dispose, setDispose] = useState();
+  const [today_dispose, setToday_dispose] = useState();
 
 
   const getAssetChartAllNum = () => {
@@ -37,10 +39,22 @@ function AdminMain() {
         })
         .catch(error => console.log(error))
   }
+  const getAssetChartDisposeNum = () => {
+    axios.get("/mainPage/getAssetChartDisposeNum")
+        .then(response => {
+          setDispose(response.data);
+          setToday_dispose(response.data.today)
+        })
+        .catch(error => console.log(error))
+  }
+
+
+
   useEffect(() => {
 
     getAssetChartAllNum();
     getAssetChartUsingNum();
+    getAssetChartDisposeNum();
   }, [])
 
 
@@ -168,7 +182,7 @@ function AdminMain() {
                       <Link to="/reports"><h5 className="card-title" style={{fontWeight: "800"}}>자산 사용률 <span>| 전체통계보기</span></h5></Link>
 
                       {/*  <!-- Line Chart --> */}
-                      {today_all!==0 && today_using!==0 && <div id="reportsChart"><AreaChart all={all} using={using}/></div>}
+                      {all!==undefined && using!==undefined && dispose!==undefined && <div id="reportsChart"><AreaChart all={all} using={using} dispose={dispose}/></div>}
 
 
 

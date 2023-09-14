@@ -24,7 +24,7 @@ function ReturnCancelModal({ setOpenCancelModal, myAssetList, myAssetNum, getMyA
 
   return (
 
-      <div className="modal" onClick={() => { setOpenCancelModal(false); }}>
+      <div className="modal modalmodal" onClick={() => { setOpenCancelModal(false); }}>
 
 
         <div className="card" style={{width: '600px', borderRadius: "8px"}} onClick={(e) => e.stopPropagation()}>

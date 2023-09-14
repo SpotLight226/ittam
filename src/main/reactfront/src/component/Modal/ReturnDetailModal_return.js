@@ -30,7 +30,7 @@ function ReturnDetailModal_return({ setOpenModal_return, num, returnList, getret
 
   return (
 
-    <div className="modal" onClick={() => { setOpenModal_return(false);}}>
+    <div className="modal modalmodal" onClick={() => { setOpenModal_return(false);}}>
       
       <div className="modalContainer" onClick={(e) => e.stopPropagation()} style={{height: "550px"}}>
 

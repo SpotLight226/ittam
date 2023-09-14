@@ -25,7 +25,7 @@ function ReturnDetailModal({ setOpenModal_exchange, num, returnList, getreturnLi
 
    
     
-    <div className="modal" onClick={() => { setOpenModal_exchange(false);}}>
+    <div className="modal modalmodal" onClick={() => { setOpenModal_exchange(false);}}>
       
       <div className="modalContainer" onClick={(e) => e.stopPropagation()}>
 
