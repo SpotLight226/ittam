@@ -3,9 +3,11 @@ import Header from "./component/Header";
 import Sidebar from "./component/Sidebar";
 import {Route, Routes, BrowserRouter} from "react-router-dom";
 import "./App.css";
-import ApproveList from "./pages/approve/ApproveList"
+import ApproveList from "./pages/approve/ApproveList";
+import ApproveBuyList from "./pages/approve/ApproveBuyList";
 import UserList from "./pages/users/UserList";
-import ApproveHandleList from "./pages/approve/ApproveHandleList"
+import ApproveHandleList from "./pages/approve/ApproveHandleList";
+import ApproveBuyHandleList from "./pages/approve/ApproveBuyHandleList";
 import ITAssets from "./pages/itassets/ITAssets"
 import LoginHome from "./pages/login/LoginHome";
 import AssetDetail from "./pages/itassets/AssetDetail";
@@ -28,8 +30,10 @@ function App() {
             <Sidebar/>
             <Routes>
                 <Route path="/" element={<Layout/>}/>
-                <Route path="/approve" element={<ApproveList/>}/>
+                <Route path="/approveList" element={<ApproveList/>}/>
+                <Route path="/approveBuyList" element={<ApproveBuyList/>}/>
                 <Route path="/approveHandle" element={<ApproveHandleList/>}/>
+                <Route path="/approveBuyHandle" element={<ApproveBuyHandleList/>}/>
                 <Route path="/users" element={<UserList/>}/>
                 <Route path="/itassets" element={<AssetAllList/>} />
                 <Route path="/itassets/use" element={<UseRequest/>} />

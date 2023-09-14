@@ -23,8 +23,8 @@ public class MyUserDetailService implements UserDetailsService {
         // 로그인 처리 : password는 시큐리티가 알아서 처리
 
         UserVO vo = userMapper.login(username);
-        System.out.println(vo);
 
+        System.out.println(vo.toString());
         // vo가 null이 아니라는 것은 회원정보가 있다는 것.
 
         if(vo != null){

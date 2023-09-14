@@ -38,4 +38,8 @@
         update USER set user_pw = #{passwordReset} where user_email = #{emailInput}
     </update>
 
+    <select id="login" resultType="UserVO">
+        select * from USER where username = #{username}
+    </select>
+
 </mapper>

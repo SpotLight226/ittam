@@ -18,7 +18,8 @@ function Approve() { // 관리자 사용 신청 내역 조회 페이지
     userqCOMMENT : "",
     userqOKDATE : "",
     userqGRANTOR : "",
-    userqYN : ""
+    userqYN : "",
+    categoryNUM : ""
   });
   const [inputInnerData, setInputInnerDate] = useState({ // 검색 시 list 관리를 위한 state
     userqNUM : "",
@@ -29,7 +30,8 @@ function Approve() { // 관리자 사용 신청 내역 조회 페이지
     userqCOMMENT : "",
     userqOKDATE : "",
     userqGRANTOR : "",
-    userqYN : ""
+    userqYN : "",
+    categoryNUM : ""
   });
   const handleToggle = (e) => { // 승인 모달창 핸들러
     let basicModal = document.getElementById("basicModal");
@@ -45,7 +47,8 @@ function Approve() { // 관리자 사용 신청 내역 조회 페이지
       userqNUM : e.target.closest(".prod-box").querySelector(".userq_NUM").textContent,
       userqOKDATE : e.target.closest(".prod-box").querySelector(".userq_OKDATE").textContent,
       userqGRANTOR : e.target.closest(".prod-box").querySelector(".userq_GRANTOR").textContent,
-      userqYN : e.target.closest(".prod-box").querySelector(".userq_YN").textContent
+      userqYN : e.target.closest(".prod-box").querySelector(".userq_YN").textContent,
+      categoryNUM : e.target.closest(".prod-box").querySelector(".category_NUM").textContent,
     });
   };
   const handleClose =() =>  { // 승인 모달창 닫는 핸들러
@@ -58,7 +61,7 @@ function Approve() { // 관리자 사용 신청 내역 조회 페이지
       SearchForm(inputText);
     }
   }
-  const SearchForm = (inputText) => { // 검색 String boot로 전달
+  const SearchForm = (inputText) => { // 검색 기능
     let pageNav = document.getElementById("pills-tab").querySelector(".active").textContent;
     axios({
       url: 'http://localhost:9191/UserRequest/UserRequestHandleSearch',
@@ -69,7 +72,14 @@ function Approve() { // 관리자 사용 신청 내역 조회 페이지
       }
     })
         .then((response) => {
-          setInputInnerDate(response.data);
+          
+          if(response.data.length === 0){
+            alert("일치하는 내역이 없습니다.");
+            resetBtn();
+          } else {
+            setInputInnerDate(response.data);
+          }
+          
         })
         .catch((error) => {
           alert("검색에 실패하였습니다.");
@@ -99,6 +109,8 @@ function Approve() { // 관리자 사용 신청 내역 조회 페이지
   }
 
   const kindBtn = (e) =>  { // 종류 버튼 (전체, 승인, 반려)
+    let searchInput = document.getElementById("search-input");
+    searchInput.value = ""; // 검색 내용 비우기
     let navText = e.target.innerText;
 
     axios({
@@ -153,8 +165,8 @@ function Approve() { // 관리자 사용 신청 내역 조회 페이지
       })
           .then((response) => {
             if(response.data.length === 0){
-              alert("검색된 데이터가 없습니다.")
-              e.target.value = 0;
+              alert("검색된 데이터가 없습니다.");
+              resetBtn();
             }
             setInputInnerDate(response.data);
           })
@@ -345,6 +357,7 @@ function Approve() { // 관리자 사용 신청 내역 조회 페이지
                   <p>신청자명 : {innerData.userID}</p>
                   <p>자산명 : {innerData.userqKIND}</p>
                   <p>수량 : {innerData.userqCOUNT}개</p>
+                  <p>카테고리 번호 : {innerData.categoryNUM}번</p>
                   <p>처리 날짜 : {innerData.userqOKDATE}</p>
                   <p>처리 담당자 : {innerData.userqGRANTOR}</p>
                 </div>

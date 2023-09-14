@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import axios from 'axios';
 import ApproveTable from "./ApproveTable";
 import { BsArrowClockwise } from "react-icons/bs";
+import Pagenation from "../../component/Pagenation";
 
 
 
@@ -16,7 +17,8 @@ function Approve() {
     userqCOUNT : "",
     userID : "",
     userqTITLE : "",
-    userqCOMMENT : ""
+    userqCOMMENT : "",
+    categoryNUM : ""
   });
   const [inputInnerData, setInputInnerDate] = useState({ // 검색 시 list 관리를 위한 state
     userqNUM : "",
@@ -24,7 +26,8 @@ function Approve() {
     userqCOUNT : "",
     userID : "",
     userqTITLE : "",
-    userqCOMMENT : ""
+    userqCOMMENT : "",
+    categoryNUM : ""
   });
   const handleToggle = (e) => { // 승인 모달창 핸들러
     let basicModal = document.getElementById("basicModal");
@@ -37,21 +40,23 @@ function Approve() {
       userID : e.target.closest(".prod-box").querySelector(".user_ID").textContent,
       userqTITLE : e.target.closest(".prod-box").querySelector(".userq_TITLE").textContent,
       userqCOMMENT : e.target.closest(".prod-box").querySelector(".userq_COMMENT").textContent,
-      userqNUM : e.target.closest(".prod-box").querySelector(".userq_NUM").textContent
+      userqNUM : e.target.closest(".prod-box").querySelector(".userq_NUM").textContent,
+      categoryNUM : e.target.closest(".prod-box").querySelector(".category_NUM").textContent,
     });
    };
   const handleBackToggle = (e) => { // 반려 모달창 핸들러
-    let basicModalBack = document.getElementById("basicModalBack");
-    basicModalBack.classList.toggle("show");
-    basicModalBack.style.display = ((basicModalBack.style.display !== 'none') ? 'none' : 'block');  
+    let basicModal = document.getElementById("basicModalBack");
+    basicModal.classList.toggle("show");
+    basicModal.style.display = ((basicModal.style.display !== 'none') ? 'none' : 'block'); 
     setInnerDate({
       ...innerData,
-      prodInnerName : e.target.closest(".prod-box").querySelector(".userq_KIND").textContent,
-      prodInnerCount : e.target.closest(".prod-box").querySelector(".userq_COUNT").textContent,
-      userInnerName : e.target.closest(".prod-box").querySelector(".user_ID").textContent,
+      userqKIND : e.target.closest(".prod-box").querySelector(".userq_KIND").textContent,
+      userqCOUNT : e.target.closest(".prod-box").querySelector(".userq_COUNT").textContent,
+      userID : e.target.closest(".prod-box").querySelector(".user_ID").textContent,
       userqTITLE : e.target.closest(".prod-box").querySelector(".userq_TITLE").textContent,
       userqCOMMENT : e.target.closest(".prod-box").querySelector(".userq_COMMENT").textContent,
-      userqNUM : e.target.closest(".prod-box").querySelector(".userq_NUM").textContent
+      userqNUM : e.target.closest(".prod-box").querySelector(".userq_NUM").textContent,
+      categoryNUM : e.target.closest(".prod-box").querySelector(".category_NUM").textContent,
     });
   
 
@@ -122,7 +127,6 @@ function Approve() {
     if(e.key === 'Enter'){
       let searchInput = document.getElementById("search-input");
       SearchForm(inputText);
-      searchInput.value = "";
     }
   }
   const SearchForm = (inputText) => { // 검색 String boot로 전달
@@ -134,8 +138,12 @@ function Approve() {
       }
     })
       .then((response) => {
-        setInputInnerDate(response.data);
-      })
+        if(response.data.length === 0){
+          alert("일치하는 내역이 없습니다.");
+          resetBtn();
+        } else {
+          setInputInnerDate(response.data);
+        }      })
       .catch((error) => {
         alert("검색에 실패하였습니다.");
       });
@@ -146,6 +154,22 @@ function Approve() {
     searchInput.value = "";
 
   }
+
+  //////////////////////////////////////////////// page
+  const handleClick2 = (pageNumber) => {
+    setCurrentPage(pageNumber);
+  };
+  /* 몇개씩 보이고 싶은지 */
+  const [itemsPerPage, setItemPerPage] = useState(10); // 페이지당 10개의 아이템  useState(처음에 보이고싶은 개수)
+  // const handleSelectorChange = (event) => {
+  //   setItemPerPage(Number(event.target.value));
+  // };
+  const totalPages = Math.ceil(userRequest.length / itemsPerPage); // 총 버튼 수
+  const [currentPage, setCurrentPage] = useState(1); // 현재 페이지
+  const pagesPerGroup = 10; // 한 그룹에 표시할 페이지 수
+  const currentGroup = Math.ceil(currentPage / pagesPerGroup); // 현재 페이지 그룹
+  const startPage = (currentGroup - 1) * pagesPerGroup; // 시작 페이지
+  const endPage = Math.min(currentGroup * pagesPerGroup, totalPages);
 
   useEffect(() => { // 랜더링
     if(inputInnerData.userID === "" || inputInnerData.length === 0){
@@ -265,6 +289,13 @@ function Approve() {
             </div>
           </div>
         </section>
+        <Pagenation
+              currentPage={currentPage}
+              totalPages={totalPages}
+              startPage={startPage}
+              endPage={endPage}
+              handleClick={handleClick2}
+          />
       </main>
 
       {/* 승인 모달창 */}
@@ -285,6 +316,7 @@ function Approve() {
                           <p>내용 : {innerData.userqCOMMENT}</p>
                           <p>자산명 : {innerData.userqKIND}</p>
                           <p>수량 : {innerData.userqCOUNT}개</p>
+                          <p>카테고리 번호 : {innerData.categoryNUM}개</p>
                           <hr />
                           <p>해당 자산 사용신청을 승인처리 하시겠습니까?</p>
                           <input className="userq_NUM" type="hidden" value={innerData.userqNUM}/>
@@ -307,23 +339,27 @@ function Approve() {
                       <h5 className="modal-title" >반려 확인</h5>
                       <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close" onClick={handleBackClose}></button>
                     </div>
-                    <div className="modal-body">
-                      <p>제목 : {innerData.userqTITLE}</p>
-                      <hr />
-                      <p>신청자명 : {innerData.userID}</p>
-                      <p>내용 : {innerData.userqCOMMENT}</p>
-                      <p>자산명 : {innerData.userqKIND}</p>
-                      <p>수량 : {innerData.userqCOUNT}개</p>
-                      <hr />
-                      <p>해당 자산 사용신청을 반려 처리하시겠습니까?</p>
-                      <input className="userq_NUM" type="hidden" value={innerData.userqNUM}/>
+                  
 
-                    </div>
-                    <div className="modal-footer">
-                      <button type="button" className="btn btn-secondary" data-bs-dismiss="modal" onClick={handleBackClose}>취소</button>
-                      <button type="button" className="btn btn-primary" onClick={(e) => returnForm(e, innerData.userqNUM)}>반려</button>
-                     
-                    </div>
+                    <form action="#" name="ApproveForm">
+                        <div className="modal-body">
+                          <p>제목 : {innerData.userqTITLE}</p>
+                          <hr />
+                          <p>신청자명 : {innerData.userID}</p>
+                          <p>내용 : {innerData.userqCOMMENT}</p>
+                          <p>자산명 : {innerData.userqKIND}</p>
+                          <p>수량 : {innerData.userqCOUNT}개</p>
+                          <p>카테고리 번호 : {innerData.categoryNUM}번</p>
+                          <hr />
+                          <p>해당 자산 사용신청을 반려처리 하시겠습니까?</p>
+                          <input className="userq_NUM" type="hidden" value={innerData.userqNUM}/>
+                        </div>
+                        <div className="modal-footer">
+                          <button type="button" className="btn btn-secondary" data-bs-dismiss="modal" onClick={handleBackClose}>취소</button>
+                          <button type="button" className="btn btn-primary" onClick={(e) => returnForm(e, innerData.userqNUM)}>승인</button>
+                        </div>
+                     </form>
+
                   </div>
                 </div>
       </div>

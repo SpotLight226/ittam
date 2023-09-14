@@ -49,5 +49,51 @@ public class UserRequestServiceImpl implements UserRequestService{
         return userRequestMapper.UserRequestNavSearch(navText);
     }
 
+    @Override
+    public ArrayList<UserRequestVO> UserRequestCategorySearch(String category_num, ArrayList<String> navText) {
+        return userRequestMapper.UserRequestCategorySearch(category_num, navText);
+    }
+
+
+    /////////////////////////////// 관리자 구매 관련
+    @Override
+    public ArrayList<UserRequestVO> UserRequestBuyList() {
+        return userRequestMapper.UserRequestBuyList();
+    }
+
+    @Override
+    public int UserRequestBuyApprove(int userq_NUM) {
+        return userRequestMapper.UserRequestBuyApprove(userq_NUM);
+    }
+
+    @Override
+    public int UserRequestBuyReturn(int userq_NUM) {
+        return userRequestMapper.UserRequestBuyReturn(userq_NUM);
+    }
+
+    @Override
+    public ArrayList<UserRequestVO> UserRequestBuySearch(String inputText) {
+        return userRequestMapper.UserRequestBuySearch(inputText);
+    }
+
+    @Override
+    public ArrayList<UserRequestVO> UserRequestBuyHandlePage() {
+        return userRequestMapper.UserRequestBuyHandlePage();
+    }
+
+    @Override
+    public ArrayList<UserRequestVO> UserRequestBuyHandleSearch(String inputText, ArrayList<String> pageNav) {
+        return userRequestMapper.UserRequestBuyHandleSearch(inputText, pageNav);
+    }
+
+    @Override
+    public ArrayList<UserRequestVO> UserRequestBuyNavSearch(ArrayList<String> navText) {
+        return userRequestMapper.UserRequestBuyNavSearch(navText);
+    }
+
+    @Override
+    public ArrayList<UserRequestVO> UserRequestBuyCategorySearch(String category_num, ArrayList<String> navText) {
+        return userRequestMapper.UserRequestBuyCategorySearch(category_num, navText);
+    }
 
 }
