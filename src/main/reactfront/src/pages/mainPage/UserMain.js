@@ -9,14 +9,23 @@ import DounutChart_user from "../../component/Chart/DonutChart";
 function UserMain() {
 
 
-  const username = 'DE0003';
+  const [username, setUsername] = useState('');
   const [userCnt, setUserCnt] = useState({});
 
-  useEffect(() => {
+  const getUserCnt = (username) => {
     axios.get("/mainPage/getUserCnt", {
       params: {username: username}
     }).then(response => setUserCnt(response.data))
         .catch(error => console.log(error))
+  }
+
+  useEffect(() => {
+    const username = localStorage.getItem('username');
+    if(username) {
+      setUsername(username);
+    }
+    getUserCnt(username);
+
   },[])
 
 
@@ -52,7 +61,7 @@ function UserMain() {
               <div className="info-box card">
                 <i className="bi bi-clipboard-check"></i>
                 <h3>내 사용/구매신청 목록</h3>
-                <span style={{ fontSize: '14px', color: "#777" }}>사용신청건: 2건 | 구매신청건: 3건</span>
+                <span style={{ fontSize: '14px', color: "#777" }}>사용신청건: {userCnt.usingReq}건 | 구매신청건: {userCnt.buyReq}건</span>
 
               </div>
             </Link>

@@ -11,6 +11,7 @@ function UserMain_using() {
   const [inputComment, setInputComment] = useState('');
   const [myAssetNum, setMyAssetNum] = useState(0);
   const [myAssetList, setMyAssetList] = useState([]);
+  const [username, setUsername] = useState('');
 
   const todayTime = () => {
     let now = new Date();
@@ -28,7 +29,7 @@ function UserMain_using() {
 
   const [data, setData] = useState({
     assets_num: "",
-    username: "DE0003",
+    username: username,
     return_kind: "교환",
     return_title: "",
     return_comment: "",
@@ -55,7 +56,7 @@ function UserMain_using() {
     e.preventDefault();
     const returnForm = {
       assets_num: assets_num,
-      username: data.username,
+      username: username,
       return_kind: data.return_kind,
       return_title: inputTitle,
       return_comment: inputComment,
@@ -70,7 +71,7 @@ function UserMain_using() {
           console.log(response.data);
 
           setOpenModal(false);
-          getMyAssetList();
+          getMyAssetList(username);
 
         })
         .catch((error) => {
@@ -87,15 +88,20 @@ function UserMain_using() {
     setInputComment('');
   };
 
-  const getMyAssetList = () => {
+  const getMyAssetList = (username) => {
     axios.get("/mainPage/getMyAssetList", {
-      params: {username: 'DE0003'}
+      params: {username: username}
     }).then(response => {setMyAssetList(response.data); console.log(response.data)})
         .catch(error => console.log(error))
   }
 
+
   useEffect(() => {
-    getMyAssetList();
+    const username = localStorage.getItem('username');
+    if(username) {
+      setUsername(username);
+    }
+    getMyAssetList(username);
   }, []);
 
 
@@ -104,10 +110,10 @@ function UserMain_using() {
   return (
       <main id="main" className="main">
         {
-            openModal && <ReturnReqModal setOpenModal={setOpenModal} handleSubmit={handleSubmit} handleChange={handleChange} todayTime={todayTime} inputTitle={inputTitle} inputComment={inputComment} setInputComment={setInputComment} setInputTitle={setInputTitle} myAssetList={myAssetList} myAssetNum={myAssetNum}/>
+            openModal && <ReturnReqModal setOpenModal={setOpenModal} handleSubmit={handleSubmit} handleChange={handleChange} todayTime={todayTime} inputTitle={inputTitle} inputComment={inputComment} setInputComment={setInputComment} setInputTitle={setInputTitle} myAssetList={myAssetList} myAssetNum={myAssetNum} username={username}/>
         }
         {
-          openCancelMddal && <ReturnCancelModal setOpenCancelModal={setOpenCancelModal} myAssetList={myAssetList} myAssetNum={myAssetNum} getMyAssetList={getMyAssetList}/>
+          openCancelMddal && <ReturnCancelModal setOpenCancelModal={setOpenCancelModal} myAssetList={myAssetList} myAssetNum={myAssetNum} getMyAssetList={getMyAssetList} username={username}/>
         }
 
 
@@ -186,10 +192,10 @@ function UserMain_using() {
                   {
                     a.RETURN_STATUS===undefined ?
                   <button type="button" className="userMain-ask userMain-modalBtn" onClick={() => {setOpenModal(true); setMyAssetNum(a.ASSETS_NUM)}}>교환/반납</button>
-                    : ( a.RETURN_STATUS==='승인대기' ?
-                        <button type="button" className="userMain-ask userMain-modalBtn" style={{backgroundColor: "orange"}} onClick={() => {setOpenCancelModal(true); setMyAssetNum(a.ASSETS_NUM)}}>{a.RETURN_KIND}취소</button>
-                            : <button type="button" className="userMain-ask userMain-modalBtn" style={{backgroundColor: "darkgreen"}} disabled>{a.RETURN_KIND}완료</button>
-                        )
+                    // : ( a.RETURN_STATUS==='승인대기' ?
+                        : <button type="button" className="userMain-ask userMain-modalBtn" style={{backgroundColor: "orange"}} onClick={() => {setOpenCancelModal(true); setMyAssetNum(a.ASSETS_NUM)}}>{a.RETURN_KIND}취소</button>
+                        //     : <button type="button" className="userMain-ask userMain-modalBtn" style={{backgroundColor: "darkgreen"}} disabled>{a.RETURN_KIND}완료</button>
+                        // )
 
                   }
                 </td>

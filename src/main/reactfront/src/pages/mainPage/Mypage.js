@@ -2,10 +2,11 @@
 import { useEffect, useState } from 'react';
 import "../../styles/Style.css";
 import axios from 'axios';
+import LeaveModal from "../../component/Modal/LeaveModal";
 
 function Mypage() {
   const [userInfo, setUserInfo] = useState({});
-  const [username, setUsername] = useState("");
+  const [username, setUsername] = useState('');
   const [password, setPassword] = useState("");
   const [user_name, setUser_name] = useState("");
   const [user_depart, setUser_depart] = useState("");
@@ -14,13 +15,14 @@ function Mypage() {
   const [user_email, setUser_email] = useState("");
   const [user_joindate, setUser_joindate] = useState("");
   const [modifyPage, setModifyPage] = useState(false);
+  const [openLeaveModal, setOpenLeaveModal] = useState(false);
 
 
 
 
-  const getUserInfo = () => {
+  const getUserInfo = (username) => {
     axios.get('mainPage/getUserInfo', {
-      params: {username: 'RD0009'}
+      params: {username: username}
     }).then(response => {setUserInfo(response.data);
       setUser_name(response.data.user_name);
       setUser_depart(response.data.user_depart);
@@ -29,30 +31,22 @@ function Mypage() {
       setUser_email(response.data.user_email);
       setUser_joindate(response.data.user_joindate);
       setUsername(response.data.username);
+      console.log(response.data);
     })
         .catch(error => console.log(error))
 
-
   }
-  useEffect(() => {
-    getUserInfo();
-  }, [])
 
-  // useEffect(() => {
-  //   axios.get('mainPage/getUserInfo', {
-  //     params: {username: 'RD0009'}
-  //   }).then(response => {setUserInfo(response.data);
-  //     setUser_name(response.data.user_name);
-  //     setUser_depart(response.data.user_depart);
-  //     setUser_phone(response.data.user_phone);
-  //     setUser_address(response.data.user_address);
-  //     setUser_email(response.data.user_email);
-  //     setUser_auth(response.data.user_auth);
-  //     setUser_joindate(response.data.user_joindate);
-  //     setUser_id(response.username);
-  //   })
-  //       .catch(error => console.log(error))
-  // },[])
+
+
+  useEffect(() => {
+    const username = localStorage.getItem('username');
+    if(username) {
+      setUsername(username);
+    }
+    getUserInfo(username);
+  }, [setUserInfo])
+
 
   //////////////////최후의 방법 모달창을 새로 만든다!!!!!!!!!!!!///////////////////
   const resetProfile = () => {
@@ -104,13 +98,10 @@ function Mypage() {
   return (
       <main id="main" className="main">
 
-        {/*<Prompt*/}
-        {/*    when={isChanged}*/}
-        {/*    message="입력된 데이터는 취소됩니다. 이동하시겠습니까?"*/}
-        {/*/>*/}
+        {openLeaveModal && <LeaveModal setOpenLeaveModal={setOpenLeaveModal} username={username} getUserInfo={getUserInfo}/>}
 
         <div className="pagetitle">
-          <h1>Page Title</h1>
+          <h1>사원정보</h1>
           <nav>
             <ol className="breadcrumb">
               <li className="breadcrumb-item"><a href="index.html">Home</a></li>
@@ -127,7 +118,7 @@ function Mypage() {
             <div className="col-xl-12">
 
               <div className="card">
-                <div className="col-xl-4" style={{ textAlign: "center" }}>
+                <div className="col-xl-4" style={{ textAlign: "center"}}>
 
 
                 </div>
@@ -139,6 +130,9 @@ function Mypage() {
                       <button className="nav-link active tabtab" data-bs-toggle="tab" data-bs-target='#profile-overview' onClick={modifyPage ? resetProfile : null}>내 정보확인하기</button>
                     </li>
 
+                    {
+                      userInfo.user_leave_yn === 'N' ?
+                          <>
                     <li className="nav-item">
                       <button className="nav-link" data-bs-toggle="tab" data-bs-target="#profile-edit"  onClick={() => {setUser_name(userInfo.user_name);
 
@@ -149,10 +143,13 @@ function Mypage() {
                         setUsername(userInfo.username);
                         setModifyPage(true)}}>내 정보수정하기</button>
                     </li>
-
                     <li className="nav-item">
                       <button className="nav-link" data-bs-toggle="tab" data-bs-target="#profile-change-password" onClick={modifyPage ? resetProfile : null}>비밀번호 변경</button>
                     </li>
+                          </>
+                          : null
+
+                    }
 
 
                   </ul>
@@ -208,6 +205,20 @@ function Mypage() {
                         <div className="col-lg-3 col-md-4 label">입사일</div>
                         <div className="col-lg-9 col-md-8">{userInfo.user_joindate}</div>
                       </div>
+
+                      <div className="row" >
+                      {
+
+                      userInfo.user_leave_yn === 'N' ?
+                      <button type="button" className="btn btn-outline-secondary" style={{width: '550px', marginLeft:'10px'}} onClick={(e) => {e.stopPropagation(); setOpenLeaveModal(true)}}>퇴사요청</button>
+                          :
+                      <button type="button" className="btn btn-outline-secondary" style={{width: '550px', marginLeft:'10px'}} disabled>퇴사승인대기중</button>
+
+                      }
+                      </div>
+
+
+
 
                     </div>
 
@@ -323,6 +334,7 @@ function Mypage() {
 
 
                   </div>{/* <!-- End Bordered Tabs --> */}
+
 
                 </div>
               </div>

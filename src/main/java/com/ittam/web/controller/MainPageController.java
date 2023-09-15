@@ -2,6 +2,7 @@ package com.ittam.web.controller;
 
 import com.ittam.web.command.ITAssetsVO;
 import com.ittam.web.command.StockReturnVO;
+import com.ittam.web.command.UserRequestVO;
 import com.ittam.web.command.UserVO;
 import com.ittam.web.mainPage.service.MainPageService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,15 +27,17 @@ public class MainPageController {
 
 
     //요청및미승인건수가져오기
-    @GetMapping("/adminMain")
+    @GetMapping("/adminMainCnt")
     public ResponseEntity<Map<String, Integer>> getUsereqNum() {
         Integer num = mainPageService.getUsereqNum();
-        Integer num2 = mainPageService.getAdminOkNum();
+        Integer num2 = mainPageService.getBuyNum();
         Integer num3 = mainPageService.getYetOkNum();
+        Integer num4 = mainPageService.getLeaveReq();
         Map<String, Integer> map = new HashMap<>();
         map.put("userReq", num);
-        map.put("adminReq", num2);
+        map.put("buyReq", num2);
         map.put("yetok", num3);
+        map.put("leaveReq", num4);
 
         return new ResponseEntity<>(map, HttpStatus.OK);
     }
@@ -55,7 +58,7 @@ public class MainPageController {
     //마이페이지 정보 가져오기
     @GetMapping("/getUserInfo")
     public ResponseEntity<UserVO> getUserInfo(@RequestParam String username) {
-        System.out.println(username);
+        System.out.println("유저아이디:"+username);
         UserVO vo = mainPageService.getUserInfo(username);
         return new ResponseEntity<>(vo, HttpStatus.OK);
     }
@@ -73,7 +76,8 @@ public class MainPageController {
         map.put("using", mainPageService.getUserCnt_using(username));
         map.put("exchange", mainPageService.getUserCnt_exchange(username));
         map.put("return", mainPageService.getUserCnt_return(username));
-
+        map.put("usingReq", mainPageService.getUserCnt_usingReq(username));
+        map.put("buyReq", mainPageService.getUserCnt_buyReq(username));
         return new ResponseEntity<>(map , HttpStatus.OK);
     }
 
@@ -136,6 +140,26 @@ public class MainPageController {
         return new ResponseEntity<>("승인처리되었습니다", HttpStatus.OK);
     }
 
+    //내가 사용 및 구매 요청한 리스트 가져오기
+    @GetMapping("/getMyRequestList")
+    public ResponseEntity<List<UserRequestVO>> getMyRequestList(@RequestParam String username) {
+        List<UserRequestVO> list = mainPageService.getMyRequestList(username);
+        return new ResponseEntity<>(list, HttpStatus.OK);
+    }
+
+    //사용 구매신청 취소
+    @DeleteMapping("/deleteUsingPerchaseReq")
+    public ResponseEntity<String> deleteUsingPerchaseReq(@RequestParam Integer userq_num) {
+        mainPageService.deleteUsingPerchaseReq(userq_num);
+        return new ResponseEntity<>("요청취소완료", HttpStatus.OK);
+    }
+
+
+    @GetMapping("/registLeaveReq")
+    public ResponseEntity<String> registLeaveReq(@RequestParam String username) {
+        mainPageService.registLeaveReq(username);
+        return new ResponseEntity<>("퇴사요청완료", HttpStatus.OK);
+    }
 
 
 }

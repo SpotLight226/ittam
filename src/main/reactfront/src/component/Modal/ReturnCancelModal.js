@@ -3,7 +3,7 @@ import "../../styles/MainPageStyle/ReturnDetailModal.css";
 import axios from "axios";
 
 
-function ReturnCancelModal({ setOpenCancelModal, myAssetList, myAssetNum, getMyAssetList}) {
+function ReturnCancelModal({ setOpenCancelModal, myAssetList, myAssetNum, getMyAssetList, username}) {
 
   let thisList = () => {
     return myAssetList.find(x => x.ASSETS_NUM == myAssetNum)
@@ -27,7 +27,10 @@ function ReturnCancelModal({ setOpenCancelModal, myAssetList, myAssetNum, getMyA
     if(window.confirm('정말 요청을 취소하시겠습니까?')) {
 
     axios.delete("/mainPage/deleteCancelReq", {params: {return_num: thisList().RETURN_NUM}})
-        .then(response => {alert('요청이 취소되었습니다.'); setOpenCancelModal(false); getMyAssetList();})
+        .then(response => {
+          alert('요청이 취소되었습니다.');
+          setOpenCancelModal(false);
+          getMyAssetList(username);})
         .catch(error => console.log(error))
     }
 
@@ -75,7 +78,7 @@ function ReturnCancelModal({ setOpenCancelModal, myAssetList, myAssetNum, getMyA
               <div className="row mb-3">
                 <label className="col-sm-2 col-form-label">신청자</label>
                 <div className="col-sm-10">
-                  <input type="text" className="form-control" value="###사원명" disabled />
+                  <input type="text" className="form-control" value={username} disabled />
 
                 </div>
               </div>

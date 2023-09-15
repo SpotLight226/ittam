@@ -10,7 +10,7 @@ function AdminMain() {
   const [dataa, setDataa] = useState({});
 
   useEffect(() => {
-    axios.get('/mainPage/adminMain').then(response => {setDataa(response.data);});
+    axios.get('/mainPage/adminMainCnt').then(response => {setDataa(response.data);});
   }, [setDataa]);
 
   //////////차~~~트///////////
@@ -108,6 +108,7 @@ function AdminMain() {
                 <div className="col-xxl-3 col-md-3">
                   <div className="card info-card sales-card">
 
+                    <Link to="/approveBuyList">
                     <div className="card-body">
                       <h5 className="card-title" style={{fontWeight: "800"}}>자산구매요청 미승인건<span>| This Month</span></h5>
 
@@ -116,11 +117,12 @@ function AdminMain() {
                           <i className="bi bi-cart-plus"></i>
                         </div>
                         <div className="ps-3">
-                          <h6>{dataa.adminReq}건</h6>
+                          <h6>{dataa.buyReq}건</h6>
 
                         </div>
                       </div>
                     </div>
+                    </Link>
 
                   </div>
                 </div>{/* <!-- End Revenue Card --> */}
@@ -162,7 +164,7 @@ function AdminMain() {
                           <i className="bi bi-person-dash"></i>
                         </div>
                         <div className="ps-3">
-                          <h6>1244</h6>
+                          <h6>{dataa.leaveReq}건</h6>
 
                         </div>
                       </div>
