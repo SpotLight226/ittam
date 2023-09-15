@@ -15,7 +15,7 @@ function Header() {
       <header id="header" className="header fixed-top d-flex align-items-center">
         <div className="d-flex align-items-center justify-content-between">
           <Link to="/" className="logo d-flex align-items-center">
-            <img src="assets/img/logo.png" alt=""></img>
+            <img src="/assets/img/ittam2.png" alt=""></img>
             <span className="d-none d-lg-block">IT 자산 관리 시스템</span>
           </Link>
           <i
@@ -158,7 +158,7 @@ function Header() {
                 <li className="message-item">
                   <Link to="####">
                     <img
-                        src="assets/img/messages-1.jpg"
+                        src="/assets/img/messages-1.jpg"
                         alt=""
                         className="rounded-circle"
                     ></img>
@@ -179,7 +179,7 @@ function Header() {
                 <li className="message-item">
                   <Link to="####">
                     <img
-                        src="assets/img/messages-2.jpg"
+                        src="/assets/img/messages-2.jpg"
                         alt=""
                         className="rounded-circle"
                     ></img>
@@ -200,7 +200,7 @@ function Header() {
                 <li className="message-item">
                   <Link to="####">
                     <img
-                        src="assets/img/messages-3.jpg"
+                        src="/assets/img/messages-3.jpg"
                         alt=""
                         className="rounded-circle"
                     ></img>
@@ -232,7 +232,7 @@ function Header() {
                     data-bs-toggle="dropdown"
               >
                 <img
-                    src="assets/img/profile-img.jpg"
+                    src="/assets/img/profile-img.jpg"
                     alt="Profile"
                     className="rounded-circle"
                 ></img>

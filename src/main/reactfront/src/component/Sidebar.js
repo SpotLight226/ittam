@@ -46,7 +46,7 @@ function Sidebar() {
                 <button className="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseOne" aria-expanded="false" aria-controls="flush-collapseOne">
                   <span className="nav-category-sidebar">카테고리별</span>
                 </button>
-                <div id="flush-collapseOne" class="accordion-collapse collapse" aria-labelledby="flush-headingOne" data-bs-parent="#accordionFlushExample">
+                <div id="flush-collapseOne" className="accordion-collapse collapse" aria-labelledby="flush-headingOne" data-bs-parent="#accordionFlushExample">
                   <Link to="/itassets/pc">
                     <div className="accordion-body nav-category-sidebar">PC/노트북</div>
                   </Link>
@@ -166,31 +166,82 @@ function Sidebar() {
                 data-bs-parent="#sidebar-nav"
             >
               <li>
-                <Link to="/approveList">
+                <Link to="/admin/approveList">
                   <i className="bi bi-circle"></i>
                   <span>사용 신청 목록</span>
                 </Link>
               </li>
               <li>
-                <Link to="/approveHandle">
+                <Link to="/admin/approveHandle">
                   <i className="bi bi-circle"></i>
                   <span>사용 처리 목록</span>
                 </Link>
               </li>
               <li>
-                <Link to="/approveBuyList">
+                <Link to="/admin/approveBuyList">
                   <i className="bi bi-circle"></i>
                   <span>구매 신청 목록</span>
                 </Link>
               </li>
               <li>
-                <Link to="/approveBuyHandle">
+                <Link to="/admin/approveBuyHandle">
                   <i className="bi bi-circle"></i>
                   <span>구매 처리 목록</span>
                 </Link>
               </li>
             </ul>
           </li>
+          <li className="nav-item">
+            <Link to="#"
+                  className="nav-link collapsed"
+                  data-bs-target="#charts-nav"
+                  data-bs-toggle="collapse"
+            >
+              <i className="bi bi-bar-chart"></i>
+              <span>관리자 신청</span>
+              <i className="bi bi-chevron-down ms-auto"></i>
+            </Link>
+            <ul
+                id="charts-nav"
+                className="nav-content collapse "
+                data-bs-parent="#sidebar-nav"
+            >
+              <li>
+                <Link to="/highAdmin/approveList">
+                  <i className="bi bi-circle"></i>
+                  <span>최종 사용 신청 목록</span>
+                </Link>
+              </li>
+              <li>
+                <Link to="/highAdmin/approveBuyList">
+                  <i className="bi bi-circle"></i>
+                  <span> 최종 구매 신청 목록</span>
+                </Link>
+              </li>
+              <li>
+                <Link to="/highAdmin/approveHandle">
+                  <i className="bi bi-circle"></i>
+                  <span>최종 사용 처리 목록</span>
+                </Link>
+              </li>
+              <li>
+                <Link to="/highAdmin/approveBuyHandle">
+                  <i className="bi bi-circle"></i>
+                  <span>최종 구매 처리 목록</span>
+                </Link>
+              </li>
+              <li>
+                <Link to="/highAdmin/approveDisuseList">
+                  <i className="bi bi-circle"></i>
+                  <span>최종 폐기 신청 목록</span>
+                </Link>
+              </li>
+            </ul>
+          </li>
+
+
+
+
           {/* <!-- End Charts Nav --> */}
 
           <li className="nav-item">
