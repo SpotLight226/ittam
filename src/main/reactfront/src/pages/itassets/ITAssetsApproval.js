@@ -1,15 +1,15 @@
-import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
-import Pagenation from "../../component/Pagenation";
-import axios from "axios";
-import ApprovalComment from "./ApprovalComment";
-
+import { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
+import Pagenation from '../../component/Pagenation';
+import axios from 'axios';
+import ApprovalComment from '../approve/ApprovalComment';
 
 function ITAssetsApproval() {
   /* 결제요청목록 데이터 */
   const [data, setData] = useState([]);
   const stockList = () => {
-    axios.get('/stock/getStockApprovalList')
+    axios
+      .get('/stock/getStockApprovalList')
       .then((response) => {
         setData(response.data);
       })
@@ -19,19 +19,19 @@ function ITAssetsApproval() {
   };
   useEffect(() => {
     stockList();
-  },[])
-  
+  }, []);
+
   /* 상세정보모달로 데이터보내기 */
-  const [info,setInfo] = useState(null);
+  const [info, setInfo] = useState(null);
   const handleModal = (data) => {
     setInfo(data);
     console.log(data);
-  }
-  
+  };
+
   /* 페이지네이션 */
   const [itemsPerPage, setItemPerPage] = useState(10);
   const [currentPage, setCurrentPage] = useState(1); // 현재 페이지
-  const totalPages = Math.ceil(1 / itemsPerPage); 
+  const totalPages = Math.ceil(1 / itemsPerPage);
   const pagesPerGroup = 10; // 한 그룹에 표시할 페이지 수
   const currentGroup = Math.ceil(currentPage / pagesPerGroup); // 현재 페이지 그룹
 
@@ -43,17 +43,18 @@ function ITAssetsApproval() {
   };
   /* 폐기요청 */
   const handleSubmit = (item) => {
-    axios.post('/stock/updateITStatus',{item})
-      .then(response => {
+    axios
+      .post('/stock/updateITStatus', { item })
+      .then((response) => {
         stockList();
         console.log(response.data);
       })
-      .catch(error => {
-        console.log(error)
+      .catch((error) => {
+        console.log(error);
       });
-  }
-  
-  return(
+  };
+
+  return (
     <main id="main" className="main">
       <div className="pagetitle">
         <h1>수리/폐기 결재요청</h1>
@@ -67,15 +68,14 @@ function ITAssetsApproval() {
           </ol>
         </nav>
       </div>
-      {/* <!-- End Page Title --> */} 
+      {/* <!-- End Page Title --> */}
       <section className="section">
         <div className="row">
           <div className="col-lg-12">
             <div className="card">
               <div className="card-body">
                 <div className="datatable-wrapper datatable-loading nofooter sortable searchable fixed-columns">
-                  <div className="datatable-top">
-                  </div>
+                  <div className="datatable-top"></div>
                 </div>
                 <h5 className="card-title">재고 관리</h5>
 
@@ -126,14 +126,13 @@ function ITAssetsApproval() {
                     </tr>
                   </thead>
                   <tbody>
-                  {data
+                    {data
                       .slice(
                         (currentPage - 1) * itemsPerPage,
                         currentPage * itemsPerPage
                       )
                       .map((item, index) => (
-                        
-                        <tr key={item.appro_num}>
+                        <tr key={index}>
                           <th scope="row">
                             {(currentPage - 1) * itemsPerPage + index + 1}
                           </th>
@@ -142,10 +141,10 @@ function ITAssetsApproval() {
                           <td>
                             <Link
                               to="#"
-                              style={{color: 'black'}}
+                              style={{ color: 'black' }}
                               data-bs-toggle="modal"
                               data-bs-target="#modalDialogScrollable"
-                              onClick={() =>handleModal(item)}
+                              onClick={() => handleModal(item)}
                             >
                               {item.appro_title}
                             </Link>
@@ -162,25 +161,20 @@ function ITAssetsApproval() {
                             </button>
                           </td>
                           <td>
-                            <button
-                              className="btn btn-primary"
-                            >
-                              반려
-                            </button>
+                            <button className="btn btn-primary">반려</button>
                           </td>
-                          
                         </tr>
-                      ))}                   
+                      ))}
                   </tbody>
                 </table>
                 {/* 신청내용모달 */}
                 <div
-                    className="modal fade"
-                    id="modalDialogScrollable"
-                    tabIndex="-1"
-                  >
-                    <ApprovalComment info={info}/>
-                  </div>
+                  className="modal fade"
+                  id="modalDialogScrollable"
+                  tabIndex="-1"
+                >
+                  <ApprovalComment info={info} />
+                </div>
                 {/* <!-- End Table with stripped rows --> */}
               </div>
             </div>
@@ -196,7 +190,7 @@ function ITAssetsApproval() {
         handleClick={handleClick}
       />
     </main>
-  )
+  );
 }
 
 export default ITAssetsApproval;
