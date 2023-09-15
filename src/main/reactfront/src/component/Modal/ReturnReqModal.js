@@ -2,7 +2,7 @@ import "../../styles/Style.css";
 import "../../styles/MainPageStyle/ReturnDetailModal.css";
 
 
-function ReturnReqModal({ setOpenModal, handleChange, handleSubmit, todayTime, inputTitle, setInputTitle, inputComment, setInputComment, myAssetList, myAssetNum }) {
+function ReturnReqModal({ setOpenModal, handleChange, handleSubmit, todayTime, inputTitle, setInputTitle, inputComment, setInputComment, myAssetList, myAssetNum, username}) {
 
   let thisList = () => {
     return myAssetList.find(x => x.ASSETS_NUM == myAssetNum)
@@ -12,13 +12,7 @@ function ReturnReqModal({ setOpenModal, handleChange, handleSubmit, todayTime, i
 
 
 
-      <div className="modal modalmodal" onClick={() => { setOpenModal(false); }}>
-
-        {/* <div className="modalContainer" onClick={(e) => e.stopPropagation()}> */}
-
-
-
-        {/* <div className="body"> */}
+      <div className="modal modalmodal" onClick={(e) => { setOpenModal(false); setInputTitle(''); setInputComment(''); }}>
 
 
         <div className="card" style={{width: '600px', borderRadius: "8px"}} onClick={(e) => e.stopPropagation()}>
@@ -40,7 +34,6 @@ function ReturnReqModal({ setOpenModal, handleChange, handleSubmit, todayTime, i
                     </label>
                   </div>
                   <div className="form-check">
-                    {/*<input className="form-check-input" type="radio" name="return_kind" id="gridRadios2" value="반납" onChange={handleChange}/>*/}
                     <input className="form-check-input" type="radio" name="return_kind" id="gridRadios2" onChange={handleChange} value="반납" />
                     <label className="form-check-label" htmlFor="gridRadios2">
                       반납
@@ -59,7 +52,7 @@ function ReturnReqModal({ setOpenModal, handleChange, handleSubmit, todayTime, i
               <div className="row mb-3">
                 <label className="col-sm-2 col-form-label">신청자</label>
                 <div className="col-sm-10">
-                  <input type="text" className="form-control" value="###사원명" disabled />
+                  <input type="text" className="form-control" value={username} disabled />
 
                 </div>
               </div>
@@ -96,8 +89,7 @@ function ReturnReqModal({ setOpenModal, handleChange, handleSubmit, todayTime, i
                 <label className="col-sm-2 col-form-label"></label>
                 <div className="col-sm-10">
                   <button type="button" className="btn btn-primary" style={{ marginRight: '10px', backgroundColor: 'gray', border: 'gray' }} onClick={() => {
-                    setInputTitle('');
-                    setInputComment(''); setOpenModal(false)
+                    setInputTitle(''); setInputComment(''); setOpenModal(false)
                   }}>뒤로가기</button>
 
                   <button type="submit" className="btn btn-primary">신청하기</button>

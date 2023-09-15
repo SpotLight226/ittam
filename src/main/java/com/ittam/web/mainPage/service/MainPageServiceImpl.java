@@ -2,6 +2,7 @@ package com.ittam.web.mainPage.service;
 
 import com.ittam.web.command.ITAssetsVO;
 import com.ittam.web.command.StockReturnVO;
+import com.ittam.web.command.UserRequestVO;
 import com.ittam.web.command.UserVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -21,13 +22,18 @@ public class MainPageServiceImpl implements MainPageService{
     }
 
     @Override
-    public Integer getAdminOkNum() {
-        return mainPageMapper.getAdminOkNum();
+    public Integer getBuyNum() {
+        return mainPageMapper.getBuyNum();
     }
 
     @Override
     public Integer getYetOkNum() {
         return mainPageMapper.getYetOkNum();
+    }
+
+    @Override
+    public Integer getLeaveReq() {
+        return mainPageMapper.getLeaveReq();
     }
 
     @Override
@@ -71,6 +77,16 @@ public class MainPageServiceImpl implements MainPageService{
     @Override
     public Integer getUserCnt_return(String username) {
         return mainPageMapper.getUserCnt_return(username);
+    }
+
+    @Override
+    public Integer getUserCnt_usingReq(String username) {
+        return mainPageMapper.getUserCnt_usingReq(username);
+    }
+
+    @Override
+    public Integer getUserCnt_buyReq(String username) {
+        return mainPageMapper.getUserCnt_buyReq(username);
     }
 
     @Override
@@ -118,6 +134,22 @@ public class MainPageServiceImpl implements MainPageService{
     @Override
     public void exchangeAsset_cancel(Map<String, Object> map) {
         mainPageMapper.exchangeAsset_cancel(map);
+    }
+
+    @Override
+    public List<UserRequestVO> getMyRequestList(String username) {
+        return mainPageMapper.getMyRequestList(username);
+
+    }
+
+    @Override
+    public void deleteUsingPerchaseReq(Integer userq_num) {
+        mainPageMapper.deleteUsingPerchaseReq(userq_num);
+    }
+
+    @Override
+    public void registLeaveReq(String username) {
+        mainPageMapper.registLeaveReq(username);
     }
 
 
