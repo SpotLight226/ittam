@@ -64,7 +64,7 @@ function Approve() { // 관리자 사용 신청 내역 조회 페이지
   const SearchForm = (inputText) => { // 검색 기능
     let pageNav = document.getElementById("pills-tab").querySelector(".active").textContent;
     axios({
-      url: 'http://localhost:9191/UserRequest/UserRequestHandleSearch',
+      url: 'http://localhost:9191/admin/UserRequestHandleSearch',
       method: 'post',
       data: {
         inputText: inputText,
@@ -114,7 +114,7 @@ function Approve() { // 관리자 사용 신청 내역 조회 페이지
     let navText = e.target.innerText;
 
     axios({
-      url: 'http://localhost:9191/UserRequest/UserRequestNavSearch',
+      url: 'http://localhost:9191/admin/UserRequestNavSearch',
       method: 'post',
       data: {
         navText : "관리자" + navText
@@ -156,7 +156,7 @@ function Approve() { // 관리자 사용 신청 내역 조회 페이지
       })
 
       axios({
-        url: 'http://localhost:9191/UserRequest/UserRequestCategorySearch',
+        url: 'http://localhost:9191/admin/UserRequestCategorySearch',
         method: 'post',
         data: {
           category_num : e.target.value,
@@ -181,7 +181,7 @@ function Approve() { // 관리자 사용 신청 내역 조회 페이지
   useEffect(() => { // 랜더링
     if(inputInnerData.username === "" || inputInnerData.length === 0){
       // axios.get('http://localhost:9191/UserRequest/UserRequestHandlePage').then(res => console.log(res.data));
-      axios.get('http://localhost:9191/UserRequest/UserRequestHandlePage').then(res => setUserRequest(res.data));
+      axios.get('http://localhost:9191/admin/UserRequestHandlePage').then(res => setUserRequest(res.data));
     } else {
       setUserRequest(inputInnerData);
     }

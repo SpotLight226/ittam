@@ -3,6 +3,8 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { BsFillPersonCheckFill } from "react-icons/bs";
 import EmailAuthTime from './EmailAuthTime';
+import { useNavigate } from "react-router-dom";
+import base64 from 'base-64';
 
 
 
@@ -14,6 +16,8 @@ function LoginHome (){
   const [emailAuthCompleted, setEmailAuthCompleted] = useState(false); // 이메일 인증 완려 여부
   const [isTimerActive, setIsTimerActive] = useState(false); // 타이머 활성화 여부
   const [emailAuth, SetEmailAuth] = useState("");
+  const navigate = useNavigate();
+
    // 이메일 인증 타임아웃 처리
    const handleEmailAuthTimeout = () => {
     let yourPassword3 = document.getElementById("yourPassword3");
@@ -159,21 +163,23 @@ function LoginHome (){
       });
       const data = await response.json(); // JSON으로 파싱
 
-        const role = data.role; // role
-        const username = data.username; // username
-        localStorage.setItem("username", username);
-        const token = data.token; // 암호된 토큰
-        let payload = token.substring(token.indexOf('.')+1,token.lastIndexOf('.')); // 토큰 진짜 값 자르기
+       
         if (response.status === 200) {
-        if (payload) {
-          console.log(payload); // 토큰 출력
+          const username = data.username; // username
+          localStorage.setItem("username", username);
+          const token = data.token; // 암호된 토큰
+          let payload = token.substring(token.indexOf('.')+1,token.lastIndexOf('.')); // 토큰 진짜 가져오기
           localStorage.setItem("token", token);
+          let dec = JSON.parse(base64.decode(payload));
+          let role = dec.role;
+          console.log(role);
           alert("로그인 성공");
-          window.location.href = "/";
-
-        } else {
-          alert("권한이 없습니다.");
-        }
+          //window.location.href = "/";
+          if(role === "ROLE_USER"){
+          window.location.href = "/userMain";
+          } else if(role === "ROLE_ADMIN" || role === "ROLE_HIGH_ADMIN"){
+            window.location.href = "/adminMain";
+          }
       } else {
         alert("로그인 실패");
       }

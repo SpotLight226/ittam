@@ -74,7 +74,7 @@ function Approve() {
   const ApproveForm = (e, userqNUM) => { // Spring Boot로 승인 요청
     e.preventDefault();
     axios({
-      url: 'http://localhost:9191/UserRequest/UserRequestApprove',
+      url: 'http://localhost:9191/admin/UserRequestApprove',
       method: 'post',
       data: {
         userq_NUM: userqNUM
@@ -100,7 +100,7 @@ function Approve() {
   const returnForm = (e, userqNUM) => { // Spring Boot로 반려 요청
     e.preventDefault();
     axios({
-      url: 'http://localhost:9191/UserRequest/UserRequestReturn',
+      url: 'http://localhost:9191/admin/UserRequestReturn',
       method: 'post',
       data: {
         userq_NUM: userqNUM
@@ -131,7 +131,7 @@ function Approve() {
   }
   const SearchForm = (inputText) => { // 검색 String boot로 전달
     axios({
-      url: 'http://localhost:9191/UserRequest/UserRequestSearch',
+      url: 'http://localhost:9191/admin/UserRequestSearch',
       method: 'post',
       data: {
         inputText: inputText
@@ -174,7 +174,7 @@ function Approve() {
   useEffect(() => { // 랜더링
     if(inputInnerData.username === "" || inputInnerData.length === 0){
       // axios.get('http://localhost:9191/UserRequest/UserRequestList').then(res => console.log(res.data));
-      axios.get('http://localhost:9191/UserRequest/UserRequestList').then(res => setUserRequest(res.data));
+      axios.get('http://localhost:9191/admin/UserRequestList').then(res => setUserRequest(res.data));
     } else {
       setUserRequest(inputInnerData);
     }
