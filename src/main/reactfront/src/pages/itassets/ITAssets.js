@@ -5,6 +5,7 @@ import axios from 'axios';
 import Pagenation from '../../component/Pagenation';
 import ITAssetsInsert from './ITAssetsInsert';
 import ITAssetsInfo from './ITAssetsInfo';
+import ITAssetsModify from './ITAssetsModify';
 
 function ITAssets() {
   const [selectedType, setSelectedType] = useState('선택하지않음');
@@ -42,6 +43,10 @@ function ITAssets() {
     server_average_life: '',
     server_rpm: '',
     server_datarecovery_life: '',
+    /* 승인요청 */
+    username: '',
+    appro_title: '',
+    appro_comment: '',
   };
 
   /* ITAssets테이블 데이터가져오기 */
@@ -63,7 +68,7 @@ function ITAssets() {
   /* 카테고리테이블 데이터 가져오기 */
   const [category, setCategory] = useState([]);
   const [categories, setCategories] = useState([]);
-  const [selectedParent, setSelectedParent] = useState([]);
+  const [selectedParent, setSelectedParent] = useState('선택하지않음');
   const [selectedChild, setSelectedChild] = useState(null);
   useEffect(() => {
     axios
@@ -120,6 +125,8 @@ function ITAssets() {
   const [statusFilters, setStatusFilters] = useState({
     사용가능: false,
     사용중: false,
+    수리: false,
+    폐기: false,
   });
 
   const handleCheckboxChange = (e) => {
@@ -134,25 +141,23 @@ function ITAssets() {
   /* 검색기능 */
   const [searchTerm, setSearchTerm] = useState('');
   const filteredData = data.filter((item) => {
-    const matchesSearchTerm =
-      item.assets_name.includes(searchTerm) ||
-      item.assets_status.includes(searchTerm);
+    const matchesSearchTerm = item.assets_name.includes(searchTerm);
 
     /* 체크박스  */
-    const statusList = ['사용가능', '사용중'];
-    const nameList = ['노트북', '데스크탑'];
+    const statusList = ['사용가능', '사용중', '수리', '폐기'];
 
-    const statusFilter =
-      statusList.some((status) =>
-        statusFilters[status] ? item.assets_status === status : false
-      ) || !statusList.some((status) => statusFilters[status]);
+    // 체크된 상태인 것이 있는지 확인
+    const isAnyFilterChecked = statusList.some(
+      (status) => statusFilters[status]
+    );
 
-    const nameFilter =
-      nameList.some((name) =>
-        statusFilters[name] ? item.assets_name === name : false
-      ) || !nameList.some((name) => statusFilters[name]);
+    const statusFilter = isAnyFilterChecked
+      ? statusList.some(
+          (status) => statusFilters[status] && item.assets_status === status
+        )
+      : true;
 
-    return matchesSearchTerm && statusFilter && nameFilter;
+    return matchesSearchTerm && statusFilter;
   });
 
   const [searchInput, setSearchInput] = useState('');
@@ -210,7 +215,6 @@ function ITAssets() {
     try {
       const response = await axios.post('/assets/specInsert', formData);
       if (response.data) {
-        alert('등록완료');
         setFormData({
           // 폼 데이터 초기화
           ...resetFormdata,
@@ -218,18 +222,6 @@ function ITAssets() {
           assets_name: selectedType,
         });
       }
-
-      /* const scrollingModal = document.getElementById('scrollingModal');
-      scrollingModal.style.display = 'none';
-      scrollingModal.classList.toggle('show');
-      document.body.style = 'none';
-      document.body.classList.remove('modal-open');
-      scrollingModal.removeAttribute('aria-modal');
-      scrollingModal.setAttribute('aria-hidden', 'true');
-      let backdrop = document.querySelector('.modal-backdrop');
-      if (backdrop) {
-        backdrop.remove();
-      } */
       closeModal();
       itassetList();
     } catch (error) {
@@ -246,6 +238,82 @@ function ITAssets() {
     }));
   };
 
+  /* 자산 상태 업데이트 */
+  const [status, setStatus] = useState(null);
+  const [formStatus, setFormStatus] = useState({
+    assets_status: '',
+    assets_num: '',
+    username: '',
+    appro_title: '',
+    appro_comment: '',
+    category_num: '',
+    assets_name: '',
+    assets_detail_name: '',
+    spec_num: '',
+  });
+  const appro = (e) => {
+    const { name, value } = e.target;
+    setFormStatus((prevData) => ({
+      ...prevData,
+      [name]: value,
+    }));
+  };
+
+  const [assetstatus, setAssetstatus] = useState(
+    selectedItem ? selectedItem.assets_status : ''
+  );
+  const handleStatus = (e) => {
+    const { value } = e.target;
+    setAssetstatus(value); // 선택된 옵션 값을 status 상태에 설정합니다.
+  };
+  useEffect(() => {
+    if (selectedItem) {
+      setAssetstatus(selectedItem.assets_status);
+    }
+  }, [selectedItem]);
+
+  const updateSubmit = async (e) => {
+    e.preventDefault();
+
+    const updatedStatus = {
+      assets_status: assetstatus,
+      assets_num: selectedItem ? selectedItem.assets_num : '',
+      username: formStatus.username,
+      appro_title: formStatus.appro_title,
+      appro_comment: formStatus.appro_comment,
+      category_num: selectedItem ? selectedItem.category_num : '',
+      assets_name: selectedItem ? selectedItem.assets_name : '',
+      assets_detail_name: selectedItem ? selectedItem.assets_detail_name : '',
+      spec_num: selectedItem ? selectedItem.spec_num : '',
+    };
+    try {
+      const update = await axios.post('/stock/statusUpdate', updatedStatus);
+      if (update.data) {
+        setFormStatus({
+          assets_status: status,
+          assets_num: '',
+          username: '',
+          appro_title: '',
+          appro_comment: '',
+          category_num: '',
+          assets_name: '',
+          assets_detail_name: '',
+          spec_num: '',
+        });
+      }
+      itassetList();
+    } catch (error) {
+      console.log('에러남', error);
+    }
+  };
+  /* 모달창 닫을때 리셋 */
+  const closeReset = () => {
+    setSelectedType('선택하지않음');
+    setSelectedParent('선택하지않음');
+  };
+  const statusReset = () => {
+    setAssetstatus(selectedItem ? selectedItem.assets_status : '');
+  };
   return (
     <main id="main" className="main">
       <div className="pagetitle">
@@ -253,7 +321,7 @@ function ITAssets() {
         <nav>
           <ol className="breadcrumb">
             <li className="breadcrumb-item">
-              <a href="/">Home</a>
+              <Link to="/">Home</Link>
             </li>
             <li className="breadcrumb-item">Tables</li>
             <li className="breadcrumb-item active">Data</li>
@@ -262,17 +330,7 @@ function ITAssets() {
       </div>
       {/* <!-- End Page Title --> */}
       {/* 등록하기 모달창 */}
-      <div className="text-end" style={{ marginBottom: '10px' }}>
-        <button
-          type="button"
-          className="btn btn-primary"
-          data-bs-toggle="modal"
-          data-bs-target="#scrollingModal"
-          onClick={() => sendModal(category)}
-        >
-          등록하기
-        </button>
-      </div>
+
       {/* 등록하기 모달 정보 */}
       <div className="modal fade" id="scrollingModal" tabIndex="-1">
         <div className="modal-dialog">
@@ -290,61 +348,17 @@ function ITAssets() {
               handleParentChange={handleParentChange}
               selectedChild={selectedChild}
               categories={categories}
+              closeReset={closeReset}
             />
           </div>
         </div>
-      </div>
-      <div>
-        <input
-          type="checkbox"
-          name="사용가능"
-          onChange={handleCheckboxChange}
-          value="사용가능"
-        />
-        사용가능
-        <input
-          type="checkbox"
-          name="사용중"
-          onChange={handleCheckboxChange}
-          value="사용중"
-        />
-        사용중
-        {/* <input
-                      type="checkbox"
-                      name="노트북"
-                      onChange={handleCheckboxChange}
-                      value="노트북"
-                    />
-                    노트북
-                    <input
-                      type="checkbox"
-                      name="데스크탑"
-                      onChange={handleCheckboxChange}
-                      value="데스크탑"
-                    />
-                    데스크탑 */}
-        {categories
-          .filter((cat) => cat.category_parent_num !== null)
-          .map((cat) => (
-            <>
-              <input
-                type="checkbox"
-                key={cat.category_num}
-                value={cat.category_name}
-                name={cat.category_name}
-                onChange={handleCheckboxChange}
-                style={{ marginLeft: '5px' }}
-              />
-
-              {cat.category_name}
-            </>
-          ))}
       </div>
       <section className="section">
         <div className="row">
           <div className="col-lg-12">
             <div className="card">
               <div className="card-body">
+                <h5 className="card-title">재고 관리</h5>
                 <div className="datatable-wrapper datatable-loading nofooter sortable searchable fixed-columns">
                   <div className="datatable-top">
                     <div className="datatable-dropdown">
@@ -363,8 +377,35 @@ function ITAssets() {
                         </select>
                       </label>
                     </div>
+                    <input
+                      type="checkbox"
+                      name="사용가능"
+                      onChange={handleCheckboxChange}
+                      value="사용가능"
+                    />
+                    사용가능
+                    <input
+                      type="checkbox"
+                      name="사용중"
+                      onChange={handleCheckboxChange}
+                      value="사용중"
+                    />
+                    사용중
+                    <input
+                      type="checkbox"
+                      name="수리"
+                      onChange={handleCheckboxChange}
+                      value="수리"
+                    />
+                    수리
+                    <input
+                      type="checkbox"
+                      name="폐기"
+                      onChange={handleCheckboxChange}
+                      value="폐기"
+                    />
+                    폐기
                     {/* 검색바 */}
-
                     <div className="datatable-search">
                       <input
                         className="datatable-input"
@@ -375,11 +416,21 @@ function ITAssets() {
                         onChange={(e) => setSearchInput(e.target.value)}
                         onKeyPress={handleSearchKeyPress}
                       />
+                      {/* <div className="text-end" style={{ marginBottom: '10px' }}> */}
+                      <button
+                        type="button"
+                        className="btn btn-primary"
+                        data-bs-toggle="modal"
+                        data-bs-target="#scrollingModal"
+                        onClick={() => sendModal(category)}
+                        style={{ marginLeft: '10px' }}
+                      >
+                        등록하기
+                      </button>
+                      {/* </div> */}
                     </div>
                   </div>
                 </div>
-                <h5 className="card-title">재고 관리</h5>
-
                 {/* <!-- 데이터 테이블 --> */}
                 <table className="table datatable">
                   <thead>
@@ -387,16 +438,6 @@ function ITAssets() {
                       <th scope="col">
                         <Link to="#" className="datatable-sorter">
                           #
-                        </Link>
-                      </th>
-                      <th scope="col">
-                        <Link to="#" className="datatable-sorter">
-                          ASSETS_NUM(나중에 안보이게)
-                        </Link>
-                      </th>
-                      <th scope="col">
-                        <Link to="#" className="datatable-sorter">
-                          CATEGORY_NUM(나중에안보이게)
                         </Link>
                       </th>
                       <th scope="col">
@@ -414,9 +455,10 @@ function ITAssets() {
                           사용중인 사원번호
                         </Link>
                       </th>
+
                       <th scope="col">
-                        <Link href="#" className="datatable-sorter">
-                          spec_num(나중에안보이게)
+                        <Link to="#" className="datatable-sorter">
+                          폐기/수리요청
                         </Link>
                       </th>
                     </tr>
@@ -428,12 +470,11 @@ function ITAssets() {
                         currentPage * itemsPerPage
                       )
                       .map((item, index) => (
-                        <tr key={item.id}>
+                        <tr key={index}>
                           <th scope="row">
                             {(currentPage - 1) * itemsPerPage + index + 1}
                           </th>
-                          <td>{item.assets_num}</td>
-                          <td>{item.category_num}</td>
+
                           <td>
                             <Link
                               to="#"
@@ -446,29 +487,40 @@ function ITAssets() {
                             </Link>
                           </td>
                           <td>{item.assets_status}</td>
-                          <td>{item.user_id}</td>
-                          <td>{item.spec_num}</td>
+                          <td>{item.username}</td>
                           <td>
                             <button
+                              type="button"
                               className="btn btn-primary"
                               data-bs-toggle="modal"
-                              data-bs-target="#scrollingModal"
+                              data-bs-target="#basicModal"
+                              onClick={() => handleModal(item)}
                             >
-                              수정하기
+                              폐기/수리요청
                             </button>
                           </td>
                         </tr>
                       ))}
                   </tbody>
-                  {/* 상세정보 모달창 */}
-                  <div
-                    className="modal fade"
-                    id="modalDialogScrollable"
-                    tabIndex="-1"
-                  >
-                    <ITAssetsInfo selectedItem={selectedItem} />
-                  </div>
                 </table>
+                {/* 수정하기 모달 */}
+                <ITAssetsModify
+                  selectedItem={selectedItem}
+                  handleStatus={handleStatus}
+                  updateSubmit={updateSubmit}
+                  assetstatus={assetstatus}
+                  statusReset={statusReset}
+                  appro={appro}
+                  formStatus={formStatus}
+                />
+                {/* 상세정보 모달창 */}
+                <div
+                  className="modal fade"
+                  id="modalDialogScrollable"
+                  tabIndex="-1"
+                >
+                  <ITAssetsInfo selectedItem={selectedItem} />
+                </div>
                 {/* <!-- End Table with stripped rows --> */}
               </div>
             </div>

@@ -28,4 +28,6 @@ public interface ITAssetsMapper {
     public void createTable();
 
     public void deleteTable();
+
+    public int purchaseYN(StockApprovalVO vo2);
 }

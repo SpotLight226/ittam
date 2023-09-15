@@ -7,6 +7,7 @@ function ITAssetsInsert({
   selectedParent,
   handleParentChange,
   categories,
+  closeReset,
 }) {
   return (
     <div>
@@ -24,7 +25,7 @@ function ITAssetsInsert({
         <form method="POST" onSubmit={handleSubmit}>
           {/* 부모 카테고리 선택 */}
           <select onChange={handleParentChange} value={selectedParent}>
-            <option>선택하지않음</option>
+            <option value="">선택하지않음</option>
             {categories
               .filter((cat) => !cat.category_parent_num)
               .map((cat) => (
@@ -35,7 +36,7 @@ function ITAssetsInsert({
           </select>
 
           <select onChange={handleSelectChange} value={selectedType}>
-            <option>선택하지않음</option>
+            <option value="">선택하지않음</option>
             {categories
               .filter(
                 (cat) =>
@@ -51,7 +52,7 @@ function ITAssetsInsert({
           {selectedParent === '2' && selectedType !== '선택하지않음' && (
             <>
               <div className="row mb-3" style={{ marginTop: '10px' }}>
-                <label for="inputText" className="col-sm-2 col-form-label">
+                <label htmlFor="inputText" className="col-sm-2 col-form-label">
                   제조사
                 </label>
                 <div className="col-sm-10">
@@ -68,7 +69,7 @@ function ITAssetsInsert({
               </div>
 
               <div className="row mb-3">
-                <label for="inputEmail" className="col-sm-2 col-form-label">
+                <label htmlFor="inputEmail" className="col-sm-2 col-form-label">
                   가격
                 </label>
                 <div className="col-sm-10">
@@ -85,7 +86,7 @@ function ITAssetsInsert({
               </div>
 
               <div className="row mb-3">
-                <label for="inputEmail" className="col-sm-2 col-form-label">
+                <label htmlFor="inputEmail" className="col-sm-2 col-form-label">
                   시리얼번호
                 </label>
                 <div className="col-sm-10">
@@ -104,7 +105,7 @@ function ITAssetsInsert({
               </div>
 
               <div className="row mb-3">
-                <label for="inputEmail" className="col-sm-2 col-form-label">
+                <label htmlFor="inputEmail" className="col-sm-2 col-form-label">
                   구매일
                 </label>
                 <div className="col-sm-10">
@@ -121,7 +122,7 @@ function ITAssetsInsert({
               </div>
 
               <div className="row mb-3">
-                <label for="inputEmail" className="col-sm-2 col-form-label">
+                <label htmlFor="inputEmail" className="col-sm-2 col-form-label">
                   AS만료일자
                 </label>
                 <div className="col-sm-10">
@@ -142,7 +143,10 @@ function ITAssetsInsert({
           {selectedParent === '3' && selectedType !== '선택하지않음' && (
             <>
               <div className="row mb-3">
-                <label for="inputPassword" className="col-sm-2 col-form-label">
+                <label
+                  htmlFor="inputPassword"
+                  className="col-sm-2 col-form-label"
+                >
                   제조사
                 </label>
                 <div className="col-sm-10">
@@ -159,7 +163,10 @@ function ITAssetsInsert({
               </div>
 
               <div className="row mb-3">
-                <label for="inputPassword" className="col-sm-2 col-form-label">
+                <label
+                  htmlFor="inputPassword"
+                  className="col-sm-2 col-form-label"
+                >
                   가격
                 </label>
                 <div className="col-sm-10">
@@ -176,7 +183,10 @@ function ITAssetsInsert({
               </div>
 
               <div className="row mb-3">
-                <label for="inputPassword" className="col-sm-2 col-form-label">
+                <label
+                  htmlFor="inputPassword"
+                  className="col-sm-2 col-form-label"
+                >
                   구매일
                 </label>
                 <div className="col-sm-10">
@@ -193,7 +203,10 @@ function ITAssetsInsert({
               </div>
 
               <div className="row mb-3">
-                <label for="inputPassword" className="col-sm-2 col-form-label">
+                <label
+                  htmlFor="inputPassword"
+                  className="col-sm-2 col-form-label"
+                >
                   AS만료일자
                 </label>
                 <div className="col-sm-10">
@@ -214,7 +227,10 @@ function ITAssetsInsert({
           {selectedParent === '1' && selectedType !== '선택하지않음' && (
             <>
               <div className="row mb-3">
-                <label for="inputNumber" className="col-sm-2 col-form-label">
+                <label
+                  htmlFor="inputNumber"
+                  className="col-sm-2 col-form-label"
+                >
                   CPU
                 </label>
                 <div className="col-sm-10">
@@ -231,7 +247,10 @@ function ITAssetsInsert({
               </div>
 
               <div className="row mb-3">
-                <label for="inputNumber" className="col-sm-2 col-form-label">
+                <label
+                  htmlFor="inputNumber"
+                  className="col-sm-2 col-form-label"
+                >
                   RAM
                 </label>
                 <div className="col-sm-10">
@@ -248,7 +267,10 @@ function ITAssetsInsert({
               </div>
 
               <div className="row mb-3">
-                <label for="inputNumber" className="col-sm-2 col-form-label">
+                <label
+                  htmlFor="inputNumber"
+                  className="col-sm-2 col-form-label"
+                >
                   MainBoard
                 </label>
                 <div className="col-sm-10">
@@ -265,7 +287,10 @@ function ITAssetsInsert({
               </div>
 
               <div className="row mb-3">
-                <label for="inputNumber" className="col-sm-2 col-form-label">
+                <label
+                  htmlFor="inputNumber"
+                  className="col-sm-2 col-form-label"
+                >
                   Power
                 </label>
                 <div className="col-sm-10">
@@ -282,7 +307,10 @@ function ITAssetsInsert({
               </div>
 
               <div className="row mb-3">
-                <label for="inputNumber" className="col-sm-2 col-form-label">
+                <label
+                  htmlFor="inputNumber"
+                  className="col-sm-2 col-form-label"
+                >
                   GPU
                 </label>
                 <div className="col-sm-10">
@@ -299,7 +327,10 @@ function ITAssetsInsert({
               </div>
 
               <div className="row mb-3">
-                <label for="inputNumber" className="col-sm-2 col-form-label">
+                <label
+                  htmlFor="inputNumber"
+                  className="col-sm-2 col-form-label"
+                >
                   HDD
                 </label>
                 <div className="col-sm-10">
@@ -316,7 +347,10 @@ function ITAssetsInsert({
               </div>
 
               <div className="row mb-3">
-                <label for="inputNumber" className="col-sm-2 col-form-label">
+                <label
+                  htmlFor="inputNumber"
+                  className="col-sm-2 col-form-label"
+                >
                   SSD
                 </label>
                 <div className="col-sm-10">
@@ -333,7 +367,10 @@ function ITAssetsInsert({
               </div>
 
               <div className="row mb-3">
-                <label for="inputNumber" className="col-sm-2 col-form-label">
+                <label
+                  htmlFor="inputNumber"
+                  className="col-sm-2 col-form-label"
+                >
                   OPS
                 </label>
                 <div className="col-sm-10">
@@ -350,7 +387,10 @@ function ITAssetsInsert({
               </div>
 
               <div className="row mb-3">
-                <label for="inputNumber" className="col-sm-2 col-form-label">
+                <label
+                  htmlFor="inputNumber"
+                  className="col-sm-2 col-form-label"
+                >
                   시리얼번호
                 </label>
                 <div className="col-sm-10">
@@ -369,7 +409,10 @@ function ITAssetsInsert({
               </div>
 
               <div className="row mb-3">
-                <label for="inputNumber" className="col-sm-2 col-form-label">
+                <label
+                  htmlFor="inputNumber"
+                  className="col-sm-2 col-form-label"
+                >
                   제조사
                 </label>
                 <div className="col-sm-10">
@@ -386,7 +429,10 @@ function ITAssetsInsert({
               </div>
 
               <div className="row mb-3">
-                <label for="inputNumber" className="col-sm-2 col-form-label">
+                <label
+                  htmlFor="inputNumber"
+                  className="col-sm-2 col-form-label"
+                >
                   구매일
                 </label>
                 <div className="col-sm-10">
@@ -403,7 +449,10 @@ function ITAssetsInsert({
               </div>
 
               <div className="row mb-3">
-                <label for="inputNumber" className="col-sm-2 col-form-label">
+                <label
+                  htmlFor="inputNumber"
+                  className="col-sm-2 col-form-label"
+                >
                   AS만료일자
                 </label>
                 <div className="col-sm-10">
@@ -424,7 +473,10 @@ function ITAssetsInsert({
           {selectedParent === '4' && selectedType !== '선택하지않음' && (
             <>
               <div className="row mb-3">
-                <label for="inputNumber" className="col-sm-2 col-form-label">
+                <label
+                  htmlFor="inputNumber"
+                  className="col-sm-2 col-form-label"
+                >
                   제조사
                 </label>
                 <div className="col-sm-10">
@@ -441,7 +493,10 @@ function ITAssetsInsert({
               </div>
 
               <div className="row mb-3">
-                <label for="inputNumber" className="col-sm-2 col-form-label">
+                <label
+                  htmlFor="inputNumber"
+                  className="col-sm-2 col-form-label"
+                >
                   서버용량
                 </label>
                 <div className="col-sm-10">
@@ -458,7 +513,10 @@ function ITAssetsInsert({
               </div>
 
               <div className="row mb-3">
-                <label for="inputNumber" className="col-sm-2 col-form-label">
+                <label
+                  htmlFor="inputNumber"
+                  className="col-sm-2 col-form-label"
+                >
                   가격
                 </label>
                 <div className="col-sm-10">
@@ -475,7 +533,10 @@ function ITAssetsInsert({
               </div>
 
               <div className="row mb-3">
-                <label for="inputNumber" className="col-sm-2 col-form-label">
+                <label
+                  htmlFor="inputNumber"
+                  className="col-sm-2 col-form-label"
+                >
                   연결방식
                 </label>
                 <div className="col-sm-10">
@@ -492,7 +553,10 @@ function ITAssetsInsert({
               </div>
 
               <div className="row mb-3">
-                <label for="inputNumber" className="col-sm-2 col-form-label">
+                <label
+                  htmlFor="inputNumber"
+                  className="col-sm-2 col-form-label"
+                >
                   분당회전수
                 </label>
                 <div className="col-sm-10">
@@ -509,7 +573,10 @@ function ITAssetsInsert({
               </div>
 
               <div className="row mb-3">
-                <label for="inputNumber" className="col-sm-2 col-form-label">
+                <label
+                  htmlFor="inputNumber"
+                  className="col-sm-2 col-form-label"
+                >
                   평균수명
                 </label>
                 <div className="col-sm-10">
@@ -526,7 +593,10 @@ function ITAssetsInsert({
               </div>
 
               <div className="row mb-3">
-                <label for="inputNumber" className="col-sm-2 col-form-label">
+                <label
+                  htmlFor="inputNumber"
+                  className="col-sm-2 col-form-label"
+                >
                   데이터복구 유지시간
                 </label>
                 <div className="col-sm-10">
@@ -543,7 +613,10 @@ function ITAssetsInsert({
               </div>
 
               <div className="row mb-3">
-                <label for="inputNumber" className="col-sm-2 col-form-label">
+                <label
+                  htmlFor="inputNumber"
+                  className="col-sm-2 col-form-label"
+                >
                   구매일
                 </label>
                 <div className="col-sm-10">
@@ -560,7 +633,10 @@ function ITAssetsInsert({
               </div>
 
               <div className="row mb-3">
-                <label for="inputNumber" className="col-sm-2 col-form-label">
+                <label
+                  htmlFor="inputNumber"
+                  className="col-sm-2 col-form-label"
+                >
                   AS만료일자
                 </label>
                 <div className="col-sm-10">
@@ -577,6 +653,69 @@ function ITAssetsInsert({
               </div>
             </>
           )}
+          {selectedType !== '선택하지않음' && (
+            <>
+              <div className="row mb-3">
+                <label
+                  htmlFor="inputPassword"
+                  className="col-sm-2 col-form-label"
+                >
+                  이름(히든)
+                </label>
+                <div className="col-sm-10">
+                  <input
+                    type="text"
+                    className="form-control"
+                    placeholder="username"
+                    name="username"
+                    onChange={handleChange}
+                    value={formData.username}
+                    required
+                  />
+                </div>
+              </div>
+
+              <div className="row mb-3">
+                <label
+                  htmlFor="inputPassword"
+                  className="col-sm-2 col-form-label"
+                >
+                  제목
+                </label>
+                <div className="col-sm-10">
+                  <input
+                    type="text"
+                    className="form-control"
+                    placeholder="appro_title"
+                    name="appro_title"
+                    onChange={handleChange}
+                    value={formData.appro_title}
+                    required
+                  />
+                </div>
+              </div>
+
+              <div className="row mb-3">
+                <label
+                  htmlFor="inputPassword"
+                  className="col-sm-2 col-form-label"
+                >
+                  내용
+                </label>
+                <div className="col-sm-10">
+                  <input
+                    type="text"
+                    className="form-control"
+                    placeholder="PURCHASE_DATE"
+                    name="appro_comment"
+                    onChange={handleChange}
+                    value={formData.appro_comment}
+                    required
+                  />
+                </div>
+              </div>
+            </>
+          )}
 
           <div className="row mb-3">
             <div className="col-sm-10 text-end">
@@ -584,10 +723,15 @@ function ITAssetsInsert({
                 type="button"
                 className="btn btn-secondary"
                 data-bs-dismiss="modal"
+                onClick={closeReset}
               >
                 닫기
               </button>
-              <button type="submit" className="btn btn-primary">
+              <button
+                type="submit"
+                className="btn btn-primary"
+                data-bs-dismiss="modal"
+              >
                 등록하기
               </button>
             </div>
