@@ -58,13 +58,13 @@ public class CustomLoginFilter extends UsernamePasswordAuthenticationFilter {
         // 토큰 발행 헤더에 담고 클라이언트로 전달
         MyUserDetails principal = (MyUserDetails)authResult.getPrincipal();
 
-        String token = JWTService.createToken(principal.getUsername());
+        String token = JWTService.createToken(principal.getUsername(), principal.getRole());
         response.setHeader("Access-Control-Allow-Origin", "*");
         response.setHeader("Authorization", "Bearer " + token);
 
 
         // response.setContentType("text/html; charset=UTF-8");
-        response.getWriter().println("{\"username\":\"" + principal.getUsername() + "\",\"role\":\"" + principal.getRole() + "\", \"token\":\"" + token + "\" }");
+        response.getWriter().println("{\"username\":\"" + principal.getUsername() + "\",\"role\":\"" + principal.getRole() + "\", \"token\":\"Bearer " + token + "\" }");
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");
     }

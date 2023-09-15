@@ -25,6 +25,27 @@ public interface UserRequestMapper {
     public ArrayList<UserRequestVO> UserRequestBuyHandleSearch(String inputText, ArrayList<String> pageNav); // (관리자 신청 페이지) 검색 리스트
     public ArrayList<UserRequestVO> UserRequestBuyNavSearch(ArrayList<String> navText);// (관리자 목록 페이지) 전체,승인,반려 버튼 리스트
     public ArrayList<UserRequestVO> UserRequestBuyCategorySearch(String category_num, ArrayList<String> navText); // (관리자) 자산별 검색 select
+    ////////////////////////////////////// 최종 관리자
+    public ArrayList<UserRequestVO> HighUserRequestList(); // (관리자 페이지) 신청 조회 페이지 리스트
+    public int HighUserRequestApprove(int userq_NUM); // (관리자 페이지) 신청 승인 처리
+    public int HighUserRequestReturn(int userq_NUM); // (관리자 페이지) 신청 반려 처리
+    public ArrayList<UserRequestVO> HighUserRequestSearch (String inputText); // (관리자 페이지) 검색 리스트
+
+    public ArrayList<UserRequestVO> HighUserBuyRequestList(); // (관리자 페이지) 신청 조회 페이지 리스트
+    public int HighUserBuyRequestApprove(int userq_NUM); // (관리자 페이지) 신청 승인 처리
+    public int HighUserBuyRequestReturn(int userq_NUM); // (관리자 페이지) 신청 반려 처리
+    public ArrayList<UserRequestVO> HighUserBuyRequestSearch (String inputText); // (관리자 페이지) 검색 리스트
+
+    public ArrayList<UserRequestVO> HighUserRequestHandlePage(); // (관리자 처리 페이지) 목록 리스트
+    public ArrayList<UserRequestVO> HighUserRequestHandleSearch(String inputText, ArrayList<String> pageNav); // (관리자 신청 페이지) 검색 리스트
+    public ArrayList<UserRequestVO> HighUserRequestNavSearch(ArrayList<String> navText);// (관리자 목록 페이지) 전체,승인,반려 버튼 리스트
+    public ArrayList<UserRequestVO> HighUserRequestCategorySearch(String category_num, ArrayList<String> navText); // (관리자) 자산별 검색 select
+
+
+    public ArrayList<UserRequestVO> HighUserRequestBuyHandlePage(); // (관리자 처리 페이지) 목록 리스트
+    public ArrayList<UserRequestVO> HighUserRequestBuyHandleSearch(String inputText, ArrayList<String> pageNav); // (관리자 신청 페이지) 검색 리스트
+    public ArrayList<UserRequestVO> HighUserRequestBuyNavSearch(ArrayList<String> navText);// (관리자 목록 페이지) 전체,승인,반려 버튼 리스트
+    public ArrayList<UserRequestVO> HighUserRequestBuyCategorySearch(String category_num, ArrayList<String> navText); // (관리자) 자산별 검색 select
 
 
 }

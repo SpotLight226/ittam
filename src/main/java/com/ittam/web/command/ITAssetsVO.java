@@ -5,6 +5,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.sql.Timestamp;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -18,6 +20,8 @@ public class ITAssetsVO {
     private String assets_status;
     private int spec_num;
     private String username;
+    private Timestamp add_date;
+    private String appro_yn;
 
     //카테고리 네임
     private String category_name;

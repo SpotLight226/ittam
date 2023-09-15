@@ -95,5 +95,89 @@ public class UserRequestServiceImpl implements UserRequestService{
     public ArrayList<UserRequestVO> UserRequestBuyCategorySearch(String category_num, ArrayList<String> navText) {
         return userRequestMapper.UserRequestBuyCategorySearch(category_num, navText);
     }
+    ////////////////////////////////////// 최종 관리자
+    @Override
+    public ArrayList<UserRequestVO> HighUserRequestList() {
+        return userRequestMapper.HighUserRequestList();
+    }
+
+    @Override
+    public int HighUserRequestApprove(int userq_NUM) {
+        return userRequestMapper.HighUserRequestApprove(userq_NUM);
+    }
+
+    @Override
+    public int HighUserRequestReturn(int userq_NUM) {
+        return userRequestMapper.HighUserRequestReturn(userq_NUM);
+    }
+
+    @Override
+    public ArrayList<UserRequestVO> HighUserRequestSearch(String inputText) {
+        return userRequestMapper.HighUserRequestSearch(inputText);
+    }
+
+
+    @Override
+    public ArrayList<UserRequestVO> HighUserBuyRequestList() {
+        return userRequestMapper.HighUserBuyRequestList();
+    }
+
+    @Override
+    public int HighUserBuyRequestApprove(int userq_NUM) {
+        return userRequestMapper.HighUserBuyRequestApprove(userq_NUM);
+    }
+
+    @Override
+    public int HighUserBuyRequestReturn(int userq_NUM) {
+        return userRequestMapper.HighUserBuyRequestReturn(userq_NUM);
+    }
+
+    @Override
+    public ArrayList<UserRequestVO> HighUserBuyRequestSearch(String inputText) {
+        return userRequestMapper.HighUserBuyRequestSearch(inputText);
+    }
+
+    @Override
+    public ArrayList<UserRequestVO> HighUserRequestHandlePage() {
+        return userRequestMapper.HighUserRequestHandlePage();
+    }
+
+    @Override
+    public ArrayList<UserRequestVO> HighUserRequestHandleSearch(String inputText, ArrayList<String> pageNav) {
+        return userRequestMapper.HighUserRequestHandleSearch(inputText,pageNav);
+    }
+
+    @Override
+    public ArrayList<UserRequestVO> HighUserRequestNavSearch(ArrayList<String> navText) {
+        return userRequestMapper.HighUserRequestNavSearch(navText);
+    }
+
+    @Override
+    public ArrayList<UserRequestVO> HighUserRequestCategorySearch(String category_num, ArrayList<String> navText) {
+        return userRequestMapper.HighUserRequestCategorySearch(category_num, navText);
+    }
+
+
+
+    @Override
+    public ArrayList<UserRequestVO> HighUserRequestBuyHandlePage() {
+        return userRequestMapper.HighUserRequestBuyHandlePage();
+    }
+
+    @Override
+    public ArrayList<UserRequestVO> HighUserRequestBuyHandleSearch(String inputText, ArrayList<String> pageNav) {
+        return userRequestMapper.HighUserRequestBuyHandleSearch(inputText, pageNav);
+    }
+
+    @Override
+    public ArrayList<UserRequestVO> HighUserRequestBuyNavSearch(ArrayList<String> navText) {
+        return userRequestMapper.HighUserRequestBuyNavSearch(navText);
+    }
+
+    @Override
+    public ArrayList<UserRequestVO> HighUserRequestBuyCategorySearch(String category_num, ArrayList<String> navText) {
+        return userRequestMapper.HighUserRequestBuyCategorySearch(category_num, navText);
+    }
+
 
 }

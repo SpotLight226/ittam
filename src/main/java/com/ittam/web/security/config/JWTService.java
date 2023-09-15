@@ -15,7 +15,7 @@ public class JWTService {
     private static String secretKey = "coding404";
 
     // 토큰생성
-    public static String createToken(String username){
+    public static String createToken(String username, String role){
 
         // 알고리즘 생성
         Algorithm alg = Algorithm.HMAC256(secretKey);
@@ -25,10 +25,11 @@ public class JWTService {
 
         // 토큰생성
         JWTCreator.Builder builder = JWT.create().withSubject(username) // 주제
+                .withClaim("role", role)
                 .withIssuedAt(new Date()) // 발행일
                 .withExpiresAt(new Date(expire)) // 만료시간
                 .withIssuer("chanhan"); // 발행자
-                // .withClaim("admin", "공개클레임 홍길동 !"); // + 공개 클레임
+        // .withClaim("admin", "공개클레임 홍길동 !"); // + 공개 클레임
 
         return builder.sign(alg); // 빌더객체 생성
     }

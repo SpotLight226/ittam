@@ -30,6 +30,7 @@ public class ITAssetsController {
     @PostMapping("/specInsert")
     public ResponseEntity<Integer> specInsert(@RequestBody Map<String, Object> requestData) {
         System.out.println("Received: " + requestData);
+        StockApprovalVO vo2 = new StockApprovalVO();
         int data = 0;
 
         iTAssetsService.createTable();
@@ -47,7 +48,15 @@ public class ITAssetsController {
             iTAssetsService.ITAssetsInsertServer(requestData);
         }
         iTAssetsService.deleteTable();
+
+        vo2.setAppro_title((String) requestData.get("appro_title"));
+        vo2.setUsername((String) requestData.get("username"));
+        vo2.setAppro_comment((String) requestData.get("appro_comment"));
+
+        iTAssetsService.purchaseYN(vo2);
         return new ResponseEntity<>(data, HttpStatus.OK);
     }
+
+
 
 }

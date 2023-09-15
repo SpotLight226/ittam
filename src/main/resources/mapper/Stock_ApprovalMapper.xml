@@ -12,6 +12,14 @@
     </update>
 
     <update id="ApprovY">
-        update STOCK_APPROVAL set appro_yn = 'Y' where appro_num = #{appro_num}
+        update STOCK_APPROVAL set appro_yn = 'Y' , appro_okdate = now() where appro_num = #{appro_num}
     </update>
+
+    <insert id="statusUpdate">
+        insert into STOCK_APPROVAL(
+            username, assets_num, category_num , appro_title, appro_date, appro_count, asset_seriel, appro_comment, appro_kind, appro_yn
+        ) VALUES (
+            #{username}, #{assets_num}, #{category_num} , #{appro_title}, now(), 1 , #{asset_seriel}, #{appro_comment}, #{appro_kind}, "N"
+        )
+    </insert>
 </mapper>

@@ -15,6 +15,7 @@
                  LEFT JOIN SWSPEC sw ON (a.assets_name LIKE '%Microsoft Office%' OR a.assets_name LIKE '%파워포인트%' OR a.assets_name LIKE '엑셀' OR a.assets_name LIKE '워드' OR a.assets_name LIKE '한글과컴퓨터' OR a.assets_name LIKE '인텔리제이' ) AND a.spec_num = sw.spec_num
                  LEFT JOIN SERVERSPEC sv ON (a.assets_name LIKE '%서버용하드%') AND a.spec_num = sv.spec_num
                  LEFT JOIN ETCSPEC etc ON a.spec_num = etc.spec_num AND a.assets_name NOT LIKE '%노트북%' AND a.assets_name NOT LIKE '%데스크탑%' AND a.assets_name NOT LIKE '%서버용하드%' AND a.assets_name NOT LIKE '%Microsoft Office%' AND a.assets_name NOT LIKE '%파워포인트%' AND a.assets_name NOT LIKE '%워드%' AND a.assets_name NOT LIKE '%워드%' AND a.assets_name NOT LIKE '%한글과컴퓨터%' AND a.assets_name NOT LIKE '%인텔리제이%'
+        WHERE APPRO_YN = 'Y'
     </select>
 
     <insert id="SWSpecInsert" parameterType="com.ittam.web.command.SWSpecVO">
@@ -62,32 +63,32 @@ WITH RECURSIVE CategoryPath AS (
     </insert>
 
     <insert id="ITAssetsInsertSW" parameterType="com.ittam.web.command.ITAssetsVO">
-        INSERT INTO ITASSETS( category_num, assets_name,assets_detail_name, assets_status, spec_num)
-        SELECT category_num, #{assets_name},#{assets_detail_name}, '사용가능', (SELECT MAX(spec_num) FROM SWSPEC)
+        INSERT INTO ITASSETS( category_num, assets_name,assets_detail_name, assets_status, spec_num, appro_yn)
+        SELECT category_num, #{assets_name},#{assets_detail_name}, '사용가능', (SELECT MAX(spec_num) FROM SWSPEC) , 'N'
         FROM TempCategoryPath
         WHERE path LIKE concat('%', #{assets_name})
 
     </insert>
 
     <insert id="ITAssetsInsertETC" parameterType="com.ittam.web.command.ITAssetsVO">
-        INSERT INTO ITASSETS( category_num, assets_name,assets_detail_name, assets_status, spec_num)
-        SELECT category_num, #{assets_name},#{assets_detail_name}, '사용가능', (SELECT MAX(spec_num) FROM ETCSPEC)
+        INSERT INTO ITASSETS( category_num, assets_name,assets_detail_name, assets_status, spec_num , appro_yn)
+        SELECT category_num, #{assets_name},#{assets_detail_name}, '사용가능', (SELECT MAX(spec_num) FROM ETCSPEC ) ,'N'
         FROM TempCategoryPath
         WHERE path LIKE concat('%', #{assets_name})
 
     </insert>
 
     <insert id="ITAssetsInsertPC" parameterType="com.ittam.web.command.ITAssetsVO">
-        INSERT INTO ITASSETS( category_num, assets_name,assets_detail_name, assets_status, spec_num)
-        SELECT category_num, #{assets_name},#{assets_detail_name}, '사용가능', (SELECT MAX(spec_num) FROM PCSPEC)
+        INSERT INTO ITASSETS( category_num, assets_name,assets_detail_name, assets_status, spec_num , appro_yn)
+        SELECT category_num, #{assets_name},#{assets_detail_name}, '사용가능', (SELECT MAX(spec_num) FROM PCSPEC ) , 'N'
         FROM TempCategoryPath
         WHERE path LIKE concat('%', #{assets_name})
 
     </insert>
 
     <insert id="ITAssetsInsertServer" parameterType="com.ittam.web.command.ITAssetsVO">
-        INSERT INTO ITASSETS( category_num, assets_name,assets_detail_name, assets_status, spec_num)
-        SELECT category_num, #{assets_name},#{assets_detail_name}, '사용가능', (SELECT MAX(spec_num) FROM SERVERSPEC)
+        INSERT INTO ITASSETS( category_num, assets_name,assets_detail_name, assets_status, spec_num , appro_yn)
+        SELECT category_num, #{assets_name},#{assets_detail_name}, '사용가능', (SELECT MAX(spec_num) FROM SERVERSPEC ), 'N'
         FROM TempCategoryPath
         WHERE path LIKE concat('%', #{assets_name})
 
@@ -97,4 +98,11 @@ WITH RECURSIVE CategoryPath AS (
         -- 임시 테이블 삭제
         DROP TEMPORARY TABLE IF EXISTS TempCategoryPath
     </delete>
+
+    <insert id="purchaseYN">
+        insert into STOCK_APPROVAL
+            (username , assets_num, category_num, appro_title, appro_date, appro_count, asset_seriel, appro_comment, appro_kind, appro_yn)
+        values
+            (#{username}, (SELECT MAX(spec_num) FROM ITASSETS), (SELECT MAX(category_num) FROM ITASSETS), #{appro_title}, now(), 1, #{asset_seriel}, #{appro_comment}, '구매', 'N')
+    </insert>
 </mapper>

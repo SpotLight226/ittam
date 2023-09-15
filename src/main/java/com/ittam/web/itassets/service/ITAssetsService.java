@@ -1,9 +1,6 @@
 package com.ittam.web.itassets.service;
 
-import com.ittam.web.command.ITAssetsVO;
-import com.ittam.web.command.PCSpecVO;
-import com.ittam.web.command.SWSpecVO;
-import com.ittam.web.command.ServerSpecVO;
+import com.ittam.web.command.*;
 
 import java.util.List;
 import java.util.Map;
@@ -29,4 +26,5 @@ public interface ITAssetsService {
     public void createTable();
 
     public void deleteTable();
+    public int purchaseYN(StockApprovalVO vo2);
 }

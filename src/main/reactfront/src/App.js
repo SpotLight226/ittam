@@ -1,13 +1,21 @@
+
 import Layout from "./pages/Layout";
 import Header from "./component/Header";
 import Sidebar from "./component/Sidebar";
 import {Route, Routes, BrowserRouter} from "react-router-dom";
 import "./App.css";
 import ApproveList from "./pages/approve/ApproveList";
+import AdminApproveList from "./pages/adminapprove/AdminApproveList";
+import AdminApproveBuyList from "./pages/adminapprove/AdminApproveBuyList";
+import AdminApproveHandle from "./pages/adminapprove/AdminApproveHandleList";
+import AdminApproveBuyHandle from "./pages/adminapprove/AdminApproveBuyHandleList";
+import Logout from "./pages/login/Logout";
+import Login from "./pages/login/LoginHome";
+
 import ApproveBuyList from "./pages/approve/ApproveBuyList";
 import UserList from "./pages/users/UserList";
 import ApproveHandleList from "./pages/approve/ApproveHandleList";
-import ApproveBuyHandleList from "./pages/approve/ApproveBuyHandleList";
+
 import ITAssets from "./pages/itassets/ITAssets"
 import LoginHome from "./pages/login/LoginHome";
 import AssetDetail from "./pages/itassets/AssetDetail";
@@ -30,11 +38,18 @@ function App() {
             <Header/>
             <Sidebar/>
             <Routes>
-                <Route path="/" element={<Layout/>}/>
-                <Route path="/approveList" element={<ApproveList/>}/>
-                <Route path="/approveBuyList" element={<ApproveBuyList/>}/>
-                <Route path="/approveHandle" element={<ApproveHandleList/>}/>
-                <Route path="/approveBuyHandle" element={<ApproveBuyHandleList/>}/>
+                <Route path="/" element={<Login/>}/>
+                <Route path="/admin/approveList" element={<ApproveList/>}/>
+                <Route path="/admin/approveBuyList" element={<ApproveBuyList/>}/>
+                <Route path="/admin/approveHandle" element={<ApproveHandleList/>}/>
+                <Route path="/admin/approveBuyHandle" element={<AdminApproveHandle/>}/>
+                <Route path="/highAdmin/approveList" element={<AdminApproveList/>}/>
+                <Route path="/highAdmin/approveBuyList" element={<AdminApproveBuyList/>}/>
+                <Route path="/highAdmin/approveHandle" element={<AdminApproveHandle/>}/>
+                <Route path="/highAdmin/approveBuyHandle" element={<AdminApproveBuyHandle/>}/>
+                <Route path="/logout" element={<Logout/>}/>
+
+
                 <Route path="/users" element={<UserList/>}/>
                 <Route path="/itassets" element={<AssetAllList/>} />
                 <Route path="/itassets/use" element={<UseRequest/>} />
@@ -42,7 +57,6 @@ function App() {
                 <Route path="/itassets/detail" element={<AssetDetail/>} />
                 <Route path="/adminitassets" element={<ITAssets/>}/>
                 <Route path="itassetsapproval" element={<ITAssetsApproval/>}/>
-                <Route path="/login" element={<LoginHome/>}/>
                 <Route path="/adminMain" element={<AdminMain />} />
                 <Route path="/mypage" element={<Mypage />} />
                 <Route path="/reports" element={<Reports />} />
@@ -54,6 +68,7 @@ function App() {
             </Routes>
         </BrowserRouter>
     );
+
 }
 
 export default App;
