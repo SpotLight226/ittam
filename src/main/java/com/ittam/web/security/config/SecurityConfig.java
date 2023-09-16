@@ -71,8 +71,9 @@ public class SecurityConfig {
 
         // api로 시작하는 요청에만 jwt필터가 실행됩니다.
         http.requestMatchers()
-                .antMatchers("/api/v1/**")
-                .antMatchers("/api/v2/**")
+//                .antMatchers("/users/**")
+//                .antMatchers("/admin/**")
+//                .antMatchers("/highAdmin/**")
                 .and()
                 .addFilter(new JwtAuthorizationFilter(authenticationManager));
 
