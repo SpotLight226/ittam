@@ -41,7 +41,7 @@ function ITAssetsApproval() {
   const handleClick = (pageNumber) => {
     setCurrentPage(pageNumber);
   };
-  /* 폐기요청 */
+  /* 요청수락 */
   const handleSubmit = (item) => {
     axios
       .post('/stock/updateITStatus', { item })
@@ -53,7 +53,17 @@ function ITAssetsApproval() {
         console.log(error);
       });
   };
-
+  /* 요청 반려 */
+  const handleNsubmit = (item) => {
+    axios
+      .post('/stock/approvalN', {item})
+      .then((response) => {
+        stockList();
+      })
+      .catch((error) => {
+        console.log(error);
+      })
+  }
   return (
     <main id="main" className="main">
       <div className="pagetitle">
@@ -161,7 +171,7 @@ function ITAssetsApproval() {
                             </button>
                           </td>
                           <td>
-                            <button className="btn btn-primary">반려</button>
+                            <button className="btn btn-primary" onClick={() => handleNsubmit(item)}>반려</button>
                           </td>
                         </tr>
                       ))}

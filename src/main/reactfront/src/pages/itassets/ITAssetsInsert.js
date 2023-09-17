@@ -9,6 +9,7 @@ function ITAssetsInsert({
   categories,
   closeReset,
 }) {
+  const username = localStorage.getItem("username");
   return (
     <div>
       <div className="modal-header">
@@ -669,7 +670,7 @@ function ITAssetsInsert({
                     placeholder="username"
                     name="username"
                     onChange={handleChange}
-                    value={formData.username}
+                    value={username || ''}
                     required
                   />
                 </div>

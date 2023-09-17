@@ -65,4 +65,6 @@ public class ITAssetsVO {
     private String server_average_life;
     private String server_rpm;
     private String server_datarecovery_life;
+    //자산개수
+    private Integer itcount;
 }

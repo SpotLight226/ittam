@@ -36,4 +36,9 @@ public class Stock_approvalServiceImp1 implements Stock_approvalService{
     public int statusUpdate(StockApprovalVO vo) {
         return stockApprovalMapper.statusUpdate(vo);
     }
+
+    @Override
+    public int updateList(ITAssetsVO vo) {
+        return stockApprovalMapper.updateList(vo);
+    }
 }

@@ -16,4 +16,6 @@ public interface Stock_approvalService {
     public void ApprovY(StockApprovalVO vo2);
 
     public int statusUpdate(StockApprovalVO vo);
+
+    public int updateList(ITAssetsVO vo);
 }

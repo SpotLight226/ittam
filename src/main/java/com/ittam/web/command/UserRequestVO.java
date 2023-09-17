@@ -25,5 +25,8 @@ public class UserRequestVO {
     private LocalDate userq_okdate;
     private Integer userq_count;
 
+    //최종구매승인카운트
+    private Integer count;
+
 
 }

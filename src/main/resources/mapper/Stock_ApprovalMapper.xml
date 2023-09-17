@@ -22,4 +22,11 @@
             #{username}, #{assets_num}, #{category_num} , #{appro_title}, now(), 1 , #{asset_seriel}, #{appro_comment}, #{appro_kind}, "N"
         )
     </insert>
+
+    <update id="updateList">
+        UPDATE ITASSETS
+        SET APPRO_YN = 'Y'
+        WHERE assets_num = (SELECT max_asset_num FROM (SELECT MAX(assets_num) AS max_asset_num FROM ITASSETS) AS tmp)
+
+    </update>
 </mapper>
