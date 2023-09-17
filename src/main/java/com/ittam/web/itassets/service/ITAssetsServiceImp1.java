@@ -138,5 +138,15 @@ public class ITAssetsServiceImp1 implements ITAssetsService{
         return iTAssetsMapper.purchaseYN(vo2);
     }
 
+    @Override
+    public int yncount() {
+        return iTAssetsMapper.yncount();
+    }
+
+    @Override
+    public int itcount() {
+        return iTAssetsMapper.itcount();
+    }
+
 
 }

@@ -42,13 +42,23 @@ public class Stock_ApprovalController {
     @PostMapping("/updateITStatus")
     public ResponseEntity<Integer> updateITStatus(@RequestBody Map<String, Object> requestData) {
         Map<String, Object> itemData = (Map<String, Object>) requestData.get("item");
-        StockApprovalVO vo2 = new StockApprovalVO();
-        vo2.setAppro_num((int)itemData.get("appro_num"));
-        stock_approvalService.ApprovY(vo2);
+        System.out.println(itemData.toString());
         ITAssetsVO vo = new ITAssetsVO();
-        vo.setAssets_status((String) itemData.get("appro_kind"));
-        vo.setAssets_num((int) itemData.get("assets_num"));
-        int data = stock_approvalService.updateITStatus(vo);
+        StockApprovalVO vo2 = new StockApprovalVO();
+        int data = 0;
+        if("판매".equals((String) itemData.get("appro_kind")) || "수리".equals((String) itemData.get("appro_kind"))) {
+            vo2.setAppro_num((int)itemData.get("appro_num"));
+            stock_approvalService.ApprovY(vo2);
+            vo.setAssets_status((String) itemData.get("appro_kind"));
+            vo.setAssets_num((int) itemData.get("assets_num"));
+            data = stock_approvalService.updateITStatus(vo);
+        }else if("구매".equals((String) itemData.get("appro_kind"))) {
+            vo2.setAppro_num((int)itemData.get("appro_num"));
+            stock_approvalService.ApprovY(vo2);
+            stock_approvalService.updateList(vo);
+
+        }
+
 
         return new ResponseEntity<>(data, HttpStatus.OK);
     }
@@ -67,6 +77,18 @@ public class Stock_ApprovalController {
 
         int data = stock_approvalService.statusUpdate(vo);
 
+        return new ResponseEntity<>(data, HttpStatus.OK);
+    }
+
+    @PostMapping("/approvalN")
+    public ResponseEntity<Integer> approvalN(@RequestBody Map<String, Object> requestData) {
+        Map<String, Object> itemData = (Map<String, Object>) requestData.get("item");
+        System.out.println("react에서 가져온데이터: "+requestData.toString());
+        System.out.println("컨트롤러에서 걸러낸 데이터: " +itemData.toString());
+        StockApprovalVO vo = new StockApprovalVO();
+        int data = 0;
+        vo.setAppro_num((int)itemData.get("appro_num"));
+        stock_approvalService.ApprovY(vo);
         return new ResponseEntity<>(data, HttpStatus.OK);
     }
 }

@@ -27,4 +27,8 @@ public interface ITAssetsService {
 
     public void deleteTable();
     public int purchaseYN(StockApprovalVO vo2);
+
+    public int yncount();
+
+    public int itcount();
 }

@@ -98,7 +98,7 @@ function ITAssets() {
   };
   const sendModal = (category) => {
     setSelectCategory(category);
-    closeModal();
+    
   };
 
   const handleParentChange = (e) => {
@@ -224,6 +224,7 @@ function ITAssets() {
       }
       closeModal();
       itassetList();
+      setIsModalOpen1(false);
     } catch (error) {
       console.error('Error during data submission:', error);
     }
@@ -314,6 +315,36 @@ function ITAssets() {
   const statusReset = () => {
     setAssetstatus(selectedItem ? selectedItem.assets_status : '');
   };
+  /* 최종구매승인개수 */
+  const [count, setCount] = useState(0);
+  const [itcount,setItcount] = useState(0);
+useEffect(() => { 
+   axios.get("/assets/yncount") 
+        .then(response => {
+          setCount(response.data);
+        });
+      }, []);
+useEffect(() => {
+  axios.get("/assets/itcount")
+       .then(response => {
+         setItcount(response.data);
+       })     
+
+},[])      
+      console.log("개수:"+count);
+  console.log("자산개수"+itcount);
+  const [isModalOpen1, setIsModalOpen1] = useState(false);
+  function handleButtonClick(category) {
+    if (count < itcount) {
+        // 모달창 열기
+        setIsModalOpen1(true);
+        sendModal(category);
+    } else {
+        alert("최종관리자에게 구매승인을 받으세요.");
+        return;
+    }
+}
+
   return (
     <main id="main" className="main">
       <div className="pagetitle">
@@ -332,7 +363,7 @@ function ITAssets() {
       {/* 등록하기 모달창 */}
 
       {/* 등록하기 모달 정보 */}
-      <div className="modal fade" id="scrollingModal" tabIndex="-1">
+      <div className={`modal fade ${isModalOpen1 ? 'show' : ''}`} tabIndex="-1" style={{display: isModalOpen1 ? 'block' : 'none'}}>
         <div className="modal-dialog">
           <div className="modal-content" style={{ width: '700px' }}>
             <ITAssetsInsert
@@ -420,9 +451,9 @@ function ITAssets() {
                       <button
                         type="button"
                         className="btn btn-primary"
-                        data-bs-toggle="modal"
-                        data-bs-target="#scrollingModal"
-                        onClick={() => sendModal(category)}
+                        // data-bs-toggle="modal"
+                        // data-bs-target="#scrollingModal"
+                        onClick={() => handleButtonClick(category)}
                         style={{ marginLeft: '10px' }}
                       >
                         등록하기

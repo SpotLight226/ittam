@@ -16,4 +16,6 @@ public interface Stock_ApprovalMapper {
 
     public int statusUpdate(StockApprovalVO vo);
 
+    public int updateList(ITAssetsVO vo);
+
 }

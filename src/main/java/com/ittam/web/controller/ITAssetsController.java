@@ -58,5 +58,20 @@ public class ITAssetsController {
     }
 
 
+    @GetMapping("/yncount")
+    public ResponseEntity<Integer> yncount() {
+        int data = iTAssetsService.yncount();
+
+        return new ResponseEntity<>(data,HttpStatus.OK);
+    }
+
+    @GetMapping("/itcount")
+    public ResponseEntity<Integer> itcount() {
+        int data = iTAssetsService.itcount();
+
+        return new ResponseEntity<>(data, HttpStatus.OK);
+    }
+
+
 
 }
