@@ -4,7 +4,7 @@ import "../styles/Style.css";
 
 function Header() {
 
-  if(window.location.pathname === '/login') return null
+  if(window.location.pathname === '/') return null
 
   const handleToggleClick = () => {
     // React에서는 body에 직접 접근하지 않고, 상태를 사용하여 UI를 변경합니다.
@@ -289,7 +289,7 @@ function Header() {
                 </li>
 
                 <li>
-                  <Link to="####"
+                  <Link to="/logout"
                         className="dropdown-item d-flex align-items-center"
                   >
                     <i className="bi bi-box-arrow-right"></i>
