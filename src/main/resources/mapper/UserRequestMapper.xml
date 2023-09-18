@@ -62,12 +62,31 @@
 
     <update id="UserRequestBuyApprove" parameterType="int">
         update USER_REQUEST set userq_yn = '관리자구매승인', userq_grantor = '관리자', userq_okdate = now()
-        where userq_NUM = #{userq_NUM}
+        where userq_NUM = #{userq_num}
     </update>
+
+    <insert id="UserRequestBuyApproveB" parameterType="UserRequestVO">
+        insert into STOCK_APPROVAL ( username,
+                                     category_num,
+                                     appro_title,
+                                     appro_date,
+                                     appro_comment,
+                                     appro_kind,
+                                     appro_yn,
+                                     userq_num )
+        values ( #{vo.username},
+                 #{vo.category_num},
+                 #{vo.userq_title},
+                 now(),
+                 #{vo.userq_comment},
+                 '구매',
+                 'N',
+                 #{vo.userq_num} )
+    </insert>
 
     <update id="UserRequestBuyReturn" parameterType="int">
         update USER_REQUEST set userq_yn = '관리자구매반려', userq_grantor = '관리자', userq_okdate = now()
-        where userq_NUM = #{userq_NUM}
+        where userq_NUM = #{userq_num}
     </update>
 
     <select id="UserRequestBuySearch" resultType="UserRequestVO">

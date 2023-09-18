@@ -32,7 +32,7 @@ function Approve() {
   const handleToggle = (e) => { // 승인 모달창 핸들러
     let basicModal = document.getElementById("basicModal");
     basicModal.classList.toggle("show");
-    basicModal.style.display = ((basicModal.style.display !== 'none') ? 'none' : 'block'); 
+    basicModal.style.display = ((basicModal.style.display !== 'none') ? 'none' : 'block');
     setInnerDate({
       ...innerData,
       userqKIND : e.target.closest(".prod-box").querySelector(".userq_KIND").textContent,
@@ -43,11 +43,14 @@ function Approve() {
       userqNUM : e.target.closest(".prod-box").querySelector(".userq_NUM").textContent,
       categoryNUM : e.target.closest(".prod-box").querySelector(".category_NUM").textContent,
     });
-   };
+  };
+
+
+
   const handleBackToggle = (e) => { // 반려 모달창 핸들러
     let basicModal = document.getElementById("basicModalBack");
     basicModal.classList.toggle("show");
-    basicModal.style.display = ((basicModal.style.display !== 'none') ? 'none' : 'block'); 
+    basicModal.style.display = ((basicModal.style.display !== 'none') ? 'none' : 'block');
     setInnerDate({
       ...innerData,
       userqKIND : e.target.closest(".prod-box").querySelector(".userq_KIND").textContent,
@@ -58,7 +61,7 @@ function Approve() {
       userqNUM : e.target.closest(".prod-box").querySelector(".userq_NUM").textContent,
       categoryNUM : e.target.closest(".prod-box").querySelector(".category_NUM").textContent,
     });
-  
+
 
   };
   const handleClose =() =>  { // 승인 모달창 닫는 핸들러
@@ -66,37 +69,55 @@ function Approve() {
     basicModal.style.display = "none";
     basicModal.classList.toggle("show");
   };
+
+  const handleApproveClose = () => {
+    let basicModal = document.getElementById("basicModal");
+    basicModal.style.display = "none";
+    basicModal.classList.toggle("show");
+    let basicApproveModal = document.getElementById("basicApproveModal");
+    basicApproveModal.style.display = "none";
+    basicApproveModal.classList.toggle("show");
+  };
+
   const handleBackClose = () => { // 반려 모달창 닫는 핸들러
     let basicModalBack = document.getElementById("basicModalBack");
     basicModalBack.style.display = "none";
     basicModalBack.classList.toggle("show");
   };
+
   const ApproveForm = (e, userqNUM) => { // 구매 승인 요청
     e.preventDefault();
+    console.log(innerData.userqNUM)
     axios({
       url: 'http://localhost:9191/admin/UserRequestBuyApprove',
       method: 'post',
       data: {
-        userq_NUM: userqNUM
+        userq_num: innerData.userqNUM,
+        userq_title: innerData.userqTITLE,
+        userq_comment : innerData.userqCOMMENT,
+        category_num : innerData.categoryNUM,
+        userq_count : innerData.userqCOUNT,
+        userq_username : innerData.username,
       }
     })
-      .then((response) => {
-        
-        setMsg(response.data);
-        if (inputInnerData.userqNUM !== "") {
-          setInputInnerDate(prevState => {
+        .then((response) => {
+
+          setMsg(response.data);
+          if (inputInnerData.userqNUM !== "") {
+            setInputInnerDate(prevState => {
               // userqNUM이 일치하지 않는 요소만 필터링하여 새로운 배열 생성
               const updatedInputInnerData = prevState.filter(item => item.userqNUM !== inputInnerData.userqNUM);
               return updatedInputInnerData;
-          });
-      }
-        handleClose();
-        alert("정상적으로 사용 승인처리 되었습니다.");
-      })
-      .catch((error) => {
-        alert("승인처리에 실패하였습니다.");
-      });
+            });
+          }
+          handleClose();
+          alert("정상적으로 사용 승인처리 되었습니다.");
+        })
+        .catch((error) => {
+          alert("승인처리에 실패하였습니다.");
+        });
   };
+
   const returnForm = (e, userqNUM) => { // 구매 반려 요청
     e.preventDefault();
     axios({
@@ -106,22 +127,23 @@ function Approve() {
         userq_NUM: userqNUM
       }
     })
-      .then((response) => {
-        setMsg(response.data);
-        if (inputInnerData.userqNUM !== "") {
-          setInputInnerDate(prevState => {
+        .then((response) => {
+          setMsg(response.data);
+          if (inputInnerData.userqNUM !== "") {
+            setInputInnerDate(prevState => {
               // userqNUM이 일치하지 않는 요소만 필터링하여 새로운 배열 생성
               const updatedInputInnerData = prevState.filter(item => item.userqNUM !== inputInnerData.userqNUM);
               return updatedInputInnerData;
-          });
-      }
-      
-        handleBackClose();
-        alert("정상적으로 사용 반려처리 되었습니다.");
-      })
-      .catch((error) => {
-        alert("반려처리에 실패하였습니다." + error);
-      });
+            });
+          }
+
+          handleBackClose();
+
+          alert("정상적으로 사용 반려처리 되었습니다.");
+        })
+        .catch((error) => {
+          alert("반려처리에 실패하였습니다." + error);
+        });
   }
   const activeEnter = (e) => { // Enter 눌렀을 때 axios 함수 호출
     if(e.key === 'Enter'){
@@ -129,7 +151,7 @@ function Approve() {
       SearchForm(inputText);
     }
   }
-  const SearchForm = (inputText) => { // 구매 검색  
+  const SearchForm = (inputText) => { // 구매 검색
     axios({
       url: 'http://localhost:9191/admin/UserRequestBuySearch',
       method: 'post',
@@ -137,16 +159,16 @@ function Approve() {
         inputText: inputText
       }
     })
-      .then((response) => {
-        if(response.data.length === 0){
-          alert("일치하는 내역이 없습니다.");
-          resetBtn();
-        } else {
-          setInputInnerDate(response.data);
-        }      })
-      .catch((error) => {
-        alert("검색에 실패하였습니다.");
-      });
+        .then((response) => {
+          if(response.data.length === 0){
+            alert("일치하는 내역이 없습니다.");
+            resetBtn();
+          } else {
+            setInputInnerDate(response.data);
+          }      })
+        .catch((error) => {
+          alert("검색에 실패하였습니다.");
+        });
   };
   const resetBtn = () => { // 리셋 버튼
     let searchInput = document.getElementById("search-input");
@@ -180,58 +202,58 @@ function Approve() {
   },[msg, inputInnerData]);
 
   return (
-    <div>
-      <main id="main" className="main">
-        <div className="pagetitle">
-          <h1>자산 신청내역 조회/처리</h1>
-          <nav>
-            <ol className="breadcrumb">
-              <li className="breadcrumb-item">
-                <a href="index.html">Home</a>
-              </li>
-              <li className="breadcrumb-item">Tables</li>
-              <li className="breadcrumb-item active">Data</li>
-            </ol>
-          </nav>
-        </div>
+      <div>
+        <main id="main" className="main">
+          <div className="pagetitle">
+            <h1>자산 신청내역 조회/처리</h1>
+            <nav>
+              <ol className="breadcrumb">
+                <li className="breadcrumb-item">
+                  <a href="index.html">Home</a>
+                </li>
+                <li className="breadcrumb-item">Tables</li>
+                <li className="breadcrumb-item active">Data</li>
+              </ol>
+            </nav>
+          </div>
 
-        <section className="section">
-          <div className="row">
-            <div className="col-lg-12">
-              <div className="card">
-                <div className="card-body">
-                  <h5 className="card-title">자산 사용 신청내역 조회</h5>
-                  <div className="datatable-wrapper datatable-loading nofooter sortable searchable fixed-columns">
-                    <div className="datatable-top">
-                      <div className="datatable-dropdown">
-                        <label htmlFor="">
-                          <select className="datatable-selector">
-                            <option value="5">5</option>
-                            <option value="10">10</option>
-                            <option value="15">15</option>
-                            <option value="20">20</option>
-                            <option value="25">25</option>
-                          </select>
-                        </label>
-                      </div>
-                      <div className="datatable-search">
-                        <button type="button" className="btn btn-primary reset-btn"><BsArrowClockwise style={{width : "30px", height : "30px", color : "gray"}}
-                        onClick={resetBtn}/></button>
+          <section className="section">
+            <div className="row">
+              <div className="col-lg-12">
+                <div className="card">
+                  <div className="card-body">
+                    <h5 className="card-title">자산 사용 신청내역 조회</h5>
+                    <div className="datatable-wrapper datatable-loading nofooter sortable searchable fixed-columns">
+                      <div className="datatable-top">
+                        <div className="datatable-dropdown">
+                          <label htmlFor="">
+                            <select className="datatable-selector">
+                              <option value="5">5</option>
+                              <option value="10">10</option>
+                              <option value="15">15</option>
+                              <option value="20">20</option>
+                              <option value="25">25</option>
+                            </select>
+                          </label>
+                        </div>
+                        <div className="datatable-search">
+                          <button type="button" className="btn btn-primary reset-btn"><BsArrowClockwise style={{width : "30px", height : "30px", color : "gray"}}
+                                                                                                        onClick={resetBtn}/></button>
 
-                        <input
-                          className="datatable-input"
-                          placeholder="검색"
-                          type="search"
-                          title="Search within table"
-                          id="search-input"
-                          onChange={(e) => setInputText(e.target.value)}
-                          onKeyPress={(e) => activeEnter(e)} 
-                        />
+                          <input
+                              className="datatable-input"
+                              placeholder="검색"
+                              type="search"
+                              title="Search within table"
+                              id="search-input"
+                              onChange={(e) => setInputText(e.target.value)}
+                              onKeyPress={(e) => activeEnter(e)}
+                          />
+                        </div>
                       </div>
                     </div>
-                  </div>
-                  <table className="table datatable">
-                    <thead>
+                    <table className="table datatable">
+                      <thead>
                       <tr>
                         <th data-sortable="true">
                           <a href="#" className="datatable-sorter">
@@ -258,7 +280,7 @@ function Approve() {
                             신청날짜
                           </a>
                         </th>
-                        
+
                         <th data-sortable="true" className="handle">
                           <a href="#" className="datatable-sorter">
                             승인
@@ -270,99 +292,101 @@ function Approve() {
                           </a>
                         </th>
                       </tr>
-                    </thead>
-                    <tbody>
-                      
+                      </thead>
+                      <tbody>
+
                       {/* 테이블리스트 */}
 
 
                       {userRequest.map((item,index) => (
-                        <ApproveTable key={index} {...item} func={handleToggle} funcClose={handleBackToggle} index={index}/> 
+                          <ApproveTable key={index} {...item} func={handleToggle} funcClose={handleBackToggle} index={index}/>
                       ))}
 
 
-                    </tbody>
-                  </table>
+                      </tbody>
+                    </table>
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
-        </section>
-        <Pagenation
+          </section>
+          <Pagenation
               currentPage={currentPage}
               totalPages={totalPages}
               startPage={startPage}
               endPage={endPage}
               handleClick={handleClick2}
           />
-      </main>
+        </main>
 
-      {/* 승인 모달창 */}
-      <div className="modal fade" id="basicModal" tabIndex="-1" style={{display : "none"}} 
-      aria-modal="true"  role="dialog" >
-                <div className="modal-dialog">
-                  <div className="modal-content">
-                    <div className="modal-header">
-                      <h5 className="modal-title">승인 확인</h5>
-                      <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close" onClick={handleClose}></button>
-                    </div>
-                    
-                      <form action="#" name="ApproveForm">
-                        <div className="modal-body">
-                          <p>제목 : {innerData.userqTITLE}</p>
-                          <hr />
-                          <p>신청자명 : {innerData.username}</p>
-                          <p>내용 : {innerData.userqCOMMENT}</p>
-                          <p>자산명 : {innerData.userqKIND}</p>
-                          <p>수량 : {innerData.userqCOUNT}개</p>
-                          <p>카테고리 번호 : {innerData.categoryNUM}개</p>
-                          <hr />
-                          <p>해당 자산 사용신청을 승인처리 하시겠습니까?</p>
-                          <input className="userq_NUM" type="hidden" value={innerData.userqNUM}/>
-                        </div>
-                        <div className="modal-footer">
-                          <button type="button" className="btn btn-secondary" data-bs-dismiss="modal" onClick={handleClose}>취소</button>
-                          <button type="button" className="btn btn-primary" onClick={(e) => ApproveForm(e, innerData.userqNUM)}>승인</button>
-                        </div>
-                     </form>
-                  </div>
+        {/* 승인 모달창 */}
+        <div className="modal fade" id="basicModal" tabIndex="-1" style={{display : "none"}}
+             aria-modal="true"  role="dialog" >
+          <div className="modal-dialog">
+            <div className="modal-content">
+              <div className="modal-header">
+                <h5 className="modal-title">승인 확인</h5>
+                <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close" onClick={handleClose}></button>
+              </div>
+
+              <form action="#" name="ApproveForm">
+                <div className="modal-body">
+                  <p>제목 : {innerData.userqTITLE}</p>
+                  <hr />
+                  <p>신청자명 : {innerData.username}</p>
+                  <p>내용 : {innerData.userqCOMMENT}</p>
+                  <p>자산명 : {innerData.userqKIND}</p>
+                  <p>수량 : {innerData.userqCOUNT}개</p>
+                  <p>카테고리 번호 : {innerData.categoryNUM}개</p>
+                  <hr />
+                  <p>해당 자산 사용신청을 승인처리 하시겠습니까?</p>
+                  <input className="userq_NUM" type="hidden" value={innerData.userqNUM}/>
                 </div>
-      </div>
-
-      {/* 반려 모달창 */}
-      <div className="modal fade" id="basicModalBack" tabIndex="-1" style={{display : "none"}} 
-      aria-modal="true" role="dialog" >
-                <div className="modal-dialog">
-                  <div className="modal-content">
-                    <div className="modal-header">
-                      <h5 className="modal-title" >반려 확인</h5>
-                      <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close" onClick={handleBackClose}></button>
-                    </div>
-                  
-
-                    <form action="#" name="ApproveForm">
-                        <div className="modal-body">
-                          <p>제목 : {innerData.userqTITLE}</p>
-                          <hr />
-                          <p>신청자명 : {innerData.username}</p>
-                          <p>내용 : {innerData.userqCOMMENT}</p>
-                          <p>자산명 : {innerData.userqKIND}</p>
-                          <p>수량 : {innerData.userqCOUNT}개</p>
-                          <p>카테고리 번호 : {innerData.categoryNUM}번</p>
-                          <hr />
-                          <p>해당 자산 사용신청을 반려처리 하시겠습니까?</p>
-                          <input className="userq_NUM" type="hidden" value={innerData.userqNUM}/>
-                        </div>
-                        <div className="modal-footer">
-                          <button type="button" className="btn btn-secondary" data-bs-dismiss="modal" onClick={handleBackClose}>취소</button>
-                          <button type="button" className="btn btn-primary" onClick={(e) => returnForm(e, innerData.userqNUM)}>반려</button>
-                        </div>
-                     </form>
-
-                  </div>
+                <div className="modal-footer">
+                  <button type="button" className="btn btn-secondary" data-bs-dismiss="modal" onClick={handleClose}>취소</button>
+                  <button type="button" className="btn btn-primary" onClick={(e) => ApproveForm(e, innerData)}>승인</button>
                 </div>
+              </form>
+            </div>
+          </div>
+        </div>
+
+
+
+        {/* 반려 모달창 */}
+        <div className="modal fade" id="basicModalBack" tabIndex="-1" style={{display : "none"}}
+             aria-modal="true" role="dialog" >
+          <div className="modal-dialog">
+            <div className="modal-content">
+              <div className="modal-header">
+                <h5 className="modal-title" >반려 확인</h5>
+                <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close" onClick={handleBackClose}></button>
+              </div>
+
+
+              <form action="#" name="ApproveForm">
+                <div className="modal-body">
+                  <p>제목 : {innerData.userqTITLE}</p>
+                  <hr />
+                  <p>신청자명 : {innerData.username}</p>
+                  <p>내용 : {innerData.userqCOMMENT}</p>
+                  <p>자산명 : {innerData.userqKIND}</p>
+                  <p>수량 : {innerData.userqCOUNT}개</p>
+                  <p>카테고리 번호 : {innerData.categoryNUM}번</p>
+                  <hr />
+                  <p>해당 자산 사용신청을 반려처리 하시겠습니까?</p>
+                  <input className="userq_NUM" type="hidden" value={innerData.userqNUM}/>
+                </div>
+                <div className="modal-footer">
+                  <button type="button" className="btn btn-secondary" data-bs-dismiss="modal" onClick={handleBackClose}>취소</button>
+                  <button type="button" className="btn btn-primary" onClick={(e) => returnForm(e, innerData.userqNUM)}>반려</button>
+                </div>
+              </form>
+
+            </div>
+          </div>
+        </div>
       </div>
-    </div>
   );
 }
 export default Approve;

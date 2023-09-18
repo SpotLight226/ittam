@@ -156,9 +156,16 @@ public class User_RequestController {
     int count2 = 0;
     @PostMapping("/UserRequestBuyApprove") // (관리자 페이지) 신청 승인 처리
     public ResponseEntity<String> UserRequestBuyApprove(@RequestBody Map<String, String> requestBody){
-        System.out.println(requestBody.toString());
+        UserRequestVO vo = new UserRequestVO();
+        vo.setUsername(requestBody.get("userq_username"));
+        vo.setCount(Integer.valueOf(requestBody.get("userq_count")));
+        vo.setCategory_num(Integer.valueOf(requestBody.get("category_num")));
+        vo.setUserq_comment(requestBody.get("userq_comment"));
+        vo.setUserq_title(requestBody.get("userq_title"));
+        vo.setUserq_num(Integer.valueOf(requestBody.get("userq_num")));
         try {
-            userRequestService.UserRequestBuyApprove(Integer.parseInt(requestBody.get("userq_NUM")));
+            userRequestService.UserRequestBuyApprove(vo);
+            userRequestService.UserRequestBuyApproveB(vo);
             count2++;
             return ResponseEntity.ok("자산 구매 승인이 완료되었습니다." + count2);
         } catch (Exception e) {
