@@ -47,6 +47,36 @@ public class UserController {
         }
     }
 
+    // 상세정보
+    @CrossOrigin(origins = "*", allowedHeaders = "*")
+    @PostMapping("/UserDetail")
+    public ResponseEntity<UserVO> userDetail(@RequestBody Map<String, String> requestData){
+
+        try {
+            UserVO vo = userService.userDetail(requestData.get("userId"));
+            System.out.println("vo = " + vo);
+            return ResponseEntity.ok(vo);
+        } catch (Exception e){
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
+    }
+
+    // 권한 변경
+    @CrossOrigin(origins = "*", allowedHeaders = "*")
+    @PostMapping("/UserEdit")
+    public ResponseEntity<String> userEdit(@RequestBody Map<String, String> requestData){
+
+        int result = userService.userEdit(requestData.get("targetId"), requestData.get("role"));
+
+
+        if(result == 1){
+            return ResponseEntity.ok("권한이 변경되었습니다");
+        } else {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("권한 변경 중 오류가 발생하였습니다");
+        }
+    }
+
+
     @PostMapping("/passwordFind")
     public ResponseEntity<ArrayList<UserVO >> PasswordFind(@RequestBody Map<String, String> requestBody){
         System.out.println(requestBody.toString());

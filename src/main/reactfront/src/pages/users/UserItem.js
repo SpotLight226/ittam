@@ -1,3 +1,5 @@
+import { Fragment } from "react";
+
 const UserItem = ({
   user_email,
   username,
@@ -9,11 +11,19 @@ const UserItem = ({
   id,
   isUser,
   idx,
+  onUserClick, // 모달 열기 함수
 }) => {
   return (
     <tr className="prod-box">
       <th scope="row">{isUser ? id : idx + 1}</th>
-      <td className="userName">{user_name}</td>
+      <td
+        className="userName"
+        onClick={() => onUserClick(username)}
+        data-bs-toggle="modal" // 모달을 열도록 설정
+        data-bs-target="#userModal" // 모달의 ID를 여기에 설정
+      >
+        {user_name}
+      </td>
       <td className="userId">{username}</td>
       <td className="userDepart">{user_depart}</td>
       {isUser ? (
@@ -29,18 +39,9 @@ const UserItem = ({
       ) : (
         <>
           <td className="userLeaveDate">{user_leavedate}</td>
-          <td className="userConfirmBtn">
-            <button
-              className="btn btn-primary approveBtn"
-              type="button"
-              id="approveBtn"
-            >
-              상세
-            </button>
-          </td>
           <td className="userDenyBtn">
             <button className="btn btn-primary denyBtn" type="button">
-              반려
+              처리
             </button>
           </td>
         </>
