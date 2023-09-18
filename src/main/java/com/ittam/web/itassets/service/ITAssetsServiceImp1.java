@@ -132,11 +132,11 @@ public class ITAssetsServiceImp1 implements ITAssetsService{
         iTAssetsMapper.deleteTable();
     }
 
-    @Override
-    public int purchaseYN(StockApprovalVO vo2) {
-        vo2.setAsset_seriel(randomString(4) + "-" + randomString(4) + "-" + randomString(4));
-        return iTAssetsMapper.purchaseYN(vo2);
-    }
+//    @Override
+//    public int purchaseYN(StockApprovalVO vo2) {
+//        vo2.setAsset_seriel(randomString(4) + "-" + randomString(4) + "-" + randomString(4));
+//        return iTAssetsMapper.purchaseYN(vo2);
+//    }
 
     @Override
     public int yncount() {

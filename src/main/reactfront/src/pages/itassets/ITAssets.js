@@ -98,7 +98,6 @@ function ITAssets() {
   };
   const sendModal = (category) => {
     setSelectCategory(category);
-    
   };
 
   const handleParentChange = (e) => {
@@ -272,6 +271,7 @@ function ITAssets() {
       setAssetstatus(selectedItem.assets_status);
     }
   }, [selectedItem]);
+  const username = localStorage.getItem('username');
 
   const updateSubmit = async (e) => {
     e.preventDefault();
@@ -279,7 +279,7 @@ function ITAssets() {
     const updatedStatus = {
       assets_status: assetstatus,
       assets_num: selectedItem ? selectedItem.assets_num : '',
-      username: formStatus.username,
+      username: username || '',
       appro_title: formStatus.appro_title,
       appro_comment: formStatus.appro_comment,
       category_num: selectedItem ? selectedItem.category_num : '',
@@ -308,42 +308,44 @@ function ITAssets() {
     }
   };
   /* 모달창 닫을때 리셋 */
-  const closeReset = () => {
-    setSelectedType('선택하지않음');
-    setSelectedParent('선택하지않음');
-  };
+  // const closeReset = () => {
+  //   setSelectedType('선택하지않음');
+  //   setSelectedParent('선택하지않음');
+  // };
   const statusReset = () => {
     setAssetstatus(selectedItem ? selectedItem.assets_status : '');
   };
   /* 최종구매승인개수 */
   const [count, setCount] = useState(0);
-  const [itcount,setItcount] = useState(0);
-useEffect(() => { 
-   axios.get("/assets/yncount") 
-        .then(response => {
-          setCount(response.data);
-        });
-      }, []);
-useEffect(() => {
-  axios.get("/assets/itcount")
-       .then(response => {
-         setItcount(response.data);
-       })     
-
-},[])      
-      console.log("개수:"+count);
-  console.log("자산개수"+itcount);
+  const [itcount, setItcount] = useState(0);
+  useEffect(() => {
+    axios.get('/assets/yncount').then((response) => {
+      setCount(response.data);
+    });
+  }, []);
+  useEffect(() => {
+    axios.get('/assets/itcount').then((response) => {
+      setItcount(response.data);
+    });
+  }, []);
+  console.log('개수:' + count);
+  console.log('자산개수' + itcount);
   const [isModalOpen1, setIsModalOpen1] = useState(false);
   function handleButtonClick(category) {
     if (count < itcount) {
-        // 모달창 열기
-        setIsModalOpen1(true);
-        sendModal(category);
+      // 모달창 열기
+      setIsModalOpen1(true);
+      sendModal(category);
     } else {
-        alert("최종관리자에게 구매승인을 받으세요.");
-        return;
+      alert('최종관리자에게 구매승인을 받으세요.');
+      return;
     }
-}
+  }
+  function modalClose() {
+    setIsModalOpen1(false);
+    setSelectedType('선택하지않음');
+    setSelectedParent('선택하지않음');
+  }
 
   return (
     <main id="main" className="main">
@@ -363,7 +365,11 @@ useEffect(() => {
       {/* 등록하기 모달창 */}
 
       {/* 등록하기 모달 정보 */}
-      <div className={`modal fade ${isModalOpen1 ? 'show' : ''}`} tabIndex="-1" style={{display: isModalOpen1 ? 'block' : 'none'}}>
+      <div
+        className={`modal fade ${isModalOpen1 ? 'show' : ''}`}
+        tabIndex="-1"
+        style={{ display: isModalOpen1 ? 'block' : 'none' }}
+      >
         <div className="modal-dialog">
           <div className="modal-content" style={{ width: '700px' }}>
             <ITAssetsInsert
@@ -379,7 +385,7 @@ useEffect(() => {
               handleParentChange={handleParentChange}
               selectedChild={selectedChild}
               categories={categories}
-              closeReset={closeReset}
+              modalClose={modalClose}
             />
           </div>
         </div>
