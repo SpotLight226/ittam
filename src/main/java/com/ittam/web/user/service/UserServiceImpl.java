@@ -28,6 +28,20 @@ public class UserServiceImpl implements UserService{
         return userMapper.userRegist(vo);
     }
 
+    // 사용자 상세 정보
+    @Override
+    public UserVO userDetail(String userId) {
+        return userMapper.userDetail(userId);
+    }
+
+    // 사용자 권한 변경
+
+
+    @Override
+    public int userEdit(String targetId, String newRole) {
+        return userMapper.userEdit(targetId, newRole);
+    }
+
     @Override
     public ArrayList<UserVO> passwordFind(String email) {
         return userMapper.passwordFind(email);

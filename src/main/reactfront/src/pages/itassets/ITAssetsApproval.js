@@ -1,15 +1,15 @@
-import { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
-import Pagenation from '../../component/Pagenation';
-import axios from 'axios';
-import ApprovalComment from '../approve/ApprovalComment';
+import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
+import Pagenation from "../../component/Pagenation";
+import axios from "axios";
+import ApprovalComment from "../approve/ApprovalComment";
 
 function ITAssetsApproval() {
   /* 결제요청목록 데이터 */
   const [data, setData] = useState([]);
   const stockList = () => {
     axios
-      .get('/stock/getStockApprovalList')
+      .get("/stock/getStockApprovalList")
       .then((response) => {
         setData(response.data);
       })
@@ -44,7 +44,7 @@ function ITAssetsApproval() {
   /* 요청수락 */
   const handleSubmit = (item) => {
     axios
-      .post('/stock/updateITStatus', { item })
+      .post("/stock/updateITStatus", { item })
       .then((response) => {
         stockList();
         console.log(response.data);
@@ -56,14 +56,14 @@ function ITAssetsApproval() {
   /* 요청 반려 */
   const handleNsubmit = (item) => {
     axios
-      .post('/stock/approvalN', {item})
+      .post("/stock/approvalN", { item })
       .then((response) => {
         stockList();
       })
       .catch((error) => {
         console.log(error);
-      })
-  }
+      });
+  };
   return (
     <main id="main" className="main">
       <div className="pagetitle">
@@ -151,7 +151,7 @@ function ITAssetsApproval() {
                           <td>
                             <Link
                               to="#"
-                              style={{ color: 'black' }}
+                              style={{ color: "black" }}
                               data-bs-toggle="modal"
                               data-bs-target="#modalDialogScrollable"
                               onClick={() => handleModal(item)}
@@ -171,7 +171,12 @@ function ITAssetsApproval() {
                             </button>
                           </td>
                           <td>
-                            <button className="btn btn-primary" onClick={() => handleNsubmit(item)}>반려</button>
+                            <button
+                              className="btn btn-primary"
+                              onClick={() => handleNsubmit(item)}
+                            >
+                              반려
+                            </button>
                           </td>
                         </tr>
                       ))}

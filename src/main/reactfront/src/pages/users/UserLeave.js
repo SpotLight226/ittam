@@ -16,7 +16,7 @@ const UserLeave = () => {
     const copyOptionList = JSON.parse(JSON.stringify(UserOptionList));
 
     return copyOptionList.filter(
-      (it) => it.value !== "auth" && it.value !== "email" && it.value !== "date"
+      (it) => it.value !== "role" && it.value !== "email" && it.value !== "date"
     );
   };
 

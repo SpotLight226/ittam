@@ -1,14 +1,72 @@
-import React, { useContext, useState } from "react";
+import React, { useEffect, useContext, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
-import { UserStateContext } from "./Users";
+import { UserDispatchContext, UserStateContext } from "./Users";
 import UserItem from "./UserItem";
 import Pagenation from "../../component/Pagenation";
 import ControlMenu from "../../component/ControlMenu";
 import { UserOptionList } from "../../constants/OptionList"; // 옵션들을 정의해둔 list에서 객체로 사용할 옵션을 가져온다
+import UserModal from "../../component/Modal/UserModal";
+import axios from "axios";
 
-// 비구조 할당으로 subPage 주소 받아옴
 const UserList = () => {
   const userList = useContext(UserStateContext);
+
+  //// 모달
+  const [modalStatus, setModalStatus] = useState(false); // 모달 핸들링 위한 state
+  const [modalContent, setModalContent] = useState({
+    username: "",
+    user_name: "",
+    user_email: "",
+    user_depart: "",
+    user_phone: "",
+    user_address: "",
+    role: "",
+    user_joindate: "",
+  }); // 모달 콘텐츠
+
+  // 모달 열기 전 state 설정
+  const handleModalOpen = async (userId) => {
+    if (userId) {
+      getModalContent(userId);
+    }
+  };
+
+  // 모달 닫기
+  const handleCloseModal = () => {
+    setModalStatus(false);
+  };
+
+  useEffect(() => {
+    if (modalContent.username) {
+      setModalStatus(true); // 모달 열기
+    }
+  }, [modalContent]);
+
+  const getModalContent = async (userId) => {
+    if (userId) {
+      axios
+        .post("/User/UserDetail", { userId })
+        .then((res) => {
+          // 가져온 데이터를 state에 맵핑
+          const userData = res.data;
+
+          setModalContent({
+            username: userData.username,
+            user_name: userData.user_name,
+            user_email: userData.user_email,
+            user_depart: userData.user_depart,
+            user_phone: userData.user_phone,
+            user_address: userData.user_address,
+            user_joindate: userData.user_joindate,
+            role: userData.role,
+          });
+        })
+        .catch((err) => alert("사용자 상세정보를 가져오는데 실패했습니다"));
+    }
+  };
+
+  /// 모달 끝
 
   const getProcessedOption = () => {
     const copyOptionList = JSON.parse(JSON.stringify(UserOptionList));
@@ -180,7 +238,6 @@ const UserList = () => {
                       ))}
                     </tr>
                   </thead>
-
                   {/* 리스트 */}
                   <tbody>
                     {getProcessedList()
@@ -189,10 +246,20 @@ const UserList = () => {
                         currentPage * itemsPerPage
                       )
                       .map((it) => (
-                        <UserItem key={it.id} isUser={true} {...it} />
+                        <UserItem
+                          key={it.id}
+                          isUser={true}
+                          {...it}
+                          onUserClick={handleModalOpen}
+                        />
                       ))}
                   </tbody>
                 </table>
+                {/* 상세내용 모달 */}
+                <UserModal
+                  closeModal={handleCloseModal}
+                  modalContent={modalContent}
+                />
               </div>
             </div>
           </div>

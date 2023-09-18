@@ -15,6 +15,12 @@ public interface UserMapper {
     //사용자 등록
     int userRegist(UserVO vo);
 
+    // 사용자 상세정보
+    UserVO userDetail(String userId);
+
+    // 사용자 권한 변경
+    int userEdit(@Param("targetId") String targetId, @Param("newRole") String newRole);
+
     public ArrayList<UserVO> passwordFind(String email);
     public void UserPasswordReset(@Param("passwordReset")String passwordReset, @Param("emailInput")String emailInput);
     public UserVO login (String username);
