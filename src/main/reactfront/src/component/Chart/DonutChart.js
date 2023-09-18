@@ -3,15 +3,15 @@ import { useState } from "react";
 
 import ReactApexChart from "react-apexcharts";
 
-function DounutChart_user() {
+function DounutChart_user({myAssetChartCnt}) {
   const x = {
-    series: [44, 55, 41, 17, 15],
+    series: [myAssetChartCnt.pcCnt, myAssetChartCnt.swcnt, myAssetChartCnt.etcCnt, myAssetChartCnt.serverCnt],
     options: {
       chart: {
         type: 'donut',
       },
-      labels: ['Team A', 'Team B', 'Team C', 'Team D', 'Team E'],
-      colors:['#4b0082', '#dda0dd', '#9C27B0', '#00ced1', '#228b22'],
+      labels: ['PC', '스프트웨어', '주변기기', '서버'],
+      colors:['#4b0082', '#6a5acd', '#9C27B0', '#dda0dd'],
       responsive: [{
         breakpoint: 480,
         options: {

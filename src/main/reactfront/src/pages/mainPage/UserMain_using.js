@@ -12,18 +12,32 @@ function UserMain_using() {
   const [myAssetNum, setMyAssetNum] = useState(0);
   const [myAssetList, setMyAssetList] = useState([]);
   const [username, setUsername] = useState('');
+  const [choiceCatogory, setChoiceCategory] = useState("all");
 
   const todayTime = () => {
     let now = new Date();
     let todayYear = now.getFullYear();
-    let todayMonth = now.getMonth();
+    let todayMonth = now.getMonth() + 1;
     let todayDate = now.getDate();
     const week = ['(일)', '(월)', '(화)', '(수)', '(목)', '(금)', '(토)'];
     let dayOfWeek = week[now.getDay()];
     let hours = now.getHours();
     let minutes = now.getMinutes();
 
-    return todayYear + "년 " + todayMonth + "월 " + todayDate + "일 " + dayOfWeek + " ";
+    return todayYear + "-" + (todayMonth >= 10 ? todayMonth : '0'+todayMonth) + "-" + todayDate;
+  }
+
+  const rentDate = (rent) => {
+    let now = new Date(rent);
+    let todayYear = now.getFullYear();
+    let todayMonth = now.getMonth() + 1;
+    let todayDate = now.getDate();
+    const week = ['(일)', '(월)', '(화)', '(수)', '(목)', '(금)', '(토)'];
+    let dayOfWeek = week[now.getDay()];
+    let hours = now.getHours();
+    let minutes = now.getMinutes();
+
+    return todayYear + "-" + (todayMonth >= 10 ? todayMonth : '0'+todayMonth) + "-" + (todayDate >= 10 ? todayDate : '0'+todayDate);
   }
 
 
@@ -135,7 +149,14 @@ function UserMain_using() {
 
         <div className="card">
           <div className="card-body">
-            <h5 className="card-title">Default Table</h5>
+            <h5 className="card-title" style={{fontWeight: "800"}}>사용중인 자산 목록</h5>
+            <select className='choiceCatogory' style={{width:'200px', marginLeft: '1320px', marginBottom:'10px', height: '30px'}} onChange={(e) => {setChoiceCategory(e.target.value)}}>
+              <option value="all">전체목록</option>
+              <option value="pc">PC/노트북</option>
+              <option value="sw">소프트웨어</option>
+              <option value="etc">주변기기</option>
+              <option value="server">서버</option>
+            </select>
 
             {/* <!-- Default Table --> */}
             <table className="table table-borderless" style={{textAlign: 'center'}}>
@@ -153,7 +174,21 @@ function UserMain_using() {
               <tbody>
 
               {
-                myAssetList.map((a, i) => {
+                myAssetList.filter(a => {
+                  if (choiceCatogory === 'all') {
+                    return a.CATEGORY_NUM >= 1;
+                  } else if (choiceCatogory === 'pc') {
+                    return a.CATEGORY_NUM === 5 || a.CATEGORY_NUM === 6 || a.CATEGORY_NUM === 1;
+                  } else if (choiceCatogory === 'sw') {
+                    return a.CATEGORY_NUM >= 7 && a.CATEGORY_NUM <= 12 || a.CATEGORY_NUM === 2;
+                  } else if (choiceCatogory === 'etc') {
+                    return a.CATEGORY_NUM >= 13 && a.CATEGORY_NUM <= 17 || a.CATEGORY_NUM === 3;
+                  } else {
+                    return a.CATEGORY_NUM === 18 || a.CATEGORY_NUM === 4;
+                  }
+                }
+                  
+                ).map((a, i) => {
                   return <tr key={i}>
                 <th scope="row">{i + 1}</th>
                 <td>{a.ASSETS_NAME}{a.ASSETS_DETAIL_NAME}|{a.ASSETS_NUM}</td>
@@ -185,7 +220,7 @@ function UserMain_using() {
                                                                               {a.ETC_SPEC_WARRANTY!==undefined?a.ETC_SPEC_WARRANTY+" |":''}
                                                                               {/*{a.ETC_PURCHASE_DATE!==undefined?a.ETC_PURCHASE_DATE+" |":''}*/}
                                                                               {a.ETC_PRICE!==undefined?a.ETC_PRICE+" |":''}</td>
-                <td>2016-05-25</td>
+                <td>{rentDate(a.RENT_DATE)}</td>
                 <td>{a.ASSETS_STATUS}</td>
 
                 <td>

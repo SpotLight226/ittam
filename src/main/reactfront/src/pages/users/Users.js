@@ -55,9 +55,10 @@ const Users = () => {
   const [data, dispatch] = useReducer(reducer, []);
 
   useEffect(() => {
-    axios
-      .get("/User/UserList")
-      .then((res) => {
+    // 데이터 가져오는 부분
+    const getData = async () => {
+      try {
+        const res = await axios.get("/User/UserList");
         const mappedData = res.data.map((it) => {
           dataId.current += 1;
           return {
@@ -69,15 +70,16 @@ const Users = () => {
           type: "INIT",
           data: mappedData,
         });
-      })
-      .catch((err) => {
+      } catch (err) {
         console.log(err);
-      });
-  }, []);
+      }
+    };
+
+    getData(); // 데이터 가져오기
+  }, []); //
 
   // 새 유저 추가
   const onCreate = (content) => {
-    console.log(content);
     axios
       .post("/User/UserRegist", content)
       .then((res) => {
@@ -99,10 +101,26 @@ const Users = () => {
   };
 
   // 유저 수정
-  const onEdit = () => {
-    dispatch({
-      type: "EDIT",
-    });
+  const onEdit = (targetId, role) => {
+    axios({
+      url: "/User/UserEdit",
+      method: "post",
+      data: {
+        targetId: targetId,
+        role: role,
+      },
+    })
+      .then((res) => {
+        dispatch({
+          type: "EDIT",
+          data: {
+            username: targetId,
+            role: role,
+          },
+        });
+        alert(res.data);
+      })
+      .catch((err) => alert(err.data));
   };
 
   // 유저 삭제
@@ -130,7 +148,7 @@ const Users = () => {
 
   return (
     <UserStateContext.Provider value={data}>
-      <UserDispatchContext.Provider value={{ onCreate }}>
+      <UserDispatchContext.Provider value={{ onCreate, onEdit }}>
         <div className="Users">
           <main id="main" className="main">
             <PageTitle page={page} subPage={subPage} />

@@ -1,9 +1,0 @@
-.userId-wrapper {
-  display: flex;
-
-  justify-content: space-between;
-}
-
-.userId-wrapper #userId {
-  width: 70%;
-}

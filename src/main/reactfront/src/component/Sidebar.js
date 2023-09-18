@@ -1,20 +1,30 @@
-import { Link } from 'react-router-dom';
-import '../styles/Style.css';
+import { Link } from "react-router-dom";
+import "../styles/Style.css";
+import { useContext } from "react";
+import { userInfoContext } from "../App";
 
 function Sidebar() {
-  if (window.location.pathname === '/') return null;
+  const contextValues = useContext(userInfoContext); // 항상 가장 위에서 선언해야 사용 가능
+
+  if (window.location.pathname === "/") return null;
+
+  const { userId, role } = contextValues || {}; // 들어온 값 없으면 공백으로
+
+  //처음에는 default 였다가 app.js 에서 useEffect로 token값 가져와서 뿌려줌
+  console.log(userId);
+  console.log(role);
 
   return (
     <aside id="sidebar" className="sidebar">
       <ul className="sidebar-nav" id="sidebar-nav">
         <li className="nav-item">
-          <Link to="/userMain" className="nav-link">
+        <Link to="/user/userMain" className="nav-link">
             <i className="bi bi-grid"></i>
             <span>사원메인페이지</span>
           </Link>
         </li>
         <li className="nav-item">
-          <Link to="/adminMain" className="nav-link">
+          <Link to="/admin/adminMain" className="nav-link">
             <i className="bi bi-grid"></i>
             <span>관리자메인페이지</span>
           </Link>
@@ -42,7 +52,7 @@ function Sidebar() {
               </Link>
             </li>
             <hr />
-            <li className="accordion-item" style={{ border: 'none' }}>
+            <li className="accordion-item" style={{ border: "none" }}>
               <button
                 className="accordion-button collapsed"
                 type="button"
@@ -313,6 +323,12 @@ function Sidebar() {
           </ul>
         </li>
         {/* <!-- End Icons Nav --> */}
+        <li className="nav-item">
+          <Link to="admin/reports" className="nav-link collapsed">
+            <i className="bi bi-bar-chart"></i>
+            <span>대시보드</span>
+          </Link>
+        </li>
 
         <li className="nav-heading">설정</li>
 

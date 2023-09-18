@@ -33,8 +33,14 @@ public interface MainPageService {
     public Map<Object, Object> getAssetChartDisposeNum(); //날짜별로 전체 사용중인 자산 개수 가져오기
     public void exchangeAsset_exchange(Map<String, Object> map); //교환할 제품 사용중 처리하기
     public void exchangeAsset_cancel(Map<String, Object> map); //교환된 제품 사용보류 처리하기
+    public void exchangeAsset_assetlog(Map<String, Object> map);
     public List<UserRequestVO> getMyRequestList(String username); //내가 사용 구매 요청한 리스트 가져오기
     public void deleteUsingPerchaseReq(Integer userq_num); //사용 구매 신청 취소
     public void registLeaveReq(String username); //퇴사요청
+    public Integer getMyPcCnt(String username); //내가 사용하는 pc 개수
+    public Integer getMySwCnt(String username); //내가 사용하는 sw 개수
+    public Integer getMyEtcCnt(String username); //내가 사용한느 주변기기 개수
+    public Integer getMyServerCnt(String username); //내가 사용하는 서버 개수
+
 
 }

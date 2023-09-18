@@ -30,6 +30,23 @@
                #{user_joindate})
     </insert>
 
+    <select id="userDetail" resultType="userVO">
+        SELECT username,
+               user_name,
+               role,
+               user_depart,
+               user_email,
+               user_joindate,
+               user_phone,
+               user_address
+        FROM ittam.USER
+        WHERE username = #{userId}
+    </select>
+
+    <update id="userEdit" >
+        update ittam.USER set role = #{newRole} where username = #{targetId}
+    </update>
+
     <select id="passwordFind" resultType="UserVO">
         select * from USER where user_email = #{email}
     </select>

@@ -135,8 +135,9 @@ public class MainPageController {
         mainPageService.exchangeAsset_exchange(map);
         mainPageService.exchangeAsset_cancel(map);
         mainPageService.updateReturn_yn(map);
-        System.out.println("assets_num_now:   " + map.get("assets_num_later"));
-        System.out.println("assets_num_now:   " + map.get("assets_num_now"));
+        mainPageService.exchangeAsset_assetlog(map);
+//        System.out.println("assets_num_now:   " + map.get("assets_num_later"));
+//        System.out.println("assets_num_now:   " + map.get("assets_num_now"));
         return new ResponseEntity<>("승인처리되었습니다", HttpStatus.OK);
     }
 
@@ -155,11 +156,22 @@ public class MainPageController {
     }
 
 
+    //퇴사신청
     @GetMapping("/registLeaveReq")
     public ResponseEntity<String> registLeaveReq(@RequestParam String username) {
         mainPageService.registLeaveReq(username);
         return new ResponseEntity<>("퇴사요청완료", HttpStatus.OK);
     }
 
+    //userMain에 들어가는 차트 숫자 가져오기
+    @GetMapping("/getMyAssetChartCnt")
+    public ResponseEntity<Map<String, Integer>> getMyAssetChartCnt(@RequestParam String username) {
+        Map<String, Integer> map = new HashMap<>();
+        map.put("pcCnt", mainPageService.getMyPcCnt(username));
+        map.put("swcnt", mainPageService.getMySwCnt(username));
+        map.put("etcCnt", mainPageService.getMyEtcCnt(username));
+        map.put("serverCnt", mainPageService.getMyServerCnt(username));
+        return new ResponseEntity<>(map, HttpStatus.OK);
+    }
 
 }
