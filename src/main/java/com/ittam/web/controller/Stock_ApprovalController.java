@@ -2,6 +2,7 @@ package com.ittam.web.controller;
 
 import com.ittam.web.command.ITAssetsVO;
 import com.ittam.web.command.StockApprovalVO;
+import com.ittam.web.command.UserRequestVO;
 import com.ittam.web.stock_approval.service.Stock_approvalService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -20,17 +21,17 @@ public class Stock_ApprovalController {
     @Autowired
     private Stock_approvalService stock_approvalService;
 
-    private String randomString(int length) {
-        String characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-        StringBuilder sb = new StringBuilder(length);
-        Random rd = new Random();
-
-        for(int i = 0; i< length; i++) {
-            sb.append(characters.charAt(rd.nextInt(characters.length())));
-        }
-
-        return sb.toString();
-    }
+//    private String randomString(int length) {
+//        String characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+//        StringBuilder sb = new StringBuilder(length);
+//        Random rd = new Random();
+//
+//        for(int i = 0; i< length; i++) {
+//            sb.append(characters.charAt(rd.nextInt(characters.length())));
+//        }
+//
+//        return sb.toString();
+//    }
 
     @GetMapping("/getStockApprovalList")
     public ResponseEntity<List<StockApprovalVO>> getStockApprovalList() {
@@ -45,8 +46,9 @@ public class Stock_ApprovalController {
         System.out.println(itemData.toString());
         ITAssetsVO vo = new ITAssetsVO();
         StockApprovalVO vo2 = new StockApprovalVO();
+        UserRequestVO vo3 = new UserRequestVO();
         int data = 0;
-        if("판매".equals((String) itemData.get("appro_kind")) || "수리".equals((String) itemData.get("appro_kind"))) {
+        if("폐기".equals((String) itemData.get("appro_kind")) || "수리".equals((String) itemData.get("appro_kind"))) {
             vo2.setAppro_num((int)itemData.get("appro_num"));
             stock_approvalService.ApprovY(vo2);
             vo.setAssets_status((String) itemData.get("appro_kind"));
@@ -55,8 +57,9 @@ public class Stock_ApprovalController {
         }else if("구매".equals((String) itemData.get("appro_kind"))) {
             vo2.setAppro_num((int)itemData.get("appro_num"));
             stock_approvalService.ApprovY(vo2);
-            stock_approvalService.updateList(vo);
-
+//            stock_approvalService.updateList(vo);
+            vo3.setUserq_num((int)itemData.get("userq_num"));
+            stock_approvalService.finalyn(vo3);
         }
 
 
@@ -71,7 +74,7 @@ public class Stock_ApprovalController {
         vo.setAssets_num((int) requestData.get("assets_num"));
         vo.setCategory_num((int) requestData.get("category_num"));
         vo.setAppro_title((String) requestData.get("appro_title"));
-        vo.setAsset_seriel(randomString(4) + "-" + randomString(4) + "-" + randomString(4));
+//        vo.setAsset_seriel(randomString(4) + "-" + randomString(4) + "-" + randomString(4));
         vo.setAppro_comment((String) requestData.get("appro_comment"));
         vo.setAppro_kind((String) requestData.get("assets_status"));
 

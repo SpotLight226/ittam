@@ -17,16 +17,15 @@
 
     <insert id="statusUpdate">
         insert into STOCK_APPROVAL(
-            username, assets_num, category_num , appro_title, appro_date, appro_count, asset_seriel, appro_comment, appro_kind, appro_yn
+            username, assets_num, category_num , appro_title, appro_date, appro_comment, appro_kind, appro_yn
         ) VALUES (
-            #{username}, #{assets_num}, #{category_num} , #{appro_title}, now(), 1 , #{asset_seriel}, #{appro_comment}, #{appro_kind}, "N"
+            #{username}, #{assets_num}, #{category_num} , #{appro_title}, now(), #{appro_comment}, #{appro_kind}, "N"
         )
     </insert>
 
-    <update id="updateList">
-        UPDATE ITASSETS
-        SET APPRO_YN = 'Y'
-        WHERE assets_num = (SELECT max_asset_num FROM (SELECT MAX(assets_num) AS max_asset_num FROM ITASSETS) AS tmp)
-
+    <update id="finalyn">
+        update USER_REQUEST set userq_yn = '최종구매승인' where userq_num = #{userq_num}
     </update>
+
+
 </mapper>

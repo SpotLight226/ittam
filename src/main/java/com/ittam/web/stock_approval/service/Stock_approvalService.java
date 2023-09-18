@@ -2,6 +2,7 @@ package com.ittam.web.stock_approval.service;
 
 import com.ittam.web.command.ITAssetsVO;
 import com.ittam.web.command.StockApprovalVO;
+import com.ittam.web.command.UserRequestVO;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -17,5 +18,5 @@ public interface Stock_approvalService {
 
     public int statusUpdate(StockApprovalVO vo);
 
-    public int updateList(ITAssetsVO vo);
+    public int finalyn(UserRequestVO vo3);
 }

@@ -18,12 +18,12 @@ public class StockApprovalVO {
     private int category_num;
     private String appro_title;
     private Timestamp appro_date;
-    private int appro_count;
-    private String asset_seriel;
+//    private int appro_count;
+//    private String asset_seriel;
     private String appro_comment;
     private String appro_kind;
     private String appro_yn;
     private Timestamp appro_okdate;
-
+    private int userq_num;
 
 }

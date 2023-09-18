@@ -21,7 +21,7 @@ public class ITAssetsVO {
     private int spec_num;
     private String username;
     private Timestamp add_date;
-    private String appro_yn;
+
 
     //카테고리 네임
     private String category_name;
