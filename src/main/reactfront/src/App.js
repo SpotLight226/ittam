@@ -1,3 +1,4 @@
+
 import Layout from "./pages/Layout";
 import Header from "./component/Header";
 import Sidebar from "./component/Sidebar";
@@ -95,18 +96,21 @@ function App() {
           <Route path="/itassets/detail" element={<AssetDetail />} />
           <Route path="/adminitassets" element={<ITAssets />} />
           <Route path="itassetsapproval" element={<ITAssetsApproval />} />
-          <Route path="/adminMain" element={<AdminMain />} />
-          <Route path="/mypage" element={<Mypage />} />
-          <Route path="/reports" element={<Reports />} />
-          <Route path="/userMain" element={<UserMain />} />
-          <Route path="/returnExchange" element={<ReturnExchange />} />
-          <Route path="/userMain_using" element={<UserMain_using />} />
-          <Route path="/userMain_request" element={<UserMain_request />} />
+
+            <Route path="/admin/adminMain" element={<AdminMain />} />
+            <Route path="/mypage" element={<Mypage />} />
+            <Route path="/admin/reports" element={<Reports />} />
+            <Route path="/user/userMain" element={<UserMain />} />
+            <Route path="/admin/returnExchange" element={<ReturnExchange />} />
+            <Route path="/user/userMain_using" element={<UserMain_using />} />
+            <Route path="/user/userMain_request" element={<UserMain_request />} />
+
           <Route path="/:page/:subPage/*" element={<Users />} />
         </Routes>
       </BrowserRouter>
     </userInfoContext.Provider>
   );
+
 }
 
 export default App;

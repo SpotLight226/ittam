@@ -137,6 +137,11 @@ public class MainPageServiceImpl implements MainPageService{
     }
 
     @Override
+    public void exchangeAsset_assetlog(Map<String, Object> map) {
+        mainPageMapper.exchangeAsset_assetlog(map);
+    }
+
+    @Override
     public List<UserRequestVO> getMyRequestList(String username) {
         return mainPageMapper.getMyRequestList(username);
 
@@ -150,6 +155,26 @@ public class MainPageServiceImpl implements MainPageService{
     @Override
     public void registLeaveReq(String username) {
         mainPageMapper.registLeaveReq(username);
+    }
+
+    @Override
+    public Integer getMyPcCnt(String username) {
+        return mainPageMapper.getMyPcCnt(username);
+    }
+
+    @Override
+    public Integer getMySwCnt(String username) {
+        return mainPageMapper.getMySwCnt(username);
+    }
+
+    @Override
+    public Integer getMyEtcCnt(String username) {
+        return mainPageMapper.getMyEtcCnt(username);
+    }
+
+    @Override
+    public Integer getMyServerCnt(String username) {
+        return mainPageMapper.getMyServerCnt(username);
     }
 
 

@@ -176,9 +176,9 @@ function LoginHome (){
           alert("로그인 성공");
           //window.location.href = "/";
           if(role === "ROLE_USER"){
-          window.location.href = "/userMain";
+          window.location.href = "/user/userMain";
           } else if(role === "ROLE_ADMIN" || role === "ROLE_HIGH_ADMIN"){
-            window.location.href = "/adminMain";
+            window.location.href = "/admin/adminMain";
           }
       } else {
         alert("로그인 실패");

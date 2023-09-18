@@ -11,6 +11,14 @@ function UserMain() {
 
   const [username, setUsername] = useState('');
   const [userCnt, setUserCnt] = useState({});
+  const [myAssetChartCnt, setMyAssetChartCnt] = useState();
+
+  const getMyAssetChartCnt = (username) => {
+    axios.get("/mainPage/getMyAssetChartCnt", {params: {username, username}})
+          .then(response => setMyAssetChartCnt(response.data))
+          .catch(error => console.log(error))
+  }
+
 
   const getUserCnt = (username) => {
     axios.get("/mainPage/getUserCnt", {
@@ -25,6 +33,7 @@ function UserMain() {
       setUsername(username);
     }
     getUserCnt(username);
+    getMyAssetChartCnt(username);
 
   },[])
 
@@ -34,12 +43,11 @@ function UserMain() {
     <main id="main" className="main">
 
       <div className="pagetitle">
-        <h1>Page Title</h1>
+        <h1>사원 홈</h1>
         <nav>
           <ol className="breadcrumb">
-            <li className="breadcrumb-item"><a href="index.html">Home</a></li>
-            <li className="breadcrumb-item">Components</li>
-            <li className="breadcrumb-item active">Breadcrumbs</li>
+            <li className="breadcrumb-item active"><Link to="/user/userMain">Home</Link></li>
+            
           </ol>
         </nav>
       </div>
@@ -47,7 +55,7 @@ function UserMain() {
       <section className="contact">
         <div className="row">
           <div className="col-lg-6">
-            <Link to="/userMain_using">
+            <Link to="/user/userMain_using">
               <div className="info-box card">
                 <i className="bi bi-check2-square"></i>
                 <h3>내가 사용 중인 자산</h3>
@@ -57,7 +65,7 @@ function UserMain() {
           </div>
           
           <div className="col-lg-6">
-            <Link to="/userMain_request">
+            <Link to="/user/userMain_request">
               <div className="info-box card">
                 <i className="bi bi-clipboard-check"></i>
                 <h3>내 사용/구매신청 목록</h3>
@@ -76,26 +84,26 @@ function UserMain() {
 
       <section className="section">
         <div className="row">
-          <div className="col-lg-3">
+          <div className="col-lg-6">
 
             <div className="card">
               <div className="card-body">
                 <h5 className="card-title" style={{fontWeight: "800"}}>나의 자산 현황</h5>
-                <DounutChart_user />
+                {myAssetChartCnt!==undefined && <DounutChart_user myAssetChartCnt={myAssetChartCnt}/>}
               </div>
             </div>
 
           </div>
-          <div className="col-lg-3">
+          {/* <div className="col-lg-3">
 
             <div className="card">
               <div className="card-body">
                 <h5 className="card-title" style={{fontWeight: "800"}}>나의 자산 현황</h5>
-                <DounutChart_user />
+                
               </div>
             </div>
 
-          </div>
+          </div> */}
 
           <div className="col-lg-6">
 

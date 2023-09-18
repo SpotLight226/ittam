@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ittam.web.reports.service.ReportsMapper">
+    <select id="allUsersNum">
+        select count(*) from USER
+    </select>
+    <select id="allAssetsNum">
+        select count(*) from ITASSETS where ASSETS_STATUS != '폐기'
+    </select>
+    <select id="usingAssetsNum">
+        select count(*) from ITASSETS where ASSETS_STATUS = '사용중'
+    </select>
+
+<!--  /////////////////////////////////////////////////////////////////////  -->
+    <select id="getDesignNum">
+        select count(*) from USER where USER_DEPART = '디자인'
+    </select>
+    <select id="getDevNum">
+        select count(*) from USER where USER_DEPART = '개발'
+    </select>
+    <select id="getEngNum">
+        select count(*) from USER where USER_DEPART = '엔지니어링'
+    </select>
+    <select id="getFinNum">
+        select count(*) from USER where USER_DEPART = '재무'
+    </select>
+    <select id="getRndNum">
+        select count(*) from USER where USER_DEPART = '연구개발'
+    </select>
+    <select id="getPurNum">
+        select count(*) from USER where USER_DEPART = '구매'
+    </select>
+    <select id="getSalesNum">
+        select count(*) from USER where USER_DEPART = '영업'
+    </select>
+    <select id="getMarkNum">
+        select count(*) from USER where USER_DEPART = '마케팅'
+    </select>
+    <select id="getHrNum">
+        select count(*) from USER where USER_DEPART = '인사'
+    </select>
+    <select id="getProdNum">
+        select count(*) from USER where USER_DEPART = '생산'
+    </select>
+    <select id="getAssetStickNum">
+        SELECT count(*) FROM ittam.ITASSETS as it
+                                 left join GROUP_CATEGORY as gc on it.CATEGORY_NUM = gc.CATEGORY_NUM
+        where Month(ADD_DATE) <![CDATA[<=]]> MONTH(DATE_SUB(NOW(), INTERVAL #{n} MONTH)) and CATEGORY_PARENT_NUM = #{category_num};
+    </select>
+    <select id="getCPUNum">
+        SELECT count(*)
+        FROM ITASSETS a
+                 LEFT JOIN PCSPEC pc ON (a.assets_name LIKE '%노트북%' OR a.assets_name LIKE '%데스크탑%') AND a.spec_num = pc.spec_num
+                 LEFT JOIN SWSPEC sw ON (a.assets_name LIKE '%Microsoft Office%' OR a.assets_name LIKE '%파워포인트%' OR a.assets_name LIKE '엑셀' OR a.assets_name LIKE '워드' OR a.assets_name LIKE '한글과컴퓨터' OR a.assets_name LIKE '인텔리제이' ) AND a.spec_num = sw.spec_num
+                 LEFT JOIN SERVERSPEC sv ON (a.assets_name LIKE '%서버용하드%') AND a.spec_num = sv.spec_num
+                 LEFT JOIN ETCSPEC etc ON a.spec_num = etc.spec_num AND a.assets_name NOT LIKE '%노트북%' AND a.assets_name NOT LIKE '%데스크탑%' AND a.assets_name NOT LIKE '%서버용하드%' AND a.assets_name NOT LIKE '%Microsoft Office%' AND a.assets_name NOT LIKE '%파워포인트%' AND a.assets_name NOT LIKE '%워드%' AND a.assets_name NOT LIKE '%한글과컴퓨터%' AND a.assets_name NOT LIKE '%인텔리제이%'
+        where SPEC_CPU like CONCAT('%', #{cpu}, '%')
+
+    </select>
+    <select id="getGPUNum">
+        SELECT count(*)
+        FROM ITASSETS a
+        LEFT JOIN PCSPEC pc ON (a.assets_name LIKE '%노트북%' OR a.assets_name LIKE '%데스크탑%') AND a.spec_num = pc.spec_num
+        LEFT JOIN SWSPEC sw ON (a.assets_name LIKE '%Microsoft Office%' OR a.assets_name LIKE '%파워포인트%' OR a.assets_name LIKE '엑셀' OR a.assets_name LIKE '워드' OR a.assets_name LIKE '한글과컴퓨터' OR a.assets_name LIKE '인텔리제이' ) AND a.spec_num = sw.spec_num
+        LEFT JOIN SERVERSPEC sv ON (a.assets_name LIKE '%서버용하드%') AND a.spec_num = sv.spec_num
+        LEFT JOIN ETCSPEC etc ON a.spec_num = etc.spec_num AND a.assets_name NOT LIKE '%노트북%' AND a.assets_name NOT LIKE '%데스크탑%' AND a.assets_name NOT LIKE '%서버용하드%' AND a.assets_name NOT LIKE '%Microsoft Office%' AND a.assets_name NOT LIKE '%파워포인트%' AND a.assets_name NOT LIKE '%워드%' AND a.assets_name NOT LIKE '%한글과컴퓨터%' AND a.assets_name NOT LIKE '%인텔리제이%'
+        where SPEC_GPU like CONCAT('%', #{gpu}, '%')
+
+    </select>
+</mapper>

@@ -24,6 +24,7 @@ function ReqDetailModal({ setOpenReqDetailModal, username, myRequestList, userq_
 
 
   const cancelReq_btn = () => {
+    
     if(window.confirm('정말 요청을 취소하시겠습니까?')) {
 
     axios.delete("/mainPage/deleteUsingPerchaseReq", {params: {userq_num: thisList().userq_num}})
@@ -93,16 +94,41 @@ function ReqDetailModal({ setOpenReqDetailModal, username, myRequestList, userq_
 
 
 
-              <div className="row mb-3 userModalAsk-btn">
+              {/* <div className="row mb-3 userModalAsk-btn">
                 <label className="col-sm-2 col-form-label"></label>
+
                 <div className="col-sm-10">
+                {
+                  thisList().userq_yn.includes('승인') || thisList().userq_yn.includes('반려') ? 
+                  <button type="button"  className="btn btn-primary" style={{marginRight: '0px', backgroundColor: 'gray', border: 'gray', width: '300px'}} onClick={() => { setOpenReqDetailModal(false)}}>처리완료</button>
+                  :
+                  <>
                   <button type="button" className="btn btn-primary" style={{ marginRight: '10px', backgroundColor: 'gray', border: 'gray' }} onClick={() => { setOpenReqDetailModal(false)}}>뒤로가기</button>
-
                   <button type="submit" className="btn btn-primary" onClick={cancelReq_btn}>취소하기</button>
+                  </>
 
-                </div>
-              </div>
+                }
+                 </div>
+               </div> */}
 
+               <div className="footer" style={{paddingBottom: '5px'}}>
+               {
+                  thisList().userq_yn.includes('승인') || thisList().userq_yn.includes('반려') ? 
+                 
+                  <button  type="button" className="btn btn-primary" style={{backgroundColor: 'gray', width: '140px', border: 'none', marginLeft: '210px'}} disabled>처리완료</button>
+                  :
+                  <>
+                  <button type="button" className="btn btn-primary" style={{ marginRight: '10px', backgroundColor: 'gray', border: 'gray', marginLeft: '190px' }} onClick={() => { setOpenReqDetailModal(false)}}>뒤로가기</button>
+                  <button type="submit" className="btn btn-primary" onClick={cancelReq_btn}>취소하기</button>
+                  </>
+
+                }
+            
+
+            
+        </div>
+
+         
 
 
           </div>

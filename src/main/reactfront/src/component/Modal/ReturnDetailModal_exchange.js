@@ -36,7 +36,8 @@ function ReturnDetailModal({ setOpenModal_exchange, num, returnList, getreturnLi
   const exchangeAsset = (return_status) => {
     const exchangeForm = {
       assets_num_now: thisList().ASSETS_NUM,
-      assets_num_later: mustChoice,
+      assets_num_later: mustChoice.split(",")[0],
+      assets_detail_name_later: mustChoice.split(",")[1],
       username : thisList().username,
       return_num: thisList().RETURN_NUM,
       return_status: return_status
@@ -121,14 +122,14 @@ function ReturnDetailModal({ setOpenModal_exchange, num, returnList, getreturnLi
                   <option value="선택하기">선택하기</option>
                   {
                     selectAssetList.map((a, i) => {
-                          return <option key={i} value={a.ASSETS_NUM}>{a.ASSETS_NAME}|{a.ASSETS_DETAIL_NAME|a.ASSETS_NUM}</option>
+                          return <option key={i} value={`${a.ASSETS_NUM},${a.ASSETS_DETAIL_NAME}`}>{a.ASSETS_NAME}|{a.ASSETS_DETAIL_NAME}|{a.ASSETS_NUM}</option>
                     }
 
                     )
                   }
                 </select>
                           :
-                          <input type="text" className="form-control" disabled />
+                          <input type="text" className="form-control" value={`${thisList().ASSETS_NAME} | ${thisList().RETURN_ASSETS_DETAIL_NAME}`} disabled />
                   }
 
               </div>
