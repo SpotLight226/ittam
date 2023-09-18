@@ -32,10 +32,6 @@ export const UserOptionList = [
     name: "퇴사 신청일",
   },
   {
-    value: "detail",
-    name: "상세",
-  },
-  {
     value: "process",
     name: "처리",
   },

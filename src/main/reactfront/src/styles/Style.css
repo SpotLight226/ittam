@@ -13,7 +13,7 @@
 @import "./Sidebar.css";
 @import "./ApproveList.css";
 @import "./Login.css";
-@import "./UserReg.css";
+@import "./User.css";
 
 :root {
   scroll-behavior: smooth;
@@ -842,7 +842,7 @@ h6 {
   transition: 0.3s;
 }
 
-.nav-category-sidebar-i{
+.nav-category-sidebar-i {
   font-size: 6px;
   margin-right: 8px;
   line-height: 0;
