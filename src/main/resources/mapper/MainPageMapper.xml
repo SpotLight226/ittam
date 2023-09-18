@@ -31,7 +31,7 @@
                  LEFT JOIN PCSPEC pc ON (a.assets_name LIKE '%노트북%' OR a.assets_name LIKE '%데스크탑%') AND a.spec_num = pc.spec_num
                  LEFT JOIN SWSPEC sw ON (a.assets_name LIKE '%Microsoft Office%' OR a.assets_name LIKE '%파워포인트%' OR a.assets_name LIKE '엑셀' OR a.assets_name LIKE '워드' OR a.assets_name LIKE '한글과컴퓨터' OR a.assets_name LIKE '인텔리제이' ) AND a.spec_num = sw.spec_num
                  LEFT JOIN SERVERSPEC sv ON (a.assets_name LIKE '%서버용하드%') AND a.spec_num = sv.spec_num
-                 LEFT JOIN ETCSPEC etc ON a.spec_num = etc.spec_num AND a.assets_name NOT LIKE '%노트북%' AND a.assets_name NOT LIKE '%데스크탑%' AND a.assets_name NOT LIKE '%서버용하드%' AND a.assets_name NOT LIKE '%Microsoft Office%' AND a.assets_name NOT LIKE '%파워포인트%' AND a.assets_name NOT LIKE '%워드%' AND a.assets_name NOT LIKE '%워드%' AND a.assets_name NOT LIKE '%한글과컴퓨터%' AND a.assets_name NOT LIKE '%인텔리제이%'
+                 LEFT JOIN ETCSPEC etc ON a.spec_num = etc.spec_num AND a.assets_name NOT LIKE '%노트북%' AND a.assets_name NOT LIKE '%데스크탑%' AND a.assets_name NOT LIKE '%서버용하드%' AND a.assets_name NOT LIKE '%Microsoft Office%' AND a.assets_name NOT LIKE '%파워포인트%' AND a.assets_name NOT LIKE '%워드%' AND a.assets_name NOT LIKE '%한글과컴퓨터%' AND a.assets_name NOT LIKE '%인텔리제이%'
                  LEFT JOIN STOCK_RETURN sr on a.ASSETS_NUM = sr.ASSETS_NUM
         where a.CATEGORY_NUM= #{category_num} and a.ASSETS_STATUS = '사용가능';
     </select>
@@ -62,7 +62,7 @@
                  LEFT JOIN PCSPEC pc ON (a.assets_name LIKE '%노트북%' OR a.assets_name LIKE '%데스크탑%') AND a.spec_num = pc.spec_num
                  LEFT JOIN SWSPEC sw ON (a.assets_name LIKE '%Microsoft Office%' OR a.assets_name LIKE '%파워포인트%' OR a.assets_name LIKE '엑셀' OR a.assets_name LIKE '워드' OR a.assets_name LIKE '한글과컴퓨터' OR a.assets_name LIKE '인텔리제이' ) AND a.spec_num = sw.spec_num
                  LEFT JOIN SERVERSPEC sv ON (a.assets_name LIKE '%서버용하드%') AND a.spec_num = sv.spec_num
-                 LEFT JOIN ETCSPEC etc ON a.spec_num = etc.spec_num AND a.assets_name NOT LIKE '%노트북%' AND a.assets_name NOT LIKE '%데스크탑%' AND a.assets_name NOT LIKE '%서버용하드%' AND a.assets_name NOT LIKE '%Microsoft Office%' AND a.assets_name NOT LIKE '%파워포인트%' AND a.assets_name NOT LIKE '%워드%' AND a.assets_name NOT LIKE '%워드%' AND a.assets_name NOT LIKE '%한글과컴퓨터%' AND a.assets_name NOT LIKE '%인텔리제이%'
+                 LEFT JOIN ETCSPEC etc ON a.spec_num = etc.spec_num AND a.assets_name NOT LIKE '%노트북%' AND a.assets_name NOT LIKE '%데스크탑%' AND a.assets_name NOT LIKE '%서버용하드%' AND a.assets_name NOT LIKE '%Microsoft Office%' AND a.assets_name NOT LIKE '%파워포인트%' AND a.assets_name NOT LIKE '%워드%' AND a.assets_name NOT LIKE '%한글과컴퓨터%' AND a.assets_name NOT LIKE '%인텔리제이%'
                  LEFT JOIN STOCK_RETURN sr on a.ASSETS_NUM = sr.ASSETS_NUM
         where a.username=#{username}
     </select>
@@ -152,11 +152,14 @@
     </select>
 
     <update id="exchangeAsset_exchange">
-        update ITASSETS set assets_status='사용중', username=#{username} where assets_num = #{assets_num_later}
+        update ITASSETS set assets_status='사용중', username=#{username}, rent_date=now() where assets_num = #{assets_num_later}
     </update>
 
     <update id="exchangeAsset_cancel">
         update ITASSETS set assets_status='사용가능', username="" where assets_num = #{assets_num_now}
+    </update>
+    <update id="exchangeAsset_assetlog">
+        update STOCK_RETURN set RETURN_ASSETS_DETAIL_NAME=#{assets_detail_name_later} where return_num = #{return_num}
     </update>
     <select id="getMyRequestList">
         select * from USER_REQUEST where username = #{username} ORDER BY userq_regdate DESC;
@@ -167,6 +170,26 @@
     <update id="registLeaveReq">
         update USER set USER_LEAVE_YN = 'Y', USER_LEAVEDATE = now() where username = #{username}
     </update>
+    <select id="getMyPcCnt">
+        select count(*) from ITASSETS as it
+        left join GROUP_CATEGORY as gc on it.CATEGORY_NUM = gc.CATEGORY_NUM
+        where username = #{username} and CATEGORY_PARENT_NUM = 1;
+    </select>
+    <select id="getMySwCnt">
+        select count(*) from ITASSETS as it
+        left join GROUP_CATEGORY as gc on it.CATEGORY_NUM = gc.CATEGORY_NUM
+        where username = #{username} and CATEGORY_PARENT_NUM = 2;
+    </select>
+    <select id="getMyEtcCnt">
+        select count(*) from ITASSETS as it
+        left join GROUP_CATEGORY as gc on it.CATEGORY_NUM = gc.CATEGORY_NUM
+        where username = #{username} and CATEGORY_PARENT_NUM = 3;
+    </select>
+    <select id="getMyServerCnt">
+        select count(*) from ITASSETS as it
+        left join GROUP_CATEGORY as gc on it.CATEGORY_NUM = gc.CATEGORY_NUM
+        where username = #{username} and CATEGORY_PARENT_NUM = 4;
+    </select>
 
 
 

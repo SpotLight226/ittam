@@ -8,13 +8,13 @@ function Sidebar() {
     <aside id="sidebar" className="sidebar">
       <ul className="sidebar-nav" id="sidebar-nav">
         <li className="nav-item">
-          <Link to="/userMain" className="nav-link">
+        <Link to="/user/userMain" className="nav-link">
             <i className="bi bi-grid"></i>
             <span>사원메인페이지</span>
           </Link>
         </li>
         <li className="nav-item">
-          <Link to="/adminMain" className="nav-link">
+          <Link to="/admin/adminMain" className="nav-link">
             <i className="bi bi-grid"></i>
             <span>관리자메인페이지</span>
           </Link>
@@ -313,6 +313,12 @@ function Sidebar() {
           </ul>
         </li>
         {/* <!-- End Icons Nav --> */}
+        <li className="nav-item">
+          <Link to="admin/reports" className="nav-link collapsed">
+            <i className="bi bi-bar-chart"></i>
+            <span>대시보드</span>
+          </Link>
+        </li>
 
         <li className="nav-heading">설정</li>
 
