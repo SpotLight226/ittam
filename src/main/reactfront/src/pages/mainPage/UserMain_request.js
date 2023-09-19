@@ -5,6 +5,7 @@ import {Link} from "react-router-dom";
 import axios from "axios";
 import ReqDetailModal from "../../component/Modal/ReqDetailModal";
 function UserMain_request() {
+  const token = localStorage.getItem("token");
 
   const [cancel, setCancel] = useState("");
   const [username, setUsername] = useState('');

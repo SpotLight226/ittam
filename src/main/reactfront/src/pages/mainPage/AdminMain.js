@@ -8,6 +8,8 @@ import UsingRateChart from "../../component/Chart/UsingRateChart";
 
 
 function AdminMain() {
+  const token = localStorage.getItem("token");
+
   const [dataa, setDataa] = useState({});
   //////////차~~~트///////////
   const [all, setAll] = useState();
@@ -36,9 +38,19 @@ function AdminMain() {
 
 
   const adminMainCnt = () => {
-    axios.get('/mainPage/adminMainCnt')
-        .then(response => {setDataa(response.data);})
-        .catch(error => console.log(error))
+        axios({
+          url: "/mainPage/adminMainCnt",
+          method: "get",
+          headers: {
+            Authorization : token
+          },
+        })
+            .then((res) => {
+              setDataa(res.data);
+            })
+            .catch((error) => {
+              alert("데이터 조회에 실패하였습니다.");
+            });
   }
 
   const getAssetChartAllNum = () => {
@@ -49,22 +61,51 @@ function AdminMain() {
           console.log(response.data);})
         .catch(error => console.log(error))
 
+        axios({
+          url: "/mainPage/getAssetChartAllNum",
+          method: "get",
+          headers: {
+            Authorization : token
+          },
+        })
+            .then((res) => {
+              setAll(res.data);
+            })
+            .catch((error) => {
+              alert("데이터 조회에 실패하였습니다.");
+            });
   }
   const getAssetChartUsingNum = () => {
-    axios.get("/mainPage/getAssetChartUsingNum")
-        .then(response => {
-          setUsing(response.data);
-          //setToday_using(response.data.today)
+        axios({
+          url: "/mainPage/getAssetChartUsingNum",
+          method: "get",
+          headers: {
+            Authorization : token
+          },
         })
-        .catch(error => console.log(error))
+            .then((res) => {
+              setUsing(res.data);
+            })
+            .catch((error) => {
+              alert("데이터 조회에 실패하였습니다.");
+            });
   }
   const getAssetChartDisposeNum = () => {
-    axios.get("/mainPage/getAssetChartDisposeNum")
-        .then(response => {
-          setDispose(response.data);
-          //setToday_dispose(response.data.today)
+ 
+        axios({
+          url: "/mainPage/getAssetChartDisposeNum",
+          method: "get",
+          headers: {
+            Authorization : token
+          },
         })
-        .catch(error => console.log(error))
+            .then((res) => {
+              setDispose(res.data);
+            })
+            .catch((error) => {
+              alert("데이터 조회에 실패하였습니다.");
+            });
+
   }
   const getRecentAssetsList = (nnn) => {
     axios.get("/mainPage/getRecentAssetsList", {params: {nnn: nnn}})
@@ -79,6 +120,20 @@ function AdminMain() {
     axios.get("/reports/getCardNum")
         .then(response => { setCardNum(response.data) })
         .catch(error => console.log(error))
+
+        axios({
+          url: "/reports/getCardNum",
+          method: "get",
+          headers: {
+            Authorization : token
+          },
+        })
+            .then((res) => {
+              setCardNum(res.data)            
+             })
+            .catch((error) => {
+              alert("데이터 조회에 실패하였습니다.");
+            });
   }
 
 

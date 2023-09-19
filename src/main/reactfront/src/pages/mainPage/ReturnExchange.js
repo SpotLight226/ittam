@@ -10,6 +10,7 @@ import {Link} from "react-router-dom";
 
 
 function ReturnExchange() {
+  const token = localStorage.getItem("token");
 
   const [returnList, setReturnList] = useState([]);
   const [openModal_return, setOpenModal_return] = useState(false);
@@ -19,9 +20,21 @@ function ReturnExchange() {
 
 
   const getreturnList = () => {
-    axios.get('/mainPage/returnList')
-        .then(response => { setReturnList(response.data); console.log(response.data); })
-        .catch(error => console.log(error))
+
+    axios({
+      url: "/mainPage/returnList",
+      method: "get",
+      headers: {
+        Authorization : token
+      },
+    })
+    .then((res) => {
+      setReturnList(res.data);
+      console.log(res.data);
+    })
+    .catch((error) => {
+      alert("데이터 조회에 실패하였습니다.");
+    });
   }
 
 
