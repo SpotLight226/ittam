@@ -30,7 +30,7 @@ function CPUChart({CPUNum}) {
 
   return (
       <div id="chart" style={{height: '190px'}}>
-        <ReactApexChart options={data.options} series={data.series} type="donut" width={346}/>
+        <ReactApexChart options={data.options} series={data.series} type="donut" width={360}/>
       </div>
   )
 }

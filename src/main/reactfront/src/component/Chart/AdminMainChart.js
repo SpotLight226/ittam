@@ -82,7 +82,7 @@ const month_n = (n) => {
     <div className="app">
 
       <div id="chart">
-         <ReactApexChart options={datas.options} series={datas.series} type="area" height={250} />
+         <ReactApexChart options={datas.options} series={datas.series} type="area" height={315} />
       </div>
 
 

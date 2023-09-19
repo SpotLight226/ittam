@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import ReturnDetailModal_return from '../../component/Modal/ReturnDetailModal_return';
 import ReturnDetailModal_exchange from "../../component/Modal/ReturnDetailModal_exchange";
+import {Link} from "react-router-dom";
 
 
 
@@ -14,6 +15,7 @@ function ReturnExchange() {
   const [openModal_return, setOpenModal_return] = useState(false);
   const [openModal_exchange, setOpenModal_exchange] = useState(false);
   const [num, setNum] = useState(null);
+  const [choice, setChoice] = useState('all');
 
 
   const getreturnList = () => {
@@ -35,7 +37,7 @@ function ReturnExchange() {
     let d = new Date(timestamp); // Convert the passed timestamp to milliseconds
     let yyyy = d.getFullYear();
     let mm = ('0' + (d.getMonth() + 1)).slice(-2);  // Months are zero based. Add leading 0.
-    let dd = ('0' + d.getDate()).slice(-2);         // Add leading 0.
+    let dd = ('0' + d.getDate()).slice(-2);  // Add leading 0.
     let hh = ('0' + d.getHours()).slice(-2);
     let min = ('0' + d.getMinutes()).slice(-2);     // Add leading 0.
 
@@ -51,11 +53,11 @@ function ReturnExchange() {
     <main id="main" className="main">
 
       <div className="pagetitle">
-        <h1>Page Title</h1>
+        <h1>교환 및 반납 요청</h1>
         <nav>
           <ol className="breadcrumb">
-            <li className="breadcrumb-item"><a href="index.html">메인페이지</a></li>
-            <li className="breadcrumb-item">교환 및 반납 요청</li>
+            <li className="breadcrumb-item"><Link to="/admin/adminMain">Home</Link></li>
+            <li className="breadcrumb-item active">교환 및 반납 요청</li>
             {/*<li className="breadcrumb-item active">Breadcrumbs</li>*/}
           </ol>
         </nav>
@@ -63,12 +65,18 @@ function ReturnExchange() {
 
       <div className="card">
         <div className="card-body">
-          <h5 className="card-title">교환 및 반납 요청건</h5>
+          <h5 className="card-title" style={{fontWeight: "800"}}>교환 및 반납 요청</h5>
+          <select className='choiceCatogory' style={{width:'150px', marginLeft: '1370px', marginBottom:'10px', height: '30px'}} onChange={(e) => setChoice(e.target.value)}>
+            <option value="all">전체목록</option>
+            <option value="exh">교환</option>
+            <option value="ret">반납</option>
+
+          </select>
 
           {/* <!-- Default Table --> */}
           <table className="table table-borderless" style={{ textAlign: 'center' }}>
             <thead>
-              <tr className="table-success">
+              <tr className="table-light">
                 <th scope="col">#</th>
                 <th scope="col">신청종류</th>
                 <th scope="col">사원명</th>
@@ -83,7 +91,15 @@ function ReturnExchange() {
             <tbody>
               {
                 
-                returnList.filter(a => a.RETURN_STATUS === '승인대기').map((a, i) => {
+                returnList.filter(a => a.RETURN_STATUS === '승인대기').filter(a => {
+                  if(choice === 'all') {
+                    return a.RETURN_KIND === '교환' || a.RETURN_KIND === '반납'
+                  } else if(choice === 'exh') {
+                    return a.RETURN_KIND === '교환'
+                  } else {
+                    return a.RETURN_KIND === '반납'
+                  }
+                }).map((a, i) => {
 
                   return <tr key={i}>
                     <th scope="row">{i + 1}</th>
@@ -102,7 +118,15 @@ function ReturnExchange() {
               }
 
               {
-                returnList.filter(a => a.RETURN_STATUS !== '승인대기').map((a, i) => {
+                returnList.filter(a => a.RETURN_STATUS !== '승인대기').filter(a => {
+                  if(choice === 'all') {
+                    return a.RETURN_KIND === '교환' || a.RETURN_KIND === '반납'
+                  } else if(choice === 'exh') {
+                    return a.RETURN_KIND === '교환'
+                  } else {
+                    return a.RETURN_KIND === '반납'
+                  }
+                }).map((a, i) => {
                   return <tr key={i}>
                   <th scope="row">{count + i + 1}</th>
                   <td>{a.RETURN_KIND}</td>

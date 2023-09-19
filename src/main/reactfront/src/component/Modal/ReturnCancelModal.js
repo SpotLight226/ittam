@@ -3,7 +3,7 @@ import "../../styles/MainPageStyle/ReturnDetailModal.css";
 import axios from "axios";
 
 
-function ReturnCancelModal({ setOpenCancelModal, myAssetList, myAssetNum, getMyAssetList, username}) {
+function ReturnCancelModal({ setOpenCancelModal, myAssetList, myAssetNum, getMyAssetList, username, setOpenCancelAlert}) {
 
   let thisList = () => {
     return myAssetList.find(x => x.ASSETS_NUM == myAssetNum)
@@ -30,7 +30,9 @@ function ReturnCancelModal({ setOpenCancelModal, myAssetList, myAssetNum, getMyA
         .then(response => {
           alert('요청이 취소되었습니다.');
           setOpenCancelModal(false);
-          getMyAssetList(username);})
+          getMyAssetList(username);
+          setOpenCancelAlert(true);
+        })
         .catch(error => console.log(error))
     }
 

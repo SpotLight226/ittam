@@ -4,6 +4,7 @@ import {useEffect, useState} from "react";
 import axios from "axios";
 import ReturnReqModal from '../../component/Modal/ReturnReqModal';
 import ReturnCancelModal from "../../component/Modal/ReturnCancelModal";
+import {Link} from "react-router-dom";
 function UserMain_using() {
   const [openModal, setOpenModal] = useState(false);
   const [openCancelMddal, setOpenCancelModal] = useState(false);
@@ -13,6 +14,8 @@ function UserMain_using() {
   const [myAssetList, setMyAssetList] = useState([]);
   const [username, setUsername] = useState('');
   const [choiceCatogory, setChoiceCategory] = useState("all");
+  const [openAlert, setOpenAlert] = useState(false);
+  const [openCancelAlert, setOpenCancelAlert] = useState(false);
 
   const todayTime = () => {
     let now = new Date();
@@ -24,7 +27,7 @@ function UserMain_using() {
     let hours = now.getHours();
     let minutes = now.getMinutes();
 
-    return todayYear + "-" + (todayMonth >= 10 ? todayMonth : '0'+todayMonth) + "-" + todayDate;
+    return todayYear + "년 " + todayMonth + "월 " + todayDate + "일 " + dayOfWeek + " " +  hours + "시 " + minutes + "분";
   }
 
   const rentDate = (rent) => {
@@ -86,6 +89,7 @@ function UserMain_using() {
 
           setOpenModal(false);
           getMyAssetList(username);
+          setOpenAlert(true)
 
         })
         .catch((error) => {
@@ -124,12 +128,23 @@ function UserMain_using() {
   return (
       <main id="main" className="main">
         {
-            openModal && <ReturnReqModal setOpenModal={setOpenModal} handleSubmit={handleSubmit} handleChange={handleChange} todayTime={todayTime} inputTitle={inputTitle} inputComment={inputComment} setInputComment={setInputComment} setInputTitle={setInputTitle} myAssetList={myAssetList} myAssetNum={myAssetNum} username={username}/>
+            openModal && <ReturnReqModal setOpenModal={setOpenModal} handleSubmit={handleSubmit} handleChange={handleChange} todayTime={todayTime} inputTitle={inputTitle} inputComment={inputComment} setInputComment={setInputComment} setInputTitle={setInputTitle} myAssetList={myAssetList} myAssetNum={myAssetNum} username={username} setOpenAlert={setOpenAlert}/>
         }
         {
-          openCancelMddal && <ReturnCancelModal setOpenCancelModal={setOpenCancelModal} myAssetList={myAssetList} myAssetNum={myAssetNum} getMyAssetList={getMyAssetList} username={username}/>
+          openCancelMddal && <ReturnCancelModal setOpenCancelModal={setOpenCancelModal} myAssetList={myAssetList} myAssetNum={myAssetNum} getMyAssetList={getMyAssetList} username={username} setOpenCancelAlert={setOpenCancelAlert}/>
         }
 
+        { openAlert && <div className="alert alert-success alert-dismissible fade show" role="alert">
+          <i className="bi bi-check-circle me-1"></i>
+          신청완료되었습니다. 승인을 기다려주세요
+          <button type="button" className="btn-close" aria-label="Close" onClick={() => setOpenAlert(false)}></button>
+        </div>}
+
+        {openCancelAlert && <div className="alert alert-warning alert-dismissible fade show" role="alert">
+          <i className="bi bi-exclamation-triangle me-1"></i>
+          신청이 취소되었습니다.
+          <button type="button" className="btn-close" aria-label="Close" onClick={() => {setOpenCancelAlert(false)}}></button>
+        </div>}
 
 
 
@@ -137,8 +152,8 @@ function UserMain_using() {
           <h1>나의 사용자산</h1>
           <nav>
             <ol className="breadcrumb">
-              <li className="breadcrumb-item"><a href="index.html">Home</a></li>
-              <li className="breadcrumb-item">나의 사용자산</li>
+              <li className="breadcrumb-item"><Link to="/user/userMain">Home</Link></li>
+              <li className="breadcrumb-item active">나의 사용자산</li>
 
             </ol>
           </nav>
@@ -161,7 +176,7 @@ function UserMain_using() {
             {/* <!-- Default Table --> */}
             <table className="table table-borderless" style={{textAlign: 'center'}}>
               <thead>
-              <tr className="table-info">
+              <tr className="table-light">
                 <th scope="col">#</th>
                 <th scope="col">자산종류</th>
                 <th scope="col">자산스펙</th>

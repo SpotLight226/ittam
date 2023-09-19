@@ -1,9 +1,6 @@
 package com.ittam.web.controller;
 
-import com.ittam.web.command.ITAssetsVO;
-import com.ittam.web.command.StockReturnVO;
-import com.ittam.web.command.UserRequestVO;
-import com.ittam.web.command.UserVO;
+import com.ittam.web.command.*;
 import com.ittam.web.mainPage.service.MainPageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -172,6 +169,20 @@ public class MainPageController {
         map.put("etcCnt", mainPageService.getMyEtcCnt(username));
         map.put("serverCnt", mainPageService.getMyServerCnt(username));
         return new ResponseEntity<>(map, HttpStatus.OK);
+    }
+
+    //최근자산 목록 불러오기
+    @GetMapping("/getRecentAssetsList")
+    public ResponseEntity<List<Map<String, Object>>> getRecentAssetsList(Integer nnn) {
+        List<Map<String, Object>> map = mainPageService.getRecentAssetsList(nnn);
+        return new ResponseEntity<>(map, HttpStatus.OK);
+    }
+
+    //최근 공지사항 목록 불러오기
+    @GetMapping("/getNoticeList")
+    public ResponseEntity<List<NoticeVO>> getNoticeList() {
+        List<NoticeVO> list = mainPageService.getNoticeList();
+        return new ResponseEntity<>(list, HttpStatus.OK);
     }
 
 }

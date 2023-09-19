@@ -33,6 +33,7 @@ import UserMain_using from "./pages/mainPage/UserMain_using";
 import UserMain_request from "./pages/mainPage/UserMain_request";
 import Users from "./pages/users/Users";
 import ITAssetsApproval from "./pages/itassets/ITAssetsApproval";
+import HighAdminMain from "./pages/mainPage/HighAdminMain";
 
 export const userInfoContext = React.createContext({
   // 기본 값 설정
@@ -104,6 +105,8 @@ function App() {
             <Route path="/admin/returnExchange" element={<ReturnExchange />} />
             <Route path="/user/userMain_using" element={<UserMain_using />} />
             <Route path="/user/userMain_request" element={<UserMain_request />} />
+            <Route path="/highadmin/highAdminMain" element={<HighAdminMain />} />
+
 
           <Route path="/:page/:subPage/*" element={<Users />} />
         </Routes>

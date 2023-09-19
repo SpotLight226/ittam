@@ -12,9 +12,24 @@ function UserMain() {
   const [username, setUsername] = useState('');
   const [userCnt, setUserCnt] = useState({});
   const [myAssetChartCnt, setMyAssetChartCnt] = useState();
+  const [noticeList, setNoticeList] = useState([]);
+
+
+  const noticedate = (notice) => {
+    let now = new Date(notice);
+    let todayYear = now.getFullYear();
+    let todayMonth = now.getMonth() + 1;
+    let todayDate = now.getDate();
+    const week = ['(일)', '(월)', '(화)', '(수)', '(목)', '(금)', '(토)'];
+    let dayOfWeek = week[now.getDay()];
+    let hours = now.getHours();
+    let minutes = now.getMinutes();
+
+    return todayYear + "-" + (todayMonth >= 10 ? todayMonth : '0'+todayMonth) + "-" + (todayDate >= 10 ? todayDate : '0'+todayDate);
+  }
 
   const getMyAssetChartCnt = (username) => {
-    axios.get("/mainPage/getMyAssetChartCnt", {params: {username, username}})
+    axios.get("/mainPage/getMyAssetChartCnt", {params: {username: username}})
           .then(response => setMyAssetChartCnt(response.data))
           .catch(error => console.log(error))
   }
@@ -26,6 +41,12 @@ function UserMain() {
     }).then(response => setUserCnt(response.data))
         .catch(error => console.log(error))
   }
+  const getNoticeList = () => {
+    axios.get("/mainPage/getNoticeList")
+        .then(response => {setNoticeList(response.data); console.log(response.data)})
+        .catch(error => console.log(error))
+  }
+
 
   useEffect(() => {
     const username = localStorage.getItem('username');
@@ -34,6 +55,7 @@ function UserMain() {
     }
     getUserCnt(username);
     getMyAssetChartCnt(username);
+    getNoticeList();
 
   },[])
 
@@ -47,10 +69,11 @@ function UserMain() {
         <nav>
           <ol className="breadcrumb">
             <li className="breadcrumb-item active"><Link to="/user/userMain">Home</Link></li>
-            
           </ol>
         </nav>
       </div>
+
+
 
       <section className="contact">
         <div className="row">
@@ -67,6 +90,7 @@ function UserMain() {
           <div className="col-lg-6">
             <Link to="/user/userMain_request">
               <div className="info-box card">
+
                 <i className="bi bi-clipboard-check"></i>
                 <h3>내 사용/구매신청 목록</h3>
                 <span style={{ fontSize: '14px', color: "#777" }}>사용신청건: {userCnt.usingReq}건 | 구매신청건: {userCnt.buyReq}건</span>
@@ -74,13 +98,12 @@ function UserMain() {
               </div>
             </Link>
           </div>
-
-
         </div>
-
-
-
       </section>
+
+
+
+
 
       <section className="section">
         <div className="row">
@@ -89,7 +112,12 @@ function UserMain() {
             <div className="card">
               <div className="card-body">
                 <h5 className="card-title" style={{fontWeight: "800"}}>나의 자산 현황</h5>
-                {myAssetChartCnt!==undefined && <DounutChart_user myAssetChartCnt={myAssetChartCnt}/>}
+                {myAssetChartCnt!==undefined ? <DounutChart_user myAssetChartCnt={myAssetChartCnt}/> :
+                    <div className="d-flex justify-content-center">
+                      <div className="spinner-border text-primary" role="status">
+                        <span className="visually-hidden">Loading...</span>
+                      </div>
+                    </div>}
               </div>
             </div>
 
@@ -114,48 +142,25 @@ function UserMain() {
                   <thead>
                   <tr>
                     <th scope="col">#</th>
-                    <th scope="col">Name</th>
-                    <th scope="col">Position</th>
-                    <th scope="col">Age</th>
-                    <th scope="col">Start Date</th>
+                    <th scope="col">작성자</th>
+                    <th scope="col">제목</th>
+                    <th scope="col">등록일</th>
+                    <th scope="col">만료일</th>
                   </tr>
                   </thead>
                   <tbody>
-                  <tr>
-                    <th scope="row">1</th>
-                    <td>Brandon Jacob</td>
-                    <td>Designer</td>
-                    <td>28</td>
-                    <td>2016-05-25</td>
+                  {
+                    noticeList.map((a,i) => {
+                      return <tr key={i}>
+                    <th scope="row">{a.notice_num}</th>
+                    <td>{a.notice_name}</td>
+                    <td>{a.notice_title}</td>
+                    <td>{noticedate(a.notice_regdate)}</td>
+                    <td>{noticedate(a.notice_enddate)}</td>
                   </tr>
-                  <tr>
-                    <th scope="row">2</th>
-                    <td>Bridie Kessler</td>
-                    <td>Developer</td>
-                    <td>35</td>
-                    <td>2014-12-05</td>
-                  </tr>
-                  <tr>
-                    <th scope="row">3</th>
-                    <td>Ashleigh Langosh</td>
-                    <td>Finance</td>
-                    <td>45</td>
-                    <td>2011-08-12</td>
-                  </tr>
-                  <tr>
-                    <th scope="row">4</th>
-                    <td>Angus Grady</td>
-                    <td>HR</td>
-                    <td>34</td>
-                    <td>2012-06-11</td>
-                  </tr>
-                  <tr>
-                    <th scope="row">5</th>
-                    <td>Raheem Lehner</td>
-                    <td>Dynamic Division Officer</td>
-                    <td>47</td>
-                    <td>2011-04-19</td>
-                  </tr>
+                    })
+                  }
+
                   </tbody>
                 </table>
 
