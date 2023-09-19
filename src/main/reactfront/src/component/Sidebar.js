@@ -313,7 +313,7 @@ function Sidebar() {
         <li className="nav-heading">설정</li>
 
         <li className="nav-item">
-          <Link to="####" className="nav-link collapsed">
+          <Link to="/noticelist" className="nav-link collapsed">
             <i className="bi bi-person"></i>
             <span>공지사항</span>
           </Link>
