@@ -1,9 +1,6 @@
 package com.ittam.web.mainPage.service;
 
-import com.ittam.web.command.ITAssetsVO;
-import com.ittam.web.command.StockReturnVO;
-import com.ittam.web.command.UserRequestVO;
-import com.ittam.web.command.UserVO;
+import com.ittam.web.command.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -175,6 +172,16 @@ public class MainPageServiceImpl implements MainPageService{
     @Override
     public Integer getMyServerCnt(String username) {
         return mainPageMapper.getMyServerCnt(username);
+    }
+
+    @Override
+    public List<Map<String, Object>> getRecentAssetsList(Integer nnn) {
+        return mainPageMapper.getRecentAssetsList(nnn);
+    }
+
+    @Override
+    public List<NoticeVO> getNoticeList() {
+        return mainPageMapper.getNoticeList();
     }
 
 

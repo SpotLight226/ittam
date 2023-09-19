@@ -33,6 +33,7 @@ import UserMain_using from "./pages/mainPage/UserMain_using";
 import UserMain_request from "./pages/mainPage/UserMain_request";
 import Users from "./pages/users/Users";
 import ITAssetsApproval from "./pages/itassets/ITAssetsApproval";
+import HighAdminMain from "./pages/mainPage/HighAdminMain";
 import AssetRequestListPC from "./pages/itassets/AssetRequestListPC";
 import AssetRequestListSW from "./pages/itassets/AssetRequestListSW";
 import AssetRequestListSV from "./pages/itassets/AssetRequestListSV";
@@ -118,6 +119,8 @@ function App() {
             <Route path="/admin/returnExchange" element={<ReturnExchange />} />
             <Route path="/user/userMain_using" element={<UserMain_using />} />
             <Route path="/user/userMain_request" element={<UserMain_request />} />
+            <Route path="/highadmin/highAdminMain" element={<HighAdminMain />} />
+
 
           <Route path="/:page/:subPage/*" element={<Users />} />
 

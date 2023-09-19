@@ -29,6 +29,12 @@ function Sidebar() {
             <span>관리자메인페이지</span>
           </Link>
         </li>
+        <li className="nav-item">
+          <Link to="/highadmin/highAdminMain" className="nav-link">
+            <i className="bi bi-grid"></i>
+            <span>상위관리자메인페이지</span>
+          </Link>
+        </li>
 
         <li className="nav-item">
           <Link
@@ -306,7 +312,7 @@ function Sidebar() {
         <li className="nav-item">
           <Link to="admin/reports" className="nav-link collapsed">
             <i className="bi bi-bar-chart"></i>
-            <span>대시보드</span>
+            <span>리포트</span>
           </Link>
         </li>
 

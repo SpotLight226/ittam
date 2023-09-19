@@ -1,10 +1,8 @@
 package com.ittam.web.mainPage.service;
 
-import com.ittam.web.command.ITAssetsVO;
-import com.ittam.web.command.StockReturnVO;
-import com.ittam.web.command.UserRequestVO;
-import com.ittam.web.command.UserVO;
+import com.ittam.web.command.*;
 
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -41,6 +39,8 @@ public interface MainPageService {
     public Integer getMySwCnt(String username); //내가 사용하는 sw 개수
     public Integer getMyEtcCnt(String username); //내가 사용한느 주변기기 개수
     public Integer getMyServerCnt(String username); //내가 사용하는 서버 개수
+    public List<Map<String, Object>> getRecentAssetsList(Integer nnn); //최근 nnn개의 자산 리스트 가져오기
+    public List<NoticeVO> getNoticeList(); //최근 공지사항 목록
 
 
 }

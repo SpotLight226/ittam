@@ -15,7 +15,7 @@ function ReturnDetailModal({ setOpenModal_exchange, num, returnList, getreturnLi
   const reqTime = () => {
     let now = new Date(thisList().RETURN_DATE);
     let todayYear = now.getFullYear();
-    let todayMonth = now.getMonth();
+    let todayMonth = now.getMonth() + 1;
     let todayDate = now.getDate();
     const week = ['(일)', '(월)', '(화)', '(수)', '(목)', '(금)', '(토)'];
     let dayOfWeek = week[now.getDay()];

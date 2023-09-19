@@ -45,7 +45,7 @@ function Mypage() {
       setUsername(username);
     }
     getUserInfo(username);
-  }, [setUserInfo])
+  }, [userInfo])
 
 
   //////////////////최후의 방법 모달창을 새로 만든다!!!!!!!!!!!!///////////////////
