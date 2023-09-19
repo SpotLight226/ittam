@@ -33,6 +33,10 @@ import UserMain_using from "./pages/mainPage/UserMain_using";
 import UserMain_request from "./pages/mainPage/UserMain_request";
 import Users from "./pages/users/Users";
 import ITAssetsApproval from "./pages/itassets/ITAssetsApproval";
+import AssetRequestListPC from "./pages/itassets/AssetRequestListPC";
+import AssetRequestListSW from "./pages/itassets/AssetRequestListSW";
+import AssetRequestListSV from "./pages/itassets/AssetRequestListSV";
+import AssetRequestListETC from "./pages/itassets/AssetRequestListETC";
 
 export const userInfoContext = React.createContext({
   // 기본 값 설정
@@ -90,9 +94,13 @@ function App() {
           <Route path="/logout" element={<Logout />} />
 
           <Route path="/users" element={<UserList />} />
-          <Route path="/itassets" element={<AssetAllList />} />
-          <Route path="/itassets/use" element={<UseRequest />} />
-          <Route path="/itassets/purchase" element={<PurchaseRequest />} />
+
+          <Route path="/itassets" element={<AssetAllList/>} />
+          <Route path="/itassets/pc" element={<AssetRequestListPC/>} />
+          <Route path="/itassets/sw" element={<AssetRequestListSW/>} />
+          <Route path="/itassets/sv" element={<AssetRequestListSV/>} />
+          <Route path="/itassets/etc" element={<AssetRequestListETC/>} />
+
           <Route path="/itassets/detail" element={<AssetDetail />} />
           <Route path="/adminitassets" element={<ITAssets />} />
           <Route path="itassetsapproval" element={<ITAssetsApproval />} />
