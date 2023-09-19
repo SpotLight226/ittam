@@ -7,9 +7,9 @@ function ITAssetsInsert({
   selectedParent,
   handleParentChange,
   categories,
-  closeReset,
+  modalClose,
 }) {
-  const username = localStorage.getItem("username");
+  const username = localStorage.getItem('username');
   return (
     <div>
       <div className="modal-header">
@@ -19,6 +19,7 @@ function ITAssetsInsert({
           className="btn-close"
           data-bs-dismiss="modal"
           aria-label="Close"
+          onClick={modalClose}
         ></button>
       </div>
       {/* 모달 안쪽 내용 */}
@@ -654,7 +655,7 @@ function ITAssetsInsert({
               </div>
             </>
           )}
-          {selectedType !== '선택하지않음' && (
+          {/* {selectedType !== '선택하지않음' && (
             <>
               <div className="row mb-3">
                 <label
@@ -716,7 +717,7 @@ function ITAssetsInsert({
                 </div>
               </div>
             </>
-          )}
+          )} */}
 
           <div className="row mb-3">
             <div className="col-sm-10 text-end">
@@ -724,7 +725,7 @@ function ITAssetsInsert({
                 type="button"
                 className="btn btn-secondary"
                 data-bs-dismiss="modal"
-                onClick={closeReset}
+                onClick={modalClose}
               >
                 닫기
               </button>

@@ -2,6 +2,7 @@ package com.ittam.web.stock_approval.service;
 
 import com.ittam.web.command.ITAssetsVO;
 import com.ittam.web.command.StockApprovalVO;
+import com.ittam.web.command.UserRequestVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -38,7 +39,14 @@ public class Stock_approvalServiceImp1 implements Stock_approvalService{
     }
 
     @Override
-    public int updateList(ITAssetsVO vo) {
-        return stockApprovalMapper.updateList(vo);
+    public int finalyn(UserRequestVO vo3) {
+        return stockApprovalMapper.finalyn(vo3);
     }
+
+    @Override
+    public int purchaseApproval(StockApprovalVO vo) {
+        return stockApprovalMapper.purchaseApproval(vo);
+    }
+
+
 }

@@ -34,6 +34,16 @@ import UserMain_request from "./pages/mainPage/UserMain_request";
 import Users from "./pages/users/Users";
 import ITAssetsApproval from "./pages/itassets/ITAssetsApproval";
 import HighAdminMain from "./pages/mainPage/HighAdminMain";
+import AssetRequestListPC from "./pages/itassets/AssetRequestListPC";
+import AssetRequestListSW from "./pages/itassets/AssetRequestListSW";
+import AssetRequestListSV from "./pages/itassets/AssetRequestListSV";
+import AssetRequestListETC from "./pages/itassets/AssetRequestListETC";
+import NoticeList from "./pages/notice/NoticeList";
+import NoticeWrite from "./pages/notice/NoticeWrite";
+import NoticeDetail from "./pages/notice/NoticeDetail";
+
+import NoticeUser from "./pages/notice/NoticeUser";
+import NoticeEdit from "./pages/notice/NoticeEdit";
 
 export const userInfoContext = React.createContext({
   // 기본 값 설정
@@ -91,9 +101,13 @@ function App() {
           <Route path="/logout" element={<Logout />} />
 
           <Route path="/users" element={<UserList />} />
-          <Route path="/itassets" element={<AssetAllList />} />
-          <Route path="/itassets/use" element={<UseRequest />} />
-          <Route path="/itassets/purchase" element={<PurchaseRequest />} />
+
+          <Route path="/itassets" element={<AssetAllList/>} />
+          <Route path="/itassets/pc" element={<AssetRequestListPC/>} />
+          <Route path="/itassets/sw" element={<AssetRequestListSW/>} />
+          <Route path="/itassets/sv" element={<AssetRequestListSV/>} />
+          <Route path="/itassets/etc" element={<AssetRequestListETC/>} />
+
           <Route path="/itassets/detail" element={<AssetDetail />} />
           <Route path="/adminitassets" element={<ITAssets />} />
           <Route path="itassetsapproval" element={<ITAssetsApproval />} />
@@ -109,6 +123,13 @@ function App() {
 
 
           <Route path="/:page/:subPage/*" element={<Users />} />
+
+          <Route path="/noticelist" element={<NoticeList />} />
+          <Route path="/noticewrite" element={<NoticeWrite />} />
+          <Route path="/noticedetail/:id/*" element={<NoticeDetail />} />
+          {/*<Route path="/noticedetailuser" element={<NoticeDetailUser />} />*/}
+          <Route path="/noticeuser" element={<NoticeUser />} />
+          <Route path="/noticeedit" element={<NoticeEdit />} />
         </Routes>
       </BrowserRouter>
     </userInfoContext.Provider>

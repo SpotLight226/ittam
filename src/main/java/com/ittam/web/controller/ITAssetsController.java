@@ -49,11 +49,11 @@ public class ITAssetsController {
         }
         iTAssetsService.deleteTable();
 
-        vo2.setAppro_title((String) requestData.get("appro_title"));
-        vo2.setUsername((String) requestData.get("username"));
-        vo2.setAppro_comment((String) requestData.get("appro_comment"));
-
-        iTAssetsService.purchaseYN(vo2);
+//        vo2.setAppro_title((String) requestData.get("appro_title"));
+//        vo2.setUsername((String) requestData.get("username"));
+//        vo2.setAppro_comment((String) requestData.get("appro_comment"));
+//
+//        iTAssetsService.purchaseYN(vo2);
         return new ResponseEntity<>(data, HttpStatus.OK);
     }
 

@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Map;
 
 @Service("userRequestService")
 public class UserRequestServiceImpl implements UserRequestService{
@@ -62,8 +63,15 @@ public class UserRequestServiceImpl implements UserRequestService{
     }
 
     @Override
-    public int UserRequestBuyApprove(int userq_NUM) {
-        return userRequestMapper.UserRequestBuyApprove(userq_NUM);
+    public int UserRequestBuyApprove(UserRequestVO vo) {
+
+        return userRequestMapper.UserRequestBuyApprove(vo);
+    }
+
+    @Override
+    public int UserRequestBuyApproveB(UserRequestVO vo) {
+        System.out.println(vo.toString());
+        return userRequestMapper.UserRequestBuyApproveB(vo);
     }
 
     @Override

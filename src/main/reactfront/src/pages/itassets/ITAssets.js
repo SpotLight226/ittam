@@ -6,6 +6,7 @@ import Pagenation from '../../component/Pagenation';
 import ITAssetsInsert from './ITAssetsInsert';
 import ITAssetsInfo from './ITAssetsInfo';
 import ITAssetsModify from './ITAssetsModify';
+import PurchaseApproval from './PurchaseApproval';
 
 function ITAssets() {
   const [selectedType, setSelectedType] = useState('선택하지않음');
@@ -98,7 +99,6 @@ function ITAssets() {
   };
   const sendModal = (category) => {
     setSelectCategory(category);
-    
   };
 
   const handleParentChange = (e) => {
@@ -272,6 +272,7 @@ function ITAssets() {
       setAssetstatus(selectedItem.assets_status);
     }
   }, [selectedItem]);
+  const username = localStorage.getItem('username');
 
   const updateSubmit = async (e) => {
     e.preventDefault();
@@ -279,7 +280,7 @@ function ITAssets() {
     const updatedStatus = {
       assets_status: assetstatus,
       assets_num: selectedItem ? selectedItem.assets_num : '',
-      username: formStatus.username,
+      username: username || '',
       appro_title: formStatus.appro_title,
       appro_comment: formStatus.appro_comment,
       category_num: selectedItem ? selectedItem.category_num : '',
@@ -308,42 +309,114 @@ function ITAssets() {
     }
   };
   /* 모달창 닫을때 리셋 */
-  const closeReset = () => {
-    setSelectedType('선택하지않음');
-    setSelectedParent('선택하지않음');
-  };
+  // const closeReset = () => {
+  //   setSelectedType('선택하지않음');
+  //   setSelectedParent('선택하지않음');
+  // };
   const statusReset = () => {
     setAssetstatus(selectedItem ? selectedItem.assets_status : '');
+    setFormStatus({
+      appro_title: '',
+      appro_comment: '',
+    });
+  };
+
+  const approveReset = () => {
+    setSelectedType('선택하지않음');
+    setSelectedParent('선택하지않음');
+    setFormapproval({
+      appro_title: '',
+      appro_comment: '',
+    });
   };
   /* 최종구매승인개수 */
   const [count, setCount] = useState(0);
-  const [itcount,setItcount] = useState(0);
-useEffect(() => { 
-   axios.get("/assets/yncount") 
-        .then(response => {
-          setCount(response.data);
-        });
-      }, []);
-useEffect(() => {
-  axios.get("/assets/itcount")
-       .then(response => {
-         setItcount(response.data);
-       })     
+  const [itcount, setItcount] = useState(0);
+  useEffect(() => {
+    axios.get('/assets/yncount').then((response) => {
+      setCount(response.data);
+    });
+  }, []);
+  useEffect(() => {
+    axios.get('/assets/itcount').then((response) => {
+      setItcount(response.data);
+    });
+  }, []);
 
-},[])      
-      console.log("개수:"+count);
-  console.log("자산개수"+itcount);
   const [isModalOpen1, setIsModalOpen1] = useState(false);
   function handleButtonClick(category) {
     if (count < itcount) {
-        // 모달창 열기
-        setIsModalOpen1(true);
-        sendModal(category);
+      // 모달창 열기
+      setIsModalOpen1(true);
+      sendModal(category);
     } else {
-        alert("최종관리자에게 구매승인을 받으세요.");
-        return;
+      alert('최종관리자에게 구매승인을 받으세요.');
+      return;
     }
-}
+  }
+  function modalClose() {
+    setIsModalOpen1(false);
+    setSelectedType('선택하지않음');
+    setSelectedParent('선택하지않음');
+  }
+  /* 구매요청 */
+  const [formapproval, setFormapproval] = useState({
+    username: username || '',
+    category_num: selectedType,
+    appro_title: '',
+    appro_comment: '',
+  });
+  const handleSelectChange1 = (e) => {
+    setSelectedType(e.target.value);
+
+    setFormapproval((prevData) => ({
+      category_num: e.target.value,
+      username: username || '',
+      appro_title: '',
+      appro_comment: '',
+    }));
+  };
+
+  const handleData = (e) => {
+    const { name, value } = e.target;
+    setFormapproval((prevData) => ({
+      ...prevData,
+      [name]: value,
+    }));
+  };
+  const purchaseSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const response = await axios.post(
+        '/stock/purchaseApproval',
+        formapproval
+      );
+      if (response.data) {
+        setFormapproval({
+          username: '',
+          category_num: '',
+          appro_title: '',
+          appro_comment: '',
+        });
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  /* 날씨 변환 */
+  function formatDate(dateString) {
+    if (!dateString || isNaN(new Date(dateString).getTime())) {
+      return ''; // 원하는 기본값으로 변경 가능
+    }
+
+    const dateObject = new Date(dateString);
+
+    const year = dateObject.getFullYear();
+    const month = String(dateObject.getMonth() + 1).padStart(2, '0');
+    const day = String(dateObject.getDate()).padStart(2, '0');
+
+    return `${year}년 ${month}월 ${day}일 `;
+  }
 
   return (
     <main id="main" className="main">
@@ -363,7 +436,11 @@ useEffect(() => {
       {/* 등록하기 모달창 */}
 
       {/* 등록하기 모달 정보 */}
-      <div className={`modal fade ${isModalOpen1 ? 'show' : ''}`} tabIndex="-1" style={{display: isModalOpen1 ? 'block' : 'none'}}>
+      <div
+        className={`modal fade ${isModalOpen1 ? 'show' : ''}`}
+        tabIndex="-1"
+        style={{ display: isModalOpen1 ? 'block' : 'none' }}
+      >
         <div className="modal-dialog">
           <div className="modal-content" style={{ width: '700px' }}>
             <ITAssetsInsert
@@ -379,11 +456,23 @@ useEffect(() => {
               handleParentChange={handleParentChange}
               selectedChild={selectedChild}
               categories={categories}
-              closeReset={closeReset}
+              modalClose={modalClose}
             />
           </div>
         </div>
       </div>
+      {/* 구매요청 */}
+      <PurchaseApproval
+        handleParentChange={handleParentChange}
+        selectedParent={selectedParent}
+        handleSelectChange={handleSelectChange}
+        selectedType={selectedType}
+        categories={categories}
+        handleData={handleData}
+        formapproval={formapproval}
+        purchaseSubmit={purchaseSubmit}
+        handleSelectChange1={handleSelectChange1}
+      />
       <section className="section">
         <div className="row">
           <div className="col-lg-12">
@@ -447,6 +536,16 @@ useEffect(() => {
                         onChange={(e) => setSearchInput(e.target.value)}
                         onKeyPress={handleSearchKeyPress}
                       />
+                      <button
+                        type="button"
+                        className="btn btn-primary"
+                        data-bs-toggle="modal"
+                        data-bs-target="#verticalycentered"
+                        onClick={() => sendModal(category)}
+                        style={{ marginLeft: '10px' }}
+                      >
+                        구매요청
+                      </button>
                       {/* <div className="text-end" style={{ marginBottom: '10px' }}> */}
                       <button
                         type="button"
@@ -486,6 +585,16 @@ useEffect(() => {
                           사용중인 사원번호
                         </Link>
                       </th>
+                      <th scope="col">
+                        <Link to="#" className="datatable-sorter">
+                          등록일
+                        </Link>
+                      </th>
+                      <th scope="col">
+                        <Link to="#" className="datatable-sorter">
+                          대여일
+                        </Link>
+                      </th>
 
                       <th scope="col">
                         <Link to="#" className="datatable-sorter">
@@ -519,6 +628,8 @@ useEffect(() => {
                           </td>
                           <td>{item.assets_status}</td>
                           <td>{item.username}</td>
+                          <td>{formatDate(item.add_date)}</td>
+                          <td>{formatDate(item.rent_date)}</td>
                           <td>
                             <button
                               type="button"

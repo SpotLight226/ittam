@@ -13,7 +13,7 @@ import java.time.LocalDate;
 @Builder
 public class UserRequestVO {
 
-    private Integer userq_num;
+    private int userq_num;
     private String username;
     private Integer category_num;
     private String userq_title;
