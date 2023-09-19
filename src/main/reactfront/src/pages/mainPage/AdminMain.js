@@ -48,19 +48,10 @@ function AdminMain() {
             .then((res) => {
               setDataa(res.data);
             })
-            .catch((error) => {
-              alert("데이터 조회에 실패하였습니다.");
-            });
+            .catch(error => console.log(error));
   }
 
   const getAssetChartAllNum = () => {
-     axios.get("/mainPage/getAssetChartAllNum")
-        .then(response => {
-          setAll(response.data);
-          //setToday_all(response.data.today);
-          console.log(response.data);})
-        .catch(error => console.log(error))
-
         axios({
           url: "/mainPage/getAssetChartAllNum",
           method: "get",
@@ -71,9 +62,7 @@ function AdminMain() {
             .then((res) => {
               setAll(res.data);
             })
-            .catch((error) => {
-              alert("데이터 조회에 실패하였습니다.");
-            });
+            .catch(error => console.log(error));
   }
   const getAssetChartUsingNum = () => {
         axios({
@@ -86,9 +75,7 @@ function AdminMain() {
             .then((res) => {
               setUsing(res.data);
             })
-            .catch((error) => {
-              alert("데이터 조회에 실패하였습니다.");
-            });
+            .catch(error => console.log(error));
   }
   const getAssetChartDisposeNum = () => {
  
@@ -102,24 +89,29 @@ function AdminMain() {
             .then((res) => {
               setDispose(res.data);
             })
-            .catch((error) => {
-              alert("데이터 조회에 실패하였습니다.");
-            });
+            .catch(error => console.log(error));
 
   }
   const getRecentAssetsList = (nnn) => {
-    axios.get("/mainPage/getRecentAssetsList", {params: {nnn: nnn}})
+
+    axios({
+      url: "/mainPage/getRecentAssetsList",
+      method: "get",
+      headers: {
+        Authorization : token
+      },
+      params: {
+        nnn: nnn
+      },
+    })
         .then(response => {
-            setRecentAssets(response.data);
-            console.log(response.data);
+          setRecentAssets(response.data);
+          console.log(response.data);
         })
         .catch((error => console.log(error)));
   }
 
   const getCardNum = () => {
-    axios.get("/reports/getCardNum")
-        .then(response => { setCardNum(response.data) })
-        .catch(error => console.log(error))
 
         axios({
           url: "/reports/getCardNum",
@@ -131,9 +123,7 @@ function AdminMain() {
             .then((res) => {
               setCardNum(res.data)            
              })
-            .catch((error) => {
-              alert("데이터 조회에 실패하였습니다.");
-            });
+            .catch(error => console.log(error));
   }
 
 
@@ -443,7 +433,7 @@ function AdminMain() {
 
                     <div className="card-body pb-0" style={{paddingTop: '20px'}}>
                      <Link to="/adminitassets"><h5 className="card-title" style={{fontWeight: "800", display: 'inline'}}>재고구매사항 <span>| 전체보기</span></h5></Link>
-                      <select style={{marginLeft: '1447px', display:'inline'}} onChange={(e) => {setNnn(parseInt(e.target.value));}}>
+                      <select style={{display:'inline', marginLeft: '10px'}} onChange={(e) => {setNnn(parseInt(e.target.value));}}>
                         <option value="5">5개</option>
                         <option value="7">7개</option>
                         <option value="10">10개</option>

@@ -23,8 +23,16 @@ function Mypage() {
 
 
   const getUserInfo = (username) => {
-    axios.get('mainPage/getUserInfo', {
-      params: {username: username}
+
+    axios({
+      url: "/mainPage/getUserInfo",
+      method :"get",
+      headers: {
+        Authorization : token
+      },
+      params: {
+        username: username
+      }
     }).then(response => {setUserInfo(response.data);
       setUser_name(response.data.user_name);
       setUser_depart(response.data.user_depart);
@@ -76,7 +84,14 @@ function Mypage() {
     }
     if(window.confirm("정말 수정하시겠습니까?")) {
 
-      axios.post('/mainPage/modifyProfile', modifyForm)
+      axios({
+        url: "/mainPage/modifyProfile",
+        method: "post",
+        headers: {
+          Authorization : token
+        },
+        data: modifyForm
+      })
           .then(response => {
             alert('수정되었습니다');
             console.log(response.data);
@@ -100,7 +115,7 @@ function Mypage() {
   return (
       <main id="main" className="main">
 
-        {openLeaveModal && <LeaveModal setOpenLeaveModal={setOpenLeaveModal} username={username} getUserInfo={getUserInfo}/>}
+        {openLeaveModal && <LeaveModal setOpenLeaveModal={setOpenLeaveModal} username={username} getUserInfo={getUserInfo} token={token}/>}
 
         <div className="pagetitle">
           <h1>사원정보</h1>
