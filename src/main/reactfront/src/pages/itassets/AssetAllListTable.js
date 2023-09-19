@@ -40,7 +40,6 @@ const AssetAllListTable = ({index,
             <th className="spec_warranty">{spec_warranty}</th>
             <th className="category_name">{category_name}</th>
 
-            <th className="assets_name" style={{ display: "none" }}>{cdc}</th>
             <th className="spec_num" style={{ display: "none" }}>{spec_num}</th>
             <th className="assets_num" style={{ display: "none" }}>{assets_num}</th>
             <th className="category_num" style={{ display: "none" }}>{category_num}</th>
