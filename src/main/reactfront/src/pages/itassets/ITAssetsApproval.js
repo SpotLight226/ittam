@@ -1,15 +1,15 @@
-import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
-import Pagenation from "../../component/Pagenation";
-import axios from "axios";
-import ApprovalComment from "../approve/ApprovalComment";
+import { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
+import Pagenation from '../../component/Pagenation';
+import axios from 'axios';
+import ApprovalComment from '../approve/ApprovalComment';
 
 function ITAssetsApproval() {
   /* 결제요청목록 데이터 */
   const [data, setData] = useState([]);
   const stockList = () => {
     axios
-      .get("/stock/getStockApprovalList")
+      .get('/stock/getStockApprovalList')
       .then((response) => {
         setData(response.data);
       })
@@ -44,7 +44,7 @@ function ITAssetsApproval() {
   /* 요청수락 */
   const handleSubmit = (item) => {
     axios
-      .post("/stock/updateITStatus", { item })
+      .post('/stock/updateITStatus', { item })
       .then((response) => {
         stockList();
         console.log(response.data);
@@ -56,7 +56,7 @@ function ITAssetsApproval() {
   /* 요청 반려 */
   const handleNsubmit = (item) => {
     axios
-      .post("/stock/approvalN", { item })
+      .post('/stock/approvalN', { item })
       .then((response) => {
         stockList();
       })
@@ -64,10 +64,24 @@ function ITAssetsApproval() {
         console.log(error);
       });
   };
+
+  function formatDate(dateString) {
+    if (!dateString || isNaN(new Date(dateString).getTime())) {
+      return '';
+    }
+
+    const dateObject = new Date(dateString);
+
+    const year = dateObject.getFullYear();
+    const month = String(dateObject.getMonth() + 1).padStart(2, '0');
+    const day = String(dateObject.getDate()).padStart(2, '0');
+
+    return `${year}년 ${month}월 ${day}일 `;
+  }
   return (
     <main id="main" className="main">
       <div className="pagetitle">
-        <h1>수리/폐기 결재요청</h1>
+        <h1>구매/수리/폐기 결재요청</h1>
         <nav>
           <ol className="breadcrumb">
             <li className="breadcrumb-item">
@@ -98,11 +112,7 @@ function ITAssetsApproval() {
                           #
                         </Link>
                       </th>
-                      <th scope="col">
-                        <Link to="#" className="datatable-sorter">
-                          APPRO_NUM
-                        </Link>
-                      </th>
+
                       <th scope="col">
                         <Link to="#" className="datatable-sorter">
                           신청인
@@ -116,6 +126,11 @@ function ITAssetsApproval() {
                       <th scope="col">
                         <Link to="#" className="datatable-sorter">
                           신청종류
+                        </Link>
+                      </th>
+                      <th scope="col">
+                        <Link to="#" className="datatable-sorter">
+                          신청일
                         </Link>
                       </th>
                       <th scope="col">
@@ -146,12 +161,11 @@ function ITAssetsApproval() {
                           <th scope="row">
                             {(currentPage - 1) * itemsPerPage + index + 1}
                           </th>
-                          <td>{item.appro_num}</td>
                           <td>{item.username}</td>
                           <td>
                             <Link
                               to="#"
-                              style={{ color: "black" }}
+                              style={{ color: 'black' }}
                               data-bs-toggle="modal"
                               data-bs-target="#modalDialogScrollable"
                               onClick={() => handleModal(item)}
@@ -160,6 +174,7 @@ function ITAssetsApproval() {
                             </Link>
                           </td>
                           <td>{item.appro_kind}</td>
+                          <td>{formatDate(item.appro_date)}</td>
                           <td>{item.appro_yn}</td>
                           <td>
                             <button

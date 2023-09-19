@@ -94,4 +94,12 @@ public class Stock_ApprovalController {
         stock_approvalService.ApprovY(vo);
         return new ResponseEntity<>(data, HttpStatus.OK);
     }
+
+
+    @PostMapping("/purchaseApproval")
+    public ResponseEntity<Integer> purchaseApproval(@RequestBody StockApprovalVO vo) {
+        int data = stock_approvalService.purchaseApproval(vo);
+
+        return new ResponseEntity<>(data, HttpStatus.OK);
+    }
 }

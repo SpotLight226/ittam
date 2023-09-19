@@ -31,7 +31,6 @@ function ITAssetsModify({
                   <input
                     type="text"
                     className="form-control"
-                    placeholder="appro_title"
                     name="appro_title"
                     onChange={appro}
                     value={formStatus.appro_title}

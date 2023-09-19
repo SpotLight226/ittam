@@ -6,6 +6,7 @@ import Pagenation from '../../component/Pagenation';
 import ITAssetsInsert from './ITAssetsInsert';
 import ITAssetsInfo from './ITAssetsInfo';
 import ITAssetsModify from './ITAssetsModify';
+import PurchaseApproval from './PurchaseApproval';
 
 function ITAssets() {
   const [selectedType, setSelectedType] = useState('선택하지않음');
@@ -314,6 +315,19 @@ function ITAssets() {
   // };
   const statusReset = () => {
     setAssetstatus(selectedItem ? selectedItem.assets_status : '');
+    setFormStatus({
+      appro_title: '',
+      appro_comment: '',
+    });
+  };
+
+  const approveReset = () => {
+    setSelectedType('선택하지않음');
+    setSelectedParent('선택하지않음');
+    setFormapproval({
+      appro_title: '',
+      appro_comment: '',
+    });
   };
   /* 최종구매승인개수 */
   const [count, setCount] = useState(0);
@@ -328,8 +342,7 @@ function ITAssets() {
       setItcount(response.data);
     });
   }, []);
-  console.log('개수:' + count);
-  console.log('자산개수' + itcount);
+
   const [isModalOpen1, setIsModalOpen1] = useState(false);
   function handleButtonClick(category) {
     if (count < itcount) {
@@ -345,6 +358,64 @@ function ITAssets() {
     setIsModalOpen1(false);
     setSelectedType('선택하지않음');
     setSelectedParent('선택하지않음');
+  }
+  /* 구매요청 */
+  const [formapproval, setFormapproval] = useState({
+    username: username || '',
+    category_num: selectedType,
+    appro_title: '',
+    appro_comment: '',
+  });
+  const handleSelectChange1 = (e) => {
+    setSelectedType(e.target.value);
+
+    setFormapproval((prevData) => ({
+      category_num: e.target.value,
+      username: username || '',
+      appro_title: '',
+      appro_comment: '',
+    }));
+  };
+
+  const handleData = (e) => {
+    const { name, value } = e.target;
+    setFormapproval((prevData) => ({
+      ...prevData,
+      [name]: value,
+    }));
+  };
+  const purchaseSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const response = await axios.post(
+        '/stock/purchaseApproval',
+        formapproval
+      );
+      if (response.data) {
+        setFormapproval({
+          username: '',
+          category_num: '',
+          appro_title: '',
+          appro_comment: '',
+        });
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  /* 날씨 변환 */
+  function formatDate(dateString) {
+    if (!dateString || isNaN(new Date(dateString).getTime())) {
+      return ''; // 원하는 기본값으로 변경 가능
+    }
+
+    const dateObject = new Date(dateString);
+
+    const year = dateObject.getFullYear();
+    const month = String(dateObject.getMonth() + 1).padStart(2, '0');
+    const day = String(dateObject.getDate()).padStart(2, '0');
+
+    return `${year}년 ${month}월 ${day}일 `;
   }
 
   return (
@@ -390,6 +461,18 @@ function ITAssets() {
           </div>
         </div>
       </div>
+      {/* 구매요청 */}
+      <PurchaseApproval
+        handleParentChange={handleParentChange}
+        selectedParent={selectedParent}
+        handleSelectChange={handleSelectChange}
+        selectedType={selectedType}
+        categories={categories}
+        handleData={handleData}
+        formapproval={formapproval}
+        purchaseSubmit={purchaseSubmit}
+        handleSelectChange1={handleSelectChange1}
+      />
       <section className="section">
         <div className="row">
           <div className="col-lg-12">
@@ -453,6 +536,16 @@ function ITAssets() {
                         onChange={(e) => setSearchInput(e.target.value)}
                         onKeyPress={handleSearchKeyPress}
                       />
+                      <button
+                        type="button"
+                        className="btn btn-primary"
+                        data-bs-toggle="modal"
+                        data-bs-target="#verticalycentered"
+                        onClick={() => sendModal(category)}
+                        style={{ marginLeft: '10px' }}
+                      >
+                        구매요청
+                      </button>
                       {/* <div className="text-end" style={{ marginBottom: '10px' }}> */}
                       <button
                         type="button"
@@ -492,6 +585,16 @@ function ITAssets() {
                           사용중인 사원번호
                         </Link>
                       </th>
+                      <th scope="col">
+                        <Link to="#" className="datatable-sorter">
+                          등록일
+                        </Link>
+                      </th>
+                      <th scope="col">
+                        <Link to="#" className="datatable-sorter">
+                          대여일
+                        </Link>
+                      </th>
 
                       <th scope="col">
                         <Link to="#" className="datatable-sorter">
@@ -525,6 +628,8 @@ function ITAssets() {
                           </td>
                           <td>{item.assets_status}</td>
                           <td>{item.username}</td>
+                          <td>{formatDate(item.add_date)}</td>
+                          <td>{formatDate(item.rent_date)}</td>
                           <td>
                             <button
                               type="button"
