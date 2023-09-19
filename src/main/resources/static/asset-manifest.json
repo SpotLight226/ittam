@@ -11,5 +11,11 @@
   "entrypoints": [
     "static/css/main.32cdac75.css",
     "static/js/main.b1570fe8.js"
+    "main.css": "/static/css/main.92107782.css",
+    "main.js": "/static/js/main.77a364d4.js",
+    "main.92107782.css.map": "/static/css/main.92107782.css.map",
+    "main.77a364d4.js.map": "/static/js/main.77a364d4.js.map",
+    "static/css/main.92107782.css",
+    "static/js/main.77a364d4.js"
   ]
 }
