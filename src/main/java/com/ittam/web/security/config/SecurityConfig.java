@@ -45,22 +45,11 @@ public class SecurityConfig {
         // 1. 크로스오리진 필터 생성 cors
         http.cors(Customizer.withDefaults() );
 
-        // 2. 필터체이닝 연습
-        // http.addFilter(new FilterOne()); // 시큐리티 타입의 필터를 등록할 때
-        // http.addFilterBefore(new FilterOne(), UsernamePasswordAuthenticationFilter.class);
-        // http.addFilterBefore(new FilterTwo(), FilterOne.class); // filterOne 이전에 등록
-        // http.addFilterAfter(new FilterTwo(), FilterOne.class); // filterOne 이후에 등록
 
         // 3. 로그인 시도에 AuthenticationManager가 필요합니다.
         // ++UserDetailService객체 and PasswordEncoder가 반드시 필요
         AuthenticationManager authenticationManager = authenticationManager(http.getSharedObject(AuthenticationConfiguration.class));
 
-        // 4. 로그인 필터를 등록
-        // http.addFilter(new CustomLoginFilter(authenticationManager));
-
-        // 5. jwt 검증필터를 등록
-        // http.addFilterBefore(new JwtAuthorizationFilter(authenticationManager), BasicAuthenticationFilter.class);
-        // http.addFilter(new JwtAuthorizationFilter(authenticationManager));
 
         // 6. 요청별로 필터 실행시키기
         // login요청에만 CustomLoginFilter가 실행됩니다.
@@ -71,7 +60,7 @@ public class SecurityConfig {
 
         // api로 시작하는 요청에만 jwt필터가 실행됩니다.
         http.requestMatchers()
-//                .antMatchers("/users/**")
+                .antMatchers("/**")
 //                .antMatchers("/admin/**")
 //                .antMatchers("/highAdmin/**")
                 .and()
@@ -91,8 +80,11 @@ public class SecurityConfig {
     @Bean
     CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(Arrays.asList("*")); // 모든 요청주소를 허용함
-        configuration.setAllowedMethods(Arrays.asList("*")); // 모든 요청메서드를 허용함
+        configuration.setAllowedOrigins(Arrays.asList("http://localhost:3000")); // 모든 요청주소를 허용함
+        // configuration.setAllowedOrigins(Arrays.asList("http://localhost:9191")); // 모든 요청주소를 허용함
+        configuration.setAllowedMethods(Arrays.asList("GET","POST","PUT", "DELETE", "OPTIONS")); // 모든 요청메서드를 허용함
+        configuration.addAllowedHeader("Authorization");
+        configuration.addAllowedHeader("Content-Type");
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration); // 모든 요청에 대해서
         return source;

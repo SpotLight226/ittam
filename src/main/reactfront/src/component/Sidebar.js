@@ -187,18 +187,18 @@ function Sidebar() {
 
         <li className="nav-item">
           <Link
-            to="#"
-            className="nav-link collapsed"
-            data-bs-target="#charts-nav"
-            data-bs-toggle="collapse">
+              to="#"
+              className="nav-link collapsed"
+              data-bs-target="#charts-nav"
+              data-bs-toggle="collapse">
             <i className="bi bi-bar-chart"></i>
             <span>사용자 신청</span>
             <i className="bi bi-chevron-down ms-auto"></i>
           </Link>
           <ul
-            id="charts-nav"
-            className="nav-content collapse "
-            data-bs-parent="#sidebar-nav">
+              id="charts-nav"
+              className="nav-content collapse "
+              data-bs-parent="#sidebar-nav">
             <li>
               <Link to="/admin/approveList">
                 <i className="bi bi-circle"></i>
@@ -227,18 +227,18 @@ function Sidebar() {
         </li>
         <li className="nav-item">
           <Link
-            to="#"
-            className="nav-link collapsed"
-            data-bs-target="#charts-nav"
-            data-bs-toggle="collapse">
+              to="#"
+              className="nav-link collapsed"
+              data-bs-target="#charts-nav"
+              data-bs-toggle="collapse">
             <i className="bi bi-bar-chart"></i>
             <span>관리자 신청</span>
             <i className="bi bi-chevron-down ms-auto"></i>
           </Link>
           <ul
-            id="charts-nav"
-            className="nav-content collapse "
-            data-bs-parent="#sidebar-nav">
+              id="charts-nav"
+              className="nav-content collapse "
+              data-bs-parent="#sidebar-nav">
             <li>
               <Link to="/highAdmin/approveList">
                 <i className="bi bi-circle"></i>
@@ -263,14 +263,10 @@ function Sidebar() {
                 <span>최종 구매 처리 목록</span>
               </Link>
             </li>
-            <li>
-              <Link to="/highAdmin/approveDisuseList">
-                <i className="bi bi-circle"></i>
-                <span>최종 폐기 신청 목록</span>
-              </Link>
-            </li>
+
           </ul>
         </li>
+
 
         {/* <!-- End Charts Nav --> */}
 

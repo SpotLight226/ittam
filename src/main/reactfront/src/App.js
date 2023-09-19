@@ -11,6 +11,7 @@ import AdminApproveList from "./pages/adminapprove/AdminApproveList";
 import AdminApproveBuyList from "./pages/adminapprove/AdminApproveBuyList";
 import AdminApproveHandle from "./pages/adminapprove/AdminApproveHandleList";
 import AdminApproveBuyHandle from "./pages/adminapprove/AdminApproveBuyHandleList";
+import ApproveBuyHandle from "./pages/approve/ApproveBuyHandleList"
 import Logout from "./pages/login/Logout";
 import Login from "./pages/login/LoginHome";
 
@@ -19,7 +20,6 @@ import UserList from "./pages/users/UserList";
 import ApproveHandleList from "./pages/approve/ApproveHandleList";
 
 import ITAssets from "./pages/itassets/ITAssets";
-import LoginHome from "./pages/login/LoginHome";
 import AssetDetail from "./pages/itassets/AssetDetail";
 import PurchaseRequest from "./pages/itassets/PurchaseRequest";
 import UseRequest from "./pages/itassets/UseRequest";
@@ -79,25 +79,14 @@ function App() {
         <Routes>
           <Route path="/" element={<Login />} />
           <Route path="/admin/approveList" element={<ApproveList />} />
-          <Route path="/admin/approveBuyList" element={<ApproveBuyList />} />
           <Route path="/admin/approveHandle" element={<ApproveHandleList />} />
-          <Route
-            path="/admin/approveBuyHandle"
-            element={<AdminApproveHandle />}
-          />
+          <Route path="/admin/approveBuyList" element={<ApproveBuyList />} />
+          <Route path="/admin/approveBuyHandle" element={<ApproveBuyHandle />} />
           <Route path="/highAdmin/approveList" element={<AdminApproveList />} />
-          <Route
-            path="/highAdmin/approveBuyList"
-            element={<AdminApproveBuyList />}
-          />
-          <Route
-            path="/highAdmin/approveHandle"
-            element={<AdminApproveHandle />}
-          />
-          <Route
-            path="/highAdmin/approveBuyHandle"
-            element={<AdminApproveBuyHandle />}
-          />
+          <Route path="/highAdmin/approveBuyList" element={<AdminApproveBuyList />} />
+          <Route path="/highAdmin/approveHandle" element={<AdminApproveHandle />} />
+          <Route path="/highAdmin/approveBuyHandle" element={<AdminApproveBuyHandle />} />
+
           <Route path="/logout" element={<Logout />} />
 
           <Route path="/users" element={<UserList />} />
