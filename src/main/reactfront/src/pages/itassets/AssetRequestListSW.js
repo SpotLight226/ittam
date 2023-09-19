@@ -2,14 +2,11 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import AssetAllListTable from './AssetAllListTable';
 import {Link, useParams, useLocation} from 'react-router-dom';
+import AssetRequestListSWTable from "./AssetRequestListSWTable";
 import Pagenation from "../../component/Pagenation";
-import ITAssetsInfo from "./ITAssetsInfo";
 import AssetDetailModal from "./AssetDetailModal";
 
-
-const AssetAllList = () => {
-  const username = localStorage.getItem("username");
-
+const AssetRequestListSW = () => {
   const [AssetRequest, setAssetRequest] = useState([]); // 전체 자산 리스트
   const [inputText, setInputText] = useState('');
 
@@ -22,49 +19,12 @@ const AssetAllList = () => {
     category_name : "",
     spec_num : "",
     assets_num : "",
-    //
-    sw_mfg: '',
-    sw_spec_seriel: '',
-    sw_spec_warranty: '',
-    sw_purchase_date: '',
-    sw_price: '',
-    /* etcspec */
-    etc_mfg: '',
-    etc_spec_warranty: '',
-    etc_purchase_date: '',
-    etc_price: '',
-    /* pcspec */
-    spec_cpu: '',
-    spec_ram: '',
-    spec_mainboard: '',
-    spec_power: '',
-    spec_gpu: '',
-    spec_hdd: '',
-    spec_ssd: '',
-    spec_ops: '',
-    // spec_mfg: '',
-    // spec_seriel: '',
-    spec_purchase_date: '',
-    /* serverspec */
-    server_mfg: '',
-    server_spec_warranty: '',
-    server_capa: '',
-    server_price: '',
-    server_purchase_date: '',
-    server_interface: '',
-    server_average_life: '',
-    server_rpm: '',
-    server_datarecovery_life: '',
-    /* 승인요청 */
-    username: '',
-    appro_title: '',
-    appro_comment: '',
-    category_num:''
   });
 
-
   const url = useLocation(); // 현재 url 가져오기 뒤에 파라미터는 짤라서 쓰시면 될 것 같아요 !
+  // console.log(url.pathname);
   const path = url.pathname;
+
 
   // 검색
   const activeEnter = (e) => {
@@ -77,34 +37,32 @@ const AssetAllList = () => {
       url: 'http://localhost:9191/AssetRequest/AssetRequestSearch',
       method: 'post',
       data: {
-        inputText: inputText,
-        path:path
+        inputText: inputText
       },
     })
         .then((response) => {
           setInputInnerDate(response.data);
-          // console.log(response.data)
           if (response.data.length === 0) { // response.data가 빈 배열인 경우
             window.alert("일치하는 자산이 없습니다");}
-
         })
         .catch((error) => {
           alert('검색에 실패하였습니다.');
         });
   };
 
-  // 자산 목록 리스트
+  //자산 목록 조회
   useEffect(() => {
-
-    if(inputInnerData.assets_name === "" || inputInnerData.length === 0 && path === "/itassets"){
-      axios.get('http://localhost:9191/AssetRequest/AssetRequestList')
-          .then((res) => setAssetRequest(res.data));
-      // console.log(inputInnerData);
-    }else{
+    if (inputInnerData.assets_name === "" || inputInnerData.length === 0) {
+      // Axios를 사용하여 서버로 데이터를 보냅니다.
+      axios.get(`http://localhost:9191/AssetRequest/AssetRequestListCategory?path=${encodeURIComponent(path)}`)
+          .then((res) => setAssetRequest(res.data))
+          .catch((error) => {
+            console.error('요청 실패:', error);
+          });
+    } else {
       setAssetRequest(inputInnerData);
-      // console.log(inputInnerData);
     }
-  }, [inputInnerData]);
+  }, [inputInnerData, path]);
 
   // 구매버튼 스타일
   const buttonStyle = {
@@ -112,12 +70,11 @@ const AssetAllList = () => {
     marginRight: '40px',
   };
 
-
   /* 몇개씩 보이고 싶은지 */
   const [itemsPerPage, setItemPerPage] = useState(10); // 페이지당 10개의 아이템  useState(처음에 보이고싶은 개수)
   const handleSelectorChange = (event) => {
     setItemPerPage(Number(event.target.value));
-    // console.log(Number(event.target.value))
+    console.log(Number(event.target.value))
   };
 
   /* 페이지네이션 */
@@ -132,7 +89,6 @@ const AssetAllList = () => {
   const handleClick = (pageNumber) => {
     setCurrentPage(pageNumber);
   };
-
 
   //사용/구매 신청 모달창
 
@@ -151,6 +107,7 @@ const AssetAllList = () => {
 
   const handleToggle = (e) => { // 승인 모달창 핸들러
     let basicModal = document.getElementById("basicModal");
+    console.log("하하하하하")
 
     basicModal.classList.toggle("show");
     basicModal.style.display = ((basicModal.style.display !== 'none') ? 'none' : 'block');
@@ -158,7 +115,7 @@ const AssetAllList = () => {
       ...innerData,
       userqKIND: e.target.closest(".prod-box").querySelector(".userq_KIND"),
       userqCOUNT: e.target.closest(".prod-box").querySelector(".userq_COUNT"),
-      username: e.target.closest(".prod-box").querySelector(".username"),
+      username: e.target.closest(".prod-box").querySelector(".user_name"),
       userqTITLE: e.target.closest(".prod-box").querySelector(".userq_TITLE"),
       userqCOMMENT: e.target.closest(".prod-box").querySelector(".userq_COMMENT"),
       userqNUM: e.target.closest(".prod-box").querySelector(".userq_NUM"),
@@ -167,14 +124,13 @@ const AssetAllList = () => {
       userqYN: e.target.closest(".prod-box").querySelector(".userq_YN"),
       categoryNUM: e.target.closest(".prod-box").querySelector(".category_NUM"),
     });
-
     // 모달 센터로 이동
     const modal = document.querySelector(".modalmodal .card");
     modal.style.left = `calc(50% - ${modal.clientWidth / 2}px)`;
     modal.style.top = `calc(50% - ${modal.clientHeight / 2}px)`;
   };
 
-    const handleClose =() =>  { // 승인 모달창 닫는 핸들러
+  const handleClose =() =>  { // 승인 모달창 닫는 핸들러
     let basicModal = document.getElementById("basicModal");
     basicModal.style.display = "none";
     basicModal.classList.toggle("show");
@@ -206,40 +162,20 @@ const AssetAllList = () => {
         });
   };
 
-  const handleBackClose = () => { //모달창 닫는 핸들러
+  const handleBackClose = () => { // 반려 모달창 닫는 핸들러
     let basicModalBack = document.getElementById("basicModalBack");
     basicModalBack.style.display = "none";
     basicModalBack.classList.toggle("show");
   };
 
-  //상세페이지
+//상세페이지
   /* 모달창에 비동기 데이터 가져오기 */
   const [selectedItem, setSelectedItem] = useState(null);
   const handleModal = (item) => {
     setSelectedItem(item);
-     // console.log(item);
+    // console.log(item);
     // console.log(selectedItem);
   };
-
-  // 구매 사용 신청
-  // 신청 날짜
-  const todayTime = () => {
-    let now = new Date();
-    let todayYear = now.getFullYear();
-    let todayMonth = now.getMonth();
-    let todayDate = now.getDate();
-    const week = ['(일)', '(월)', '(화)', '(수)', '(목)', '(금)', '(토)'];
-    let dayOfWeek = week[now.getDay()];
-    let hours = now.getHours();
-    let minutes = now.getMinutes();
-
-    return todayYear + "년 " + todayMonth + "월 " + todayDate + "일 " + dayOfWeek + " ";
-  }
-
-
-
-
-
   return (
       <div>
         <main id="main" className="main">
@@ -270,8 +206,6 @@ const AssetAllList = () => {
                                 className="datatable-selector"
                                 value={itemsPerPage}
                                 onChange={handleSelectorChange}
-                                style={{ marginRight: "10px", borderColor: "lightgray" }}
-
                             >
                               <option value="5">5</option>
                               <option value="10">10</option>
@@ -292,7 +226,9 @@ const AssetAllList = () => {
                               onChange={(e) => setInputText(e.target.value)}
                               onKeyPress={(e) => activeEnter(e)}
                           />
-                          <button className="btn btn-primary assetRequestBtn" type="button"   data-bs-formtarget="#basicModal" onClick={handleToggle} id="assetRequestBtn">+ 구매신청</button>
+                          <Link to="/itassets/purchase">
+                            <button className="btn btn-primary" type="button" style={buttonStyle}>+ 구매 신청</button>
+                          </Link>
                         </div>
                       </div>
                     </div>
@@ -300,7 +236,7 @@ const AssetAllList = () => {
                       <thead>
                       <tr>
                         <th data-sortable="true">
-                          <input type={"checkbox"}/>
+                            <input type={"checkbox"}/>
                         </th>
                         <th data-sortable="true">
                           <Link to="#" className="datatable-sorter">
@@ -358,7 +294,7 @@ const AssetAllList = () => {
                               index={index}
                               func={handleToggle}
                               handleModal={handleModal}
-                              // todayTime={todayTime}
+                              // handleAssetClick={handleAssetClick} // 클릭 이벤트 추가
                           />
                       ))}
                       </tbody>
@@ -371,8 +307,7 @@ const AssetAllList = () => {
                     >
                       <AssetDetailModal selectedItem={selectedItem} />
                     </div>
-                  {/* 상세정모 모달창 끝*/}
-
+                    {/* 상세정모 모달창 끝*/}
                   </div>
                 </div>
               </div>
@@ -421,26 +356,26 @@ const AssetAllList = () => {
                 <div className="row mb-3">
                   <label htmlFor="" className="col-sm-2 col-form-label">신청자산</label>
                   <div className="col-sm-10">
-                    <input type="text" className="form-control" value={inputInnerData.assets_name} disabled />
+                    <input type="text" className="form-control" disabled />
 
                   </div>
                 </div>
                 <div className="row mb-3">
                   <label className="col-sm-2 col-form-label">신청자</label>
                   <div className="col-sm-10">
-                    <input type="text" className="form-control" value={username || ''} disabled />
+                    <input type="text" className="form-control" value="###사원명" disabled />
 
                   </div>
                 </div>
                 <div className="row mb-3">
                   <label htmlFor="inputText" className="col-sm-2 col-form-label">신청날짜</label>
                   <div className="col-sm-10">
-                    <input type="email" className="form-control" value={todayTime()} disabled />
+                    <input type="email" className="form-control" disabled />
                   </div>
                 </div>
 
                 <div className="row mb-3 position-relative">
-                  <label htmlFor="validationTooltip03" className="col-sm-2 col-form-label needs-validation" >신청제목</label>
+                  <label htmlFor="validationTooltip03" className="col-sm-2 col-form-label needs-validation" novalidate>신청제목</label>
                   <div className="col-sm-10">
                     {/*<input type="text" className="form-control" name="return_title"  id="validationTooltip01"  onChange={handleChange} value={inputTitle} onChange={(e) => setInputTitle(e.target.value)} required/>*/}
                     <input type="text" className="form-control" name="return_title" id="validationTooltip01" required />
@@ -477,9 +412,8 @@ const AssetAllList = () => {
           </div>
         </div>
 
-
       </div>
   );
 };
 
-export default AssetAllList;
+export default AssetRequestListSW;
