@@ -7,7 +7,7 @@ import { Link } from "react-router-dom";
 import DounutChart_user from "../../component/Chart/DonutChart";
 
 function UserMain() {
-
+  const token = localStorage.getItem("token");
 
   const [username, setUsername] = useState('');
   const [userCnt, setUserCnt] = useState({});
@@ -29,21 +29,46 @@ function UserMain() {
   }
 
   const getMyAssetChartCnt = (username) => {
-    axios.get("/mainPage/getMyAssetChartCnt", {params: {username: username}})
-          .then(response => setMyAssetChartCnt(response.data))
-          .catch(error => console.log(error))
+
+    axios({
+      url: "/mainPage/getMyAssetChartCnt",
+      method: "get",
+      headers: {
+        Authorization : token
+      },
+      params: {
+        username: username
+      }
+    })
+        .then(response => setMyAssetChartCnt(response.data))
+        .catch(error => console.log(error))
   }
 
 
   const getUserCnt = (username) => {
-    axios.get("/mainPage/getUserCnt", {
-      params: {username: username}
-    }).then(response => setUserCnt(response.data))
+
+    axios({
+      url: "/mainPage/getUserCnt",
+      method: "get",
+      headers: {
+        Authorization : token
+      },
+      params: {
+        username: username
+      }
+    })
+        .then(response => setUserCnt(response.data))
         .catch(error => console.log(error))
   }
   const getNoticeList = () => {
-    axios.get("/mainPage/getNoticeList")
-        .then(response => {setNoticeList(response.data); console.log(response.data)})
+
+    axios({
+      url: "/mainPage/getNoticeList",
+      method: "get",
+      headers: {
+        Authorization : token
+      },
+    }).then(response => {setNoticeList(response.data); console.log(response.data)})
         .catch(error => console.log(error))
   }
 

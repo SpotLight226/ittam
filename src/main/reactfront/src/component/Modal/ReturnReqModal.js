@@ -12,7 +12,7 @@ function ReturnReqModal({
   setInputComment,
   myAssetList,
   myAssetNum,
-  username, setOpenAlert
+  username
 }) {
   let thisList = () => {
     return myAssetList.find((x) => x.ASSETS_NUM == myAssetNum);

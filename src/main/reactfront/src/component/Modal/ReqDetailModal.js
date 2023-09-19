@@ -3,7 +3,7 @@ import "../../styles/MainPageStyle/ReturnDetailModal.css";
 import axios from "axios";
 
 
-function ReqDetailModal({ setOpenReqDetailModal, username, myRequestList, userq_num, getMyRequestList}) {
+function ReqDetailModal({ setOpenReqDetailModal, username, myRequestList, userq_num, getMyRequestList, token}) {
 
   let thisList = () => {
     return myRequestList.find(x => x.userq_num === userq_num)
@@ -27,16 +27,23 @@ function ReqDetailModal({ setOpenReqDetailModal, username, myRequestList, userq_
     
     if(window.confirm('정말 요청을 취소하시겠습니까?')) {
 
-    axios.delete("/mainPage/deleteUsingPerchaseReq", {params: {userq_num: thisList().userq_num}})
-        .then(response => {
-          alert('요청이 취소되었습니다.');
-          setOpenReqDetailModal(false);
-          getMyRequestList(username);})
+    axios({
+      url: "/mainPage/deleteUsingPerchaseReq",
+      method: "delete",
+      headers: {
+        Authorization : token
+      },
+      params: {
+        userq_num: thisList().userq_num
+      }
+    })  .then(response => {
+      alert('요청이 취소되었습니다.');
+      setOpenReqDetailModal(false);
+      getMyRequestList(username);})
         .catch(error => console.log(error))
     }
 
   }
-
 
 
   return (

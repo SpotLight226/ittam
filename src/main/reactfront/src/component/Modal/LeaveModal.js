@@ -2,17 +2,26 @@ import "../../styles/Style.css";
 import "../../styles/MainPageStyle/ReturnDetailModal.css";
 import axios from "axios";
 
-function LeaveModal({ setOpenLeaveModal, username, getUserInfo }) {
+function LeaveModal({ setOpenLeaveModal, username, getUserInfo, token }) {
   const registLeaveReq = (e, username) => {
     e.stopPropagation();
-    axios
-      .get("/mainPage/registLeaveReq", { params: { username: username } })
-      .then((response) => console.log(response.data))
-      .catch((error) => console.log(error));
+
+    axios({
+      url: "/mainPage/registLeaveReq",
+      method: "get",
+      headers: {
+        Authorization : token
+      },
+      params: {
+        username: username
+      }
+    }).then((response) => console.log(response.data))
+        .catch((error) => console.log(error));
 
     setOpenLeaveModal(false);
     getUserInfo(username);
     window.location.href = "/myPage";
+
   };
 
   return (

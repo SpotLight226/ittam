@@ -38,8 +38,14 @@ function HighAdminMain() {
 
 
   const adminMainCnt = () => {
-    axios.get('/mainPage/adminMainCnt')
-        .then(response => {setDataa(response.data);})
+
+    axios({
+      url: "/mainPage/adminMainCnt",
+      method: "get",
+      headers: {
+        Authorization : token
+      },
+    }).then(response => {setDataa(response.data);})
         .catch(error => console.log(error))
   }
 
@@ -54,9 +60,7 @@ function HighAdminMain() {
         .then((res) => {
           setAll(res.data);
           })
-        .catch((error) => {
-           alert("데이터 조회에 실패하였습니다.");
-        });
+            .catch(error => console.log(error));
 
   }
   const getAssetChartUsingNum = () => {
@@ -71,9 +75,7 @@ function HighAdminMain() {
         .then((res) => {
           setUsing(res.data);
           })
-        .catch((error) => {
-           alert("데이터 조회에 실패하였습니다.");
-        });
+            .catch(error => console.log(error));
 
 
 
@@ -89,24 +91,28 @@ function HighAdminMain() {
         .then((res) => {
           setDispose(res.data);
           })
-        .catch((error) => {
-           alert("데이터 조회에 실패하였습니다.");
-        });
+            .catch(error => console.log(error));
   }
   const getRecentAssetsList = (nnn) => {
-    axios.get("/mainPage/getRecentAssetsList", {params: {nnn: nnn}})
+
+    axios({
+      url: "/mainPage/getRecentAssetsList",
+      method: "get",
+      headers: {
+        Authorization : token
+      },
+      params: {
+        nnn: nnn
+      },
+    })
         .then(response => {
-            setRecentAssets(response.data);
-            console.log(response.data);
+          setRecentAssets(response.data);
+          console.log(response.data);
         })
         .catch((error => console.log(error)));
-
   }
 
   const getCardNum = () => {
-    axios.get("/reports/getCardNum")
-        .then(response => { setCardNum(response.data) })
-        .catch(error => console.log(error))
 
         axios({
           url: "/reports/getCardNum",
@@ -118,9 +124,7 @@ function HighAdminMain() {
         .then((res) => {
           setCardNum(res.data) 
                })
-        .catch((error) => {
-           alert("데이터 조회에 실패하였습니다.");
-        });
+            .catch(error => console.log(error));
   }
 
 
