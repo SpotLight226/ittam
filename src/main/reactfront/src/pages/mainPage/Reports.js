@@ -10,6 +10,7 @@ import GPUChart from '../../component/Chart/GPUChart';
 import MFGChart from '../../component/Chart/MFGChart';
 
 function Reports() {
+  const token = localStorage.getItem("token");
 
   const [cardNum, setCardNum] = useState({});
   const [departNum, setDepartNum] = useState();
@@ -21,36 +22,81 @@ function Reports() {
 
 
   const getCardNum = () => {
-    axios.get("/reports/getCardNum")
-        .then(response => { setCardNum(response.data) })
-        .catch(error => console.log(error))
+    axios({
+      url: "/reports/getCardNum",
+      method: "get",
+      headers: {
+        Authorization : token
+      },
+    })
+    .then((res) => {
+      setCardNum(res.data)
+          })
+    .catch((error) => {
+      alert("데이터 조회에 실패하였습니다.");
+    });
   }
   const getDepartNum = () => {
-    axios.get("/reports/getDepartNum")
-        .then(response => { setDepartNum(response.data) })
-        .catch(error => console.log(error))
+
+    axios({
+      url: "/reports/getDepartNum",
+      method: "get",
+      headers: {
+        Authorization : token
+      },
+    })
+    .then((res) => {
+      setDepartNum(res.data)
+          })
+    .catch((error) => {
+      alert("데이터 조회에 실패하였습니다.");
+    });
   }
   const getAssetStickNum = () => {
-    axios.get("/reports/getAssetStickNum")
-        .then(response => { setStickNum(response.data) })
-        .catch(error => console.log(error))
+    axios({
+      url: "/reports/getAssetStickNum",
+      method: "get",
+      headers: {
+        Authorization : token
+      },
+    })
+    .then((res) => {
+      setStickNum(res.data)
+          })
+    .catch((error) => {
+      alert("데이터 조회에 실패하였습니다.");
+    });
   }
   const getCPUNum = () => {
-    axios.get("/reports/getCPUNum")
-        .then(response => { setCPUNum(response.data) })
-        .catch(error => console.log(error))
+    axios({
+      url: "/reports/getCPUNum",
+      method: "get",
+      headers: {
+        Authorization : token
+      },
+    })
+    .then((res) => {
+      setCPUNum(res.data)
+          })
+    .catch((error) => {
+      alert("데이터 조회에 실패하였습니다.");
+    });
   }
   const getGPUNum = () => {
-    axios.get("/reports/getGPUNum")
-        .then(response => { setGPUNum(response.data) })
-        .catch(error => console.log(error))
+    axios({
+      url: "/reports/getGPUNum",
+      method: "get",
+      headers: {
+        Authorization : token
+      },
+    })
+    .then((res) => {
+      setGPUNum(res.data)
+          })
+    .catch((error) => {
+      alert("데이터 조회에 실패하였습니다.");
+    });
   }
-  const getMFGNum = () => {
-    axios.get("/reports/getMFGNum")
-        .then(response => { setMFGNum(response.data) })
-        .catch(error => console.log(error))
-  }
-
 
   useEffect(() => {
     getCardNum();

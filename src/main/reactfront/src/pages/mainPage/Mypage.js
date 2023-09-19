@@ -5,6 +5,8 @@ import axios from 'axios';
 import LeaveModal from "../../component/Modal/LeaveModal";
 
 function Mypage() {
+  const token = localStorage.getItem("token");
+
   const [userInfo, setUserInfo] = useState({});
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState("");
@@ -89,8 +91,8 @@ function Mypage() {
             } else {
               console.log(error);
             }
-
           })
+          
     }
   };
 
