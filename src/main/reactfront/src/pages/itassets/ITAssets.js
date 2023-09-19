@@ -7,8 +7,17 @@ import ITAssetsInsert from './ITAssetsInsert';
 import ITAssetsInfo from './ITAssetsInfo';
 import ITAssetsModify from './ITAssetsModify';
 import PurchaseApproval from './PurchaseApproval';
+import { useContext } from "react";
+import { userInfoContext } from "../../App";
 
 function ITAssets() {
+
+  const contextValues = useContext(userInfoContext); // 항상 가장 위에서 선언해야 사용 가능
+  let username = localStorage.getItem('username');
+  const token = localStorage.getItem("token");
+
+  const { userId, role } = contextValues || {}; // 들어온 값 없으면 공백으로
+
   const [selectedType, setSelectedType] = useState('선택하지않음');
   /* 폼데이터 초기화 */
   const resetFormdata = {
@@ -54,7 +63,12 @@ function ITAssets() {
   const [data, setData] = useState([]);
   const itassetList = () => {
     axios
-      .get('/assets/getITList')
+      .get('/assets/getITList',{
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: token
+        }
+      })
       .then((response) => {
         setData(response.data);
       })
@@ -73,7 +87,12 @@ function ITAssets() {
   const [selectedChild, setSelectedChild] = useState(null);
   useEffect(() => {
     axios
-      .get('/categories/categories')
+      .get('/categories/categories',{
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: token
+        }
+      })
       .then((response) => {
         setCategories(response.data);
         const parents = response.data.filter((category) => !category.parent_id);
@@ -213,7 +232,12 @@ function ITAssets() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post('/assets/specInsert', formData);
+      const response = await axios.post('/assets/specInsert', formData,{
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: token
+        }
+      });
       if (response.data) {
         setFormData({
           // 폼 데이터 초기화
@@ -272,7 +296,7 @@ function ITAssets() {
       setAssetstatus(selectedItem.assets_status);
     }
   }, [selectedItem]);
-  const username = localStorage.getItem('username');
+  
 
   const updateSubmit = async (e) => {
     e.preventDefault();
@@ -289,7 +313,12 @@ function ITAssets() {
       spec_num: selectedItem ? selectedItem.spec_num : '',
     };
     try {
-      const update = await axios.post('/stock/statusUpdate', updatedStatus);
+      const update = await axios.post('/stock/statusUpdate', updatedStatus,{
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: token
+        }
+      });
       if (update.data) {
         setFormStatus({
           assets_status: status,
@@ -333,12 +362,22 @@ function ITAssets() {
   const [count, setCount] = useState(0);
   const [itcount, setItcount] = useState(0);
   useEffect(() => {
-    axios.get('/assets/yncount').then((response) => {
+    axios.get('/assets/yncount',{
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: token
+      }
+    }).then((response) => {
       setCount(response.data);
     });
   }, []);
   useEffect(() => {
-    axios.get('/assets/itcount').then((response) => {
+    axios.get('/assets/itcount',{
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: token
+      }
+    }).then((response) => {
       setItcount(response.data);
     });
   }, []);
@@ -389,7 +428,12 @@ function ITAssets() {
     try {
       const response = await axios.post(
         '/stock/purchaseApproval',
-        formapproval
+        formapproval,{
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: token
+          }
+        }
       );
       if (response.data) {
         setFormapproval({
