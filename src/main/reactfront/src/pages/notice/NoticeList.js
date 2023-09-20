@@ -5,11 +5,13 @@ import axios from "axios";
 import { logDOM } from "@testing-library/react";
 import React, { useEffect, useLayoutEffect, useState } from "react";
 import "../../styles/NoticeList.css"
+import Pagenation from "../../component/Pagenation";
 
 function NoticeList() {
+  
+  const token = localStorage.getItem("token");
 
   // 공지사항 목록 저장 하는 STATE
-
   const [noticeList, setNoticeList] = useState([]);
 
   // 선택한 공지사항의 state를 저장
@@ -49,6 +51,9 @@ function NoticeList() {
     axios({
       url: "http://localhost:9191/noticelist/searchTitle", // 검색을 처리할 서버 엔드포인트
       method: "get",
+      headers: {
+        Authorization : token
+      },
       params: searchText
     })
     
@@ -68,9 +73,11 @@ function NoticeList() {
     // 검색어를 서버로 보내고 검색 결과를 받아옴
     axios({
       url: "http://localhost:9191/noticelist", // 검색을 처리할 서버 엔드포인트
-      method: "get"
+      method: "get",
+      headers: {
+        Authorization : token
+      }
     })
-    
       .then((response) => {
         // 검색 결과를 처리
         console.log(response.data);
@@ -88,9 +95,11 @@ function NoticeList() {
     // 검색어를 서버로 보내고 검색 결과를 받아옴
     axios({
       url: "http://localhost:9191/noticelist/active", // 검색을 처리할 서버 엔드포인트
-      method: "get"
+      method: "get",
+      headers: {
+        Authorization : token
+      }
     })
-    
       .then((response) => {
         // 검색 결과를 처리
         console.log(response.data);
@@ -102,17 +111,16 @@ function NoticeList() {
       });
   };
 
-
-
-
   const handleSearchExpire = () => {
 
     // 검색어를 서버로 보내고 검색 결과를 받아옴
     axios({
       url: "http://localhost:9191/noticelist/expire", // 검색을 처리할 서버 엔드포인트
-      method: "get"
+      method: "get",
+      headers: {
+        Authorization : token
+      }
     })
-    
       .then((response) => {
         // 검색 결과를 처리
         console.log(response.data);
@@ -137,12 +145,12 @@ function NoticeList() {
       notice_enddate : searchEndDate.value
     }
 
-
     axios({
       url: "http://localhost:9191/noticelist/searchDate", // 검색을 처리할 서버 엔드포인트
       method: "post",
       headers: {
-        'Content-Type' : 'application/json;charset=utf-8'
+        'Content-Type' : 'application/json;charset=utf-8',
+        Authorization : token
       },
       data: data
     }).then((response) => {
@@ -155,9 +163,6 @@ function NoticeList() {
      
     });
 };
-
-  
- 
 
   const handleBackToggle = () => {
     let basicModalBack = document.getElementById("basicModalBack");
@@ -176,6 +181,9 @@ function NoticeList() {
     axios({
       url: "http://localhost:9191/noticelist",
       method: "get",
+      headers: {
+        Authorization : token
+      }
     })
       .then((response) => {
         console.log(response)
@@ -190,6 +198,25 @@ function NoticeList() {
   useLayoutEffect(() => {
       getList();
   }, []);
+
+  const [itemsPerPage, setItemPerPage] = useState(10); // 페이지당 10개의 아이템  useState(처음에 보이고싶은 개수)
+  const handleSelectorChange = (event) => {
+    setItemPerPage(Number(event.target.value));
+  };
+
+  const totalPages = Math.ceil(noticeList.length / itemsPerPage);
+  /* 페이지네이션 */
+  const [currentPage, setCurrentPage] = useState(1); // 현재 페이지
+  /* const totalPages = Math.ceil(data.length / itemsPerPage); */
+  const pagesPerGroup = 10; // 한 그룹에 표시할 페이지 수
+  const currentGroup = Math.ceil(currentPage / pagesPerGroup); // 현재 페이지 그룹
+
+  const startPage = (currentGroup - 1) * pagesPerGroup; // 시작 페이지
+  const endPage = Math.min(currentGroup * pagesPerGroup, totalPages); // 끝 페이지
+
+  const handleClick = (pageNumber) => {
+    setCurrentPage(pageNumber);
+  };
 
   return (
     <div>
@@ -262,14 +289,14 @@ function NoticeList() {
                     </div>
                   </div>
                   <table className="table datatable">
-                    <thead>
+                    <thead className="noticeList_thead">
                       <tr>
                         <th data-sortable="true">
                           <Link to="#" className="datatable-sorter">
                             #
                           </Link>
                         </th>
-                        <th data-sortable="true" className="col-sm-1">
+                        <th data-sortable="true">
                           <Link to="#" className="datatable-sorter">
                             등록날짜
                           </Link>
@@ -303,12 +330,16 @@ function NoticeList() {
                     </thead>
 
                     <tbody>
-                      {noticeList.map((item, index) => (
+                      {noticeList.slice(
+                        (currentPage - 1) * itemsPerPage,
+                        currentPage * itemsPerPage
+                      ).map((item, index) => (
                         <NoticeListTable
                           key={index}
                           {...item}
-                          index={index}
+                          index={(currentPage - 1) * itemsPerPage + index} 
                           setNoticeData={setNoticeData}
+                          getList={getList}
                         />
                       ))}
                       {/* {noticeList.map((notice) => (
@@ -340,39 +371,15 @@ function NoticeList() {
             </Link>
           </div>
         </section>
-        <nav
-          aria-label="Page navigation example"
-          style={{ display: "flex", justifyContent: "center" }}
-        >
-          <ul className="pagination">
-            <li className="page-item">
-              <Link className="page-link" to="#" aria-label="Previous">
-                <span aria-hidden="true">&laquo;</span>
-              </Link>
-            </li>
-            <li className="page-item">
-              <Link className="page-link" to="#">
-                1
-              </Link>
-            </li>
-            <li className="page-item">
-              <Link className="page-link" to="#">
-                2
-              </Link>
-            </li>
-            <li className="page-item">
-              <Link className="page-link" to="#">
-                3
-              </Link>
-            </li>
-            <li className="page-item">
-              <Link className="page-link" to="#" aria-label="Next">
-                <span aria-hidden="true">&raquo;</span>
-              </Link>
-            </li>
-          </ul>
-        </nav>
+        
       </main>
+      <Pagenation
+        currentPage={currentPage}
+        totalPages={totalPages}
+        startPage={startPage}
+        endPage={endPage}
+        handleClick={handleClick}
+      />
       <div
         className="modal fade"
         id="basicModalBack"

@@ -133,100 +133,11 @@ const AssetAllList = () => {
     setCurrentPage(pageNumber);
   };
 
-
-  //사용/구매 신청 모달창
-
-  const [innerData, setInnerDate] = useState({ // 승인, 반려 버튼 눌렀을 때 해당 행의 값 state로 관리
-    userqNUM : "",
-    userqKIND : "",
-    userqCOUNT : "",
-    username : "",
-    userqTITLE : "",
-    userqCOMMENT : "",
-    userqOKDATE : "",
-    userqGRANTOR : "",
-    userqYN : "",
-    categoryNUM : ""
-  });
-
-  const handleToggle = (e) => { // 승인 모달창 핸들러
-    let basicModal = document.getElementById("basicModal");
-
-    basicModal.classList.toggle("show");
-    basicModal.style.display = ((basicModal.style.display !== 'none') ? 'none' : 'block');
-    setInnerDate({
-      ...innerData,
-      userqKIND: e.target.closest(".prod-box").querySelector(".userq_KIND"),
-      userqCOUNT: e.target.closest(".prod-box").querySelector(".userq_COUNT"),
-      username: e.target.closest(".prod-box").querySelector(".username"),
-      userqTITLE: e.target.closest(".prod-box").querySelector(".userq_TITLE"),
-      userqCOMMENT: e.target.closest(".prod-box").querySelector(".userq_COMMENT"),
-      userqNUM: e.target.closest(".prod-box").querySelector(".userq_NUM"),
-      userqOKDATE: e.target.closest(".prod-box").querySelector(".userq_OKDATE"),
-      userqGRANTOR: e.target.closest(".prod-box").querySelector(".userq_GRANTOR"),
-      userqYN: e.target.closest(".prod-box").querySelector(".userq_YN"),
-      categoryNUM: e.target.closest(".prod-box").querySelector(".category_NUM"),
-    });
-
-    // 모달 센터로 이동
-    const modal = document.querySelector(".modalmodal .card");
-    modal.style.left = `calc(50% - ${modal.clientWidth / 2}px)`;
-    modal.style.top = `calc(50% - ${modal.clientHeight / 2}px)`;
-  };
-
-    const handleClose =() =>  { // 승인 모달창 닫는 핸들러
-    let basicModal = document.getElementById("basicModal");
-    basicModal.style.display = "none";
-    basicModal.classList.toggle("show");
-  };
-
-  const ApproveForm = (e, userqNUM) => { // Spring Boot로 승인 요청
-    e.preventDefault();
-    axios({
-      url: 'http://localhost:9191/UserRequest/UserRequestApprove',
-      method: 'post',
-      data: {
-        userq_NUM: userqNUM
-      }
-    })
-        .then((response) => {
-
-          if (inputInnerData.userqNUM !== "") {
-            setInputInnerDate(prevState => {
-              // userqNUM이 일치하지 않는 요소만 필터링하여 새로운 배열 생성
-              const updatedInputInnerData = prevState.filter(item => item.userqNUM !== inputInnerData.userqNUM);
-              return updatedInputInnerData;
-            });
-          }
-          handleClose();
-          alert("정상적으로 사용 승인처리 되었습니다.");
-        })
-        .catch((error) => {
-          alert("승인처리에 실패하였습니다.");
-        });
-  };
-
-  const handleBackClose = () => { //모달창 닫는 핸들러
-    let basicModalBack = document.getElementById("basicModalBack");
-    basicModalBack.style.display = "none";
-    basicModalBack.classList.toggle("show");
-  };
-
-  //상세페이지
-  /* 모달창에 비동기 데이터 가져오기 */
-  const [selectedItem, setSelectedItem] = useState(null);
-  const handleModal = (item) => {
-    setSelectedItem(item);
-     // console.log(item);
-    // console.log(selectedItem);
-  };
-
-  // 구매 사용 신청
   // 신청 날짜
   const todayTime = () => {
     let now = new Date();
     let todayYear = now.getFullYear();
-    let todayMonth = now.getMonth();
+    let todayMonth = now.getMonth() + 1;
     let todayDate = now.getDate();
     const week = ['(일)', '(월)', '(화)', '(수)', '(목)', '(금)', '(토)'];
     let dayOfWeek = week[now.getDay()];
@@ -235,6 +146,175 @@ const AssetAllList = () => {
 
     return todayYear + "년 " + todayMonth + "월 " + todayDate + "일 " + dayOfWeek + " ";
   }
+
+  //상세페이지
+
+  const [selectedItem, setSelectedItem] = useState(null);
+  const handleModal = (item) => {
+    setSelectedItem(item);
+  };
+
+
+  //사용 신청 모달창
+  const handleToggle = (e) => { // 승인 모달창 핸들러
+    let basicModal = document.getElementById("basicModal");
+
+    basicModal.classList.toggle("show");
+    basicModal.style.display = ((basicModal.style.display !== 'none') ? 'none' : 'block');
+    setInnerDate({
+      ...innerData,
+      assets_name: e.target.closest(".prod-box").querySelector(".assets_name").textContent,
+      category_num: e.target.closest(".prod-box").querySelector(".category_num").textContent,
+      assets_num: e.target.closest(".prod-box").querySelector(".assets_num").textContent,
+    });
+
+    // 모달 센터로 이동
+    const modal = document.querySelector(".modalmodal .card");
+    modal.style.left = `calc(50% - ${modal.clientWidth / 2}px)`;
+    modal.style.top = `calc(50% - ${modal.clientHeight / 2}px)`;
+  };
+
+  const handleClose =() =>  { // 사용신청 모달창 닫는
+    let basicModal = document.getElementById("basicModal");
+    basicModal.style.display = "none";
+    basicModal.classList.toggle("show");
+    setInnerDate({
+      //초기화
+      assets_name: "",
+      category_num: "",
+      assets_num: "",
+      userq_title: "",
+      userq_comment: "",
+    });
+  };
+
+
+  const [innerData, setInnerDate] = useState({ // 승인, 반려 버튼 눌렀을 때 해당 행의 값 state로 관리
+    username:username || '',
+    assets_name : "",
+    category_num : "",
+    assets_num : "",
+    userq_title :"",
+    userq_comment : "",
+  });
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setInnerDate((prevData) => ({
+      ...prevData,
+      [name]: value,
+    }));
+  };
+
+  const AssetUsageRequestForm = async (e) => {
+    e.preventDefault();
+    try {
+      const response = await axios.post('/AssetRequest/AssetUsageRequest', innerData);
+      if (response.data) {
+        setInnerDate({
+          //초기화
+          assets_name: "",
+          category_num: "",
+          assets_num: "",
+          userq_title: "",
+          userq_comment: "",
+        });
+        handleClose();
+        alert("정상적으로 사용 신청이 처리되었습니다.");
+      }
+
+    } catch (error) {
+      console.error("사용 신청 처리에 실패하였습니다.", error);
+      alert("사용 신청 처리에 실패하였습니다.");
+      setInnerDate({
+        //초기화
+        assets_name: "",
+        category_num: "",
+        assets_num: "",
+        userq_title: "",
+        userq_comment: "",
+      });
+    }
+  };
+
+
+  // 구매 사용 신청
+  const handleToggleBuy = (e) => { // 구매신청 모달창 핸들러
+    let basicModal = document.getElementById("basicModalBuy");
+    basicModal.classList.toggle("show");
+    basicModal.style.display = ((basicModal.style.display !== 'none') ? 'none' : 'block');
+
+    // 모달 센터로 이동
+    const modal2 = document.querySelector(".modalmodal2 .card");
+    modal2.style.left = `calc(50% - ${modal2.clientWidth / 2}px)`;
+    modal2.style.top = `calc(50% - ${modal2.clientHeight / 2}px)`;
+
+    setInnerBuyDate({
+      ...innerBuyData
+    });
+
+  }
+
+  const [innerBuyData, setInnerBuyDate] = useState({ // 승인, 반려 버튼 눌렀을 때 해당 행의 값 state로 관리
+    username:username || '',
+    assets_name : "",
+    category_num : "",
+    assets_num : "",
+    userq_title :"",
+    userq_comment : "",
+  });
+  const handleBuyClose = () =>  { // 구매신청 모달창 닫는
+    let basicModalBuy = document.getElementById("basicModalBuy");
+    basicModalBuy.style.display = "none";
+    basicModalBuy.classList.toggle("show");
+    setInnerBuyDate({
+      //초기화
+      assets_name: "",
+      category_num: "",
+      assets_num: "",
+      userq_title: "",
+      userq_comment: "",
+    });
+  };
+  const handleBuyChange = (e) => {
+    const { name, value } = e.target;
+    setInnerBuyDate((prevData) => ({
+      ...prevData,
+      [name]: value,
+    }));
+  };
+  const AssetBuyRequestForm = async (e) => {
+    e.preventDefault();
+    try {
+      const response = await axios.post('/AssetRequest/AssetBuyRequest', innerBuyData);
+      //초기화
+      if (response.data) {
+        setInnerBuyDate({
+          assets_name: "",
+          category_num: "",
+          assets_num: "",
+          userq_title: "",
+          userq_comment: "",
+        });
+        handleBuyClose()
+        alert("정상적으로 사용 신청이 처리되었습니다.");
+      }
+
+    } catch (error) {
+      console.error("사용 신청 처리에 실패하였습니다.", error);
+      alert("사용 신청 처리에 실패하였습니다.");
+      setInnerBuyDate({
+        assets_name: "",
+        category_num: "",
+        assets_num: "",
+        userq_title: "",
+        userq_comment: "",
+      });
+
+    }
+  };
+
+
 
 
 
@@ -283,6 +363,10 @@ const AssetAllList = () => {
                         </div>
 
                         <div className="datatable-search">
+                          <button className="btn btn-primary assetBuytBtn"
+                                  type="button" style={{marginRight:"25px"}}
+                                  data-bs-formtarget="#basicModal"
+                                  onClick={handleToggleBuy} id="assetBuytBtn">+ 구매신청</button>
                           <input
                               className="datatable-input"
                               placeholder="검색"
@@ -292,7 +376,6 @@ const AssetAllList = () => {
                               onChange={(e) => setInputText(e.target.value)}
                               onKeyPress={(e) => activeEnter(e)}
                           />
-                          <button className="btn btn-primary assetRequestBtn" type="button"   data-bs-formtarget="#basicModal" onClick={handleToggle} id="assetRequestBtn">+ 구매신청</button>
                         </div>
                       </div>
                     </div>
@@ -371,7 +454,7 @@ const AssetAllList = () => {
                     >
                       <AssetDetailModal selectedItem={selectedItem} />
                     </div>
-                  {/* 상세정모 모달창 끝*/}
+                    {/* 상세정모 모달창 끝*/}
 
                   </div>
                 </div>
@@ -389,94 +472,164 @@ const AssetAllList = () => {
           />
         </main>
 
-        {/* 승인 모달창 */}
+        {/* 사용신청 모달창 */}
         <div className="modal modalmodal" id="basicModal"  style={{display : "none"}} >
           <div className="card" style={{width: '600px', borderRadius: "8px"}} onClick={(e) => e.stopPropagation()}>
             <div className="card-body">
 
-              <h5 className="card-title" style={{ paddingBottom: "0px" }}>교환 및 반납 신청</h5>
+              <h5 className="card-title" style={{ paddingBottom: "0px" }}>자산 사용 신청</h5>
               <hr />
 
+              <form method="post" name="AssetUsageRequestForm" onSubmit={(e) => AssetUsageRequestForm(e)}>
 
-              <form method="post" >
+                <div className="modal-body">
 
-                <fieldset className="row mb-3">
-                  <legend className="col-form-label col-sm-2 pt-0">요청종류</legend>
-                  <div className="col-sm-10">
-                    <div className="form-check">
-                      <input className="form-check-input" type="radio" name="return_kind" id="gridRadios1" value="사용신청"/>
-                      <label className="form-check-label" htmlFor="gridRadios1">
-                        사용신청
-                      </label>
-                    </div>
-                    <div className="form-check">
-                      <input className="form-check-input" type="radio" name="return_kind" id="gridRadios2" value="구매신청" />
-                      <label className="form-check-label" htmlFor="gridRadios2">
-                        구매신청
-                      </label>
-                    </div>
-
-                  </div>
-                </fieldset>
-                <div className="row mb-3">
-                  <label htmlFor="" className="col-sm-2 col-form-label">신청자산</label>
-                  <div className="col-sm-10">
-                    <input type="text" className="form-control" value={inputInnerData.assets_name} disabled />
-
-                  </div>
-                </div>
-                <div className="row mb-3">
-                  <label className="col-sm-2 col-form-label">신청자</label>
-                  <div className="col-sm-10">
-                    <input type="text" className="form-control" value={username || ''} disabled />
-
-                  </div>
-                </div>
-                <div className="row mb-3">
-                  <label htmlFor="inputText" className="col-sm-2 col-form-label">신청날짜</label>
-                  <div className="col-sm-10">
-                    <input type="email" className="form-control" value={todayTime()} disabled />
-                  </div>
-                </div>
-
-                <div className="row mb-3 position-relative">
-                  <label htmlFor="validationTooltip03" className="col-sm-2 col-form-label needs-validation" >신청제목</label>
-                  <div className="col-sm-10">
-                    {/*<input type="text" className="form-control" name="return_title"  id="validationTooltip01"  onChange={handleChange} value={inputTitle} onChange={(e) => setInputTitle(e.target.value)} required/>*/}
-                    <input type="text" className="form-control" name="return_title" id="validationTooltip01" required />
-                    <div className="invalid-tooltip">
-                      Please provide a valid city.
+                  <div className="row mb-3">
+                    <label htmlFor="" className="col-sm-2 col-form-label">신청자산</label>
+                    <div className="col-sm-10">
+                      <input type="text" className="form-control"
+                             name="assets_name"
+                             onChange={handleChange}
+                             value={innerData.assets_name}
+                             disabled
+                      />
                     </div>
                   </div>
-                </div>
+                  <div className="row mb-3">
+                    <label className="col-sm-2 col-form-label">신청자</label>
+                    <div className="col-sm-10">
+                      <input type="text" className="form-control" name="username" value={username || ''} disabled />
+                    </div>
+                  </div>
+                  <div className="row mb-3">
+                    <label htmlFor="inputText" className="col-sm-2 col-form-label">신청날짜</label>
+                    <div className="col-sm-10">
+                      <input type="email" className="form-control" value={todayTime()} disabled />
+                    </div>
+                  </div>
+
+                  <div className="row mb-3 position-relative">
+                    <label htmlFor="validationTooltip03" className="col-sm-2 col-form-label needs-validation" >신청제목</label>
+                    <div className="col-sm-10">
+                      <input type="text" className="form-control" id="validationTooltip01"
+                             required
+                             name="userq_title"
+                             onChange={handleChange}
+                             value={innerData.userq_title}
+                      />
+                      <div className="invalid-tooltip">
+                      </div>
+                    </div>
+                  </div>
 
 
-                <div className="row mb-3">
-                  <label htmlFor="inputText" className="col-sm-2 col-form-label">신청사유</label>
-                  <div className="col-sm-10">
-                    {/*<textarea className="form-control userModalAst-text" name="return_comment" onChange={handleChange} value={inputComment} onChange={(e) => setInputComment(e.target.value)} required></textarea>*/}
-                    <textarea className="form-control userModalAst-text" name="return_comment" required></textarea>
+                  <div className="row mb-3">
+                    <label htmlFor="inputText" className="col-sm-2 col-form-label">신청사유</label>
+                    <div className="col-sm-10">
+                      <textarea className="form-control userModalAst-text"
+                                name="userq_comment"
+                                onChange={handleChange}
+                                value={innerData.userq_comment}
+                                required></textarea>
+                    </div>
+                  </div>
+                  <div className="row mb-3 userModalAsk-btn">
+                    <label className="col-sm-2 col-form-label"></label>
+                    <div className="col-sm-10">
+                      <button type="button" className="btn btn-primary" style={{ marginRight: '10px', backgroundColor: 'gray', border: 'gray' }} onClick={handleClose}>뒤로가기</button>
+                      <button type="submit" className="btn btn-primary">신청하기</button>
+
+                    </div>
                   </div>
                 </div>
-
-
-
-                <div className="row mb-3 userModalAsk-btn">
-                  <label className="col-sm-2 col-form-label"></label>
-                  <div className="col-sm-10">
-                    <button type="button" className="btn btn-primary" style={{ marginRight: '10px', backgroundColor: 'gray', border: 'gray' }} onClick={handleClose}>뒤로가기</button>
-                    <button type="submit" className="btn btn-primary">신청하기</button>
-
-                  </div>
-                </div>
-
               </form>{/* <!-- End General Form Elements --> */}
+            </div>
+          </div>
+        </div>
+        {/*사용 신청 모달 끝*/}
 
+        {/* 구매 신청 모달창 */}
+        <div className="modal modalmodal2" id="basicModalBuy"
+             style={{display : "none"}} >
+          <div className="card" style={{width: '600px', borderRadius: "8px"}} onClick={(e) => e.stopPropagation()}>
+            <div className="card-body">
+
+              <h5 className="card-title" style={{ paddingBottom: "0px" }}>자산 구매 신청</h5>
+              <hr />
+
+              <form method="post" name="AssetBuyRequestForm" onSubmit={(e) => AssetBuyRequestForm(e)}>
+
+                <div className="modal-body">
+
+                  <div className="row mb-3 position-relative">
+                    <label htmlFor="validationTooltip03" className="col-sm-2 col-form-label needs-validation" >신청자산</label>
+                    <div className="col-sm-10">
+                      <input type="text" className="form-control" id="validationTooltip01"
+                             required
+                             name="assets_name"
+                             onChange={handleBuyChange}
+                             value={innerBuyData.assets_name}
+                      />
+                      <div className="invalid-tooltip">
+                      </div>
+                    </div>
+                  </div>
+                  <div className="row mb-3">
+                    <label className="col-sm-2 col-form-label">신청자</label>
+                    <div className="col-sm-10">
+                      <input type="text" className="form-control" name="username" value={username || ''} disabled />
+
+                    </div>
+                  </div>
+                  <div className="row mb-3">
+                    <label htmlFor="inputText" className="col-sm-2 col-form-label">신청날짜</label>
+                    <div className="col-sm-10">
+                      <input className="form-control" value={todayTime()} disabled />
+                    </div>
+                  </div>
+
+                  <div className="row mb-3 position-relative">
+                    <label htmlFor="validationTooltip03" className="col-sm-2 col-form-label needs-validation" >신청제목</label>
+                    <div className="col-sm-10">
+                      <input type="text" className="form-control" id="validationTooltip01"
+                             required
+                             name="userq_title"
+                             onChange={handleBuyChange}
+                             value={innerBuyData.userq_title}
+                      />
+                      <div className="invalid-tooltip">
+                      </div>
+                    </div>
+                  </div>
+
+
+                  <div className="row mb-3">
+                    <label htmlFor="inputText" className="col-sm-2 col-form-label">신청사유</label>
+                    <div className="col-sm-10">
+                      <textarea className="form-control userModalAst-text"
+                                name="userq_comment"
+                                onChange={handleBuyChange}
+                                value={innerBuyData.userq_comment}
+                                required
+                                placeholder={"신청사유와 자산의 간략한 스펙을 기입하세요"}
+                      ></textarea>
+                    </div>
+                  </div>
+                  <div className="row mb-3 userModalAsk-btn">
+                    <label className="col-sm-2 col-form-label"></label>
+                    <div className="col-sm-10">
+                      <button type="button" className="btn btn-primary" style={{ marginRight: '10px', backgroundColor: 'gray', border: 'gray' }} onClick={handleBuyClose}>뒤로가기</button>
+                      <button type="submit" className="btn btn-primary">신청하기</button>
+
+                    </div>
+                  </div>
+                </div>
+              </form>{/* <!-- End General Form Elements --> */}
 
             </div>
           </div>
         </div>
-
+        {/*구매 신청 모달 끝*/}
 
       </div>
   );

@@ -15,7 +15,8 @@ const AssetAllListTable = ({index,
         username, appro_title, appro_comment];
 
     // const aaa = todayTime()
-    // console.log(aaa)
+    // console.log(category_num + "table")
+    // console.log(assets_name + "table")
 
     return (
         <tr className="prod-box">
@@ -37,14 +38,13 @@ const AssetAllListTable = ({index,
             <td className="assets_status">{assets_status}</td>
             <td className="spec_mfg">{spec_mfg}</td>
             <td className="spec_seriel">{spec_seriel}</td>
-            <th className="spec_warranty">{spec_warranty}</th>
-            <th className="category_name">{category_name}</th>
+            <td className="spec_warranty">{spec_warranty}</td>
+            <td className="category_name">{category_name}</td>
 
+            <th className="assets_name" style={{ display: "none" }}>{assets_name}</th>
+            <th className="category_num" style={{ display: "none" }}>{category_num}</th>
             <th className="spec_num" style={{ display: "none" }}>{spec_num}</th>
             <th className="assets_num" style={{ display: "none" }}>{assets_num}</th>
-            <th className="category_num" style={{ display: "none" }}>{category_num}</th>
-
-            {/*<th className="todayTime" style={{ display: "none" }}>{todayTime()}</th>*/}
             <td>
                 <button className="btn btn-primary approveBtn" type="button"   data-bs-formtarget="#basicModal" onClick={func} id="assetRequestBtn">사용신청</button>
             </td>

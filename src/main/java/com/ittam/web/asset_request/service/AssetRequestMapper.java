@@ -1,10 +1,12 @@
 package com.ittam.web.asset_request.service;
 
 import com.ittam.web.command.ITAssetsVO;
+import com.ittam.web.command.UserRequestVO;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 @Mapper
 public interface AssetRequestMapper {
@@ -30,5 +32,10 @@ public interface AssetRequestMapper {
     public ArrayList<ITAssetsVO> AssetRequestSearchSV(String inputText);
     public ArrayList<ITAssetsVO> AssetRequestSearchETC(String inputText);
 
+    // 자산 사용 신청
+    public int AssetUsageRequest(UserRequestVO vo);
+
+    // 자산 구매 신청
+    public int AssetBuyRequest(UserRequestVO vo);
 
 }

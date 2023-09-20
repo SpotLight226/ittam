@@ -8,6 +8,7 @@ function PurchaseApproval({
   formapproval,
   purchaseSubmit,
   handleSelectChange1,
+  modalClose,
 }) {
   const username = localStorage.getItem('username');
   return (
@@ -110,6 +111,7 @@ function PurchaseApproval({
                   type="button"
                   className="btn btn-secondary"
                   data-bs-dismiss="modal"
+                  onClick={modalClose}
                 >
                   닫기
                 </button>

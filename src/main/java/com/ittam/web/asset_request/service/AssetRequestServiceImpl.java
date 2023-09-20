@@ -1,11 +1,13 @@
 package com.ittam.web.asset_request.service;
 
 import com.ittam.web.command.ITAssetsVO;
+import com.ittam.web.command.UserRequestVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 @Service("assetRequestService")
 public class AssetRequestServiceImpl implements AssetRequestService{
@@ -69,6 +71,22 @@ public class AssetRequestServiceImpl implements AssetRequestService{
     public ArrayList<ITAssetsVO> AssetRequestSearchETC(String inputText) {
         return assetRequestMapper.AssetRequestSearchETC(inputText);
     }
+
+    //자산 사용 신청
+    @Override
+    public int AssetUsageRequest(UserRequestVO vo) {
+
+        return assetRequestMapper.AssetUsageRequest(vo);
+    }
+
+    //자산 구매 신청
+    @Override
+    public int AssetBuyRequest(UserRequestVO vo) {
+
+        return assetRequestMapper.AssetUsageRequest(vo);
+    }
+
+
 
 
 }
