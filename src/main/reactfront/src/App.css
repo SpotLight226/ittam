@@ -48,3 +48,18 @@
   outline: none;
 }
 
+/*모달 중앙 정렬*/
+/* 모달 스타일 */
+.modalmodal {
+  display: none; /* 초기에는 보이지 않게 설정 */
+  position: fixed;
+  top: 50%; /* 수직 중앙 정렬 */
+  left: 50%; /* 수평 중앙 정렬 */
+  transform: translate(-50%, -50%); /* 모달을 중앙으로 이동 */
+  z-index: 1000; /* 다른 요소 위에 보이도록 설정 (원하는 숫자로 조절) */
+}
+
+/* show 클래스가 추가된 경우 모달 표시 */
+.modalmodal.show {
+  display: block;
+}

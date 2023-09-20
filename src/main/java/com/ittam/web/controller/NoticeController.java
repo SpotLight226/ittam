@@ -123,7 +123,7 @@ public class NoticeController {
             noticeVO.setNotice_regdate(Timestamp.valueOf(LocalDateTime.now()));
             noticeVO.setNotice_hits(0);
             noticeService.updateNotice(noticeVO, multipartFileList);
-            return ResponseEntity.ok("게시글이 작성되었습니다.");
+            return ResponseEntity.ok("게시글이 수정되었습니다.");
         } catch (Exception e) {
             e.printStackTrace();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)

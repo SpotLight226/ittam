@@ -6,6 +6,8 @@ import { Link } from "react-router-dom";
 import { useLocation } from "react-router-dom";
 
 
+const token = localStorage.getItem("token");
+
 const formatDate = (dateString) => {
   const date = new Date(dateString);
   const year = date.getFullYear();
@@ -16,7 +18,7 @@ const formatDate = (dateString) => {
 
 
 
-const NoticeListTable = ({
+const NoticeListTable= ({
   index,
   notice_regdate,
   notice_title,
@@ -26,6 +28,7 @@ const NoticeListTable = ({
   notice_hits,
   notice_num,
   setNoticeData,
+  getList,
 }) => {
   const noticeElem = useRef()
   const navigate = useNavigate(); // navigate 함수 생성
@@ -33,31 +36,69 @@ const NoticeListTable = ({
 
 const handleDelete = () => {
   if (window.confirm("정말로 삭제하시겠습니까?")) {
-      axios
-      .post(`http://localhost:9191/noticelist/delete`, {
-        notice_num: notice_num,
+      // axios
+      // .post(`http://localhost:9191/noticelist/delete`, {
+      //   notice_num: notice_num,
+      // })
+      // .then((res) => {
+      //   // alert(res.data);
+      //   // //noticeElem.current.remove()
+      //   // getList();
+      // })
+      // .catch((err) => {
+      //   alert(err);
+      // });
+
+      axios({
+        url: "http://localhost:9191/noticelist/delete",
+        method: "post",
+        headers: {
+          Authorization : token
+        },
+        data: {
+          notice_num: notice_num
+        }
       })
       .then((res) => {
-        noticeElem.current.remove()
-        alert(res.data);
+        // alert(res.data);
+        // //noticeElem.current.remove()
+        // getList();
       })
       .catch((err) => {
         alert(err);
       });
 
-      axios
-      .post(`http://localhost:9191/noticelist/deleteimg`,{
-        notice_num2: notice_num,
+      // axios
+      // .post(`http://localhost:9191/noticelist/deleteimg`,{
+      //   notice_num2: notice_num,
+      // })
+      // .then((res) => {
+      //   console.log(1);
+      //   alert(res.data);
+      //   getList();
+      // })
+      // .catch((err) => {
+      //   alert(err);
+      // });
+
+      axios({
+        url: "http://localhost:9191/noticelist/deleteimg",
+        method: "post",
+        headers: {
+          Authorization : token
+        },
+        data: {
+          notice_num2: notice_num
+        }
       })
       .then((res) => {
         console.log(1);
         alert(res.data);
-        navigate(`/noticelist`);
+        getList();
       })
       .catch((err) => {
         alert(err);
       });
-
   }};
 
 const handleClickEvent = () => {
@@ -87,6 +128,7 @@ const handleClickEvent = () => {
       },
     });
   };
+
   return (
     <Fragment>
       <tr className="prod-box NoticeListTable" ref={noticeElem}>

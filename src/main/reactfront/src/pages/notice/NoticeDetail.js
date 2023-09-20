@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
 import "../../styles/Style.css";
-
+import "../../styles/NoticeDetail.css";
 
 const formatDate = (dateString) => {
   const date = new Date(dateString);
@@ -13,6 +13,7 @@ const formatDate = (dateString) => {
 };
 
 function NoticeDetail() {
+  const token = localStorage.getItem("token");
 
   const { id } = useParams(); // 파라미터에서 id를 가져옴
   const [notice, setNotice] = useState({}); // 게시글 데이터를 저장할 상태
@@ -30,22 +31,56 @@ function NoticeDetail() {
 
   const handleDelete = () => {
     if (window.confirm("정말로 삭제하시겠습니까?")) {
-      axios
-        .post(`http://localhost:9191/noticelist/delete`,notice)
-        .then((res) => {
-          console.log(1);
-          alert(res.data);
-          navigate(`/noticelist`);
-        })
-        .catch((err) => {
-          alert(err);
-        });
+      // axios
+      //   .post(`http://localhost:9191/noticelist/delete`,notice)
+      //   .then((res) => {
+      //     // console.log(1);
+      //     // alert(res.data);
+      //     // navigate(`/noticelist`);
+      //   })
+      //   .catch((err) => {
+      //     // alert(err);
+      //   });
 
-        axios
-        .post(`http://localhost:9191/noticelist/deleteimg`,{
-          notice_num2 : notice.notice_num
-        })
-        .then((res) => {
+      axios({
+        url: "http://localhost:9191/noticelist/delete",
+        method: "post",
+        headers: {
+          Authorization : token
+        },
+        data: notice
+      }).then((res) => {
+        // console.log(1);
+        // alert(res.data);
+        // navigate(`/noticelist`);
+      })
+          .catch((err) => {
+             alert(err);
+          });
+
+        // axios
+        // .post(`http://localhost:9191/noticelist/deleteimg`,{
+        //   notice_num2 : notice.notice_num
+        // })
+        // .then((res) => {
+        //   console.log(1);
+        //   alert(res.data);
+        //   navigate(`/noticelist`);
+        // })
+        // .catch((err) => {
+        //   alert(err);
+        // });
+
+        axios({
+          url: "http://localhost:9191/noticelist/deleteimg",
+          method: "post",
+          headers: {
+            Authorization : token
+          },
+          data: {
+            notice_num2 : notice.notice_num
+          }
+        }).then((res) => {
           console.log(1);
           alert(res.data);
           navigate(`/noticelist`);
@@ -58,9 +93,22 @@ function NoticeDetail() {
 
   useEffect(() => {
     // 게시글 데이터를 가져오는 Axios GET 요청을 보냄
-    axios
-      .get(`http://localhost:9191/noticelist/detail/${id}?id=${id}`)
-      .then((res) => {
+    // axios
+    //   .get(`http://localhost:9191/noticelist/detail/${id}?id=${id}`)
+    //   .then((res) => {
+    //     console.log(res.data);
+    //     setNotice(res.data);
+    //   })
+    //   .catch((err) => {
+    //     console.log(err);
+    //   });
+      axios({
+        url: `http://localhost:9191/noticelist/detail/${id}?id=${id}`,
+        method: "get",
+        headers: {
+          Authorization : token
+        }
+      }).then((res) => {
         console.log(res.data);
         setNotice(res.data);
       })
@@ -71,17 +119,28 @@ function NoticeDetail() {
 
       // 액시오스로 noticeImgVo 요청해서 noticeImg 담기
       // axios.get
-      axios
-      .get(`http://localhost:9191/noticelist/detailimg/${id}?id=${id}`)
+      // axios
+      // .get(`http://localhost:9191/noticelist/detailimg/${id}?id=${id}`)
+      // .then((res) => {
+      //   setNoticeimg(res.data);
+      // })
+      // .catch((err) => {
+      //   console.log(err);
+      // });
+      
+      axios({
+        url: `http://localhost:9191/noticelist/detailimg/${id}?id=${id}`,
+        method: "get",
+        headers: {
+          Authorization : token
+        }
+      })
       .then((res) => {
         setNoticeimg(res.data);
       })
       .catch((err) => {
         console.log(err);
       });
-      
-
-
   }, []);
 
   return (
@@ -108,7 +167,7 @@ function NoticeDetail() {
                 <form>
                  
 
-                <div className="row mb-3 notice_title">
+                {/* <div className="row mb-3 notice_title">
                     <label
                       htmlFor="inputText"
                       className="col-sm-2 col-form-label"
@@ -130,6 +189,7 @@ function NoticeDetail() {
                     <div className="col-sm-10">{notice.notice_name}</div>
                   </div>
 
+                  
                   <div className="row mb-3 notice_num" style={{display : "none"}}>
                     <label
                       htmlFor="inputText"
@@ -139,6 +199,8 @@ function NoticeDetail() {
                     </label>
                     <div className="col-sm-10">{notice.notice_num}</div>
                   </div>
+
+
 
                   <div className="row mb-3 notice_hit">
                     <label
@@ -159,13 +221,17 @@ function NoticeDetail() {
                     <div className="col-sm-10">{formatDate(notice.notice_regdate)}</div>
                   </div>
 
+
+
                   <div className="row mb-3 notice_end">
                     <label for="inputDate" className="col-sm-2 col-form-label">
                       <p>만료일</p>
                     </label>
                     <div className="col-sm-10">{formatDate(notice.notice_enddate)}</div>
                   </div>
-                  
+
+
+
                   <div className="row mb-3">
                     <label
                       htmlFor="inputText"
@@ -178,7 +244,34 @@ function NoticeDetail() {
                     </p>
                     }
                     <div className="col-sm-10" style={{ textAlign: 'center' }}>{notice.notice_content}</div>
+                  </div> */}
+
+
+                <div style={{fontSize: "24px", marginBottom : '30px'}}>제목 {notice.notice_title}</div>
+                 
+               
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' ,paddingBottom : '10px',borderBottom: '1px solid #dbdbdb'}}>
+                  <span style={{ textAlign: 'left' }}>작성자 {notice.notice_name}</span>
+                  <div>
+                    <span style={{ marginLeft: '10px' }}>등록일 {formatDate(notice.notice_regdate)}</span>
+                    <span style={{ marginLeft: '10px' }}>만료일 {formatDate(notice.notice_enddate)}</span>
+                    <span style={{ marginLeft: '10px' }}>조회수 {notice.notice_hits}</span>
                   </div>
+                </div>
+
+                  <label
+                      htmlFor="inputText"
+                      className="col-sm-2 col-form-label"
+                      >
+                    </label>
+                    {noticeimg && 
+                    <p style={{ textAlign: 'center', marginBottom: '10px' }}>
+                      <img src={noticeimg.noticeimg_path} alt="이미지" style={{ maxWidth: '500px', width: '100%', height: 'auto' }}/>
+                    </p>
+                    }
+                    <div style={{ textAlign: 'center', marginBottom: '30px' }}>{notice.notice_content}</div>
+
+
 
 
                   <div
