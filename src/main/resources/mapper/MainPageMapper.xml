@@ -32,7 +32,6 @@
                  LEFT JOIN SWSPEC sw ON (a.assets_name LIKE '%Microsoft Office%' OR a.assets_name LIKE '%파워포인트%' OR a.assets_name LIKE '엑셀' OR a.assets_name LIKE '워드' OR a.assets_name LIKE '한글과컴퓨터' OR a.assets_name LIKE '인텔리제이' ) AND a.spec_num = sw.spec_num
                  LEFT JOIN SERVERSPEC sv ON (a.assets_name LIKE '%서버용하드%') AND a.spec_num = sv.spec_num
                  LEFT JOIN ETCSPEC etc ON a.spec_num = etc.spec_num AND a.assets_name NOT LIKE '%노트북%' AND a.assets_name NOT LIKE '%데스크탑%' AND a.assets_name NOT LIKE '%서버용하드%' AND a.assets_name NOT LIKE '%Microsoft Office%' AND a.assets_name NOT LIKE '%파워포인트%' AND a.assets_name NOT LIKE '%워드%' AND a.assets_name NOT LIKE '%한글과컴퓨터%' AND a.assets_name NOT LIKE '%인텔리제이%'
-                 LEFT JOIN STOCK_RETURN sr on a.ASSETS_NUM = sr.ASSETS_NUM
         where a.CATEGORY_NUM= #{category_num} and a.ASSETS_STATUS = '사용가능';
     </select>
     <select id="getUserInfo" resultType="UserVO">
@@ -65,6 +64,7 @@
                  LEFT JOIN ETCSPEC etc ON a.spec_num = etc.spec_num AND a.assets_name NOT LIKE '%노트북%' AND a.assets_name NOT LIKE '%데스크탑%' AND a.assets_name NOT LIKE '%서버용하드%' AND a.assets_name NOT LIKE '%Microsoft Office%' AND a.assets_name NOT LIKE '%파워포인트%' AND a.assets_name NOT LIKE '%워드%' AND a.assets_name NOT LIKE '%한글과컴퓨터%' AND a.assets_name NOT LIKE '%인텔리제이%'
                  LEFT JOIN STOCK_RETURN sr on a.ASSETS_NUM = sr.ASSETS_NUM
         where a.username=#{username}
+        order by rent_date desc
     </select>
 
     <update id="updateReturn_yn">
@@ -200,7 +200,19 @@
         order by add_date desc limit #{nnn};
     </select>
     <select id="getNoticeList">
-        SELECT * FROM NOTICE order by NOTICE_REGDATE desc limit 5;
+        SELECT * FROM NOTICE order by NOTICE_REGDATE desc limit 5
+    </select>
+    <select id="getMyInfo">
+        select * from USER where username = #{username}
+    </select>
+    <select id="getFinalUsingCnt">
+        select count(*) from USER_REQUEST where userq_yn = '관리자사용승인'
+    </select>
+    <select id="getFinalBuyCnt">
+        select count(*) from STOCK_APPROVAL where APPRO_KIND = '구매' and APPRO_YN = 'N'
+    </select>
+    <select id="getFinalDisCnt">
+        select count(*) from STOCK_APPROVAL where APPRO_KIND = '폐기' or APPRO_KIND = '수리' and APPRO_YN = 'N'
     </select>
 
 

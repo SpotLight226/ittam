@@ -1,8 +1,30 @@
-import React from "react";
+import React, {useEffect, useState} from "react";
 import { Link } from "react-router-dom";
 import "../styles/Style.css";
+import axios from "axios";
 
 function Header() {
+  const token = localStorage.getItem("token");
+  const username = localStorage.getItem('username');
+  const [myInfo, setMyInfo] = useState({});
+  const getMyInfo = (username) => {
+    axios({
+      url: "/mainPage/getMyInfo",
+      method: "get",
+      headers: {
+        Authorization : token
+      },
+      params: {
+        username: username
+      }
+    })
+        .then(response => {setMyInfo(response.data); console.log(response.data);})
+        .catch(error => console.log(error))
+  }
+
+  useEffect(() => {
+    getMyInfo(username);
+  }, []);
 
   if(window.location.pathname === '/') return null
 
@@ -237,15 +259,15 @@ function Header() {
                     className="rounded-circle"
                 ></img>
                 <span className="d-none d-md-block dropdown-toggle ps-2">
-                J. Stephen
+                {myInfo.user_name}
               </span>
               </Link>
               {/* <!-- End Profile Iamge Icon --> */}
 
               <ul className="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
                 <li className="dropdown-header">
-                  <h6>Jang Stephen</h6>
-                  <span>Web Developer</span>
+                  <h6>{myInfo.user_name}</h6>
+                  <span>{username}</span>
                 </li>
                 <li>
                   <hr className="dropdown-divider"></hr>

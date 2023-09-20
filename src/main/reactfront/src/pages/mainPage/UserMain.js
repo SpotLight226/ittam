@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import "../../styles/Style.css";
 import "../../styles/MainPageStyle/UserStyle.css";
 import axios from "axios";
-import { Link } from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 import DounutChart_user from "../../component/Chart/DonutChart";
 
 function UserMain() {
@@ -70,6 +70,11 @@ function UserMain() {
       },
     }).then(response => {setNoticeList(response.data); console.log(response.data)})
         .catch(error => console.log(error))
+  }
+
+  const navigate = useNavigate(); // navigate 함수 생성
+  const handleClickEvent = (notice_num) => {
+    navigate(`/NoticeDetail/${notice_num}`);
   }
 
 
@@ -162,15 +167,15 @@ function UserMain() {
 
             <div className="card">
               <div className="card-body">
-                <Link to="/####"><h5 className="card-title" style={{fontWeight: "800"}}>공지사항 <span>| 전체보기</span></h5></Link>
+                <Link to="/noticelist"><h5 className="card-title" style={{fontWeight: "800"}}>공지사항 <span>| 전체보기</span></h5></Link>
                 <table className="table table-sm">
                   <thead>
                   <tr>
                     <th scope="col">#</th>
-                    <th scope="col">작성자</th>
-                    <th scope="col">제목</th>
-                    <th scope="col">등록일</th>
-                    <th scope="col">만료일</th>
+                    <th scope="col" style={{width: '100px'}}>작성자</th>
+                    <th scope="col" style={{width: '250px'}}>제목</th>
+                    <th scope="col" style={{width: '100px'}}>등록일</th>
+                    <th scope="col" style={{width: '100px'}}>만료일</th>
                   </tr>
                   </thead>
                   <tbody>
@@ -179,7 +184,7 @@ function UserMain() {
                       return <tr key={i}>
                     <th scope="row">{a.notice_num}</th>
                     <td>{a.notice_name}</td>
-                    <td>{a.notice_title}</td>
+                        <td onClick={() => handleClickEvent(a.notice_num)}><Link to="##">{a.notice_title}</Link></td>
                     <td>{noticedate(a.notice_regdate)}</td>
                     <td>{noticedate(a.notice_enddate)}</td>
                   </tr>

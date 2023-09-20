@@ -16,7 +16,7 @@ import java.util.Random;
 @RestController
 @RequestMapping("/stock")
 @CrossOrigin(origins = "http://localhost:3000")
-public class Stock_ApprovalController {
+public class  Stock_ApprovalController {
 
     @Autowired
     private Stock_approvalService stock_approvalService;
@@ -55,16 +55,18 @@ public class Stock_ApprovalController {
             vo.setAssets_num((int) itemData.get("assets_num"));
             data = stock_approvalService.updateITStatus(vo);
         }else if("구매".equals((String) itemData.get("appro_kind"))) {
-            if((Integer)itemData.get("assest_num") != 0) {
+//            if((Integer)itemData.get("assest_num") != 0) {
                 vo2.setAppro_num((int)itemData.get("appro_num"));
                 stock_approvalService.ApprovY(vo2);
     //            stock_approvalService.updateList(vo);
                 vo3.setUserq_num((int)itemData.get("userq_num"));
                 stock_approvalService.finalyn(vo3);
-            }else {
-                vo2.setAppro_num((int)itemData.get("appro_num"));
-                stock_approvalService.ApprovY(vo2);
-            }
+//            }else {
+//                vo2.setAppro_num((int)itemData.get("appro_num"));
+//                stock_approvalService.ApprovY(vo2);
+//                vo3.setUserq_num((int)itemData.get("userq_num"));
+//                stock_approvalService.finalyn(vo3);
+//            }
         }
 
 
