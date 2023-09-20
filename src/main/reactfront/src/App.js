@@ -97,7 +97,7 @@ function App() {
 
           <Route path="/itassets/detail" element={<AssetDetail />} />
           <Route path="/adminitassets" element={<ITAssets />} />
-          <Route path="itassetsapproval" element={<ITAssetsApproval />} />
+          <Route path="/itassetsapproval" element={<ITAssetsApproval />} />
 
             <Route path="/admin/adminMain" element={<AdminMain />} />
             <Route path="/mypage" element={<Mypage />} />
