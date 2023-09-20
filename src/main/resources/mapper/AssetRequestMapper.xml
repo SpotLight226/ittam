@@ -201,5 +201,39 @@
 
     </select>
 
+<!--  사용신청 insert -->
+
+    <insert id="AssetUsageRequest" parameterType="com.ittam.web.command.UserRequestVO">
+        INSERT INTO USER_REQUEST (username, category_num, assets_num, userq_title, userq_count, userq_regdate, userq_kind, userq_comment,userq_yn)
+        VALUES (
+                #{username},
+                #{category_num},
+                #{assets_num},
+                #{userq_title},
+                '1',
+                now(),
+                #{userq_kind},
+                #{userq_comment},
+                '사원사용요청'
+                )
+    </insert>
+
+<!--  구매신청 insert  -->
+
+    <insert id="AssetBuyRequest" parameterType="com.ittam.web.command.UserRequestVO">
+        INSERT INTO USER_REQUEST (username, category_num, assets_num, userq_title, userq_count, userq_regdate, userq_kind, userq_comment,userq_yn)
+        VALUES (
+                   #{username},
+                   #{category_num},
+                   #{assets_num},
+                   #{userq_title},
+                   '1',
+                   now(),
+                   #{userq_kind},
+                   #{userq_comment},
+                   '사원구매요청'
+               )
+    </insert>
+
 
 </mapper>

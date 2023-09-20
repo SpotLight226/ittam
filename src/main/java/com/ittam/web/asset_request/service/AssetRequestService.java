@@ -1,6 +1,7 @@
 package com.ittam.web.asset_request.service;
 
 import com.ittam.web.command.ITAssetsVO;
+import com.ittam.web.command.UserRequestVO;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,6 +28,12 @@ public interface AssetRequestService {
     public ArrayList<ITAssetsVO> AssetRequestSearchSW(String inputText);
     public ArrayList<ITAssetsVO> AssetRequestSearchSV(String inputText);
     public ArrayList<ITAssetsVO> AssetRequestSearchETC(String inputText);
+
+    // 자산 사용 신청
+    public int AssetUsageRequest(UserRequestVO vo);
+    public int AssetBuyRequest(UserRequestVO vo);
+
+
 
 
 }

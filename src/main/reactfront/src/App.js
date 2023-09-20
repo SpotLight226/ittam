@@ -21,8 +21,6 @@ import ApproveHandleList from "./pages/approve/ApproveHandleList";
 
 import ITAssets from "./pages/itassets/ITAssets";
 import AssetDetail from "./pages/itassets/AssetDetail";
-import PurchaseRequest from "./pages/itassets/PurchaseRequest";
-import UseRequest from "./pages/itassets/UseRequest";
 import AssetAllList from "./pages/itassets/AssetAllList";
 import AdminMain from "./pages/mainPage/AdminMain";
 import Mypage from "./pages/mainPage/Mypage";

@@ -3,6 +3,7 @@ package com.ittam.web.controller;
 
 import com.ittam.web.asset_request.service.AssetRequestService;
 import com.ittam.web.command.ITAssetsVO;
+import com.ittam.web.command.UserRequestVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
@@ -133,15 +134,37 @@ public class Asset_RequestController {
 
     //사용 신청
 
-    @PostMapping("/AssetRequestUse")
-    public ResponseEntity<String> AssetRequestUse(@RequestBody Map<String,String> requestBody){
+    @PostMapping("/AssetUsageRequest")
+    public ResponseEntity<Integer> AssetUsageRequest(@RequestBody Map<String, Object> requestBody){
         System.out.println(requestBody.toString());
 
+        UserRequestVO vo = new UserRequestVO();
+        vo.setUserq_kind(String.valueOf(requestBody.get("assets_name")));
+        vo.setCategory_num(Integer.valueOf((String)requestBody.get("category_num")));
+        vo.setAssets_num(Integer.valueOf((String)requestBody.get("assets_num")));
+        vo.setUserq_title(String.valueOf(requestBody.get("userq_title")));
+        vo.setUserq_comment(String.valueOf(requestBody.get("userq_comment")));
+        vo.setUsername(String.valueOf(requestBody.get("username")));
+        int data = assetRequestService.AssetUsageRequest(vo);
 
+        return new ResponseEntity<>(data,HttpStatus.OK);
+    }
 
+    // 구매 신청
+    @PostMapping("/AssetBuyRequest")
+    public ResponseEntity<Integer> AssetBuyRequest(@RequestBody Map<String, Object> requestBody){
+        System.out.println(requestBody.toString());
 
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                .body("자산 사용 신청 중 오류가 발생했습니다.");
+        UserRequestVO vo = new UserRequestVO();
+        vo.setUserq_kind(String.valueOf(requestBody.get("assetName")));
+        vo.setCategory_num(Integer.valueOf((String)requestBody.get("category_num")));
+        vo.setAssets_num(Integer.valueOf((String)requestBody.get("assets_num")));
+        vo.setUserq_title(String.valueOf(requestBody.get("userq_title")));
+        vo.setUserq_comment(String.valueOf(requestBody.get("userq_comment")));
+        vo.setUsername(String.valueOf(requestBody.get("username")));
+        int data = assetRequestService.AssetUsageRequest(vo);
+
+        return new ResponseEntity<>(data,HttpStatus.OK);
     }
 
 
