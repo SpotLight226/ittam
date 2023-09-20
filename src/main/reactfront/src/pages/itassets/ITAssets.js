@@ -7,16 +7,29 @@ import ITAssetsInsert from './ITAssetsInsert';
 import ITAssetsInfo from './ITAssetsInfo';
 import ITAssetsModify from './ITAssetsModify';
 import PurchaseApproval from './PurchaseApproval';
-import { useContext } from "react";
-import { userInfoContext } from "../../App";
+import { useContext } from 'react';
+import { userInfoContext } from '../../App';
+import base64 from 'base-64';
 
 function ITAssets() {
-
   const contextValues = useContext(userInfoContext); // 항상 가장 위에서 선언해야 사용 가능
   let username = localStorage.getItem('username');
-  const token = localStorage.getItem("token");
+  const token = localStorage.getItem('token');
 
   const { userId, role } = contextValues || {}; // 들어온 값 없으면 공백으로
+  // useEffect(() => {
+  //   const token = localStorage.getItem('token');
+  //   let payload = token.substring(
+  //     token.indexOf('.') + 1,
+  //     token.lastIndexOf('.')
+  //   );
+  //   let dec = JSON.parse(base64.decode(payload));
+  //   let role = dec.role;
+  //   if (role !== 'ROLE_ADMIN' && role !== 'ROLE_HIGH_ADMIN') {
+  //     alert('접근 권한이 없습니다.');
+  //     window.history.back();
+  //   }
+  // }, []);
 
   const [selectedType, setSelectedType] = useState('선택하지않음');
   /* 폼데이터 초기화 */
@@ -63,11 +76,11 @@ function ITAssets() {
   const [data, setData] = useState([]);
   const itassetList = () => {
     axios
-      .get('/assets/getITList',{
+      .get('/assets/getITList', {
         headers: {
-          "Content-Type": "application/json",
-          Authorization: token
-        }
+          'Content-Type': 'application/json',
+          Authorization: token,
+        },
       })
       .then((response) => {
         setData(response.data);
@@ -87,11 +100,11 @@ function ITAssets() {
   const [selectedChild, setSelectedChild] = useState(null);
   useEffect(() => {
     axios
-      .get('/categories/categories',{
+      .get('/categories/categories', {
         headers: {
-          "Content-Type": "application/json",
-          Authorization: token
-        }
+          'Content-Type': 'application/json',
+          Authorization: token,
+        },
       })
       .then((response) => {
         setCategories(response.data);
@@ -232,11 +245,11 @@ function ITAssets() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post('/assets/specInsert', formData,{
+      const response = await axios.post('/assets/specInsert', formData, {
         headers: {
-          "Content-Type": "application/json",
-          Authorization: token
-        }
+          'Content-Type': 'application/json',
+          Authorization: token,
+        },
       });
       if (response.data) {
         setFormData({
@@ -296,7 +309,6 @@ function ITAssets() {
       setAssetstatus(selectedItem.assets_status);
     }
   }, [selectedItem]);
-  
 
   const updateSubmit = async (e) => {
     e.preventDefault();
@@ -313,11 +325,11 @@ function ITAssets() {
       spec_num: selectedItem ? selectedItem.spec_num : '',
     };
     try {
-      const update = await axios.post('/stock/statusUpdate', updatedStatus,{
+      const update = await axios.post('/stock/statusUpdate', updatedStatus, {
         headers: {
-          "Content-Type": "application/json",
-          Authorization: token
-        }
+          'Content-Type': 'application/json',
+          Authorization: token,
+        },
       });
       if (update.data) {
         setFormStatus({
@@ -362,24 +374,28 @@ function ITAssets() {
   const [count, setCount] = useState(0);
   const [itcount, setItcount] = useState(0);
   useEffect(() => {
-    axios.get('/assets/yncount',{
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: token
-      }
-    }).then((response) => {
-      setCount(response.data);
-    });
+    axios
+      .get('/assets/yncount', {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: token,
+        },
+      })
+      .then((response) => {
+        setCount(response.data);
+      });
   }, []);
   useEffect(() => {
-    axios.get('/assets/itcount',{
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: token
-      }
-    }).then((response) => {
-      setItcount(response.data);
-    });
+    axios
+      .get('/assets/itcount', {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: token,
+        },
+      })
+      .then((response) => {
+        setItcount(response.data);
+      });
   }, []);
 
   const [isModalOpen1, setIsModalOpen1] = useState(false);
@@ -428,11 +444,12 @@ function ITAssets() {
     try {
       const response = await axios.post(
         '/stock/purchaseApproval',
-        formapproval,{
+        formapproval,
+        {
           headers: {
-            "Content-Type": "application/json",
-            Authorization: token
-          }
+            'Content-Type': 'application/json',
+            Authorization: token,
+          },
         }
       );
       if (response.data) {
@@ -442,6 +459,8 @@ function ITAssets() {
           appro_title: '',
           appro_comment: '',
         });
+        setSelectedType('선택하지않음');
+        setSelectedParent('선택하지않음');
       }
     } catch (error) {
       console.log(error);
@@ -516,6 +535,7 @@ function ITAssets() {
         formapproval={formapproval}
         purchaseSubmit={purchaseSubmit}
         handleSelectChange1={handleSelectChange1}
+        modalClose={modalClose}
       />
       <section className="section">
         <div className="row">
