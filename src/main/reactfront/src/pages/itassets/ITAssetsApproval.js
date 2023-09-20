@@ -4,14 +4,13 @@ import Pagenation from '../../component/Pagenation';
 import axios from 'axios';
 import ApprovalComment from '../approve/ApprovalComment';
 import { useContext } from 'react';
-import { userInfoContext } from '../../App';
 
 function ITAssetsApproval() {
-  const contextValues = useContext(userInfoContext); // 항상 가장 위에서 선언해야 사용 가능
+  // const contextValues = useContext(userInfoContext); // 항상 가장 위에서 선언해야 사용 가능
   let username = localStorage.getItem('username');
   const token = localStorage.getItem('token');
 
-  const { userId, role } = contextValues || {}; // 들어온 값 없으면 공백으로
+  // const { userId, role } = contextValues || {}; // 들어온 값 없으면 공백으로
 
   /* 결제요청목록 데이터 */
   const [data, setData] = useState([]);

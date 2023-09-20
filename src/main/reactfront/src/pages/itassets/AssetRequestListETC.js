@@ -7,6 +7,7 @@ import AssetAllListTable from "./AssetAllListTable";
 import AssetDetailModal from "./AssetDetailModal";
 
 const AssetRequestListETC = () => {
+  const token = localStorage.getItem("token");
   const [AssetRequest, setAssetRequest] = useState([]); // 전체 자산 리스트
   const [inputText, setInputText] = useState('');
 
@@ -38,6 +39,9 @@ const AssetRequestListETC = () => {
       data: {
         inputText: inputText
       },
+      headers: {
+        Authorization : token
+      },
     })
         .then((response) => {
           setInputInnerDate(response.data);
@@ -54,7 +58,11 @@ const AssetRequestListETC = () => {
   useEffect(() => {
     if (inputInnerData.assets_name === "" || inputInnerData.length === 0) {
       // Axios를 사용하여 서버로 데이터를 보냅니다.
-      axios.get(`http://localhost:9191/AssetRequest/AssetRequestListCategory?path=${encodeURIComponent(path)}`)
+      axios.get(`http://localhost:9191/AssetRequest/AssetRequestListCategory?path=${encodeURIComponent(path)}`,{
+        headers: {
+          Authorization : token
+        },
+      })
           .then((res) => {setAssetRequest(res.data)})
           .catch((error) => {
             console.error('요청 실패:', error);
@@ -143,7 +151,10 @@ const AssetRequestListETC = () => {
       method: 'post',
       data: {
         userq_NUM: userqNUM
-      }
+      },
+      headers: {
+        Authorization : token
+      },
     })
         .then((response) => {
 

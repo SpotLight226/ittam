@@ -1,18 +1,9 @@
 import { Link } from "react-router-dom";
 import "../styles/Style.css";
-import { useContext } from "react";
-import { userInfoContext } from "../App";
 
 function Sidebar() {
-  const contextValues = useContext(userInfoContext); // 항상 가장 위에서 선언해야 사용 가능
 
   if (window.location.pathname === "/") return null;
-
-  const { userId, role } = contextValues || {}; // 들어온 값 없으면 공백으로
-
-  //처음에는 default 였다가 app.js 에서 useEffect로 token값 가져와서 뿌려줌
-  // console.log(userId);
-  // console.log(role);
 
   return (
     <aside id="sidebar" className="sidebar">
@@ -291,7 +282,7 @@ function Sidebar() {
               </Link>
             </li>
             <li>
-              <Link to="users/userList">
+              <Link to="/users/userList">
                 <i className="bi bi-circle"></i>
                 <span>사용자 목록</span>
               </Link>

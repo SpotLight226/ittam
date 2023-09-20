@@ -32,3 +32,14 @@
 .role-control-wrapper #selectrole {
   margin-left: 10px;
 }
+
+/* 유저 리스트에서 호버 */
+tbody .prod-box .userName .hover-bold:hover {
+  font-weight: bold;
+}
+
+/* 검색 창  */
+
+.selected-search {
+  margin-right: 10px;
+}
