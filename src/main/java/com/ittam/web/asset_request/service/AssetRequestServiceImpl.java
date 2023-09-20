@@ -83,7 +83,7 @@ public class AssetRequestServiceImpl implements AssetRequestService{
     @Override
     public int AssetBuyRequest(UserRequestVO vo) {
 
-        return assetRequestMapper.AssetUsageRequest(vo);
+        return assetRequestMapper.AssetBuyRequest(vo);
     }
 
 
