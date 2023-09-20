@@ -142,10 +142,10 @@ function UserMain() {
                   <thead>
                   <tr>
                     <th scope="col">#</th>
-                    <th scope="col">작성자</th>
-                    <th scope="col">제목</th>
-                    <th scope="col">등록일</th>
-                    <th scope="col">만료일</th>
+                    <th scope="col" style={{width: '100px'}}>작성자</th>
+                    <th scope="col" style={{width: '250px'}}>제목</th>
+                    <th scope="col" style={{width: '100px'}}>등록일</th>
+                    <th scope="col" style={{width: '100px'}}>만료일</th>
                   </tr>
                   </thead>
                   <tbody>
