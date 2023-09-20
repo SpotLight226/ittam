@@ -9,12 +9,8 @@ import { useNavigate } from "react-router-dom";
 import base64 from "base-64"
 
 function Approve() {
-  const contextValues = useContext(userInfoContext); // 항상 가장 위에서 선언해야 사용 가능
   let username = localStorage.getItem('username');
   const token = localStorage.getItem("token");
-
-  const { userId, role } = contextValues || {}; // 들어온 값 없으면 공백으로
-
 
   const [userRequest, setUserRequest] = useState([]); // 유저 리스트
   const [msg, setMsg] = useState(); // 리랜더링을 위해 useState 생성해서 응답 메시지 넣기
@@ -231,9 +227,7 @@ function Approve() {
     let role = dec.role;
     if (role !== "ROLE_ADMIN" && role !== "ROLE_HIGH_ADMIN"){
       alert("접근 권한이 없습니다.");
-      window.location.href = "/";
-      localStorage.removeItem("token");
-      localStorage.removeItem("username");
+      window.history.back();
     }
 
     if (inputInnerData.username === "" || inputInnerData.length === 0) {

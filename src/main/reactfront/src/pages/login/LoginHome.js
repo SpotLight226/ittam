@@ -9,6 +9,7 @@ import base64 from 'base-64';
 
 
 function LoginHome (){
+
   // const {authResponse, setAuthResponse} = useState("");
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
@@ -18,8 +19,8 @@ function LoginHome (){
   const [emailAuth, SetEmailAuth] = useState("");
   const navigate = useNavigate();
 
-   // 이메일 인증 타임아웃 처리
-   const handleEmailAuthTimeout = () => {
+  // 이메일 인증 타임아웃 처리
+  const handleEmailAuthTimeout = () => {
     let yourPassword3 = document.getElementById("yourPassword3");
 
     setEmailAuthCompleted(true); // 이메일 인증 타임아웃 발생 시 처리할 로직
@@ -44,8 +45,8 @@ function LoginHome (){
         passwordReset.style.display = "block";
         verticalycentered.classList.remove("show");
         verticalycentered.style.display = "none";
-        
-        
+
+
         return;
       }
     };
@@ -54,70 +55,70 @@ function LoginHome (){
       let emailInput = document.getElementById("yourPassword2").value;
 
       axios({ // 등록되어있는 이메일 여부 확인
-        url : 'http://localhost:9191/User/passwordFind',
+        url : 'http://localhost:9191/loginPage/passwordFind',
         method : 'post',
         data : {
           emailInput : emailInput
         }
       })
-      .then((response) => { // 조회
-        if (response.data.length !== 0){
-        alert("인증번호가 발송되었습니다.");
-        target.innerText = "인증번호 확인";
-        target.classList.remove("auth");
-        let open = document.getElementById("yourPassword3");
-        open.disabled= ""; // 인증번호 비활성화 풀기
+          .then((response) => { // 조회
+            if (response.data.length !== 0){
+              alert("인증번호가 발송되었습니다.");
+              target.innerText = "인증번호 확인";
+              target.classList.remove("auth");
+              let open = document.getElementById("yourPassword3");
+              open.disabled= ""; // 인증번호 비활성화 풀기
 
-        axios({ // 인증번호 전송 axios
-          url : 'http://localhost:9191/User/authSend',
-          method : 'post',
-          data : {
-            emailInput : emailInput
-          }
-        })
-        .then((response) => { // 인증번호 전송
-          console.log("전달된 인증번호 : " +response.data)
-            SetEmailAuth(response.data);
-            setIsTimerActive(true); // 타이머 활성화
-            return;        
-        })
-        .catch((error) => { // 등록되지 않은 이메일
-          alert("인증번호 전송에 실패하였습니다.");
-        });
+              axios({ // 인증번호 전송 axios
+                url : 'http://localhost:9191/loginPage/authSend',
+                method : 'post',
+                data : {
+                  emailInput : emailInput
+                }
+              })
+                  .then((response) => { // 인증번호 전송
+                    console.log("전달된 인증번호 : " +response.data)
+                    SetEmailAuth(response.data);
+                    setIsTimerActive(true); // 타이머 활성화
+                    return;
+                  })
+                  .catch((error) => { // 등록되지 않은 이메일
+                    alert("인증번호 전송에 실패하였습니다.");
+                  });
 
-        } else {
-          alert("등록되지 않은 이메일입니다.");
-        }
-      })
-      .catch((error) => { // 등록되지 않은 이메일
-        alert("데이터 확인에 실패하였습니다.");
-      });
+            } else {
+              alert("등록되지 않은 이메일입니다.");
+            }
+          })
+          .catch((error) => { // 등록되지 않은 이메일
+            alert("데이터 확인에 실패하였습니다.");
+          });
 
 
     }
   }
 
-  const passwordModify = (e) => { // 비밀번호 변경하기 
+  const passwordModify = (e) => { // 비밀번호 변경하기
     let passwordReset1 = document.getElementById("passwordReset1").value;
     let passwordReset2 = document.getElementById("passwordReset2").value;
     let emailInput = document.getElementById("yourPassword2").value;
 
     if (passwordReset1 === passwordReset2 && passwordReset1 !== "") {
       axios({ // 인증번호 전송 axios
-        url : 'http://localhost:9191/User/passwordModify',
+        url : 'http://localhost:9191/loginPage/passwordModify',
         method : 'post',
         data : {
           passwordReset : passwordReset1,
           emailInput :  emailInput
         }
       })
-      .then((response) => { // 인증번호 전송
-          alert(response.data);
-          closeBtn();
-      })
-      .catch((error) => { // 등록되지 않은 이메일
-        alert("비밀번호 변경에 실패하였습니다.");
-      });
+          .then((response) => { // 인증번호 전송
+            alert(response.data);
+            closeBtn();
+          })
+          .catch((error) => { // 등록되지 않은 이메일
+            alert("비밀번호 변경에 실패하였습니다.");
+          });
 
       setPasswordMismatch(false); // 비밀번호가 일치하면 상태를 초기화
     } else {
@@ -126,27 +127,27 @@ function LoginHome (){
   };
 
   const closeBtn = () =>  { // 비밀번호 변경 창 닫기
-        let passwordReset1 = document.getElementById("passwordReset1");
-        let passwordReset2 = document.getElementById("passwordReset2");
-        let passwordReset = document.getElementById("passwordReset");
-        let modalBackdrop = document.querySelector(".modal-backdrop");
-        let emailInput = document.getElementById("yourPassword2")
-        let yourPassword3 = document.getElementById("yourPassword3");
-        let authBtnContext = document.getElementById("authBtnContext");
-        passwordReset.classList.remove("show");
-        passwordReset.style.display = "none";
-        modalBackdrop.classList.remove("show");
-        modalBackdrop.style.display = "none";
-        document.body.classList.remove("modal-open");
-        document.body.removeAttribute('style');
-        
-        passwordReset1.value = "";
-        passwordReset2.value = "";
-        emailInput.value = "";
-        yourPassword3.value = "";
-        yourPassword3.disabled = true;
-        authBtnContext.innerText = "인증번호 받기";
-        authBtnContext.classList.add("auth");
+    let passwordReset1 = document.getElementById("passwordReset1");
+    let passwordReset2 = document.getElementById("passwordReset2");
+    let passwordReset = document.getElementById("passwordReset");
+    let modalBackdrop = document.querySelector(".modal-backdrop");
+    let emailInput = document.getElementById("yourPassword2")
+    let yourPassword3 = document.getElementById("yourPassword3");
+    let authBtnContext = document.getElementById("authBtnContext");
+    passwordReset.classList.remove("show");
+    passwordReset.style.display = "none";
+    modalBackdrop.classList.remove("show");
+    modalBackdrop.style.display = "none";
+    document.body.classList.remove("modal-open");
+    document.body.removeAttribute('style');
+
+    passwordReset1.value = "";
+    passwordReset2.value = "";
+    emailInput.value = "";
+    yourPassword3.value = "";
+    yourPassword3.disabled = true;
+    authBtnContext.innerText = "인증번호 받기";
+    authBtnContext.classList.add("auth");
 
   }
 
@@ -163,44 +164,44 @@ function LoginHome (){
       });
       const data = await response.json(); // JSON으로 파싱
 
-       
-        if (response.status === 200) {
-          const username = data.username; // username
-          localStorage.setItem("username", username);
-          const token = data.token; // 암호된 토큰
-          let payload = token.substring(token.indexOf('.')+1,token.lastIndexOf('.')); // 토큰 진짜 가져오기
-          localStorage.setItem("token", token);
-          let dec = JSON.parse(base64.decode(payload));
-          let role = dec.role;
-          console.log(role);
-          alert("로그인 성공");
-          //window.location.href = "/";
-          if(role === "ROLE_USER"){
+
+      if (response.status === 200) {
+        const username = data.username; // username
+        localStorage.setItem("username", username);
+        const token = data.token; // 암호된 토큰
+        let payload = token.substring(token.indexOf('.')+1,token.lastIndexOf('.')); // 토큰 진짜 가져오기
+        localStorage.setItem("token", token);
+        let dec = JSON.parse(base64.decode(payload));
+        let role = dec.role;
+        console.log(role);
+        alert("로그인 성공");
+        //window.location.href = "/";
+        if(role === "ROLE_USER"){
           window.location.href = "/user/userMain";
-          } else if(role === "ROLE_ADMIN" || role === "ROLE_HIGH_ADMIN"){
-            window.location.href = "/admin/adminMain";
-          }
+        } else if(role === "ROLE_ADMIN" || role === "ROLE_HIGH_ADMIN"){
+          window.location.href = "/admin/adminMain";
+        }
       } else {
         alert("로그인 실패");
       }
     } catch (error) {
       console.error("로그인 요청 중 오류 발생:", error);
     }
-};
-  
-  
+  };
+
+
 
   useEffect(() => {
     //console.log(authResponse);
-  },[]);  
+  },[]);
 
 
   return (
 
 
-    <div>
+      <div>
 
-      <main>
+        <main>
           <div className="container">
 
             <section className="section register min-vh-100 d-flex flex-column align-items-center justify-content-center py-4">
@@ -220,7 +221,7 @@ function LoginHome (){
                       <div className="card-body">
 
                         <div className="pt-4 pb-2">
-                          
+
                           <h5 className="card-title text-center pb-0 fs-4">Ittam 로그인</h5>
                           <p className="text-center small">자산 시스템에 오신 것을 환영합니다.</p>
                         </div>
@@ -252,10 +253,10 @@ function LoginHome (){
                             <button className="btn btn-primary w-100" type="submit" onClick={login}>Login</button>
                           </div>
                           <div className="col-12">
-                            <p className="small mb-0">비밀번호를 잊어버리셨나요? 
-                            <button type="button" className="btn btn-primary passwordFind" data-bs-toggle="modal" data-bs-target="#verticalycentered">
-                              비밀번호 찾기
-                            </button>
+                            <p className="small mb-0">비밀번호를 잊어버리셨나요?
+                              <button type="button" className="btn btn-primary passwordFind" data-bs-toggle="modal" data-bs-target="#verticalycentered">
+                                비밀번호 찾기
+                              </button>
                             </p>
                           </div>
                         </form>
@@ -263,7 +264,7 @@ function LoginHome (){
                       </div>
                     </div>
 
-                
+
                   </div>
                 </div>
               </div>
@@ -275,86 +276,86 @@ function LoginHome (){
 
         {/* 비밀번호 찾기 모달창 */}
         <div className="modal fade" id="verticalycentered" tabIndex="-1" style={{display : "none"}}>
-                <div className="modal-dialog modal-dialog-centered">
-                  <div className="modal-content">
-                    <div className="modal-header">
-                      <h5 className="modal-title">비밀번호 찾기</h5>
-                      <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div className="modal-body modal-box">
-                      <div className="col-12 ">
-                              <label htmlFor="yourPassword" className="form-label">이메일</label>
-                              <input type="email" name="password" className="form-control modal-input" id="yourPassword2" placeholder="이메일을 입력해주세요." required/>
-                      </div>
-                      <div className="col-12 auth-box">
-                              <label htmlFor="yourPassword" className="form-label">인증번호</label>
-                              <input type="text" name="password" className="form-control modal-input" id="yourPassword3" disabled/>
-                      </div>
+          <div className="modal-dialog modal-dialog-centered">
+            <div className="modal-content">
+              <div className="modal-header">
+                <h5 className="modal-title">비밀번호 찾기</h5>
+                <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+              <div className="modal-body modal-box">
+                <div className="col-12 ">
+                  <label htmlFor="yourPassword" className="form-label">이메일</label>
+                  <input type="email" name="password" className="form-control modal-input" id="yourPassword2" placeholder="이메일을 입력해주세요." required/>
+                </div>
+                <div className="col-12 auth-box">
+                  <label htmlFor="yourPassword" className="form-label">인증번호</label>
+                  <input type="text" name="password" className="form-control modal-input" id="yourPassword3" disabled/>
+                </div>
 
-                      <div className="col-12 emailAuth">
-                      {!emailAuthCompleted ? (
-                          <div>
-                            {/* 이메일 인증 타이머 컴포넌트 */}
-                           
-                            {isTimerActive && <EmailAuthTime onTimeout={handleEmailAuthTimeout} authBtn={authBtn}/>}
-                            <button className="btn btn-primary w-100 auth" type="submit" onClick={authBtn} id="authBtnContext" >인증번호 받기</button>
-                          </div>
-                        ) : (
-                          <div>
-                              <button className="btn btn-primary w-100 auth" type="submit" onClick={authBtn} id="authBtnContext">인증번호 받기</button>
-                            {/* 이메일 인증 완료 후 표시할 내용 */}
-                          </div>
-                        )}
+                <div className="col-12 emailAuth">
+                  {!emailAuthCompleted ? (
+                      <div>
+                        {/* 이메일 인증 타이머 컴포넌트 */}
+
+                        {isTimerActive && <EmailAuthTime onTimeout={handleEmailAuthTimeout} authBtn={authBtn}/>}
+                        <button className="btn btn-primary w-100 auth" type="submit" onClick={authBtn} id="authBtnContext" >인증번호 받기</button>
                       </div>
+                  ) : (
+                      <div>
+                        <button className="btn btn-primary w-100 auth" type="submit" onClick={authBtn} id="authBtnContext">인증번호 받기</button>
+                        {/* 이메일 인증 완료 후 표시할 내용 */}
                       </div>
-                      
-                     
-                    <div className="modal-footer">
-                      <button type="button" className="btn btn-secondary modalClose" data-bs-dismiss="modal" onClick={handleEmailAuthTimeout}>취소</button>
-                    </div>
-                  </div>
+                  )}
                 </div>
               </div>
 
-              {/* 비밀번호 초기화 모달창 */}
-              <div className="modal fade" id="passwordReset" tabIndex="-2" style={{display : "none"}}>
-                <div className="modal-dialog modal-dialog-centered">
-                  <div className="modal-content">
-                    <div className="modal-header">
-                      <h5 className="modal-title">비밀번호 변경</h5>
-                      <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close" onClick={closeBtn}></button>
-                    </div>
-                    <div className="modal-body modal-box">
-                      <div className="col-12 ">
-                              <label htmlFor="yourPassword" className="form-label">새로운 비밀번호</label>
-                              <input type="text" name="password" className="form-control modal-input" id="passwordReset1" placeholder="새로운 비밀번호를 입력해주세요." />
-                      </div>
-                      <div className="col-12 auth-box">
-                              <label htmlFor="yourPassword" className="form-label">비밀번호 확인</label>
-                              <input type="text" name="password" className="form-control modal-input" placeholder="새로운 비밀번호를 다시 입력해주세요." id="passwordReset2"/>
-                              {passwordMismatch && (
-                                <span style={{ color: "red" }}>
+
+              <div className="modal-footer">
+                <button type="button" className="btn btn-secondary modalClose" data-bs-dismiss="modal" onClick={handleEmailAuthTimeout}>취소</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* 비밀번호 초기화 모달창 */}
+        <div className="modal fade" id="passwordReset" tabIndex="-2" style={{display : "none"}}>
+          <div className="modal-dialog modal-dialog-centered">
+            <div className="modal-content">
+              <div className="modal-header">
+                <h5 className="modal-title">비밀번호 변경</h5>
+                <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close" onClick={closeBtn}></button>
+              </div>
+              <div className="modal-body modal-box">
+                <div className="col-12 ">
+                  <label htmlFor="yourPassword" className="form-label">새로운 비밀번호</label>
+                  <input type="text" name="password" className="form-control modal-input" id="passwordReset1" placeholder="새로운 비밀번호를 입력해주세요." />
+                </div>
+                <div className="col-12 auth-box">
+                  <label htmlFor="yourPassword" className="form-label">비밀번호 확인</label>
+                  <input type="text" name="password" className="form-control modal-input" placeholder="새로운 비밀번호를 다시 입력해주세요." id="passwordReset2"/>
+                  {passwordMismatch && (
+                      <span style={{ color: "red" }}>
                                   비밀번호가 일치하지 않습니다.
                                 </span>
-                              )}
-                      </div>
-
-                      <div className="col-12 emailAuth">
-                            <button className="btn btn-primary w-100 auth" type="submit" onClick={passwordModify} >비밀번호 번경</button>
-                      </div>
-            
-                      </div>
-                    <div className="modal-footer">
-                      <button type="button" className="btn btn-secondary modalClose" data-bs-dismiss="modal" onClick={closeBtn}>취소</button>
-                    </div>
-                  </div>
+                  )}
                 </div>
-              </div>
-              
 
-     
-    </div>
-    
+                <div className="col-12 emailAuth">
+                  <button className="btn btn-primary w-100 auth" type="submit" onClick={passwordModify} >비밀번호 번경</button>
+                </div>
+
+              </div>
+              <div className="modal-footer">
+                <button type="button" className="btn btn-secondary modalClose" data-bs-dismiss="modal" onClick={closeBtn}>취소</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+
+
+      </div>
+
   )
 }
 
