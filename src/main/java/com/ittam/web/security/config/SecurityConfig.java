@@ -77,7 +77,7 @@ public class SecurityConfig {
                 .antMatchers("/reports/**")
                 .antMatchers("/noticelist/**")
                 .antMatchers("/noticeUser/**")
-                .antMatchers("/User/**")
+                .antMatchers("/user/**")
                 .and()
                 .addFilter(new JwtAuthorizationFilter(authenticationManager));
 
