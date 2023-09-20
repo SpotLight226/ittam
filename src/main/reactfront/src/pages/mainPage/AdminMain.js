@@ -443,7 +443,7 @@ function AdminMain() {
                       <table className="table" style={{marginTop: '10px'}}>
                         <thead>
                         <tr className="table-light">
-                          <th scope="col">카테고리</th>
+                          <th scope="col" style={{width: '100px'}}>카테고리</th>
                           <th scope="col">자산명</th>
                           <th scope="col">자산스펙</th>
                           <th scope="col">추가날짜</th>
@@ -454,7 +454,7 @@ function AdminMain() {
                         {
                           recentAssets.map((a, i) => {
                             return <tr key={i}>
-                          <td scope="row">{
+                          <td scope="row" style={{width: '100px'}}>{
                             a.CATEGORY_PARENT_NUM === 1 ? 'PC/노트북' : (a.CATEGORY_PARENT_NUM === 2 ? '소프트웨어' : (a.CATEGORY_PARENT_NUM === 3 ? '주변기기' : '서버'))
                           }</td>
                           <td>{a.ASSETS_NAME}</td>
