@@ -46,7 +46,6 @@ public class MainPageController {
     }
     //교환반품 요청 리스트 가져오기(admin페이지)
     @GetMapping("/returnList")
-    @CrossOrigin(origins = "http://localhost:3000")
     public ResponseEntity<List<Map<Object, Object>>> getReturnList() {
         List<Map<Object, Object>> list = mainPageService.getReturnList();
         return new ResponseEntity<>(list, HttpStatus.OK);
@@ -85,8 +84,10 @@ public class MainPageController {
         return new ResponseEntity<>(list, HttpStatus.OK);
     }
 
-    @PostMapping("/return_yn")
+    //반납하기
+    @PostMapping("/updateReturn_yn")
     public ResponseEntity<String> updateReturn_yn(@RequestBody Map<String, Object> map) {
+        System.out.println(00000);
         mainPageService.updateReturn_yn(map);
         mainPageService.updateAssetUsing((Integer) map.get("assets_num"));
         return new ResponseEntity<>("승인처리",HttpStatus.OK);
@@ -173,7 +174,7 @@ public class MainPageController {
 
     //최근자산 목록 불러오기
     @GetMapping("/getRecentAssetsList")
-    public ResponseEntity<List<Map<String, Object>>> getRecentAssetsList(Integer nnn) {
+    public ResponseEntity<List<Map<String, Object>>> getRecentAssetsList(@RequestParam Integer nnn) {
         List<Map<String, Object>> map = mainPageService.getRecentAssetsList(nnn);
         return new ResponseEntity<>(map, HttpStatus.OK);
     }
@@ -183,6 +184,29 @@ public class MainPageController {
     public ResponseEntity<List<NoticeVO>> getNoticeList() {
         List<NoticeVO> list = mainPageService.getNoticeList();
         return new ResponseEntity<>(list, HttpStatus.OK);
+    }
+
+    //헤더 내 정보 가져오기
+    @GetMapping("/getMyInfo")
+    public ResponseEntity<UserVO> getMyInfo(@RequestParam String username) {
+        UserVO vo = mainPageService.getMyInfo(username);
+        return new ResponseEntity<>(vo, HttpStatus.OK);
+    }
+
+    //상위관리자 카드 정보
+    @GetMapping("/highadminMainCnt")
+    public ResponseEntity<Map<String, Integer>> highadminMainCnt() {
+        Integer num = mainPageService.getFinalUsingCnt();
+        Integer num2 = mainPageService.getFinalBuyCnt();
+        Integer num3 = mainPageService.getFinalDisCnt();
+        Integer num4 = mainPageService.getLeaveReq();
+        Map<String, Integer> map = new HashMap<>();
+        map.put("finalUsing", num);
+        map.put("finalBuy", num2);
+        map.put("finalDis", num3);
+        map.put("leaveReq", num4);
+
+        return new ResponseEntity<>(map, HttpStatus.OK);
     }
 
 }

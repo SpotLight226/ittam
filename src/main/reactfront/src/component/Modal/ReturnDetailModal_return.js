@@ -22,10 +22,10 @@ function ReturnDetailModal_return({ setOpenModal_return, num, returnList, getret
     return todayYear + "년 " + todayMonth + "월 " + todayDate + "일 " + dayOfWeek + " " +  hours + "시 " + minutes + "분";
   }
 
-  const return_yn = (return_status) => {
+  const updateReturn_yn = (return_status) => {
 
     axios({
-      url: "mainPage/return_yn",
+      url: "/mainPage/updateReturn_yn",
       method: "post",
       headers: {
         Authorization : token
@@ -112,7 +112,7 @@ function ReturnDetailModal_return({ setOpenModal_return, num, returnList, getret
           {
             thisList().RETURN_STATUS==='승인대기' ?
                 <>
-                <button onClick={() => { alert('승인처리되었습니다'); setOpenModal_return(false); return_yn('승인')}} id="cancelBtn">승인</button>
+                <button onClick={() => { alert('승인처리되었습니다'); setOpenModal_return(false); updateReturn_yn('승인')}} id="cancelBtn">승인</button>
                 </>
               : <button style={{backgroundColor: 'gray'}} disabled>{thisList().RETURN_STATUS}처리</button>
         }

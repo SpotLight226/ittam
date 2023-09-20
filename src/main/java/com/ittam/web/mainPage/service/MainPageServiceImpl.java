@@ -93,7 +93,7 @@ public class MainPageServiceImpl implements MainPageService{
 
     @Override
     public void updateReturn_yn( Map<String, Object> map) {
-
+        System.out.println(00000);
         mainPageMapper.updateReturn_yn(map);
     }
 
@@ -182,6 +182,26 @@ public class MainPageServiceImpl implements MainPageService{
     @Override
     public List<NoticeVO> getNoticeList() {
         return mainPageMapper.getNoticeList();
+    }
+
+    @Override
+    public UserVO getMyInfo(String username) {
+        return mainPageMapper.getMyInfo(username);
+    }
+
+    @Override
+    public Integer getFinalUsingCnt() {
+        return mainPageMapper.getFinalUsingCnt();
+    }
+
+    @Override
+    public Integer getFinalBuyCnt() {
+        return mainPageMapper.getFinalBuyCnt();
+    }
+
+    @Override
+    public Integer getFinalDisCnt() {
+        return mainPageMapper.getFinalDisCnt();
     }
 
 

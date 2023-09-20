@@ -36,11 +36,10 @@ function HighAdminMain() {
 
 
 
-
-  const adminMainCnt = () => {
+  const highadminMainCnt = () => {
 
     axios({
-      url: "/mainPage/adminMainCnt",
+      url: "/mainPage/highadminMainCnt",
       method: "get",
       headers: {
         Authorization : token
@@ -76,8 +75,6 @@ function HighAdminMain() {
           setUsing(res.data);
           })
             .catch(error => console.log(error));
-
-
 
   }
   const getAssetChartDisposeNum = () => {
@@ -130,7 +127,7 @@ function HighAdminMain() {
 
 
   useEffect(() => {
-    adminMainCnt();
+    highadminMainCnt();
     getAssetChartAllNum();
     getAssetChartUsingNum();
     getAssetChartDisposeNum();
@@ -178,7 +175,7 @@ function HighAdminMain() {
                           <i className="bi bi-box-arrow-in-up-right"></i>
                         </div>
                         <div className="ps-3">
-                          <h6>{dataa.userReq}건</h6>
+                          <h6>{dataa.finalUsing}건</h6>
 
                         </div>
                       </div>
@@ -201,7 +198,7 @@ function HighAdminMain() {
                           <i className="bi bi-cart-plus"></i>
                         </div>
                         <div className="ps-3">
-                          <h6>{dataa.buyReq}건</h6>
+                          <h6>{dataa.finalBuy}건</h6>
 
                         </div>
                       </div>
@@ -216,14 +213,14 @@ function HighAdminMain() {
                     <div className="card info-card sales-card">
                       <Link to="/admin/returnExchange">
                       <div className="card-body">
-                        <h5 className="card-title" style={{fontWeight: "800"}}>교환 및 반납요청 미승인건<span>| This Year</span></h5>
+                        <h5 className="card-title" style={{fontWeight: "800"}}>폐기 및 수리 요청 미승인건<span>| This Year</span></h5>
 
                         <div className="d-flex align-items-center">
                           <div className="card-icon rounded-circle d-flex align-items-center justify-content-center AdminMain-icon">
                             <i className="bi bi-arrow-left-right"></i>
                           </div>
                           <div className="ps-3">
-                            <h6>{dataa.yetok}건</h6>
+                            <h6>{dataa.finalDis}건</h6>
 
                           </div>
                         </div>

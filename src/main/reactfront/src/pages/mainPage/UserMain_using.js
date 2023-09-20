@@ -259,8 +259,10 @@ function UserMain_using() {
                 <td>{a.ASSETS_STATUS}</td>
 
                 <td>
+                  {a.RETURN_STATUS}
                   {
-                    a.RETURN_STATUS===undefined ?
+
+                    a.RETURN_STATUS===undefined || a.RETURN_STATUS === '승인'?
                   <button type="button" className="userMain-ask userMain-modalBtn" onClick={() => {setOpenModal(true); setMyAssetNum(a.ASSETS_NUM)}}>교환/반납</button>
                     // : ( a.RETURN_STATUS==='승인대기' ?
                         : <button type="button" className="userMain-ask userMain-modalBtn" style={{backgroundColor: "orange"}} onClick={() => {setOpenCancelModal(true); setMyAssetNum(a.ASSETS_NUM)}}>{a.RETURN_KIND}취소</button>
