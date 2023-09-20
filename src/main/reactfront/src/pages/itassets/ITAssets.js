@@ -6,8 +6,31 @@ import Pagenation from '../../component/Pagenation';
 import ITAssetsInsert from './ITAssetsInsert';
 import ITAssetsInfo from './ITAssetsInfo';
 import ITAssetsModify from './ITAssetsModify';
+import PurchaseApproval from './PurchaseApproval';
+import { useContext } from 'react';
+import { userInfoContext } from '../../App';
+import base64 from 'base-64';
 
 function ITAssets() {
+  const contextValues = useContext(userInfoContext); // 항상 가장 위에서 선언해야 사용 가능
+  let username = localStorage.getItem('username');
+  const token = localStorage.getItem('token');
+
+  const { userId, role } = contextValues || {}; // 들어온 값 없으면 공백으로
+  // useEffect(() => {
+  //   const token = localStorage.getItem('token');
+  //   let payload = token.substring(
+  //     token.indexOf('.') + 1,
+  //     token.lastIndexOf('.')
+  //   );
+  //   let dec = JSON.parse(base64.decode(payload));
+  //   let role = dec.role;
+  //   if (role !== 'ROLE_ADMIN' && role !== 'ROLE_HIGH_ADMIN') {
+  //     alert('접근 권한이 없습니다.');
+  //     window.history.back();
+  //   }
+  // }, []);
+
   const [selectedType, setSelectedType] = useState('선택하지않음');
   /* 폼데이터 초기화 */
   const resetFormdata = {
@@ -53,7 +76,12 @@ function ITAssets() {
   const [data, setData] = useState([]);
   const itassetList = () => {
     axios
-      .get('/assets/getITList')
+      .get('/assets/getITList', {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: token,
+        },
+      })
       .then((response) => {
         setData(response.data);
       })
@@ -72,7 +100,12 @@ function ITAssets() {
   const [selectedChild, setSelectedChild] = useState(null);
   useEffect(() => {
     axios
-      .get('/categories/categories')
+      .get('/categories/categories', {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: token,
+        },
+      })
       .then((response) => {
         setCategories(response.data);
         const parents = response.data.filter((category) => !category.parent_id);
@@ -212,7 +245,12 @@ function ITAssets() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post('/assets/specInsert', formData);
+      const response = await axios.post('/assets/specInsert', formData, {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: token,
+        },
+      });
       if (response.data) {
         setFormData({
           // 폼 데이터 초기화
@@ -271,7 +309,6 @@ function ITAssets() {
       setAssetstatus(selectedItem.assets_status);
     }
   }, [selectedItem]);
-  const username = localStorage.getItem('username');
 
   const updateSubmit = async (e) => {
     e.preventDefault();
@@ -288,7 +325,12 @@ function ITAssets() {
       spec_num: selectedItem ? selectedItem.spec_num : '',
     };
     try {
-      const update = await axios.post('/stock/statusUpdate', updatedStatus);
+      const update = await axios.post('/stock/statusUpdate', updatedStatus, {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: token,
+        },
+      });
       if (update.data) {
         setFormStatus({
           assets_status: status,
@@ -314,22 +356,48 @@ function ITAssets() {
   // };
   const statusReset = () => {
     setAssetstatus(selectedItem ? selectedItem.assets_status : '');
+    setFormStatus({
+      appro_title: '',
+      appro_comment: '',
+    });
+  };
+
+  const approveReset = () => {
+    setSelectedType('선택하지않음');
+    setSelectedParent('선택하지않음');
+    setFormapproval({
+      appro_title: '',
+      appro_comment: '',
+    });
   };
   /* 최종구매승인개수 */
   const [count, setCount] = useState(0);
   const [itcount, setItcount] = useState(0);
   useEffect(() => {
-    axios.get('/assets/yncount').then((response) => {
-      setCount(response.data);
-    });
+    axios
+      .get('/assets/yncount', {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: token,
+        },
+      })
+      .then((response) => {
+        setCount(response.data);
+      });
   }, []);
   useEffect(() => {
-    axios.get('/assets/itcount').then((response) => {
-      setItcount(response.data);
-    });
+    axios
+      .get('/assets/itcount', {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: token,
+        },
+      })
+      .then((response) => {
+        setItcount(response.data);
+      });
   }, []);
-  console.log('개수:' + count);
-  console.log('자산개수' + itcount);
+
   const [isModalOpen1, setIsModalOpen1] = useState(false);
   function handleButtonClick(category) {
     if (count < itcount) {
@@ -345,6 +413,72 @@ function ITAssets() {
     setIsModalOpen1(false);
     setSelectedType('선택하지않음');
     setSelectedParent('선택하지않음');
+  }
+  /* 구매요청 */
+  const [formapproval, setFormapproval] = useState({
+    username: username || '',
+    category_num: selectedType,
+    appro_title: '',
+    appro_comment: '',
+  });
+  const handleSelectChange1 = (e) => {
+    setSelectedType(e.target.value);
+
+    setFormapproval((prevData) => ({
+      category_num: e.target.value,
+      username: username || '',
+      appro_title: '',
+      appro_comment: '',
+    }));
+  };
+
+  const handleData = (e) => {
+    const { name, value } = e.target;
+    setFormapproval((prevData) => ({
+      ...prevData,
+      [name]: value,
+    }));
+  };
+  const purchaseSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const response = await axios.post(
+        '/stock/purchaseApproval',
+        formapproval,
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: token,
+          },
+        }
+      );
+      if (response.data) {
+        setFormapproval({
+          username: '',
+          category_num: '',
+          appro_title: '',
+          appro_comment: '',
+        });
+        setSelectedType('선택하지않음');
+        setSelectedParent('선택하지않음');
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  /* 날씨 변환 */
+  function formatDate(dateString) {
+    if (!dateString || isNaN(new Date(dateString).getTime())) {
+      return ''; // 원하는 기본값으로 변경 가능
+    }
+
+    const dateObject = new Date(dateString);
+
+    const year = dateObject.getFullYear();
+    const month = String(dateObject.getMonth() + 1).padStart(2, '0');
+    const day = String(dateObject.getDate()).padStart(2, '0');
+
+    return `${year}년 ${month}월 ${day}일 `;
   }
 
   return (
@@ -390,6 +524,19 @@ function ITAssets() {
           </div>
         </div>
       </div>
+      {/* 구매요청 */}
+      <PurchaseApproval
+        handleParentChange={handleParentChange}
+        selectedParent={selectedParent}
+        handleSelectChange={handleSelectChange}
+        selectedType={selectedType}
+        categories={categories}
+        handleData={handleData}
+        formapproval={formapproval}
+        purchaseSubmit={purchaseSubmit}
+        handleSelectChange1={handleSelectChange1}
+        modalClose={modalClose}
+      />
       <section className="section">
         <div className="row">
           <div className="col-lg-12">
@@ -453,6 +600,16 @@ function ITAssets() {
                         onChange={(e) => setSearchInput(e.target.value)}
                         onKeyPress={handleSearchKeyPress}
                       />
+                      <button
+                        type="button"
+                        className="btn btn-primary"
+                        data-bs-toggle="modal"
+                        data-bs-target="#verticalycentered"
+                        onClick={() => sendModal(category)}
+                        style={{ marginLeft: '10px' }}
+                      >
+                        구매요청
+                      </button>
                       {/* <div className="text-end" style={{ marginBottom: '10px' }}> */}
                       <button
                         type="button"
@@ -492,6 +649,16 @@ function ITAssets() {
                           사용중인 사원번호
                         </Link>
                       </th>
+                      <th scope="col">
+                        <Link to="#" className="datatable-sorter">
+                          등록일
+                        </Link>
+                      </th>
+                      <th scope="col">
+                        <Link to="#" className="datatable-sorter">
+                          대여일
+                        </Link>
+                      </th>
 
                       <th scope="col">
                         <Link to="#" className="datatable-sorter">
@@ -525,6 +692,8 @@ function ITAssets() {
                           </td>
                           <td>{item.assets_status}</td>
                           <td>{item.username}</td>
+                          <td>{formatDate(item.add_date)}</td>
+                          <td>{formatDate(item.rent_date)}</td>
                           <td>
                             <button
                               type="button"

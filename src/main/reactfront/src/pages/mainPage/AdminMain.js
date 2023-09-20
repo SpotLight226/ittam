@@ -4,58 +4,143 @@ import "../../styles/Style.css";
 import "../../styles/MainPageStyle/AdminStyle.css";
 import {useEffect, useState} from "react";
 import axios from "axios";
+import UsingRateChart from "../../component/Chart/UsingRateChart";
 
 
 function AdminMain() {
+  const token = localStorage.getItem("token");
+
   const [dataa, setDataa] = useState({});
-
-  useEffect(() => {
-    axios.get('/mainPage/adminMainCnt').then(response => {setDataa(response.data);});
-  }, [setDataa]);
-
   //////////차~~~트///////////
   const [all, setAll] = useState();
-  //const [today_all, setToday_all] = useState();
   const [using, setUsing] = useState();
-  //const [today_using, setToday_using]  = useState();
   const [dispose, setDispose] = useState();
-  //const [today_dispose, setToday_dispose] = useState();
 
+  const [recentAssets, setRecentAssets] = useState([]);
+  const [nnn, setNnn] = useState(5);
+  const [cardNum, setCardNum] = useState();
+
+
+  const addDate = (add) => {
+    let now = new Date(add);
+    let todayYear = now.getFullYear();
+    let todayMonth = now.getMonth() + 1;
+    let todayDate = now.getDate();
+    const week = ['(일)', '(월)', '(화)', '(수)', '(목)', '(금)', '(토)'];
+    let dayOfWeek = week[now.getDay()];
+    let hours = now.getHours();
+    let minutes = now.getMinutes();
+
+    return todayYear + "-" + (todayMonth >= 10 ? todayMonth : '0'+todayMonth) + "-" + (todayDate >= 10 ? todayDate : '0'+todayDate);
+  }
+
+
+
+
+  const adminMainCnt = () => {
+        axios({
+          url: "/mainPage/adminMainCnt",
+          method: "get",
+          headers: {
+            Authorization : token
+          },
+        })
+            .then((res) => {
+              setDataa(res.data);
+            })
+            .catch(error => console.log(error));
+  }
 
   const getAssetChartAllNum = () => {
-     axios.get("/mainPage/getAssetChartAllNum")
-        .then(response => {
-          setAll(response.data);
-          //setToday_all(response.data.today);
-          console.log(response.data);})
-        .catch(error => console.log(error))
-
+        axios({
+          url: "/mainPage/getAssetChartAllNum",
+          method: "get",
+          headers: {
+            Authorization : token
+          },
+        })
+            .then((res) => {
+              setAll(res.data);
+            })
+            .catch(error => console.log(error));
   }
   const getAssetChartUsingNum = () => {
-    axios.get("/mainPage/getAssetChartUsingNum")
-        .then(response => {
-          setUsing(response.data);
-          //setToday_using(response.data.today)
+        axios({
+          url: "/mainPage/getAssetChartUsingNum",
+          method: "get",
+          headers: {
+            Authorization : token
+          },
         })
-        .catch(error => console.log(error))
+            .then((res) => {
+              setUsing(res.data);
+            })
+            .catch(error => console.log(error));
   }
   const getAssetChartDisposeNum = () => {
-    axios.get("/mainPage/getAssetChartDisposeNum")
-        .then(response => {
-          setDispose(response.data);
-          //setToday_dispose(response.data.today)
+ 
+        axios({
+          url: "/mainPage/getAssetChartDisposeNum",
+          method: "get",
+          headers: {
+            Authorization : token
+          },
         })
-        .catch(error => console.log(error))
+            .then((res) => {
+              setDispose(res.data);
+            })
+            .catch(error => console.log(error));
+
+  }
+  const getRecentAssetsList = (nnn) => {
+
+    axios({
+      url: "/mainPage/getRecentAssetsList",
+      method: "get",
+      headers: {
+        Authorization : token
+      },
+      params: {
+        nnn: nnn
+      },
+    })
+        .then(response => {
+          setRecentAssets(response.data);
+          console.log(response.data);
+        })
+        .catch((error => console.log(error)));
+  }
+
+  const getCardNum = () => {
+
+        axios({
+          url: "/reports/getCardNum",
+          method: "get",
+          headers: {
+            Authorization : token
+          },
+        })
+            .then((res) => {
+              setCardNum(res.data)            
+             })
+            .catch(error => console.log(error));
   }
 
 
 
   useEffect(() => {
-
+    adminMainCnt();
     getAssetChartAllNum();
     getAssetChartUsingNum();
     getAssetChartDisposeNum();
+    getCardNum();
   }, [])
+
+  useEffect(() => {
+
+    getRecentAssetsList(nnn);
+  }, [nnn]);
+
 
 
 
@@ -67,8 +152,6 @@ function AdminMain() {
           <nav>
             <ol className="breadcrumb">
               <li className="breadcrumb-item active"><Link to="/admin/adminMain">Home</Link></li>
-              <li className="breadcrumb-item">Components</li>
-              <li className="breadcrumb-item">Breadcrumbs</li>
             </ol>
           </nav>
         </div>
@@ -181,13 +264,15 @@ function AdminMain() {
                   <div className="card">
 
                     <div className="card-body">
-                      <Link to="/admin/reports"><h5 className="card-title" style={{fontWeight: "800"}}>자산 사용률 <span>| 전체통계보기</span></h5></Link>
+                      <Link to="/admin/reports"><h5 className="card-title" style={{fontWeight: "800"}}>자산 사용률 <span>| 전체 리포트 보기</span></h5></Link>
 
                       {/*  <!-- Line Chart --> */}
-                      {all!==undefined && using!==undefined && dispose!==undefined && <div id="reportsChart"><AreaChart all={all} using={using} dispose={dispose}/></div>}
-
-
-
+                      {(all!==undefined && using!==undefined && dispose!==undefined) ? <div id="reportsChart"><AreaChart all={all} using={using} dispose={dispose}/></div> :
+                          <div className="d-flex justify-content-center">
+                            <div className="spinner-border text-primary" role="status">
+                              <span className="visually-hidden">Loading...</span>
+                            </div>
+                          </div>}
 
                     </div>
 
@@ -201,66 +286,72 @@ function AdminMain() {
                   <div className="card">
 
                     <div className="card-body">
-                      <h5 className="card-title" style={{fontWeight: "800"}}>재고처리현황 <span>| Today</span></h5>
+                      <h5 className="card-title" style={{fontWeight: "800"}}>자산 사용률 <span>| 전체 리포트 보기</span></h5>
 
-                      <div className="activity">
+                      {cardNum !== undefined ? <UsingRateChart cardNum={cardNum}/> :
+                          <div className="d-flex justify-content-center">
+                            <div className="spinner-border text-primary" role="status">
+                              <span className="visually-hidden">Loading...</span>
+                            </div>
+                          </div>}
+                      {/*<div className="activity">*/}
 
-                        <div className="activity-item d-flex">
-                          <div className="activite-label">32 min</div>
-                          <i className='bi bi-circle-fill activity-badge text-success align-self-start'></i>
-                          <div className="activity-content">
-                            Quia quae rerumbeatae
-                          </div>
-                        </div>{/* <!-- End activity item--> */}
+                      {/*  <div className="activity-item d-flex">*/}
+                      {/*    <div className="activite-label">32 min</div>*/}
+                      {/*    <i className='bi bi-circle-fill activity-badge text-success align-self-start'></i>*/}
+                      {/*    <div className="activity-content">*/}
+                      {/*      Quia quae rerumbeatae*/}
+                      {/*    </div>*/}
+                      {/*  </div>/!* <!-- End activity item--> *!/*/}
 
-                        <div className="activity-item d-flex">
-                          <div className="activite-label">56 min</div>
-                          <i className='bi bi-circle-fill activity-badge text-danger align-self-start'></i>
-                          <div className="activity-content">
-                            Voluptatem blanditiis blanditiis eveniet
-                          </div>
-                        </div>{/* <!-- End activity item--> */}
+                      {/*  <div className="activity-item d-flex">*/}
+                      {/*    <div className="activite-label">56 min</div>*/}
+                      {/*    <i className='bi bi-circle-fill activity-badge text-danger align-self-start'></i>*/}
+                      {/*    <div className="activity-content">*/}
+                      {/*      Voluptatem blanditiis blanditiis eveniet*/}
+                      {/*    </div>*/}
+                      {/*  </div>/!* <!-- End activity item--> *!/*/}
 
-                        <div className="activity-item d-flex">
-                          <div className="activite-label">2 hrs</div>
-                          <i className='bi bi-circle-fill activity-badge text-primary align-self-start'></i>
-                          <div className="activity-content">
-                            Voluptates corrupti molestias voluptatem
-                          </div>
-                        </div>{/* <!-- End activity item--> */}
+                      {/*  <div className="activity-item d-flex">*/}
+                      {/*    <div className="activite-label">2 hrs</div>*/}
+                      {/*    <i className='bi bi-circle-fill activity-badge text-primary align-self-start'></i>*/}
+                      {/*    <div className="activity-content">*/}
+                      {/*      Voluptates corrupti molestias voluptatem*/}
+                      {/*    </div>*/}
+                      {/*  </div>/!* <!-- End activity item--> *!/*/}
 
-                        <div className="activity-item d-flex">
-                          <div className="activite-label">1 day</div>
-                          <i className='bi bi-circle-fill activity-badge text-info align-self-start'></i>
-                          <div className="activity-content">
-                            Tempore autem saepetempore
-                          </div>
-                        </div>{/* <!-- End activity item--> */}
+                      {/*  <div className="activity-item d-flex">*/}
+                      {/*    <div className="activite-label">1 day</div>*/}
+                      {/*    <i className='bi bi-circle-fill activity-badge text-info align-self-start'></i>*/}
+                      {/*    <div className="activity-content">*/}
+                      {/*      Tempore autem saepetempore*/}
+                      {/*    </div>*/}
+                      {/*  </div>/!* <!-- End activity item--> *!/*/}
 
-                        <div className="activity-item d-flex">
-                          <div className="activite-label">2 days</div>
-                          <i className='bi bi-circle-fill activity-badge text-warning align-self-start'></i>
-                          <div className="activity-content">
-                            Est sit eum reiciendis exercitationem
-                          </div>
-                        </div>{/* <!-- End activity item--> */}
+                      {/*  <div className="activity-item d-flex">*/}
+                      {/*    <div className="activite-label">2 days</div>*/}
+                      {/*    <i className='bi bi-circle-fill activity-badge text-warning align-self-start'></i>*/}
+                      {/*    <div className="activity-content">*/}
+                      {/*      Est sit eum reiciendis exercitationem*/}
+                      {/*    </div>*/}
+                      {/*  </div>/!* <!-- End activity item--> *!/*/}
 
-                        <div className="activity-item d-flex">
-                          <div className="activite-label">4 weeks</div>
-                          <i className='bi bi-circle-fill activity-badge text-muted align-self-start'></i>
-                          <div className="activity-content">
-                            Dicta dolorem harum nulla eius. Ut quid
-                          </div>
-                        </div>{/* <!-- End activity item--> */}
-                        <div className="activity-item d-flex">
-                          <div className="activite-label">2 months</div>
-                          <i className='bi bi-circle-fill activity-badge text-muted align-self-start'></i>
-                          <div className="activity-content">
-                            Dicta dolorem harum nulla eius. Ut quide
-                          </div>
-                        </div>{/* <!-- End activity item--> */}
+                      {/*  <div className="activity-item d-flex">*/}
+                      {/*    <div className="activite-label">4 weeks</div>*/}
+                      {/*    <i className='bi bi-circle-fill activity-badge text-muted align-self-start'></i>*/}
+                      {/*    <div className="activity-content">*/}
+                      {/*      Dicta dolorem harum nulla eius. Ut quid*/}
+                      {/*    </div>*/}
+                      {/*  </div>/!* <!-- End activity item--> *!/*/}
+                      {/*  <div className="activity-item d-flex">*/}
+                      {/*    <div className="activite-label">2 months</div>*/}
+                      {/*    <i className='bi bi-circle-fill activity-badge text-muted align-self-start'></i>*/}
+                      {/*    <div className="activity-content">*/}
+                      {/*      Dicta dolorem harum nulla eius. Ut quide*/}
+                      {/*    </div>*/}
+                      {/*  </div>/!* <!-- End activity item--> *!/*/}
 
-                      </div>
+                      {/*</div>*/}
 
                     </div>
                   </div>{/* <!-- End Recent Activity --> */}
@@ -340,56 +431,68 @@ function AdminMain() {
                 <div className="col-12">
                   <div className="card top-selling overflow-auto">
 
-                    <div className="card-body pb-0">
-                      <h5 className="card-title" style={{fontWeight: "800"}}>재고구매사항 <span>| 전체보기</span></h5>
+                    <div className="card-body pb-0" style={{paddingTop: '20px'}}>
+                     <Link to="/adminitassets"><h5 className="card-title" style={{fontWeight: "800", display: 'inline'}}>재고구매사항 <span>| 전체보기</span></h5></Link>
+                      <select style={{display:'inline', marginLeft: '10px'}} onChange={(e) => {setNnn(parseInt(e.target.value));}}>
+                        <option value="5">5개</option>
+                        <option value="7">7개</option>
+                        <option value="10">10개</option>
+                      </select>
 
-                      <table className="table table-borderless">
+
+                      <table className="table" style={{marginTop: '10px'}}>
                         <thead>
-                        <tr>
-                          <th scope="col">제품사진</th>
+                        <tr className="table-light">
+                          <th scope="col">카테고리</th>
                           <th scope="col">자산명</th>
-                          <th scope="col">자산설명</th>
-                          <th scope="col">제품수량</th>
+                          <th scope="col">자산스펙</th>
                           <th scope="col">추가날짜</th>
                           {/* <th scope="col">Revenue</th> */}
                         </tr>
                         </thead>
                         <tbody>
-                        <tr>
-                          <th scope="row"><Link to="####"><img src="assets/img/product-1.jpg" alt="" /></Link></th>
-                          <td>$64</td>
-                          <td><Link to="####" className="text-primary fw-bold">Ut inventore ipsa voluptas nulla</Link></td>
-                          <td className="fw-bold">124</td>
-                          {/* <td>$5,828</td> */}
+                        {
+                          recentAssets.map((a, i) => {
+                            return <tr key={i}>
+                          <td scope="row">{
+                            a.CATEGORY_PARENT_NUM === 1 ? 'PC/노트북' : (a.CATEGORY_PARENT_NUM === 2 ? '소프트웨어' : (a.CATEGORY_PARENT_NUM === 3 ? '주변기기' : '서버'))
+                          }</td>
+                          <td>{a.ASSETS_NAME}</td>
+                          <td style={{fontSize:"14px", color: "gray", width: '800px'}}>
+                            {a.SPEC_CPU!==undefined? a.SPEC_CPU+' |':''}
+                            {a.SPEC_RAM!==undefined? a.SPEC_RAM+" |":''}
+                            {a.SPEC_MAINBOARD!==undefined? a.SPEC_MAINBOARD+" |":''}
+                            {a.SPEC_POWER!==undefined?a.SPEC_POWER+' |':''}
+                            {a.SPEC_GPU!==undefined?a.SPEC_GPU+' |':''}
+                            {a.SPEC_HDD!==undefined?a.SPEC_HDD+' |':''}
+                            {a.SPEC_SSD!==undefined?a.SPEC_SSD+" |":''}
+                            {a.SPEC_OPS!==undefined?a.SPEC_OPS+" |":''}
+                            {a.SPEC_MFG!==undefined?a.SPEC_MFG+" |":''}
+                            {a.SPEC_SERIEL!==undefined?a.SPEC_SERIEL+" |":''}
+                            {/*{a.SPEC_PURCHASE_DATE!==undefined?a.SPEC_PURCHASE_DATE+" |":''}*/}
+                            {a.SPEC_WARRANTY!==undefined?a.SPEC_WARRANTY+" |":''}
+                            {a.SW_MFG!==undefined?a.SW_MFG+" |":''}
+                            {a.SW_SPEC_SERIEL!==undefined?a.SW_SPEC_SERIEL+" |":''}
+                            {a.SW_SPEC_WARRANTY!==undefined?a.SW_SPEC_WARRANTY+" |":''}
+                            {/*{a.SW_PURCHASE_DATE!==undefined?a.SW_PURCHASE_DATE+" |":''}*/}
+                            {a.SW_PRICE!==undefined?a.SW_PRICE+" |":''}
+                            {a.SERVER_MFG!==undefined?a.SERVER_MFG+" |":''}
+                            {a.SERVER_PRICE!==undefined?a.SERVER_PRICE+" |":''}
+                            {/*{a.SERVER_PURCHASE_DATE!==undefined?a.SERVER_PURCHASE_DATE+" |":''}*/}
+                            {a.SERVER_INTERFACE!==undefined?a.SERVER_INTERFACE+" |":''}
+                            {a.SERVER_AVERAGE_LIFE!==undefined?a.SERVER_AVERAGE_LIFE+" |":''}
+                            {a.SERVER_RPM!==undefined?a.SERVER_RPM+" |":''}
+                            {a.SERVER_DATARECOVERY_LIFE!==undefined?a.SERVER_DATARECOVERY_LIFE+" |":''}
+                            {a.ETC_MFG!==undefined?a.ETC_MFG+" |":''}
+                            {a.ETC_SPEC_WARRANTY!==undefined?a.ETC_SPEC_WARRANTY+" |":''}
+                            {/*{a.ETC_PURCHASE_DATE!==undefined?a.ETC_PURCHASE_DATE+" |":''}*/}
+                            {a.ETC_PRICE!==undefined?a.ETC_PRICE+" |":''}
+                          </td>
+                          <td>{addDate(a.ADD_DATE)}</td>
                         </tr>
-                        <tr>
-                          <th scope="row"><Link to="####"><img src="assets/img/product-2.jpg" alt="" /></Link></th>
-                          <td>$46</td>
-                          <td><Link to="####" className="text-primary fw-bold">Exercitationem similique doloremque</Link></td>
-                          <td className="fw-bold">98</td>
-                          {/* <td>$4,508</td> */}
-                        </tr>
-                        <tr>
-                          <th scope="row"><Link to="####"><img src="assets/img/product-3.jpg" alt="" /></Link></th>
-                          <td>$59</td>
-                          <td><Link to="####" className="text-primary fw-bold">Doloribus nisi exercitationem</Link></td>
-                          <td className="fw-bold">74</td>
-                          {/* <td>$4,366</td> */}
-                        </tr>
-                        <tr>
-                          <th scope="row"><Link to="####"><img src="assets/img/product-4.jpg" alt="" /></Link></th>
-                          <td>$32</td>
-                          <td><Link to="####" className="text-primary fw-bold">Officiis quaerat sint rerum error</Link></td>
-                          <td className="fw-bold">63</td>
-                          {/* <td>$2,016</td> */}
-                        </tr>
-                        <tr>
-                          <th scope="row"><Link to="####"><img src="assets/img/product-5.jpg" alt="" /></Link></th>
-                          <td>$79</td>
-                          <td><Link to="####" className="text-primary fw-bold">Sit unde debitis delectus repellendus</Link></td>
-                          <td className="fw-bold">41</td>
-                          {/* <td>$3,239</td> */}
-                        </tr>
+                          })
+                        }
+
                         </tbody>
                       </table>
 

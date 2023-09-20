@@ -3,7 +3,7 @@ import "../../styles/MainPageStyle/ReturnDetailModal.css";
 import axios from "axios";
 
 
-function ReturnCancelModal({ setOpenCancelModal, myAssetList, myAssetNum, getMyAssetList, username}) {
+function ReturnCancelModal({ setOpenCancelModal, myAssetList, myAssetNum, getMyAssetList, username, setOpenCancelAlert, setOpenAlert, token}) {
 
   let thisList = () => {
     return myAssetList.find(x => x.ASSETS_NUM == myAssetNum)
@@ -26,16 +26,27 @@ function ReturnCancelModal({ setOpenCancelModal, myAssetList, myAssetNum, getMyA
   const cancelReq = () => {
     if(window.confirm('정말 요청을 취소하시겠습니까?')) {
 
-    axios.delete("/mainPage/deleteCancelReq", {params: {return_num: thisList().RETURN_NUM}})
+    axios({
+      url: "/mainPage/deleteCancelReq",
+      method: "delete",
+      headers: {
+        Authorization : token
+      },
+      params: {
+        return_num: thisList().RETURN_NUM
+      }
+    })
         .then(response => {
           alert('요청이 취소되었습니다.');
           setOpenCancelModal(false);
-          getMyAssetList(username);})
+          getMyAssetList(username);
+          setOpenCancelAlert(true);
+          setOpenAlert(false);
+        })
         .catch(error => console.log(error))
     }
 
   }
-
 
 
   return (

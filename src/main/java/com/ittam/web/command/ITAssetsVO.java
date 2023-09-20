@@ -21,6 +21,7 @@ public class ITAssetsVO {
     private int spec_num;
     private String username;
     private Timestamp add_date;
+    private Timestamp rent_date;
 
 
     //카테고리 네임

@@ -5,6 +5,7 @@ import {Link} from "react-router-dom";
 import axios from "axios";
 import ReqDetailModal from "../../component/Modal/ReqDetailModal";
 function UserMain_request() {
+  const token = localStorage.getItem("token");
 
   const [cancel, setCancel] = useState("");
   const [username, setUsername] = useState('');
@@ -17,9 +18,19 @@ function UserMain_request() {
 
 
   const getMyRequestList = (username) => {
-    axios.get("/mainPage/getMyRequestList", {params: {username: username}})
-        .then(response => {setMyRequestList(response.data); console.log(response.data);})
-        .catch(error => console.log(error))
+
+      axios({
+          url: "/mainPage/getMyRequestList",
+          method: "get",
+          headers: {
+              Authorization : token
+          },
+          params: {
+              username: username
+          }
+      })
+          .then(response => {setMyRequestList(response.data); console.log(response.data);})
+          .catch(error => console.log(error))
   }
 
 
@@ -38,15 +49,14 @@ function UserMain_request() {
 
     return (
         <main id="main" className="main">
-            {openReqDetailModal && <ReqDetailModal setOpenReqDetailModal={setOpenReqDetailModal} username={username} myRequestList={myRequestList} userq_num={userq_num} getMyRequestList={getMyRequestList}/>}
+            {openReqDetailModal && <ReqDetailModal setOpenReqDetailModal={setOpenReqDetailModal} username={username} myRequestList={myRequestList} userq_num={userq_num} getMyRequestList={getMyRequestList} token={token}/>}
 
           <div className="pagetitle">
             <h1>사용 및 구매신청 목록</h1>
             <nav>
               <ol className="breadcrumb">
-                <li className="breadcrumb-item"><Link to="/userMain">Home</Link></li>
-                <li className="breadcrumb-item">Components</li>
-                <li className="breadcrumb-item active">Breadcrumbs</li>
+                <li className="breadcrumb-item"><Link to="/user/userMain">Home</Link></li>
+                <li className="breadcrumb-item active">사용 및 구매신청 목록</li>
               </ol>
             </nav>
           </div>
@@ -94,7 +104,7 @@ function UserMain_request() {
                             <td><Link to="#" onClick={() => {setOpenReqDetailModal(true); setUserq_num(a.userq_num)}}>{a.userq_title}</Link></td>
                             <td>{a.userq_count}</td>
                             <td>{a.userq_regdate}</td>
-                                <td>{a.userq_yn.includes('사용승인') ? "승인" : (a.userq_yn.includes('사원사용') ? "승인대기" : (a.userq_yn.includes('반려') ? '반려' : '승인대기'))}</td>
+                                <td>{a.userq_yn.includes('최종사용승인') ? "승인" : (a.userq_yn.includes('사원사용') ? "승인대기" : (a.userq_yn.includes('반려') ? '반려' : '승인대기'))}</td>
 
                           </tr>
                           })
@@ -111,7 +121,7 @@ function UserMain_request() {
                                     <td><Link to="#" onClick={() => {setOpenReqDetailModal(true); setUserq_num(a.userq_num)}}>{a.userq_title}</Link></td>
                                     <td>{a.userq_count}</td>
                                     <td>{a.userq_regdate}</td>
-                                    <td>{a.userq_yn.includes('사용승인') ? "승인" : (a.userq_yn.includes('사원사용') ? "승인대기" : (a.userq_yn.includes('반려') ? '반려' : '승인대기'))}</td>
+                                    <td>{a.userq_yn.includes('최종사용승인') ? "승인" : (a.userq_yn.includes('사원사용') ? "승인대기" : (a.userq_yn.includes('반려') ? '반려' : '승인대기'))}</td>
 
                                 </tr>
                             })
@@ -153,7 +163,7 @@ function UserMain_request() {
                             <td><Link to="#" onClick={() => {setOpenReqDetailModal(true); setUserq_num(a.userq_num)}}>{a.userq_title}</Link></td>
                             <td>{a.userq_count}</td>
                             <td>{a.userq_regdate}</td>
-                                <td>{a.userq_yn.includes('사용승인') ? "승인" : (a.userq_yn.includes('사원사용') ? "승인대기" : (a.userq_yn.includes('반려') ? '반려' : '승인대기'))}</td>
+                                <td>{a.userq_yn.includes('최종구매승인') ? "승인" : (a.userq_yn.includes('사원사용') ? "승인대기" : (a.userq_yn.includes('반려') ? '반려' : '승인대기'))}</td>
 
                           </tr>
                           })
@@ -162,7 +172,7 @@ function UserMain_request() {
 
 
                         {
-                            myRequestList.filter(a => a.userq_yn.includes('구매') && (a.userq_yn.includes('반려'))).map((a, i) => {
+                            myRequestList.filter(a => a.userq_yn.includes('구매') && (a.userq_yn.includes('반려') || a.userq_yn.includes('최종구매승인'))).map((a, i) => {
                                 return <tr key={i}>
                                     <th scope="row">{count_buy + i + 1}</th>
                                     <td>{a.userq_yn.includes("사용") ? "사용신청" : "구매신청"}</td>
@@ -170,7 +180,7 @@ function UserMain_request() {
                                     <td><Link to="#" onClick={() => {setOpenReqDetailModal(true); setUserq_num(a.userq_num)}}>{a.userq_title}</Link></td>
                                     <td>{a.userq_count}</td>
                                     <td>{a.userq_regdate}</td>
-                                    <td>{a.userq_yn.includes('사용승인') ? "승인" : (a.userq_yn.includes('사원사용') ? "승인대기" : (a.userq_yn.includes('반려') ? '반려' : '승인대기'))}</td>
+                                    <td>{a.userq_yn.includes('최종구매승인') ? "승인" : (a.userq_yn.includes('사원사용') ? "승인대기" : (a.userq_yn.includes('반려') ? '반려' : '승인대기'))}</td>
 
                                 </tr>
                             })

@@ -43,5 +43,15 @@ public class Stock_approvalServiceImp1 implements Stock_approvalService{
         return stockApprovalMapper.finalyn(vo3);
     }
 
+    @Override
+    public int purchaseApproval(StockApprovalVO vo) {
+        return stockApprovalMapper.purchaseApproval(vo);
+    }
+
+    @Override
+    public void insertApproval(UserRequestVO vo3) {
+        stockApprovalMapper.insertApproval(vo3);
+    }
+
 
 }
