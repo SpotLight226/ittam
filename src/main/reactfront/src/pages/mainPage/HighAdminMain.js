@@ -211,7 +211,7 @@ function HighAdminMain() {
                   <div className="col-xxl-3 col-md-3">
 
                     <div className="card info-card sales-card">
-                      <Link to="/admin/returnExchange">
+                      <Link to="/itassetsapproval">
                       <div className="card-body">
                         <h5 className="card-title" style={{fontWeight: "800"}}>폐기 및 수리 요청 미승인건<span>| This Year</span></h5>
 
@@ -431,7 +431,7 @@ function HighAdminMain() {
 
                     <div className="card-body pb-0" style={{paddingTop: '20px'}}>
                      <Link to="/adminitassets"><h5 className="card-title" style={{fontWeight: "800", display: 'inline'}}>재고구매사항 <span>| 전체보기</span></h5></Link>
-                      <select style={{marginLeft: '1447px', display:'inline'}} onChange={(e) => {setNnn(parseInt(e.target.value));}}>
+                      <select style={{marginLeft: '10px', display:'inline'}} onChange={(e) => {setNnn(parseInt(e.target.value));}}>
                         <option value="5">5개</option>
                         <option value="7">7개</option>
                         <option value="10">10개</option>

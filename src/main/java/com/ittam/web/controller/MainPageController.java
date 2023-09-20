@@ -166,7 +166,7 @@ public class MainPageController {
     public ResponseEntity<Map<String, Integer>> getMyAssetChartCnt(@RequestParam String username) {
         Map<String, Integer> map = new HashMap<>();
         map.put("pcCnt", mainPageService.getMyPcCnt(username));
-        map.put("swcnt", mainPageService.getMySwCnt(username));
+        map.put("swCnt", mainPageService.getMySwCnt(username));
         map.put("etcCnt", mainPageService.getMyEtcCnt(username));
         map.put("serverCnt", mainPageService.getMyServerCnt(username));
         return new ResponseEntity<>(map, HttpStatus.OK);

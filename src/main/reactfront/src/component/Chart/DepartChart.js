@@ -12,7 +12,7 @@ function DepartChart({departNum}) {
         type: 'pie',
       },
       labels: ['디자인', '연구개발', '엔지니어링', '재무', '구매', '영업', '개발', '마케팅', '인사', ' 생산'],
-      colors:['#FFB300', '#8BC34A', '#26A69A', '#7E57C2', '#EF5350', '#8D6E63', '#00B0FF', '#F57C00', '#F06292', '#AFB42B'],
+      colors:['#33b2df', '#546E7A', '#d4526e', '#13d8aa', '#A5978B', '#2b908f', '#f9a3a4', '#90ee7e', '#f48024', '#69d2e7'],
       responsive: [{
         breakpoint: 480,
         options: {

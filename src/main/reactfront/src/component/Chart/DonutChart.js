@@ -5,7 +5,7 @@ import ReactApexChart from "react-apexcharts";
 
 function DounutChart_user({myAssetChartCnt}) {
   const x = {
-    series: [myAssetChartCnt.pcCnt, myAssetChartCnt.swcnt, myAssetChartCnt.etcCnt, myAssetChartCnt.serverCnt],
+    series: [myAssetChartCnt.pcCnt, myAssetChartCnt.swCnt, myAssetChartCnt.etcCnt, myAssetChartCnt.serverCnt],
     options: {
       chart: {
         type: 'donut',
@@ -30,8 +30,13 @@ function DounutChart_user({myAssetChartCnt}) {
   const [data, setData] = useState(x);
 
   return (
+
       <div id="chart">
+        {
+          (myAssetChartCnt.pcCnt === 0 && myAssetChartCnt.swCnt === 0 && myAssetChartCnt.etcCnt ===0 && myAssetChartCnt.serverCnt === 0)  ? <img src="../assets/img/ittam3.png" alt="ddd" style={{width: "250px"}}/>
+              :
         <ReactApexChart options={data.options} series={data.series} type="donut" width={365}/>
+        }
       </div>
   )
 }

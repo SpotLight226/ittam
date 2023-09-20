@@ -8,6 +8,7 @@ import AssetStickChart from '../../component/Chart/AssetStickChart';
 import CPUChart from '../../component/Chart/CPUChart';
 import GPUChart from '../../component/Chart/GPUChart';
 import MFGChart from '../../component/Chart/MFGChart';
+import DepartAssetChart from "../../component/Chart/DepartAssetChart";
 
 function Reports() {
   const token = localStorage.getItem("token");
@@ -234,6 +235,18 @@ function Reports() {
                                 </div>
                               </div>}
 
+                        </div>
+                      </div>
+
+                    </div>
+
+                    <div className="col-lg-8">
+
+                      <div className="card" >
+                        <div className="card-body" style={{ backgroundColor: 'rgb(219 228 245)', borderRadius: '8px'  }}>
+                          <h5 className="card-title" style={{ fontWeight: "800" }}>부서별 자산 현황</h5>
+                          <DepartAssetChart />
+                          
                         </div>
                       </div>
 

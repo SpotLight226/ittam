@@ -44,7 +44,6 @@ function UserMain() {
         .catch(error => console.log(error))
   }
 
-
   const getUserCnt = (username) => {
 
     axios({
@@ -137,31 +136,38 @@ function UserMain() {
 
       <section className="section">
         <div className="row">
-          <div className="col-lg-6">
+          <div className="col-lg-3">
 
             <div className="card">
               <div className="card-body">
                 <h5 className="card-title" style={{fontWeight: "800"}}>나의 자산 현황</h5>
-                {myAssetChartCnt!==undefined ? <DounutChart_user myAssetChartCnt={myAssetChartCnt}/> :
+                {(myAssetChartCnt!==undefined ? <DounutChart_user myAssetChartCnt={myAssetChartCnt}/> :
                     <div className="d-flex justify-content-center">
                       <div className="spinner-border text-primary" role="status">
                         <span className="visually-hidden">Loading...</span>
                       </div>
-                    </div>}
+                    </div>)}
+                {/*{myAssetChartCnt && myAssetChartCnt.size > 0 ? (*/}
+                {/*    <DounutChart_user myAssetChartCnt={myAssetChartCnt}/>*/}
+                {/*) : (*/}
+                {/*    <div className="empty-graph-placeholder">*/}
+                {/*      <img src="../assets/img/ittam2.png" alt="No Data Available"/>*/}
+                {/*    </div>*/}
+                {/*)}*/}
               </div>
             </div>
 
           </div>
-          {/* <div className="col-lg-3">
+           <div className="col-lg-3">
 
             <div className="card">
               <div className="card-body">
                 <h5 className="card-title" style={{fontWeight: "800"}}>나의 자산 현황</h5>
-                
+
               </div>
             </div>
 
-          </div> */}
+          </div>
 
           <div className="col-lg-6">
 
@@ -171,9 +177,9 @@ function UserMain() {
                 <table className="table table-sm">
                   <thead>
                   <tr>
-                    <th scope="col">#</th>
-                    <th scope="col" style={{width: '100px'}}>작성자</th>
-                    <th scope="col" style={{width: '250px'}}>제목</th>
+                    <th scope="col" style={{width: '100px'}}>#</th>
+                    <th scope="col" style={{width: '150px'}}>작성자</th>
+                    <th scope="col" style={{width: '300px'}}>제목</th>
                     <th scope="col" style={{width: '100px'}}>등록일</th>
                     <th scope="col" style={{width: '100px'}}>만료일</th>
                   </tr>
@@ -182,7 +188,7 @@ function UserMain() {
                   {
                     noticeList.map((a,i) => {
                       return <tr key={i}>
-                    <th scope="row">{a.notice_num}</th>
+                    <th scope="row">new!</th>
                     <td>{a.notice_name}</td>
                         <td onClick={() => handleClickEvent(a.notice_num)}><Link to="##">{a.notice_title}</Link></td>
                     <td>{noticedate(a.notice_regdate)}</td>
