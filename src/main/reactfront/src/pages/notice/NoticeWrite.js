@@ -30,16 +30,9 @@ function NoticeWrite() {
   
     }
     
-    formData.append("notice_enddate", inputEndDate.value);
-
-     navigate("/noticelist"); // 이동할 경로를 지정
-
-  
-
-
-
-
-
+    // formData.append("notice_enddate", inputEndDate.value);
+    // alert("게시글 등록에 성공했습니다.");
+    // navigate("/noticelist");
 
     axios({
       url: 'http://localhost:9191/noticelist/write',
@@ -51,19 +44,18 @@ function NoticeWrite() {
     })
         .then((response) => {
           console.log(response);
-          alert("게시글 등록에 성공했습니다.");
+          alert("게시글이 작성되었습니다.");
           navigate("/NoticeList");
 
         })
         .catch((error) => {
           console.log(error);
-          alert("게시글 등록에 실패하였습니다.");
+          alert("글 게시중 오류가 발생했습니다.");
         });
 
   };
 
   useEffect(() => {
-   
   }, []);
 
   return (

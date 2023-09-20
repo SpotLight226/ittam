@@ -29,6 +29,7 @@ function timestamp_to_date(input) {
 
 
 function NoticeEdit() {
+  const token = localStorage.getItem("token");
   const [notice, setNotice] = useState({}); // 게시글 데이터를 저장할 상태
   const location = useLocation();
 
@@ -43,10 +44,12 @@ function NoticeEdit() {
       [name]: value,
     });
   };
+
   const navigation = useNavigate()
   const inputRef = useRef()
   const [imgdata, setImgData] = useState({});
   const [imageName,setImageName] = useState('')
+
   const handleSubmit = ()=> {
     const {files} = inputRef.current
     const formData = new FormData();
@@ -63,7 +66,8 @@ function NoticeEdit() {
       url : 'http://localhost:9191/noticelist/update',
       method : 'POST',
       headers: {
-        'Content-Type' : 'multipart/form-data'
+        'Content-Type' : 'multipart/form-data',
+        Authorization : token
       },
       data: formData
     })
@@ -77,18 +81,29 @@ function NoticeEdit() {
   };
 
   async function fetchImg(id){
-    const {data } = await axios 
-        .get(`http://localhost:9191/noticelist/detailimg/${id}?id=${id}`)
-        setImgData(data)
+        //const {data } = 
+        //await axios 
+        // .get(`http://localhost:9191/noticelist/detailimg/${id}?id=${id}`)
+        // setImgData(data)
+       try{
+        const response = await axios.get(
+           `http://localhost:9191/noticelist/detailimg/${id}?id=${id}`,
+          //method: "get",
+          {
+            headers: {
+            Authorization : token
+          }
+        }
+        );
+        setImgData(response.data);
+      }catch (error) {
+        console.error("이미지 데이터를 가져오는 중 오류 발생:", error);
+      }
   }
-
 
   useEffect(()=>{
     fetchImg(location.state.notice_num)
   },[])
-  
-
-
 
   useEffect(() => {
     setEditedNotice(location.state);
@@ -105,6 +120,7 @@ function NoticeEdit() {
           })
         }
         reader.readAsDataURL(input.files[0])
+
       // axios.post('http://localhost:9191/noticelist/updateimg', editedNotice)
       // .then((res) => {
       //   setImageName(res.data);
@@ -112,6 +128,20 @@ function NoticeEdit() {
       // .catch((err) => {
       //   console.log(err);
       // })
+
+      // axios({
+      //   url : 'http://localhost:9191/noticelist/updateimg',
+      //   method : 'POST',
+      //   headers: {
+      //     Authorization : token
+      //   },
+      //   data: editedNotice
+      // }).then((res) => {
+      //     setImageName(res.data);
+      //   })
+      //   .catch((err) => {
+      //     console.log(err);
+      //   })
     };
 
   return (
@@ -197,15 +227,16 @@ function NoticeEdit() {
                         <button className="btn btn-primary"
                       onClick={()=>inputRef.current.click()}>{imgdata.noticeimg_path ? '수정' : '추가'}</button>
                       
-                      <button 
-                      className="btn btn-primary"
-                      onClick={()=>{
-                        setImgData({
-                          ...imgdata,
-                          noticeimg_path : ''
-                        })
-                        inputRef.current.value = ""
-                        }}>삭제</button></div>
+                        <button 
+                        className="btn btn-primary"
+                        onClick={()=>{
+                          setImgData({
+                            ...imgdata,
+                            noticeimg_path : ''
+                          })
+                          inputRef.current.value = ""
+                          }}>삭제</button>
+                     </div>
                     </div>
                     <input 
                     hidden
