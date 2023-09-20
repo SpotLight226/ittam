@@ -6,10 +6,10 @@ import { UserDispatchContext } from "../../pages/users/Users";
 const UserModal = ({ modalContent, closeModal }) => {
   const { onEdit } = useContext(UserDispatchContext);
 
-  const [yearsInCompany, setYearsInCompany] = useState(null);
-  const [ismodify, setIsModify] = useState(false);
+  const [yearsInCompany, setYearsInCompany] = useState(null); // 년차
+  const [ismodify, setIsModify] = useState(false); // 수정여부
 
-  const [newRole, setNewRole] = useState(modalContent.role);
+  const [newRole, setNewRole] = useState(modalContent.role); // 선택된 권한
 
   useEffect(() => {
     if (modalContent.user_joindate) {
@@ -35,11 +35,11 @@ const UserModal = ({ modalContent, closeModal }) => {
   const handleSubmit = () => {
     // 권한을 변경하면 onEdit 호출
     if (newRole !== modalContent.role) {
-      if (window.confirm("권한을 변경하시겠습니까?"))
+      if (window.confirm("권한을 변경하시겠습니까?")) {
         onEdit(modalContent.username, newRole);
+      }
+      setIsModify(false);
     }
-
-    setNewRole("");
   };
 
   return (
@@ -62,6 +62,7 @@ const UserModal = ({ modalContent, closeModal }) => {
             ></button>
           </div>
           <div className="modal-body">
+            <p>사원 번호 : {modalContent.username}</p>
             <p>소속 부서 : {modalContent.user_depart}</p>
             {ismodify ? (
               <div className="role-control-wrapper">
@@ -78,8 +79,7 @@ const UserModal = ({ modalContent, closeModal }) => {
               </div>
             ) : (
               <p>
-                사용자 권한 :{" "}
-                {modalContent.role === "ROLE_USER" ? "사용자" : "관리자"}
+                사용자 권한 : {newRole === "ROLE_USER" ? "사용자" : "관리자"}
               </p>
             )}
             <p>이메일 : {modalContent.user_email}</p>

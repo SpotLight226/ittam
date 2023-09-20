@@ -51,6 +51,65 @@
         select * from USER where user_email = #{email}
     </select>
 
+    <delete id="userRemove" >
+        delete from ittam.USER where username = #{targetId}
+    </delete>
+
+    <select id="userFindAsset" resultType="int">
+        select count(*) from ittam.ITASSETS where username = #{targetId}
+    </select>
+
+    <select id="userFindApproval" resultType="int">
+        select count(*) from ittam.STOCK_APPROVAL where username = #{targetId}
+    </select>
+    
+    <select id="userFindRequest" resultType="int">
+        select count(*) from ittam.USER_REQUEST where username = #{targetId}
+    </select>
+
+    <select id="userFindReturn" resultType="int">
+        select count(*) from ittam.STOCK_RETURN where username = #{targetId}
+    </select>
+
+    <update id="userAssetChange">
+        update ittam.ITASSETS set username = '', assets_status = '사용가능' where #{targetId}
+    </update>
+
+    <delete id="removeAll">
+        delete sa, ur, sr
+            from ittam.STOCK_APPROVAL sa
+            inner join ittam.USER_REQUEST ur on sa.username = ur.username
+            inner join ittam.STOCK_RETURN sr on sa.username = sr.username
+            where sa.username = #{targetId} or ur.username = #{targetId} or sr.username = #{targetId}
+    </delete>
+
+    <select id="getSearch" resultType="UserVO">
+        select *
+        from ittam.USER
+        where
+            <choose>
+                <when test="option == 'all'">
+                    username like concat('%', #{value}, '%') or
+                    user_name like concat('%', #{value},'%') or
+                    user_email like concat('%', #{value}, '%') or
+                    user_depart like concat('%', #{value}, '%') or
+                    user_phone like concat('%', #{value}, '%')
+                </when>
+                <when test="option == 'name'">
+                    user_name like concat('%', #{value},'%')
+                </when>
+                <when test="option == 'userId'">
+                    username like concat('%', #{value}, '%')
+                </when>
+                <when test="option == 'depart'">
+                    user_depart like concat('%', #{value}, '%')
+                </when>
+                <when test="option == 'email'">
+                    user_email like concat('%', #{value}, '%')
+                </when>
+            </choose>
+    </select>
+
     <update id="UserPasswordReset" >
         update USER set password = #{passwordReset} where user_email = #{emailInput}
     </update>
