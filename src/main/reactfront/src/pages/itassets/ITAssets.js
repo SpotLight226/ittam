@@ -400,7 +400,7 @@ function ITAssets() {
 
   const [isModalOpen1, setIsModalOpen1] = useState(false);
   function handleButtonClick(category) {
-    if (count < itcount) {
+    if (count > itcount) {
       // 모달창 열기
       setIsModalOpen1(true);
       sendModal(category);
