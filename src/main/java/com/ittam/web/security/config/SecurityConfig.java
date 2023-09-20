@@ -55,14 +55,29 @@ public class SecurityConfig {
         // login요청에만 CustomLoginFilter가 실행됩니다.
         http.requestMatchers()
                 .antMatchers("/login")
+                .antMatchers("/")
                 .and()
                 .addFilter(new CustomLoginFilter(authenticationManager));
 
         // api로 시작하는 요청에만 jwt필터가 실행됩니다.
+
+//        http.requestMatchers()
+//                .antMatchers("/**")
+//                .and()
+//                .addFilter(new JwtAuthorizationFilter(authenticationManager));
+
         http.requestMatchers()
-                .antMatchers("/**")
-//                .antMatchers("/admin/**")
-//                .antMatchers("/highAdmin/**")
+                .antMatchers("/admin/**")
+                .antMatchers("/AssetRequest/**")
+                .antMatchers("/UserRequest/**")
+                .antMatchers("/categories/**")
+                .antMatchers("/assets/**")
+                .antMatchers("/stock/**")
+                .antMatchers("/mainPage/**")
+                .antMatchers("/reports/**")
+                .antMatchers("/noticelist/**")
+                .antMatchers("/noticeUser/**")
+                .antMatchers("/User/**")
                 .and()
                 .addFilter(new JwtAuthorizationFilter(authenticationManager));
 
