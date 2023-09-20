@@ -13,7 +13,7 @@ import java.time.LocalDate;
 @Builder
 public class UserRequestVO {
 
-    private int userq_num;
+    private Integer userq_num;
     private String username;
     private Integer category_num;
     private String userq_title;
@@ -27,6 +27,7 @@ public class UserRequestVO {
 
     //최종구매승인카운트
     private Integer count;
+    private Integer assets_num;
 
 
 }
