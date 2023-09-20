@@ -21,4 +21,6 @@ public interface Stock_ApprovalMapper {
 
     public int purchaseApproval(StockApprovalVO vo);
 
+    public void insertApproval(UserRequestVO vo3);
+
 }

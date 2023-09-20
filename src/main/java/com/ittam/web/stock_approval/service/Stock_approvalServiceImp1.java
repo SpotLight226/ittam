@@ -48,5 +48,10 @@ public class Stock_approvalServiceImp1 implements Stock_approvalService{
         return stockApprovalMapper.purchaseApproval(vo);
     }
 
+    @Override
+    public void insertApproval(UserRequestVO vo3) {
+        stockApprovalMapper.insertApproval(vo3);
+    }
+
 
 }
