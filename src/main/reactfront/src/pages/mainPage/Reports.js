@@ -8,7 +8,9 @@ import AssetStickChart from '../../component/Chart/AssetStickChart';
 import CPUChart from '../../component/Chart/CPUChart';
 import GPUChart from '../../component/Chart/GPUChart';
 import MFGChart from '../../component/Chart/MFGChart';
+
 function Reports() {
+  const token = localStorage.getItem("token");
 
   const [cardNum, setCardNum] = useState({});
   const [departNum, setDepartNum] = useState();
@@ -20,36 +22,81 @@ function Reports() {
 
 
   const getCardNum = () => {
-    axios.get("/reports/getCardNum")
-      .then(response => { setCardNum(response.data) })
-      .catch(error => console.log(error))
+    axios({
+      url: "/reports/getCardNum",
+      method: "get",
+      headers: {
+        Authorization : token
+      },
+    })
+    .then((res) => {
+      setCardNum(res.data)
+          })
+    .catch((error) => {
+      alert("데이터 조회에 실패하였습니다.");
+    });
   }
   const getDepartNum = () => {
-    axios.get("/reports/getDepartNum")
-      .then(response => { setDepartNum(response.data) })
-      .catch(error => console.log(error))
+
+    axios({
+      url: "/reports/getDepartNum",
+      method: "get",
+      headers: {
+        Authorization : token
+      },
+    })
+    .then((res) => {
+      setDepartNum(res.data)
+          })
+    .catch((error) => {
+      alert("데이터 조회에 실패하였습니다.");
+    });
   }
   const getAssetStickNum = () => {
-    axios.get("/reports/getAssetStickNum")
-      .then(response => { setStickNum(response.data) })
-      .catch(error => console.log(error))
+    axios({
+      url: "/reports/getAssetStickNum",
+      method: "get",
+      headers: {
+        Authorization : token
+      },
+    })
+    .then((res) => {
+      setStickNum(res.data)
+          })
+    .catch((error) => {
+      alert("데이터 조회에 실패하였습니다.");
+    });
   }
   const getCPUNum = () => {
-    axios.get("/reports/getCPUNum")
-      .then(response => { setCPUNum(response.data) })
-      .catch(error => console.log(error))
+    axios({
+      url: "/reports/getCPUNum",
+      method: "get",
+      headers: {
+        Authorization : token
+      },
+    })
+    .then((res) => {
+      setCPUNum(res.data)
+          })
+    .catch((error) => {
+      alert("데이터 조회에 실패하였습니다.");
+    });
   }
   const getGPUNum = () => {
-    axios.get("/reports/getGPUNum")
-      .then(response => { setGPUNum(response.data) })
-      .catch(error => console.log(error))
+    axios({
+      url: "/reports/getGPUNum",
+      method: "get",
+      headers: {
+        Authorization : token
+      },
+    })
+    .then((res) => {
+      setGPUNum(res.data)
+          })
+    .catch((error) => {
+      alert("데이터 조회에 실패하였습니다.");
+    });
   }
-  const getMFGNum = () => {
-    axios.get("/reports/getMFGNum")
-      .then(response => { setMFGNum(response.data) })
-      .catch(error => console.log(error))
-  }
-
 
   useEffect(() => {
     getCardNum();
@@ -62,207 +109,204 @@ function Reports() {
 
 
   return (
-    <main id="main" className="main">
-      <div className="pagetitle">
-        <h1>대시보드</h1>
-        <nav>
-          <ol className="breadcrumb">
-            <li className="breadcrumb-item active"><Link to="/admin/adminMain">DashBoard</Link></li>
-          </ol>
-        </nav>
-      </div>
-
-      <section className="section dashboard">
-        <div className="row">
-
-          {/* <!-- Left side columns --> */}
-          <div className="col-lg-12">
-            <div className="row">
-
-              {/*  <!-- Sales Card --> */}
-              <div className="col-xxl-3 col-md-3">
-                <div className="card info-card sales-card" style={{ backgroundColor: '#D1C4E9' }}>
-
-
-
-                  <div className="card-body">
-                    <h5 className="card-title" style={{ fontWeight: "800", fontSize: '20px' }}>총 사원수</h5>
-
-                    <div className="d-flex align-items-center" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                      {/* <div className="card-icon rounded-circle d-flex align-items-center justify-content-center AdminMain-icon">
-                          <i className="bi bi-box-arrow-in-up-right"></i>
-                        </div> */}
-                      <div className="ps-3">
-                        <h6 style={{ fontSize: '50px' }}>{cardNum.allUsersNum}</h6>
-                      </div>
-                    </div>
-                  </div>
-
-
-                </div>
-              </div>{/* <!-- End Sales Card --> */}
-              {/*  <!-- Sales Card --> */}
-              <div className="col-xxl-3 col-md-3">
-                <div className="card info-card sales-card" style={{ backgroundColor: '#C5CAE9' }}>
-
-
-
-                  <div className="card-body">
-                    <h5 className="card-title" style={{ fontWeight: "800", fontSize: '20px' }}>총 자산수</h5>
-
-                    <div className="d-flex align-items-center" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                      {/* <div className="card-icon rounded-circle d-flex align-items-center justify-content-center AdminMain-icon">
-                          <i className="bi bi-box-arrow-in-up-right"></i>
-                        </div> */}
-                      <div className="ps-3">
-                        <h6 style={{ fontSize: '50px' }}>{cardNum.allAssetsNum}</h6>
-                      </div>
-                    </div>
-                  </div>
-
-
-                </div>
-              </div>{/* <!-- End Sales Card --> */}
-              {/*  <!-- Sales Card --> */}
-              <div className="col-xxl-3 col-md-3">
-                <div className="card info-card sales-card" style={{ backgroundColor: '#BBDEFB' }}>
-
-
-
-                  <div className="card-body">
-                    <h5 className="card-title" style={{ fontWeight: "800", fontSize: '20px' }}>자산사용률</h5>
-
-                    <div className="d-flex align-items-center" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                      {/* <div className="card-icon rounded-circle d-flex align-items-center justify-content-center AdminMain-icon">
-                          <i className="bi bi-box-arrow-in-up-right"></i>
-                        </div> */}
-                      <div className="ps-3">
-                        <h6 style={{ fontSize: '50px' }}>{Math.round((cardNum.usingAssetsNum / cardNum.allAssetsNum) * 100)}%</h6>
-                      </div>
-                    </div>
-                  </div>
-
-
-                </div>
-              </div>{/* <!-- End Sales Card --> */}
-              {/*  <!-- Sales Card --> */}
-              <div className="col-xxl-3 col-md-3">
-                <div className="card info-card sales-card" style={{ backgroundColor: '#B2EBF2' }}>
-
-
-
-                  <div className="card-body">
-                    <h5 className="card-title" style={{ fontWeight: "800", fontSize: '20px' }}>이번 달 자산 구매비</h5>
-
-                    <div className="d-flex align-items-center" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                      {/* <div className="card-icon rounded-circle d-flex align-items-center justify-content-center AdminMain-icon">
-                          <i className="bi bi-box-arrow-in-up-right"></i>
-                        </div> */}
-                      <div className="ps-3">
-                        <h6 style={{ fontSize: '50px' }}>256</h6>
-                      </div>
-                    </div>
-                  </div>
-
-
-                </div>
-              </div>{/* <!-- End Sales Card --> */}
-
-
-              <section className="section">
-                <div className="row">
-                  <div className="col-lg-4">
-
-                    <div className="card" >
-                      <div className="card-body">
-                        <h5 className="card-title" style={{ fontWeight: "800" }}>부서별 사원 비율</h5>
-                        {departNum !== undefined && <DepartChart departNum={departNum} />}
-                      </div>
-                    </div>
-
-                  </div>
-
-                  <div className="col-lg-8">
-
-                    <div className="card" >
-                      <div className="card-body">
-                        <h5 className="card-title" style={{ fontWeight: "800" }}>자산 현황</h5>
-                        {stickNum != undefined && <AssetStickChart stickNum={stickNum} />}
-
-                      </div>
-                    </div>
-
-                  </div>
-
-
-                  <div className="col-lg-4">
-
-                    <div className="card" >
-                      <div className="card-body">
-                        <h5 className="card-title" style={{ fontWeight: "800" }}>CPU</h5>
-                        {CPUNum != undefined && <CPUChart CPUNum={CPUNum} />}
-
-                      </div>
-                    </div>
-
-                  </div>
-
-                  <div className="col-lg-4">
-
-                    <div className="card" >
-                      <div className="card-body">
-                        <h5 className="card-title" style={{ fontWeight: "800" }}>GPU</h5>
-                        {GPUNum != undefined && <GPUChart GPUNum={GPUNum} />}
-
-                      </div>
-                    </div>
-
-                  </div>
-
-                  <div className="col-lg-4">
-
-                    <div className="card" >
-                      <div className="card-body">
-                        <h5 className="card-title" style={{ fontWeight: "800" }}>제조사</h5>
-                        <MFGChart />
-
-                      </div>
-                    </div>
-
-                  </div>
-
-
-
-
-
-
-
-
-
-
-
-
-                </div>
-              </section>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-            </div>
-          </div>
-
+      <main id="main" className="main">
+        <div className="pagetitle">
+          <h1>리포트</h1>
+          <nav>
+            <ol className="breadcrumb">
+              <li className="breadcrumb-item active"><Link to="/admin/adminMain">Report</Link></li>
+            </ol>
+          </nav>
         </div>
-      </section>
+
+        <section className="section dashboard">
+          <div className="row">
+
+            {/* <!-- Left side columns --> */}
+            <div className="col-lg-12">
+              <div className="row">
+
+                {/*  <!-- Sales Card --> */}
+                <div className="col-xxl-3 col-md-3">
+                  <div className="card info-card sales-card" style={{ backgroundColor: 'rgb(219 228 245)'}}>
+
+
+
+                    <div className="card-body">
+                      <h5 className="card-title" style={{ fontWeight: "800", fontSize: '20px' }}>총 사원수</h5>
+
+                      <div className="d-flex align-items-center" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                        {/* <div className="card-icon rounded-circle d-flex align-items-center justify-content-center AdminMain-icon">
+                          <i className="bi bi-box-arrow-in-up-right"></i>
+                        </div> */}
+                        <div className="ps-3">
+                          <h6 style={{ fontSize: '50px' }}>{cardNum.allUsersNum}</h6>
+                        </div>
+                      </div>
+                    </div>
+
+
+                  </div>
+                </div>{/* <!-- End Sales Card --> */}
+                {/*  <!-- Sales Card --> */}
+                <div className="col-xxl-3 col-md-3">
+                  <div className="card info-card sales-card" style={{ backgroundColor: 'rgb(219 228 245)' }}>
+
+
+
+                    <div className="card-body">
+                      <h5 className="card-title" style={{ fontWeight: "800", fontSize: '20px' }}>총 자산수</h5>
+
+                      <div className="d-flex align-items-center" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                        {/* <div className="card-icon rounded-circle d-flex align-items-center justify-content-center AdminMain-icon">
+                          <i className="bi bi-box-arrow-in-up-right"></i>
+                        </div> */}
+                        <div className="ps-3">
+                          <h6 style={{ fontSize: '50px' }}>{cardNum.allAssetsNum}</h6>
+                        </div>
+                      </div>
+                    </div>
+
+
+                  </div>
+                </div>{/* <!-- End Sales Card --> */}
+                {/*  <!-- Sales Card --> */}
+                <div className="col-xxl-3 col-md-3">
+                  <div className="card info-card sales-card" style={{ backgroundColor: 'rgb(219 228 245)' }}>
+
+
+
+                    <div className="card-body">
+                      <h5 className="card-title" style={{ fontWeight: "800", fontSize: '20px' }}>자산사용률</h5>
+
+                      <div className="d-flex align-items-center" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+
+                        <div className="ps-3">
+                          {cardNum != undefined ? <h6 style={{ fontSize: '50px' }}>{Math.round((cardNum.usingAssetsNum / cardNum.allAssetsNum) * 100)}%</h6> :
+                              <div className="d-flex justify-content-center">
+                                <div className="spinner-border text-primary" role="status">
+                                  <span className="visually-hidden">Loading...</span>
+                                </div>
+                              </div>}
+                        </div>
+                      </div>
+
+                    </div>
+
+
+                  </div>
+                </div>{/* <!-- End Sales Card --> */}
+                {/*  <!-- Sales Card --> */}
+                <div className="col-xxl-3 col-md-3">
+                  <div className="card info-card sales-card" style={{ backgroundColor: 'rgb(219 228 245)' }}>
+
+
+
+                    <div className="card-body">
+                      <h5 className="card-title" style={{ fontWeight: "800", fontSize: '20px' }}>이번 달 자산 구매비</h5>
+
+                      <div className="d-flex align-items-center" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                        {/* <div className="card-icon rounded-circle d-flex align-items-center justify-content-center AdminMain-icon">
+                          <i className="bi bi-box-arrow-in-up-right"></i>
+                        </div> */}
+                        <div className="ps-3">
+                          <h6 style={{ fontSize: '50px' }}>256</h6>
+                        </div>
+                      </div>
+                    </div>
+
+
+                  </div>
+                </div>{/* <!-- End Sales Card --> */}
+
+
+                <section className="section">
+                  <div className="row">
+                    <div className="col-lg-4">
+
+                      <div className="card" >
+                        <div className="card-body" style={{ backgroundColor: 'rgb(219 228 245)', borderRadius: '8px' }}>
+                          <h5 className="card-title" style={{ fontWeight: "800" }}>부서별 사원 비율</h5>
+                          {departNum !== undefined ? <DepartChart departNum={departNum} /> :
+                              <div className="d-flex justify-content-center">
+                                <div className="spinner-border text-primary" role="status">
+                                  <span className="visually-hidden">Loading...</span>
+                                </div>
+                              </div>}
+
+                        </div>
+                      </div>
+
+                    </div>
+
+                    <div className="col-lg-8">
+
+                      <div className="card" >
+                        <div className="card-body" style={{ backgroundColor: 'rgb(219 228 245)', borderRadius: '8px'  }}>
+                          <h5 className="card-title" style={{ fontWeight: "800" }}>자산 현황</h5>
+                          {stickNum != undefined ? <AssetStickChart stickNum={stickNum} /> :
+                              <div className="d-flex justify-content-center">
+                                <div className="spinner-border text-primary" role="status">
+                                  <span className="visually-hidden">Loading...</span>
+                                </div>
+                              </div>}
+
+                        </div>
+                      </div>
+
+                    </div>
+
+
+                    <div className="col-lg-4">
+
+                      <div className="card" >
+                        <div className="card-body" style={{ backgroundColor: 'rgb(219 228 245)', borderRadius: '8px'  }}>
+                          <h5 className="card-title" style={{ fontWeight: "800" }}>CPU</h5>
+                          {CPUNum != undefined ? <CPUChart CPUNum={CPUNum} /> :
+                              <div className="d-flex justify-content-center">
+                                <div className="spinner-border text-primary" role="status">
+                                  <span className="visually-hidden">Loading...</span>
+                                </div>
+                              </div>}
+
+                        </div>
+                      </div>
+
+                    </div>
+
+                    <div className="col-lg-4">
+
+                      <div className="card" >
+                        <div className="card-body" style={{ backgroundColor: 'rgb(219 228 245)', borderRadius: '8px'  }}>
+                          <h5 className="card-title" style={{ fontWeight: "800" }}>GPU</h5>
+                          {GPUNum != undefined ? <GPUChart GPUNum={GPUNum} /> :
+                              <div className="d-flex justify-content-center">
+                                <div className="spinner-border text-primary" role="status">
+                                  <span className="visually-hidden">Loading...</span>
+                                </div>
+                              </div>}
+
+                        </div>
+                      </div>
+
+                    </div>
+
+                    <div className="col-lg-4">
+
+                      <div className="card" >
+                        <div className="card-body" style={{ backgroundColor: 'rgb(219 228 245)', borderRadius: '8px' }}>
+                          <h5 className="card-title" style={{ fontWeight: "800" }}>제조사</h5>
+                          <MFGChart />
+
+                        </div>
+                      </div>
+
+                    </div>
+
+
+
+                  </div>
+                </section>
 
 
 
@@ -273,7 +317,26 @@ function Reports() {
 
 
 
-    </main>
+
+
+
+
+              </div>
+            </div>
+
+          </div>
+        </section>
+
+
+
+
+
+
+
+
+
+
+      </main>
   );
 }
 

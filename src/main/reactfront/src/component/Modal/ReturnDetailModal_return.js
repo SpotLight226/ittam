@@ -2,7 +2,7 @@ import "../../styles/Style.css";
 import "../../styles/MainPageStyle/ReturnDetailModal.css";
 import axios from "axios";
 
-function ReturnDetailModal_return({ setOpenModal_return, num, returnList, getreturnList }) {
+function ReturnDetailModal_return({ setOpenModal_return, num, returnList, getreturnList, token }) {
 
   let thisList = () => {
     return returnList.find(x => x.RETURN_NUM == num)
@@ -12,7 +12,7 @@ function ReturnDetailModal_return({ setOpenModal_return, num, returnList, getret
   const reqTime = () => {
     let now = new Date(thisList().RETURN_DATE);
     let todayYear = now.getFullYear();
-    let todayMonth = now.getMonth();
+    let todayMonth = now.getMonth() + 1;
     let todayDate = now.getDate();
     const week = ['(일)', '(월)', '(화)', '(수)', '(목)', '(금)', '(토)'];
     let dayOfWeek = week[now.getDay()];
@@ -23,8 +23,17 @@ function ReturnDetailModal_return({ setOpenModal_return, num, returnList, getret
   }
 
   const return_yn = (return_status) => {
-    axios.post('mainPage/return_yn', {return_status: return_status, return_num: thisList().RETURN_NUM, assets_num: thisList().ASSETS_NUM})
-        .then(response => {console.log(response.data); getreturnList();})
+
+    axios({
+      url: "mainPage/return_yn",
+      method: "post",
+      headers: {
+        Authorization : token
+      },
+      data: {
+        return_status: return_status, return_num: thisList().RETURN_NUM, assets_num: thisList().ASSETS_NUM
+      }
+    }).then(response => {console.log(response.data); getreturnList();})
         .catch(error => console.log(error));
   }
 

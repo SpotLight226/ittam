@@ -13,7 +13,7 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/admin")
-@CrossOrigin(origins = "http://localhost:3000")
+@CrossOrigin(origins = "http://localhost:3000", allowedHeaders = "*")
 public class User_RequestController {
 
     @Autowired
@@ -31,8 +31,9 @@ public class User_RequestController {
     @PostMapping("/UserRequestApprove") // (관리자 페이지) 신청 승인 처리
     public ResponseEntity<String> UserRequestApprove(@RequestBody Map<String, String> requestBody){
         System.out.println(requestBody.toString());
+        System.out.println(requestBody.get("username"));
         try {
-            userRequestService.UserRequestApprove(Integer.parseInt(requestBody.get("userq_NUM")));
+            userRequestService.UserRequestApprove(Integer.parseInt(requestBody.get("userq_NUM")), requestBody.get("username"));
             count++;
             return ResponseEntity.ok("자산 사용 승인이 완료되었습니다." + count);
         } catch (Exception e) {
@@ -48,7 +49,7 @@ public class User_RequestController {
         System.out.println(requestBody.toString());
 
         try {
-            userRequestService.UserRequestreturn(Integer.parseInt(requestBody.get("userq_NUM")));
+            userRequestService.UserRequestreturn(Integer.parseInt(requestBody.get("userq_NUM")), requestBody.get("username"));
             count1++;
             return ResponseEntity.ok("자산 사용 승인이 반려되었습니다." + count1);
         } catch (Exception e) {
@@ -164,7 +165,7 @@ public class User_RequestController {
         vo.setUserq_title(requestBody.get("userq_title"));
         vo.setUserq_num(Integer.valueOf(requestBody.get("userq_num")));
         try {
-            userRequestService.UserRequestBuyApprove(vo);
+            userRequestService.UserRequestBuyApprove(vo, requestBody.get("username"));
             userRequestService.UserRequestBuyApproveB(vo);
             count2++;
             return ResponseEntity.ok("자산 구매 승인이 완료되었습니다." + count2);
@@ -181,7 +182,7 @@ public class User_RequestController {
         System.out.println(requestBody.toString());
 
         try {
-            userRequestService.UserRequestBuyReturn(Integer.parseInt(requestBody.get("userq_NUM")));
+            userRequestService.UserRequestBuyReturn(Integer.parseInt(requestBody.get("userq_NUM")), requestBody.get("username"));
             count3++;
             return ResponseEntity.ok("자산 사용 승인이 반려되었습니다." + count3);
         } catch (Exception e) {
@@ -290,8 +291,9 @@ public class User_RequestController {
     @PostMapping("/high/UserRequestApprove") // (최종 관리자 페이지) 신청 승인 처리
     public ResponseEntity<String> HighUserRequestApprove(@RequestBody Map<String, String> requestBody){
         System.out.println(requestBody.toString());
+        System.out.println(requestBody.get("username"));
         try {
-            userRequestService.HighUserRequestApprove(Integer.parseInt(requestBody.get("userq_NUM")));
+            userRequestService.HighUserRequestApprove(Integer.parseInt(requestBody.get("userq_NUM")), requestBody.get("username"));
             count4++;
             return ResponseEntity.ok("자산 사용 승인이 완료되었습니다." + count4);
         } catch (Exception e) {
@@ -307,7 +309,7 @@ public class User_RequestController {
         System.out.println(requestBody.toString());
 
         try {
-            userRequestService.HighUserRequestReturn(Integer.parseInt(requestBody.get("userq_NUM")));
+            userRequestService.HighUserRequestReturn(Integer.parseInt(requestBody.get("userq_NUM")), requestBody.get("username"));
             count5++;
             return ResponseEntity.ok("자산 사용 승인이 반려되었습니다." + count5);
         } catch (Exception e) {
@@ -342,7 +344,7 @@ public class User_RequestController {
     public ResponseEntity<String> HighUserBuyRequestApprove(@RequestBody Map<String, String> requestBody){
         System.out.println(requestBody.toString());
         try {
-            userRequestService.HighUserBuyRequestApprove(Integer.parseInt(requestBody.get("userq_NUM")));
+            userRequestService.HighUserBuyRequestApprove(Integer.parseInt(requestBody.get("userq_NUM")), requestBody.get("username"));
             count4++;
             return ResponseEntity.ok("자산 사용 승인이 완료되었습니다." + count4);
         } catch (Exception e) {
@@ -358,7 +360,7 @@ public class User_RequestController {
         System.out.println(requestBody.toString());
 
         try {
-            userRequestService.HighUserBuyRequestReturn(Integer.parseInt(requestBody.get("userq_NUM")));
+            userRequestService.HighUserBuyRequestReturn(Integer.parseInt(requestBody.get("userq_NUM")), requestBody.get("username"));
             count5++;
             return ResponseEntity.ok("자산 사용 승인이 반려되었습니다." + count5);
         } catch (Exception e) {

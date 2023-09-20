@@ -3,7 +3,7 @@ import "../../styles/MainPageStyle/ReturnDetailModal.css";
 import axios from "axios";
 import {useEffect, useState} from "react";
 
-function ReturnDetailModal({ setOpenModal_exchange, num, returnList, getreturnList }) {
+function ReturnDetailModal({ setOpenModal_exchange, num, returnList, getreturnList, token }) {
 
     const [mustChoice, setMustChoice] = useState("선택하기");
 
@@ -15,7 +15,7 @@ function ReturnDetailModal({ setOpenModal_exchange, num, returnList, getreturnLi
   const reqTime = () => {
     let now = new Date(thisList().RETURN_DATE);
     let todayYear = now.getFullYear();
-    let todayMonth = now.getMonth();
+    let todayMonth = now.getMonth() + 1;
     let todayDate = now.getDate();
     const week = ['(일)', '(월)', '(화)', '(수)', '(목)', '(금)', '(토)'];
     let dayOfWeek = week[now.getDay()];
@@ -27,8 +27,17 @@ function ReturnDetailModal({ setOpenModal_exchange, num, returnList, getreturnLi
 
   const [selectAssetList, setSelectAssestList] = useState([]);
   const getSelectAssetList = (category_num) => {
-    axios.get('/mainPage/getSelectAssetList', {params: {category_num: category_num}})
-        .then(response => {setSelectAssestList(response.data); console.log(response.data)})
+
+    axios({
+        url: "/mainPage/getSelectAssetList",
+        method: "get",
+        headers: {
+            Authorization : token
+        },
+        params: {
+            category_num: category_num
+        }
+    })  .then(response => {setSelectAssestList(response.data); console.log(response.data)})
         .catch(error => console.log(error))
   }
 
@@ -42,30 +51,48 @@ function ReturnDetailModal({ setOpenModal_exchange, num, returnList, getreturnLi
       return_num: thisList().RETURN_NUM,
       return_status: return_status
     }
-    axios.post("/mainPage/exchangeAsset", exchangeForm)
-        .then(response => {
-          alert("교환승인이 완료되었습니다");
-          console.log(response.data);
-          setOpenModal_exchange(false);
-            getreturnList();
 
-        }).catch(error => {
-          console.log(error);
-    })
+
+  axios({
+      url: "/mainPage/exchangeAsset",
+      method: "post",
+      headers: {
+          Authorization : token
+      },
+      data: exchangeForm
+  }).then(response => {
+      alert("교환승인이 완료되었습니다");
+      console.log(response.data);
+      setOpenModal_exchange(false);
+      getreturnList();
+
+  }).catch(error => {
+      console.log(error);
+  })
 
   }
 
   const return_yn = (return_status) => {
-    axios.post('mainPage/return_yn', {return_status: return_status, return_num: thisList().RETURN_NUM})
+
+    axios({
+        url: "mainPage/return_yn",
+        method: "post",
+        headers: {
+            Authorization : token
+        },
+        data: {
+            return_status: return_status,
+            return_num: thisList().RETURN_NUM
+        }
+    })
         .then(response => {
-          console.log(response.data);
-          alert('반려처리되었습니다.');
-          setOpenModal_exchange(false);
+            console.log(response.data);
+            alert('반려처리되었습니다.');
+            setOpenModal_exchange(false);
             getreturnList();
         })
         .catch(error => console.log(error));
   }
-
 
 
   useEffect(() => {
@@ -75,12 +102,9 @@ function ReturnDetailModal({ setOpenModal_exchange, num, returnList, getreturnLi
 
 
 
-
-
   return (
 
-   
-    
+
     <div className="modal modalmodal" onClick={() => { setOpenModal_exchange(false);}}>
       
       <div className="modalContainer" onClick={(e) => e.stopPropagation()}>

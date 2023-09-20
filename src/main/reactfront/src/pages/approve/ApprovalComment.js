@@ -16,23 +16,23 @@ function ApprovalComment({ info }) {
           <input
             className="modal-body"
             style={{
-              border: "0 solid black",
-              outline: "none",
-              padding: "50px",
+              border: '0 solid black',
+              outline: 'none',
+              marginLeft: '30px',
             }}
-            value={info ? info.appro_title : ""}
+            value={info ? info.appro_title : ''}
             readOnly
           />
 
           <div className="row mb-3">
             <label htmlFor="appro_comment" className="col-sm-2 col-form-label">
-              내용
+              내용:
             </label>
             <div className="col-sm-10">
               <textarea
                 className="form-control"
-                style={{ height: "100px" }}
-                value={info ? info.appro_comment : ""}
+                style={{ height: '100px' }}
+                value={info ? info.appro_comment : ''}
                 readOnly
               ></textarea>
             </div>

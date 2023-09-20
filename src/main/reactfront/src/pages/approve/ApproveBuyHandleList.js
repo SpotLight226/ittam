@@ -3,8 +3,12 @@ import axios from 'axios';
 import ApproveHandleTable from "./ApproveHandleTable";
 import { BsArrowClockwise } from "react-icons/bs";
 import Pagenation from "../../component/Pagenation";
+import { useNavigate } from "react-router-dom";
+import base64 from "base-64"
 
 function Approve() { // 관리자 사용 신청 내역 조회 페이지
+  let navigate = useNavigate();
+  const token = localStorage.getItem("token");
 
   const [userRequest, setUserRequest] = useState([]); // 유저 리스트
   const [msg, setMsg] = useState(); // 리랜더링을 위해 useState 생성해서 응답 메시지 넣기
@@ -69,17 +73,20 @@ function Approve() { // 관리자 사용 신청 내역 조회 페이지
       data: {
         inputText: inputText,
         pageNav : "관리자" + pageNav
-      }
+      },
+      headers: {
+        Authorization : token
+      },
     })
         .then((response) => {
-          
+
           if(response.data.length === 0){
             alert("일치하는 내역이 없습니다.");
             resetBtn();
           } else {
             setInputInnerDate(response.data);
           }
-          
+
         })
         .catch((error) => {
           alert("검색에 실패하였습니다.");
@@ -119,10 +126,16 @@ function Approve() { // 관리자 사용 신청 내역 조회 페이지
       method: 'post',
       data: {
         navText : "관리자" + navText
-      }
+      },
+      headers: {
+        Authorization : token
+      },
     })
         .then((response) => {
           setInputInnerDate(response.data);
+          if(response.data.length === 0 ){
+            alert("검색된 데이터가 없습니다.")
+          }
         })
         .catch((error) => {
           alert("검색에 실패하였습니다.");
@@ -162,7 +175,10 @@ function Approve() { // 관리자 사용 신청 내역 조회 페이지
         data: {
           category_num : e.target.value,
           navText : activeClass.textContent
-        }
+        },
+        headers: {
+          Authorization : token
+        },
       })
           .then((response) => {
             if(response.data.length === 0){
@@ -180,9 +196,31 @@ function Approve() { // 관리자 사용 신청 내역 조회 페이지
   }
 
   useEffect(() => { // 랜더링
+    const token = localStorage.getItem("token");
+    let payload = token.substring(token.indexOf('.')+1,token.lastIndexOf('.'));
+    let dec = JSON.parse(base64.decode(payload));
+    let role = dec.role;
+    if (role !== "ROLE_ADMIN" && role !== "ROLE_HIGH_ADMIN"){
+      alert("접근 권한이 없습니다.");
+      window.history.back();
+    }
+
     if(inputInnerData.username === "" || inputInnerData.length === 0){
-      // axios.get('http://localhost:9191/UserRequest/UserRequestHandlePage').then(res => console.log(res.data));
-      axios.get('http://localhost:9191/admin/UserRequestBuyHandlePage').then(res => setUserRequest(res.data));
+
+      axios({
+        url: "http://localhost:9191/admin/UserRequestBuyHandlePage",
+        method: "get",
+        headers: {
+          Authorization : token
+        },
+      })
+          .then((res) => {
+            setUserRequest(res.data);
+          })
+          .catch((error) => {
+            alert("데이터 조회에 실패하였습니다.");
+          });
+
     } else {
       setUserRequest(inputInnerData);
     }
@@ -192,7 +230,7 @@ function Approve() { // 관리자 사용 신청 내역 조회 페이지
       <div>
         <main id="main" className="main">
           <div className="pagetitle">
-            <h1>사용 처리내역 조회</h1>
+            <h1>자산 구매 처리내역 조회</h1>
             <nav>
               <ol className="breadcrumb">
                 <li className="breadcrumb-item">
@@ -209,7 +247,7 @@ function Approve() { // 관리자 사용 신청 내역 조회 페이지
               <div className="col-lg-12">
                 <div className="card">
                   <div className="card-body">
-                    <h5 className="card-title">자산 사용 처리내역 조회</h5>
+                    <h5 className="card-title">자산 구매 처리내역 조회</h5>
                     <div className="datatable-wrapper datatable-loading nofooter sortable searchable fixed-columns">
                       <div className="datatable-top">
                         <div className="datatable-dropdown">

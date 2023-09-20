@@ -29,6 +29,12 @@ function Sidebar() {
             <span>관리자메인페이지</span>
           </Link>
         </li>
+        <li className="nav-item">
+          <Link to="/highadmin/highAdminMain" className="nav-link">
+            <i className="bi bi-grid"></i>
+            <span>상위관리자메인페이지</span>
+          </Link>
+        </li>
 
         <li className="nav-item">
           <Link
@@ -181,18 +187,18 @@ function Sidebar() {
 
         <li className="nav-item">
           <Link
-            to="#"
-            className="nav-link collapsed"
-            data-bs-target="#charts-nav"
-            data-bs-toggle="collapse">
+              to="#"
+              className="nav-link collapsed"
+              data-bs-target="#charts-nav"
+              data-bs-toggle="collapse">
             <i className="bi bi-bar-chart"></i>
             <span>사용자 신청</span>
             <i className="bi bi-chevron-down ms-auto"></i>
           </Link>
           <ul
-            id="charts-nav"
-            className="nav-content collapse "
-            data-bs-parent="#sidebar-nav">
+              id="charts-nav"
+              className="nav-content collapse "
+              data-bs-parent="#sidebar-nav">
             <li>
               <Link to="/admin/approveList">
                 <i className="bi bi-circle"></i>
@@ -221,18 +227,18 @@ function Sidebar() {
         </li>
         <li className="nav-item">
           <Link
-            to="#"
-            className="nav-link collapsed"
-            data-bs-target="#charts-nav"
-            data-bs-toggle="collapse">
+              to="#"
+              className="nav-link collapsed"
+              data-bs-target="#charts-nav"
+              data-bs-toggle="collapse">
             <i className="bi bi-bar-chart"></i>
             <span>관리자 신청</span>
             <i className="bi bi-chevron-down ms-auto"></i>
           </Link>
           <ul
-            id="charts-nav"
-            className="nav-content collapse "
-            data-bs-parent="#sidebar-nav">
+              id="charts-nav"
+              className="nav-content collapse "
+              data-bs-parent="#sidebar-nav">
             <li>
               <Link to="/highAdmin/approveList">
                 <i className="bi bi-circle"></i>
@@ -257,14 +263,10 @@ function Sidebar() {
                 <span>최종 구매 처리 목록</span>
               </Link>
             </li>
-            <li>
-              <Link to="/highAdmin/approveDisuseList">
-                <i className="bi bi-circle"></i>
-                <span>최종 폐기 신청 목록</span>
-              </Link>
-            </li>
+
           </ul>
         </li>
+
 
         {/* <!-- End Charts Nav --> */}
 
@@ -306,14 +308,14 @@ function Sidebar() {
         <li className="nav-item">
           <Link to="admin/reports" className="nav-link collapsed">
             <i className="bi bi-bar-chart"></i>
-            <span>대시보드</span>
+            <span>리포트</span>
           </Link>
         </li>
 
         <li className="nav-heading">설정</li>
 
         <li className="nav-item">
-          <Link to="####" className="nav-link collapsed">
+          <Link to="/noticelist" className="nav-link collapsed">
             <i className="bi bi-person"></i>
             <span>공지사항</span>
           </Link>

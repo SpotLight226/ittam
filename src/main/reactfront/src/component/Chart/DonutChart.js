@@ -31,7 +31,7 @@ function DounutChart_user({myAssetChartCnt}) {
 
   return (
       <div id="chart">
-        <ReactApexChart options={data.options} series={data.series} type="donut" width={346}/>
+        <ReactApexChart options={data.options} series={data.series} type="donut" width={365}/>
       </div>
   )
 }

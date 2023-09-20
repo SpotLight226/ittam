@@ -19,13 +19,38 @@
         insert into STOCK_APPROVAL(
             username, assets_num, category_num , appro_title, appro_date, appro_comment, appro_kind, appro_yn
         ) VALUES (
-            #{username}, #{assets_num}, #{category_num} , #{appro_title}, now(), #{appro_comment}, #{appro_kind}, "N"
-        )
+                     #{username}, #{assets_num}, #{category_num} , #{appro_title}, now(), #{appro_comment}, #{appro_kind}, "N"
+                 )
     </insert>
 
     <update id="finalyn">
         update USER_REQUEST set userq_yn = '최종구매승인' where userq_num = #{userq_num}
     </update>
 
+    <insert id="purchaseApproval">
+        insert into STOCK_APPROVAL(
+            username, category_num, appro_title, appro_date, appro_comment, appro_kind, appro_yn,userq_num
+        ) values (
+                     #{username}, #{category_num}, #{appro_title}, now(), #{appro_comment}, '구매', 'N',(select max(userq_num) from USER_REQUEST )
+                 )
+    </insert>
+
+    <insert id="insertApproval">
+        INSERT INTO USER_REQUEST(username, category_num,assets_num, userq_title, userq_count, userq_regdate, userq_kind, userq_comment, userq_yn, userq_grantor)
+        SELECT
+            #{username},
+            #{category_num},
+            0,
+            #{userq_title},
+            1,
+            NOW(),
+            category_name,
+            #{userq_comment},
+            '관리자구매승인',
+            '관리자'
+
+        FROM GROUP_CATEGORY
+        WHERE category_num = #{category_num}
+    </insert>
 
 </mapper>

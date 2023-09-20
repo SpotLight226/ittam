@@ -55,11 +55,16 @@ public class Stock_ApprovalController {
             vo.setAssets_num((int) itemData.get("assets_num"));
             data = stock_approvalService.updateITStatus(vo);
         }else if("구매".equals((String) itemData.get("appro_kind"))) {
-            vo2.setAppro_num((int)itemData.get("appro_num"));
-            stock_approvalService.ApprovY(vo2);
-//            stock_approvalService.updateList(vo);
-            vo3.setUserq_num((int)itemData.get("userq_num"));
-            stock_approvalService.finalyn(vo3);
+            if((Integer)itemData.get("assest_num") != 0) {
+                vo2.setAppro_num((int)itemData.get("appro_num"));
+                stock_approvalService.ApprovY(vo2);
+    //            stock_approvalService.updateList(vo);
+                vo3.setUserq_num((int)itemData.get("userq_num"));
+                stock_approvalService.finalyn(vo3);
+            }else {
+                vo2.setAppro_num((int)itemData.get("appro_num"));
+                stock_approvalService.ApprovY(vo2);
+            }
         }
 
 
@@ -92,6 +97,28 @@ public class Stock_ApprovalController {
         int data = 0;
         vo.setAppro_num((int)itemData.get("appro_num"));
         stock_approvalService.ApprovY(vo);
+        return new ResponseEntity<>(data, HttpStatus.OK);
+    }
+
+
+    @PostMapping("/purchaseApproval")
+    public ResponseEntity<Integer> purchaseApproval(@RequestBody Map<String, Object> requestData) {
+        StockApprovalVO vo = new StockApprovalVO();
+        UserRequestVO vo3 = new UserRequestVO();
+
+        vo3.setUsername(String.valueOf(requestData.get("username")) );
+        vo3.setCategory_num(Integer.valueOf((String)requestData.get("category_num") ));
+        vo3.setUserq_title(String.valueOf(requestData.get("appro_title")) );
+        vo3.setUserq_comment(String.valueOf(requestData.get("appro_comment")) );
+        stock_approvalService.insertApproval(vo3);
+
+
+        vo.setUsername(String.valueOf(requestData.get("username")) );
+        vo.setCategory_num(Integer.valueOf((String) requestData.get("category_num")));
+        vo.setAppro_title(String.valueOf(requestData.get("appro_title")) );
+        vo.setAppro_comment(String.valueOf(requestData.get("appro_comment")) );
+        int data = stock_approvalService.purchaseApproval(vo);
+
         return new ResponseEntity<>(data, HttpStatus.OK);
     }
 }

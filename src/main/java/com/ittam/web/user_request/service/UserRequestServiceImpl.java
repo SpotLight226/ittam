@@ -20,14 +20,14 @@ public class UserRequestServiceImpl implements UserRequestService{
     }
 
     @Override
-    public int UserRequestApprove(int userq_NUM) {
+    public int UserRequestApprove(int userq_NUM, String username) {
         System.out.println(userq_NUM);
-        return userRequestMapper.UserRequestApprove(userq_NUM);
+        return userRequestMapper.UserRequestApprove(userq_NUM, username);
     }
 
     @Override
-    public int UserRequestreturn(int userq_NUM) {
-        return userRequestMapper.UserRequestreturn(userq_NUM);
+    public int UserRequestreturn(int userq_NUM, String username) {
+        return userRequestMapper.UserRequestreturn(userq_NUM, username);
     }
 
     @Override
@@ -63,9 +63,9 @@ public class UserRequestServiceImpl implements UserRequestService{
     }
 
     @Override
-    public int UserRequestBuyApprove(UserRequestVO vo) {
+    public int UserRequestBuyApprove(UserRequestVO vo, String username) {
 
-        return userRequestMapper.UserRequestBuyApprove(vo);
+        return userRequestMapper.UserRequestBuyApprove(vo, username);
     }
 
     @Override
@@ -75,8 +75,8 @@ public class UserRequestServiceImpl implements UserRequestService{
     }
 
     @Override
-    public int UserRequestBuyReturn(int userq_NUM) {
-        return userRequestMapper.UserRequestBuyReturn(userq_NUM);
+    public int UserRequestBuyReturn(int userq_NUM, String username) {
+        return userRequestMapper.UserRequestBuyReturn(userq_NUM, username);
     }
 
     @Override
@@ -110,13 +110,13 @@ public class UserRequestServiceImpl implements UserRequestService{
     }
 
     @Override
-    public int HighUserRequestApprove(int userq_NUM) {
-        return userRequestMapper.HighUserRequestApprove(userq_NUM);
+    public int HighUserRequestApprove(int userq_NUM, String username) {
+        return userRequestMapper.HighUserRequestApprove(userq_NUM, username);
     }
 
     @Override
-    public int HighUserRequestReturn(int userq_NUM) {
-        return userRequestMapper.HighUserRequestReturn(userq_NUM);
+    public int HighUserRequestReturn(int userq_NUM, String username) {
+        return userRequestMapper.HighUserRequestReturn(userq_NUM, username);
     }
 
     @Override
@@ -131,13 +131,13 @@ public class UserRequestServiceImpl implements UserRequestService{
     }
 
     @Override
-    public int HighUserBuyRequestApprove(int userq_NUM) {
-        return userRequestMapper.HighUserBuyRequestApprove(userq_NUM);
+    public int HighUserBuyRequestApprove(int userq_NUM, String username) {
+        return userRequestMapper.HighUserBuyRequestApprove(userq_NUM, username);
     }
 
     @Override
-    public int HighUserBuyRequestReturn(int userq_NUM) {
-        return userRequestMapper.HighUserBuyRequestReturn(userq_NUM);
+    public int HighUserBuyRequestReturn(int userq_NUM, String username) {
+        return userRequestMapper.HighUserBuyRequestReturn(userq_NUM, username);
     }
 
     @Override

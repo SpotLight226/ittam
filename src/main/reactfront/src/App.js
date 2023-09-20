@@ -11,6 +11,7 @@ import AdminApproveList from "./pages/adminapprove/AdminApproveList";
 import AdminApproveBuyList from "./pages/adminapprove/AdminApproveBuyList";
 import AdminApproveHandle from "./pages/adminapprove/AdminApproveHandleList";
 import AdminApproveBuyHandle from "./pages/adminapprove/AdminApproveBuyHandleList";
+import ApproveBuyHandle from "./pages/approve/ApproveBuyHandleList"
 import Logout from "./pages/login/Logout";
 import Login from "./pages/login/LoginHome";
 
@@ -19,7 +20,6 @@ import UserList from "./pages/users/UserList";
 import ApproveHandleList from "./pages/approve/ApproveHandleList";
 
 import ITAssets from "./pages/itassets/ITAssets";
-import LoginHome from "./pages/login/LoginHome";
 import AssetDetail from "./pages/itassets/AssetDetail";
 import AssetAllList from "./pages/itassets/AssetAllList";
 import AdminMain from "./pages/mainPage/AdminMain";
@@ -31,10 +31,17 @@ import UserMain_using from "./pages/mainPage/UserMain_using";
 import UserMain_request from "./pages/mainPage/UserMain_request";
 import Users from "./pages/users/Users";
 import ITAssetsApproval from "./pages/itassets/ITAssetsApproval";
+import HighAdminMain from "./pages/mainPage/HighAdminMain";
 import AssetRequestListPC from "./pages/itassets/AssetRequestListPC";
 import AssetRequestListSW from "./pages/itassets/AssetRequestListSW";
 import AssetRequestListSV from "./pages/itassets/AssetRequestListSV";
 import AssetRequestListETC from "./pages/itassets/AssetRequestListETC";
+import NoticeList from "./pages/notice/NoticeList";
+import NoticeWrite from "./pages/notice/NoticeWrite";
+import NoticeDetail from "./pages/notice/NoticeDetail";
+
+import NoticeUser from "./pages/notice/NoticeUser";
+import NoticeEdit from "./pages/notice/NoticeEdit";
 
 export const userInfoContext = React.createContext({
   // 기본 값 설정
@@ -70,25 +77,14 @@ function App() {
         <Routes>
           <Route path="/" element={<Login />} />
           <Route path="/admin/approveList" element={<ApproveList />} />
-          <Route path="/admin/approveBuyList" element={<ApproveBuyList />} />
           <Route path="/admin/approveHandle" element={<ApproveHandleList />} />
-          <Route
-            path="/admin/approveBuyHandle"
-            element={<AdminApproveHandle />}
-          />
+          <Route path="/admin/approveBuyList" element={<ApproveBuyList />} />
+          <Route path="/admin/approveBuyHandle" element={<ApproveBuyHandle />} />
           <Route path="/highAdmin/approveList" element={<AdminApproveList />} />
-          <Route
-            path="/highAdmin/approveBuyList"
-            element={<AdminApproveBuyList />}
-          />
-          <Route
-            path="/highAdmin/approveHandle"
-            element={<AdminApproveHandle />}
-          />
-          <Route
-            path="/highAdmin/approveBuyHandle"
-            element={<AdminApproveBuyHandle />}
-          />
+          <Route path="/highAdmin/approveBuyList" element={<AdminApproveBuyList />} />
+          <Route path="/highAdmin/approveHandle" element={<AdminApproveHandle />} />
+          <Route path="/highAdmin/approveBuyHandle" element={<AdminApproveBuyHandle />} />
+
           <Route path="/logout" element={<Logout />} />
 
           <Route path="/users" element={<UserList />} />
@@ -110,8 +106,17 @@ function App() {
             <Route path="/admin/returnExchange" element={<ReturnExchange />} />
             <Route path="/user/userMain_using" element={<UserMain_using />} />
             <Route path="/user/userMain_request" element={<UserMain_request />} />
+            <Route path="/highadmin/highAdminMain" element={<HighAdminMain />} />
+
 
           <Route path="/:page/:subPage/*" element={<Users />} />
+
+          <Route path="/noticelist" element={<NoticeList />} />
+          <Route path="/noticewrite" element={<NoticeWrite />} />
+          <Route path="/noticedetail/:id/*" element={<NoticeDetail />} />
+          {/*<Route path="/noticedetailuser" element={<NoticeDetailUser />} />*/}
+          <Route path="/noticeuser" element={<NoticeUser />} />
+          <Route path="/noticeedit" element={<NoticeEdit />} />
         </Routes>
       </BrowserRouter>
     </userInfoContext.Provider>
