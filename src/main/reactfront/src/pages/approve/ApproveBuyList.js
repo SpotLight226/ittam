@@ -3,10 +3,13 @@ import axios from 'axios';
 import ApproveTable from "./ApproveTable";
 import { BsArrowClockwise } from "react-icons/bs";
 import Pagenation from "../../component/Pagenation";
-
+import { useNavigate } from "react-router-dom";
+import base64 from "base-64"
 
 
 function Approve() {
+  let username = localStorage.getItem('username');
+  const token = localStorage.getItem("token");
 
   const [userRequest, setUserRequest] = useState([]); // 유저 리스트
   const [msg, setMsg] = useState(); // 리랜더링을 위해 useState 생성해서 응답 메시지 넣기
@@ -98,7 +101,12 @@ function Approve() {
         category_num : innerData.categoryNUM,
         userq_count : innerData.userqCOUNT,
         userq_username : innerData.username,
-      }
+        username : username,
+      },
+      headers : {
+        "Content-Type" : "application/json",
+        Authorization : token
+      },
     })
         .then((response) => {
 
@@ -124,8 +132,13 @@ function Approve() {
       url: 'http://localhost:9191/admin/UserRequestBuyReturn',
       method: 'post',
       data: {
-        userq_NUM: userqNUM
-      }
+        userq_NUM: userqNUM,
+        username : username
+      },
+      headers : {
+        "Content-Type" : "application/json",
+        Authorization : token
+      },
     })
         .then((response) => {
           setMsg(response.data);
@@ -156,8 +169,12 @@ function Approve() {
       url: 'http://localhost:9191/admin/UserRequestBuySearch',
       method: 'post',
       data: {
-        inputText: inputText
-      }
+        inputText: inputText,
+      },
+      headers : {
+        "Content-Type" : "application/json",
+        Authorization : token
+      },
     })
         .then((response) => {
           if(response.data.length === 0){
@@ -194,8 +211,31 @@ function Approve() {
   const endPage = Math.min(currentGroup * pagesPerGroup, totalPages);
 
   useEffect(() => { // 랜더링
+    const token = localStorage.getItem("token");
+    let payload = token.substring(token.indexOf('.')+1,token.lastIndexOf('.'));
+    let dec = JSON.parse(base64.decode(payload));
+    let role = dec.role;
+    if (role !== "ROLE_ADMIN" && role !== "ROLE_HIGH_ADMIN"){
+      alert("접근 권한이 없습니다.");
+      window.location.href = "/";
+      localStorage.removeItem("token");
+      localStorage.removeItem("username");
+    }
+
     if(inputInnerData.username === "" || inputInnerData.length === 0){
-      axios.get('http://localhost:9191/admin/UserRequestBuyList').then(res => setUserRequest(res.data));
+      axios({
+        url: "http://localhost:9191/admin/UserRequestBuyList",
+        method: "get",
+        headers: {
+          Authorization : token
+        },
+      })
+          .then((res) => {
+            setUserRequest(res.data);
+          })
+          .catch((error) => {
+            alert("데이터 조회에 실패하였습니다.");
+          });
     } else {
       setUserRequest(inputInnerData);
     }
@@ -205,7 +245,7 @@ function Approve() {
       <div>
         <main id="main" className="main">
           <div className="pagetitle">
-            <h1>자산 신청내역 조회/처리</h1>
+            <h1>자산 구매 신청내역 조회/처리</h1>
             <nav>
               <ol className="breadcrumb">
                 <li className="breadcrumb-item">
@@ -222,7 +262,7 @@ function Approve() {
               <div className="col-lg-12">
                 <div className="card">
                   <div className="card-body">
-                    <h5 className="card-title">자산 사용 신청내역 조회</h5>
+                    <h5 className="card-title">자산 구매 신청내역 조회</h5>
                     <div className="datatable-wrapper datatable-loading nofooter sortable searchable fixed-columns">
                       <div className="datatable-top">
                         <div className="datatable-dropdown">

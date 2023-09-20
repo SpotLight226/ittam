@@ -1,15 +1,27 @@
 {
   "files": {
     "main.css": "/static/css/main.32cdac75.css",
-    "main.js": "/static/js/main.69d7e21f.js",
+<<<<<<< HEAD
+    "main.js": "/static/js/main.769e23e4.js",
     "static/js/787.0451fb7f.chunk.js": "/static/js/787.0451fb7f.chunk.js",
     "index.html": "/index.html",
     "main.32cdac75.css.map": "/static/css/main.32cdac75.css.map",
-    "main.69d7e21f.js.map": "/static/js/main.69d7e21f.js.map",
+    "main.769e23e4.js.map": "/static/js/main.769e23e4.js.map",
+=======
+    "main.js": "/static/js/main.2df0188d.js",
+    "static/js/787.0451fb7f.chunk.js": "/static/js/787.0451fb7f.chunk.js",
+    "index.html": "/index.html",
+    "main.32cdac75.css.map": "/static/css/main.32cdac75.css.map",
+    "main.2df0188d.js.map": "/static/js/main.2df0188d.js.map",
+>>>>>>> master
     "787.0451fb7f.chunk.js.map": "/static/js/787.0451fb7f.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.32cdac75.css",
-    "static/js/main.69d7e21f.js"
+<<<<<<< HEAD
+    "static/js/main.769e23e4.js"
+=======
+    "static/js/main.2df0188d.js"
+>>>>>>> master
   ]
 }

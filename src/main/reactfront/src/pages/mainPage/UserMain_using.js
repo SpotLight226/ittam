@@ -6,6 +6,8 @@ import ReturnReqModal from '../../component/Modal/ReturnReqModal';
 import ReturnCancelModal from "../../component/Modal/ReturnCancelModal";
 import {Link} from "react-router-dom";
 function UserMain_using() {
+  const token = localStorage.getItem("token");
+
   const [openModal, setOpenModal] = useState(false);
   const [openCancelMddal, setOpenCancelModal] = useState(false);
   const [inputTitle, setInputTitle] = useState('');
@@ -81,15 +83,23 @@ function UserMain_using() {
       return_status: data.return_status
     };
     console.log(returnForm);
-    axios
-        .post("/mainPage/returnForm", returnForm)
+
+    axios({
+      url: "/mainPage/returnForm",
+      method: "post",
+      headers: {
+        Authorization : token
+      },
+      data: returnForm
+    })
         .then((response) => {
           alert('신청완료되었습니다.');
           console.log(response.data);
 
           setOpenModal(false);
           getMyAssetList(username);
-          setOpenAlert(true)
+          setOpenAlert(true);
+          setOpenCancelAlert(false);
 
         })
         .catch((error) => {
@@ -102,13 +112,23 @@ function UserMain_using() {
             console.log(error);
           }
         });
+
+
     setInputTitle('');
     setInputComment('');
   };
 
   const getMyAssetList = (username) => {
-    axios.get("/mainPage/getMyAssetList", {
-      params: {username: username}
+
+    axios({
+      url: "/mainPage/getMyAssetList",
+      method: "get",
+      headers: {
+        Authorization : token
+      },
+      params: {
+        username: username
+      }
     }).then(response => {setMyAssetList(response.data); console.log(response.data)})
         .catch(error => console.log(error))
   }
@@ -131,7 +151,7 @@ function UserMain_using() {
             openModal && <ReturnReqModal setOpenModal={setOpenModal} handleSubmit={handleSubmit} handleChange={handleChange} todayTime={todayTime} inputTitle={inputTitle} inputComment={inputComment} setInputComment={setInputComment} setInputTitle={setInputTitle} myAssetList={myAssetList} myAssetNum={myAssetNum} username={username} setOpenAlert={setOpenAlert}/>
         }
         {
-          openCancelMddal && <ReturnCancelModal setOpenCancelModal={setOpenCancelModal} myAssetList={myAssetList} myAssetNum={myAssetNum} getMyAssetList={getMyAssetList} username={username} setOpenCancelAlert={setOpenCancelAlert}/>
+          openCancelMddal && <ReturnCancelModal setOpenCancelModal={setOpenCancelModal} myAssetList={myAssetList} myAssetNum={myAssetNum} getMyAssetList={getMyAssetList} username={username} setOpenCancelAlert={setOpenCancelAlert} token={token} setOpenAlert={setOpenAlert}/>
         }
 
         { openAlert && <div className="alert alert-success alert-dismissible fade show" role="alert">
@@ -165,7 +185,7 @@ function UserMain_using() {
         <div className="card">
           <div className="card-body">
             <h5 className="card-title" style={{fontWeight: "800"}}>사용중인 자산 목록</h5>
-            <select className='choiceCatogory' style={{width:'200px', marginLeft: '1320px', marginBottom:'10px', height: '30px'}} onChange={(e) => {setChoiceCategory(e.target.value)}}>
+            <select className='choiceCatogory' style={{width:'200px', marginBottom:'10px', height: '30px'}} onChange={(e) => {setChoiceCategory(e.target.value)}}>
               <option value="all">전체목록</option>
               <option value="pc">PC/노트북</option>
               <option value="sw">소프트웨어</option>

@@ -8,6 +8,8 @@ import UsingRateChart from "../../component/Chart/UsingRateChart";
 
 
 function HighAdminMain() {
+  const token = localStorage.getItem("token");
+
   const [dataa, setDataa] = useState({});
   //////////차~~~트///////////
   const [all, setAll] = useState();
@@ -36,49 +38,93 @@ function HighAdminMain() {
 
 
   const adminMainCnt = () => {
-    axios.get('/mainPage/adminMainCnt')
-        .then(response => {setDataa(response.data);})
+
+    axios({
+      url: "/mainPage/adminMainCnt",
+      method: "get",
+      headers: {
+        Authorization : token
+      },
+    }).then(response => {setDataa(response.data);})
         .catch(error => console.log(error))
   }
 
   const getAssetChartAllNum = () => {
-     axios.get("/mainPage/getAssetChartAllNum")
-        .then(response => {
-          setAll(response.data);
-          //setToday_all(response.data.today);
-          console.log(response.data);})
-        .catch(error => console.log(error))
+        axios({
+          url: "/mainPage/getAssetChartAllNum",
+          method: "get",
+          headers: {
+            Authorization : token
+          },
+        })
+        .then((res) => {
+          setAll(res.data);
+          })
+            .catch(error => console.log(error));
 
   }
   const getAssetChartUsingNum = () => {
-    axios.get("/mainPage/getAssetChartUsingNum")
-        .then(response => {
-          setUsing(response.data);
-          //setToday_using(response.data.today)
+   
+        axios({
+          url: "/mainPage/getAssetChartUsingNum",
+          method: "get",
+          headers: {
+            Authorization : token
+          },
         })
-        .catch(error => console.log(error))
+        .then((res) => {
+          setUsing(res.data);
+          })
+            .catch(error => console.log(error));
+
+
+
   }
   const getAssetChartDisposeNum = () => {
-    axios.get("/mainPage/getAssetChartDisposeNum")
-        .then(response => {
-          setDispose(response.data);
-          //setToday_dispose(response.data.today)
+        axios({
+          url: "/mainPage/getAssetChartDisposeNum",
+          method: "get",
+          headers: {
+            Authorization : token
+          },
         })
-        .catch(error => console.log(error))
+        .then((res) => {
+          setDispose(res.data);
+          })
+            .catch(error => console.log(error));
   }
   const getRecentAssetsList = (nnn) => {
-    axios.get("/mainPage/getRecentAssetsList", {params: {nnn: nnn}})
+
+    axios({
+      url: "/mainPage/getRecentAssetsList",
+      method: "get",
+      headers: {
+        Authorization : token
+      },
+      params: {
+        nnn: nnn
+      },
+    })
         .then(response => {
-            setRecentAssets(response.data);
-            console.log(response.data);
+          setRecentAssets(response.data);
+          console.log(response.data);
         })
         .catch((error => console.log(error)));
   }
 
   const getCardNum = () => {
-    axios.get("/reports/getCardNum")
-        .then(response => { setCardNum(response.data) })
-        .catch(error => console.log(error))
+
+        axios({
+          url: "/reports/getCardNum",
+          method: "get",
+          headers: {
+            Authorization : token
+          },
+        })
+        .then((res) => {
+          setCardNum(res.data) 
+               })
+            .catch(error => console.log(error));
   }
 
 

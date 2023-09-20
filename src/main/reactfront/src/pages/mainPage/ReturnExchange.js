@@ -10,6 +10,7 @@ import {Link} from "react-router-dom";
 
 
 function ReturnExchange() {
+  const token = localStorage.getItem("token");
 
   const [returnList, setReturnList] = useState([]);
   const [openModal_return, setOpenModal_return] = useState(false);
@@ -19,9 +20,21 @@ function ReturnExchange() {
 
 
   const getreturnList = () => {
-    axios.get('/mainPage/returnList')
-        .then(response => { setReturnList(response.data); console.log(response.data); })
-        .catch(error => console.log(error))
+
+    axios({
+      url: "/mainPage/returnList",
+      method: "get",
+      headers: {
+        Authorization : token
+      },
+    })
+    .then((res) => {
+      setReturnList(res.data);
+      console.log(res.data);
+    })
+    .catch((error) => {
+      alert("데이터 조회에 실패하였습니다.");
+    });
   }
 
 
@@ -31,7 +44,15 @@ function ReturnExchange() {
 
   }, []);
 
-  const count = returnList.filter(a => a.RETURN_STATUS === '승인대기').length;
+  const count = returnList.filter(a => {
+    if(choice === 'all') {
+      return a.RETURN_KIND === '교환' || a.RETURN_KIND === '반납'
+    } else if(choice === 'exh') {
+      return a.RETURN_KIND === '교환'
+    } else {
+      return a.RETURN_KIND === '반납'
+    }
+  }).filter(a => a.RETURN_STATUS === '승인대기').length;
 
   function yyyymmdd(timestamp) {
     let d = new Date(timestamp); // Convert the passed timestamp to milliseconds
@@ -66,7 +87,7 @@ function ReturnExchange() {
       <div className="card">
         <div className="card-body">
           <h5 className="card-title" style={{fontWeight: "800"}}>교환 및 반납 요청</h5>
-          <select className='choiceCatogory' style={{width:'150px', marginLeft: '1370px', marginBottom:'10px', height: '30px'}} onChange={(e) => setChoice(e.target.value)}>
+          <select className='choiceCatogory' style={{width:'150px', marginBottom:'10px', height: '30px'}} onChange={(e) => setChoice(e.target.value)}>
             <option value="all">전체목록</option>
             <option value="exh">교환</option>
             <option value="ret">반납</option>
@@ -91,7 +112,7 @@ function ReturnExchange() {
             <tbody>
               {
                 
-                returnList.filter(a => a.RETURN_STATUS === '승인대기').filter(a => {
+                returnList.filter(a => {
                   if(choice === 'all') {
                     return a.RETURN_KIND === '교환' || a.RETURN_KIND === '반납'
                   } else if(choice === 'exh') {
@@ -99,7 +120,7 @@ function ReturnExchange() {
                   } else {
                     return a.RETURN_KIND === '반납'
                   }
-                }).map((a, i) => {
+                }).filter(a => a.RETURN_STATUS === '승인대기').map((a, i) => {
 
                   return <tr key={i}>
                     <th scope="row">{i + 1}</th>
@@ -126,7 +147,8 @@ function ReturnExchange() {
                   } else {
                     return a.RETURN_KIND === '반납'
                   }
-                }).map((a, i) => {
+                }).filter(a => a.RETURN_STATUS !== '승인대기')
+                    .map((a, i) => {
                   return <tr key={i}>
                   <th scope="row">{count + i + 1}</th>
                   <td>{a.RETURN_KIND}</td>
@@ -151,8 +173,8 @@ function ReturnExchange() {
 
 
 
-    {openModal_return && <ReturnDetailModal_return setOpenModal_return={setOpenModal_return} num={num} returnList={returnList} getreturnList={getreturnList}/>}
-      {openModal_exchange && <ReturnDetailModal_exchange setOpenModal_exchange={setOpenModal_exchange} num={num} returnList={returnList} getreturnList={getreturnList}/>}
+    {openModal_return && <ReturnDetailModal_return setOpenModal_return={setOpenModal_return} num={num} returnList={returnList} getreturnList={getreturnList} token={token}/>}
+      {openModal_exchange && <ReturnDetailModal_exchange setOpenModal_exchange={setOpenModal_exchange} num={num} returnList={returnList} getreturnList={getreturnList} token={token}/>}
     </main>
     </>
   );

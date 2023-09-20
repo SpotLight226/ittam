@@ -3,13 +3,26 @@ import { Link } from 'react-router-dom';
 import Pagenation from '../../component/Pagenation';
 import axios from 'axios';
 import ApprovalComment from '../approve/ApprovalComment';
+import { useContext } from "react";
+import { userInfoContext } from "../../App";
 
 function ITAssetsApproval() {
+  const contextValues = useContext(userInfoContext); // 항상 가장 위에서 선언해야 사용 가능
+  let username = localStorage.getItem('username');
+  const token = localStorage.getItem("token");
+
+  const { userId, role } = contextValues || {}; // 들어온 값 없으면 공백으로
+
   /* 결제요청목록 데이터 */
   const [data, setData] = useState([]);
   const stockList = () => {
     axios
-      .get('/stock/getStockApprovalList')
+      .get('/stock/getStockApprovalList',{
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: token
+        }
+      })
       .then((response) => {
         setData(response.data);
       })
@@ -44,7 +57,12 @@ function ITAssetsApproval() {
   /* 요청수락 */
   const handleSubmit = (item) => {
     axios
-      .post('/stock/updateITStatus', { item })
+      .post('/stock/updateITStatus', { item },{
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: token
+        }
+      })
       .then((response) => {
         stockList();
         console.log(response.data);
@@ -56,7 +74,12 @@ function ITAssetsApproval() {
   /* 요청 반려 */
   const handleNsubmit = (item) => {
     axios
-      .post('/stock/approvalN', { item })
+      .post('/stock/approvalN', { item },{
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: token
+        }
+      })
       .then((response) => {
         stockList();
       })

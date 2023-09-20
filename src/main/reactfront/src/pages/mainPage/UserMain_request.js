@@ -5,6 +5,7 @@ import {Link} from "react-router-dom";
 import axios from "axios";
 import ReqDetailModal from "../../component/Modal/ReqDetailModal";
 function UserMain_request() {
+  const token = localStorage.getItem("token");
 
   const [cancel, setCancel] = useState("");
   const [username, setUsername] = useState('');
@@ -17,9 +18,19 @@ function UserMain_request() {
 
 
   const getMyRequestList = (username) => {
-    axios.get("/mainPage/getMyRequestList", {params: {username: username}})
-        .then(response => {setMyRequestList(response.data); console.log(response.data);})
-        .catch(error => console.log(error))
+
+      axios({
+          url: "/mainPage/getMyRequestList",
+          method: "get",
+          headers: {
+              Authorization : token
+          },
+          params: {
+              username: username
+          }
+      })
+          .then(response => {setMyRequestList(response.data); console.log(response.data);})
+          .catch(error => console.log(error))
   }
 
 
@@ -38,7 +49,7 @@ function UserMain_request() {
 
     return (
         <main id="main" className="main">
-            {openReqDetailModal && <ReqDetailModal setOpenReqDetailModal={setOpenReqDetailModal} username={username} myRequestList={myRequestList} userq_num={userq_num} getMyRequestList={getMyRequestList}/>}
+            {openReqDetailModal && <ReqDetailModal setOpenReqDetailModal={setOpenReqDetailModal} username={username} myRequestList={myRequestList} userq_num={userq_num} getMyRequestList={getMyRequestList} token={token}/>}
 
           <div className="pagetitle">
             <h1>사용 및 구매신청 목록</h1>
