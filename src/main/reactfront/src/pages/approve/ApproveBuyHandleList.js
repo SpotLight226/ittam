@@ -133,6 +133,9 @@ function Approve() { // 관리자 사용 신청 내역 조회 페이지
     })
         .then((response) => {
           setInputInnerDate(response.data);
+          if(response.data.length === 0 ){
+            alert("검색된 데이터가 없습니다.")
+          }
         })
         .catch((error) => {
           alert("검색에 실패하였습니다.");
@@ -199,9 +202,7 @@ function Approve() { // 관리자 사용 신청 내역 조회 페이지
     let role = dec.role;
     if (role !== "ROLE_ADMIN" && role !== "ROLE_HIGH_ADMIN"){
       alert("접근 권한이 없습니다.");
-      window.location.href = "/";
-      localStorage.removeItem("token");
-      localStorage.removeItem("username");
+      window.history.back();
     }
 
     if(inputInnerData.username === "" || inputInnerData.length === 0){

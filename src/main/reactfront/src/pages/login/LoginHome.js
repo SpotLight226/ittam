@@ -9,6 +9,7 @@ import base64 from 'base-64';
 
 
 function LoginHome (){
+  
   // const {authResponse, setAuthResponse} = useState("");
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
@@ -54,7 +55,7 @@ function LoginHome (){
       let emailInput = document.getElementById("yourPassword2").value;
 
       axios({ // 등록되어있는 이메일 여부 확인
-        url : 'http://localhost:9191/User/passwordFind',
+        url : 'http://localhost:9191/loginPage/passwordFind',
         method : 'post',
         data : {
           emailInput : emailInput
@@ -69,7 +70,7 @@ function LoginHome (){
         open.disabled= ""; // 인증번호 비활성화 풀기
 
         axios({ // 인증번호 전송 axios
-          url : 'http://localhost:9191/User/authSend',
+          url : 'http://localhost:9191/loginPage/authSend',
           method : 'post',
           data : {
             emailInput : emailInput
@@ -104,7 +105,7 @@ function LoginHome (){
 
     if (passwordReset1 === passwordReset2 && passwordReset1 !== "") {
       axios({ // 인증번호 전송 axios
-        url : 'http://localhost:9191/User/passwordModify',
+        url : 'http://localhost:9191/loginPage/passwordModify',
         method : 'post',
         data : {
           passwordReset : passwordReset1,

@@ -193,9 +193,7 @@ function AdminBuyApprove() {
     let role = dec.role;
     if (role !== "ROLE_HIGH_ADMIN"){
       alert("접근 권한이 없습니다.");
-      window.location.href = "/";
-      localStorage.removeItem("token");
-      localStorage.removeItem("username");
+      window.history.back();
     }
     if(inputInnerData.username === "" || inputInnerData.length === 0){
 
