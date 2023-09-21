@@ -32,7 +32,8 @@ public interface MainPageMapper {
     public Map<Object, Object> getAssetChartDisposeNum(); //날짜별로 전체 사용중인 자산 개수 가져오기
     public void exchangeAsset_exchange(Map<String, Object> map); //교환할 제품 사용중 처리하기
     public void exchangeAsset_cancel(Map<String, Object> map); //교환된 제품 사용가능 처리하기
-    public void exchangeAsset_assetlog(Map<String, Object> map);
+    public void exchangeAsset_assetlog(Map<String, Object> map); //교환할 제품 기록하기
+
 
     public List<UserRequestVO> getMyRequestList(String username); //내가 사용 구매 요청한 리스트 가져오기
     public void deleteUsingPerchaseReq(Integer userq_num); //사용 구매 신청 취소

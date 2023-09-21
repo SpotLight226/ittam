@@ -31,7 +31,12 @@ function ReturnDetailModal_return({ setOpenModal_return, num, returnList, getret
         Authorization : token
       },
       data: {
-        return_status: return_status, return_num: thisList().RETURN_NUM, assets_num: thisList().ASSETS_NUM
+        return_status: return_status,
+        return_num: thisList().RETURN_NUM,
+        assets_num: thisList().ASSETS_NUM,
+        assets_name: thisList().ASSETS_NAME,
+        assets_detail_name: thisList().ASSETS_DETAIL_NAME,
+        username: thisList().username
       }
     }).then(response => {console.log(response.data); getreturnList();})
         .catch(error => console.log(error));

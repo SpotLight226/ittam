@@ -57,21 +57,22 @@
         select count(*) from USER_REQUEST where USERQ_YN = '사원구매요청' and username=#{username}
     </select>
     <select id="getMyAssetList">
-        SELECT *
-        FROM ITASSETS a
-                 LEFT JOIN GROUP_CATEGORY gc on a.CATEGORY_NUM = gc.CATEGORY_NUM
-                 LEFT JOIN PCSPEC pc ON (a.category_num = 5 OR a.category_num = 6) AND a.spec_num = pc.spec_num
-                 LEFT JOIN SWSPEC sw ON (a.category_num = 7 OR a.category_num = 8 OR a.category_num = 9 OR a.category_num = 10 OR a.category_num = 11 OR a.category_num = 12 ) AND a.spec_num = sw.spec_num
-                 LEFT JOIN SERVERSPEC sv ON (a.category_num = 18) AND a.spec_num = sv.spec_num
-                 LEFT JOIN ETCSPEC etc ON a.spec_num = etc.spec_num AND a.category_num != 5 AND a.category_num != 6 AND a.category_num != 18 AND a.category_num != 7 AND a.category_num != 8 AND a.category_num != 9 AND a.category_num != 10 AND a.category_num != 11 AND a.category_num != 12
-        LEFT JOIN STOCK_RETURN sr on a.ASSETS_NUM = sr.ASSETS_NUM
-        where a.username=#{username}
+        select * from ITASSETS a
+                          LEFT JOIN GROUP_CATEGORY gc on a.CATEGORY_NUM = gc.CATEGORY_NUM
+                          LEFT JOIN PCSPEC pc ON (a.category_num = 5 OR a.category_num = 6) AND a.spec_num = pc.spec_num
+                          LEFT JOIN SWSPEC sw ON (a.category_num = 7 OR a.category_num = 8 OR a.category_num = 9 OR a.category_num = 10 OR a.category_num = 11 OR a.category_num = 12 ) AND a.spec_num = sw.spec_num
+                          LEFT JOIN SERVERSPEC sv ON (a.category_num = 18) AND a.spec_num = sv.spec_num
+                          LEFT JOIN ETCSPEC etc ON a.spec_num = etc.spec_num AND a.category_num != 5 AND a.category_num != 6 AND a.category_num != 18 AND a.category_num != 7 AND a.category_num != 8 AND a.category_num != 9 AND a.category_num != 10 AND a.category_num != 11 AND a.category_num != 12
+                left join (SELECT sr.* FROM STOCK_RETURN sr
+                           INNER JOIN ( SELECT assets_num, MAX(return_num) AS max_return_num FROM STOCK_RETURN
+                           GROUP BY assets_num) sr2
+                           ON sr.assets_num = sr2.assets_num AND sr.return_num = sr2.max_return_num) as nr
+        on a.assets_num = nr.assets_num where a.username = #{username}
         order by rent_date desc
     </select>
 
     <update id="updateReturn_yn">
         update STOCK_RETURN set return_status = #{return_status} where return_num = #{return_num}
-
     </update>
 
     <update id="updateAssetUsing">
@@ -131,6 +132,8 @@
     <update id="exchangeAsset_cancel">
         update ITASSETS set assets_status='사용가능', username="" where assets_num = #{assets_num_now}
     </update>
+
+
     <update id="exchangeAsset_assetlog">
         update STOCK_RETURN set RETURN_ASSETS_DETAIL_NAME=#{assets_detail_name_later} where return_num = #{return_num}
     </update>
