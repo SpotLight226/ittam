@@ -19,6 +19,8 @@ public interface Stock_ApprovalMapper {
 
     public int finalyn(UserRequestVO vo3);
 
+    public int finaln(UserRequestVO vo3);
+
     public int purchaseApproval(StockApprovalVO vo);
 
     public void insertApproval(UserRequestVO vo3);
