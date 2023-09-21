@@ -7,8 +7,7 @@ import ITAssetsInsert from './ITAssetsInsert';
 import ITAssetsInfo from './ITAssetsInfo';
 import ITAssetsModify from './ITAssetsModify';
 import PurchaseApproval from './PurchaseApproval';
-import { useContext } from 'react';
-import { userInfoContext } from '../../App';
+
 import base64 from 'base-64';
 import ControlMenu from '../../component/ControlMenu';
 import { ItassetsOptionList } from '../../constants/OptionList';
