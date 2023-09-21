@@ -15,7 +15,7 @@ import { ItassetsOptionList } from '../../constants/OptionList';
 import ITAssetsItem from './ITAssetsItem';
 
 function ITAssets() {
-  const contextValues = useContext(userInfoContext); // 항상 가장 위에서 선언해야 사용 가능
+  // const contextValues = useContext(userInfoContext); // 항상 가장 위에서 선언해야 사용 가능
   let username = localStorage.getItem('username');
   const token = localStorage.getItem('token');
 
