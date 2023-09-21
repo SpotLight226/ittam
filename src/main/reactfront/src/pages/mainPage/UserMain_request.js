@@ -96,27 +96,27 @@ function UserMain_request() {
                         </thead>
                         <tbody>
                         {
-                          myRequestList.filter(a => a.userq_yn.includes('사용') && (a.userq_yn.includes('사원사용'))).map((a, i) => {
-                            return <tr key={i}>
-                            <th scope="row">{i + 1}</th>
-                            <td>{a.userq_yn.includes("사용") ? "사용신청" : "구매신청"}</td>
-                            <td>{a.userq_kind}</td>
-                            <td><Link to="#" onClick={() => {setOpenReqDetailModal(true); setUserq_num(a.userq_num)}}>{a.userq_title}</Link></td>
-                            <td>{a.userq_count}</td>
-                            <td>{a.userq_regdate}</td>
-                                <td>{a.userq_yn.includes('최종사용승인') ? "승인" : (a.userq_yn.includes('사원사용') ? "승인대기" : (a.userq_yn.includes('반려') ? '반려' : '승인대기'))}</td>
+                            myRequestList.filter(a => a.userq_yn.includes('관리자사용') || (a.userq_yn.includes('사원사용'))).map((a, i) => {
+                                return <tr key={i}>
+                                    <th scope="row">{i + 1}</th>
+                                    <td>{a.userq_yn.includes("사용") ? "사용요청" : "구매요청"}</td>
+                                    <td>{a.userq_kind}</td>
+                                    <td><Link to="#" onClick={() => {setOpenReqDetailModal(true); setUserq_num(a.userq_num)}}>{a.userq_title}</Link></td>
+                                    <td>{a.userq_count}</td>
+                                    <td>{a.userq_regdate}</td>
+                                    <td>{a.userq_yn.includes('최종사용승인') ? "승인" : (a.userq_yn.includes('사원사용') || a.userq_yn.includes('관리자사용') ? "승인대기" : (a.userq_yn.includes('반려') ? '반려' : '승인대기'))}</td>
 
-                          </tr>
+                                </tr>
                           })
                         }
 
 
 
                         {
-                            myRequestList.filter(a => a.userq_yn.includes('사용') && (a.userq_yn.includes('사용승인') || a.userq_yn.includes('반려'))).map((a, i) => {
+                            myRequestList.filter(a => a.userq_yn.includes('사용') && (a.userq_yn.includes('최종사용승인') || a.userq_yn.includes('반려'))).map((a, i) => {
                                 return <tr key={i}>
                                     <th scope="row">{count_using + i + 1}</th>
-                                    <td>{a.userq_yn.includes("사용") ? "사용신청" : "구매신청"}</td>
+                                    <td>{a.userq_yn.includes("사용") ? "사용요청" : "구매요청"}</td>
                                     <td>{a.userq_kind}</td>
                                     <td><Link to="#" onClick={() => {setOpenReqDetailModal(true); setUserq_num(a.userq_num)}}>{a.userq_title}</Link></td>
                                     <td>{a.userq_count}</td>
@@ -155,17 +155,17 @@ function UserMain_request() {
                         </thead>
                         <tbody>
                         {
-                          myRequestList.filter(a => a.userq_yn.includes('구매') && (a.userq_yn.includes('사원구매') || a.userq_yn.includes('관리자구매승인'))).map((a, i) => {
-                            return <tr key={i}>
-                            <th scope="row">{i + 1}</th>
-                            <td>{a.userq_yn.includes("사용") ? "사용신청" : "구매신청"}</td>
-                            <td>{a.userq_kind}</td>
-                            <td><Link to="#" onClick={() => {setOpenReqDetailModal(true); setUserq_num(a.userq_num)}}>{a.userq_title}</Link></td>
-                            <td>{a.userq_count}</td>
-                            <td>{a.userq_regdate}</td>
-                                <td>{a.userq_yn.includes('최종구매승인') ? "승인" : (a.userq_yn.includes('사원사용') ? "승인대기" : (a.userq_yn.includes('반려') ? '반려' : '승인대기'))}</td>
+                            myRequestList.filter(a => a.userq_yn.includes('구매') && (a.userq_yn.includes('사원구매') || a.userq_yn.includes('관리자구매승인'))).map((a, i) => {
+                                return <tr key={i}>
+                                    <th scope="row">{i + 1}</th>
+                                    <td>{a.userq_yn.includes("사용") ? "사용요청" : "구매요청"}</td>
+                                    <td>{a.userq_kind}</td>
+                                    <td><Link to="#" onClick={() => {setOpenReqDetailModal(true); setUserq_num(a.userq_num)}}>{a.userq_title}</Link></td>
+                                    <td>{a.userq_count}</td>
+                                    <td>{a.userq_regdate}</td>
+                                    <td>{a.userq_yn.includes('최종구매승인') ? "승인" : (a.userq_yn.includes('사원사용') ? "승인대기" : (a.userq_yn.includes('반려') ? '반려' : '승인대기'))}</td>
 
-                          </tr>
+                                </tr>
                           })
                         }
 
@@ -175,7 +175,7 @@ function UserMain_request() {
                             myRequestList.filter(a => a.userq_yn.includes('구매') && (a.userq_yn.includes('반려') || a.userq_yn.includes('최종구매승인'))).map((a, i) => {
                                 return <tr key={i}>
                                     <th scope="row">{count_buy + i + 1}</th>
-                                    <td>{a.userq_yn.includes("사용") ? "사용신청" : "구매신청"}</td>
+                                    <td>{a.userq_yn.includes("사용") ? "사용요청" : "구매요청"}</td>
                                     <td>{a.userq_kind}</td>
                                     <td><Link to="#" onClick={() => {setOpenReqDetailModal(true); setUserq_num(a.userq_num)}}>{a.userq_title}</Link></td>
                                     <td>{a.userq_count}</td>
@@ -196,61 +196,7 @@ function UserMain_request() {
               </div>
              
 
-
-
-
-                  {/* <!-- Default Table --> */}
-                  {/* <table className="table table-borderless" style={{textAlign: 'center'}}>
-                        <thead>
-                          <tr className="table-info">
-                            <th scope="col">#</th>
-                            <th scope="col">신청종류</th>
-                            <th scope="col">신청자산</th>
-                            <th scope="col">신청제목</th>
-                            <th scope="col">신청개수</th>
-                            <th scope="col">신청날짜</th>
-                            <th scope="col">처리상태</th>
-
-                          </tr>
-                        </thead>
-                        <tbody>
-                        {
-                          myRequestList.filter(a => a.userq_yn.includes('사원사용') || a.userq_yn.includes('사원구매') || a.userq_yn.includes('관리자구매승인')).map((a, i) => {
-                            return <tr key={i}>
-                            <th scope="row">{i + 1}</th>
-                            <td>{a.userq_yn.includes("사용") ? "사용신청" : "구매신청"}</td>
-                            <td>{a.userq_kind}</td>
-                            <td><Link to="#" onClick={() => {setOpenReqDetailModal(true); setUserq_num(a.userq_num)}}>{a.userq_title}</Link></td>
-                            <td>{a.userq_count}</td>
-                            <td>{a.userq_regdate}</td>
-                                <td>{a.userq_yn.includes('사용승인') ? "승인" : (a.userq_yn.includes('사원사용') ? "승인대기" : (a.userq_yn.includes('반려') ? '반려' : '승인대기'))}</td>
-
-                          </tr>
-                          })
-                        }
-
-
-
-                        {
-                            myRequestList.filter(a => a.userq_yn.includes('사용승인') || a.userq_yn.includes('반려')).map((a, i) => {
-                                return <tr key={i}>
-                                    <th scope="row">{i + 1}</th>
-                                    <td>{a.userq_yn.includes("사용") ? "사용신청" : "구매신청"}</td>
-                                    <td>{a.userq_kind}</td>
-                                    <td><Link to="#" onClick={() => {setOpenReqDetailModal(true); setUserq_num(a.userq_num)}}>{a.userq_title}</Link></td>
-                                    <td>{a.userq_count}</td>
-                                    <td>{a.userq_regdate}</td>
-                                    <td>{a.userq_yn.includes('사용승인') ? "승인" : (a.userq_yn.includes('사원사용') ? "승인대기" : (a.userq_yn.includes('반려') ? '반려' : '승인대기'))}</td>
-
-                                </tr>
-                            })
-
-
-                        }
-
-                        </tbody>
-                      </table> */}
-                      {/*  <!-- End Default Table Example --> */}
+                    
                 </div>
             </div>
 
