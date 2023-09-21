@@ -24,7 +24,11 @@
     </insert>
 
     <update id="finalyn">
-        update USER_REQUEST set userq_yn = '최종구매승인' where userq_num = #{userq_num}
+        update USER_REQUEST set userq_yn = '최종구매승인',userq_okdate = now() where userq_num = #{userq_num}
+    </update>
+
+    <update id="finaln">
+        update USER_REQUEST set userq_yn = '최종구매반려',userq_okdate = now() where userq_num = #{userq_num}
     </update>
 
     <insert id="purchaseApproval">

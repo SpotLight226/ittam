@@ -93,12 +93,14 @@ public class  Stock_ApprovalController {
     @PostMapping("/approvalN")
     public ResponseEntity<Integer> approvalN(@RequestBody Map<String, Object> requestData) {
         Map<String, Object> itemData = (Map<String, Object>) requestData.get("item");
-        System.out.println("react에서 가져온데이터: "+requestData.toString());
-        System.out.println("컨트롤러에서 걸러낸 데이터: " +itemData.toString());
         StockApprovalVO vo = new StockApprovalVO();
+        UserRequestVO vo3 = new UserRequestVO();
         int data = 0;
         vo.setAppro_num((int)itemData.get("appro_num"));
         stock_approvalService.ApprovY(vo);
+
+        vo3.setUserq_num((int)itemData.get("userq_num"));
+        stock_approvalService.finaln(vo3);
         return new ResponseEntity<>(data, HttpStatus.OK);
     }
 

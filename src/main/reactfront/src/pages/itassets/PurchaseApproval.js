@@ -44,10 +44,14 @@ function PurchaseApproval({
 
               <div className="row mb-3" style={{ marginTop: '10px' }}>
                 <label htmlFor="inputText" className="col-sm-2 col-form-label">
-                  카테고리
+                  자산
                 </label>
                 <div className="col-sm-10">
-                  <select onChange={handleParentChange} value={selectedParent}>
+                  <select
+                    className="datatable-selector"
+                    onChange={handleParentChange}
+                    value={selectedParent}
+                  >
                     <option value="">선택하지않음</option>
                     {categories
                       .filter((cat) => !cat.category_parent_num)
@@ -58,7 +62,11 @@ function PurchaseApproval({
                       ))}
                   </select>
 
-                  <select onChange={handleSelectChange1} value={selectedType}>
+                  <select
+                    className="datatable-selector"
+                    onChange={handleSelectChange1}
+                    value={selectedType}
+                  >
                     <option value="">선택하지않음</option>
                     {categories
                       .filter(
@@ -87,6 +95,7 @@ function PurchaseApproval({
                     name="appro_title"
                     onChange={handleData}
                     value={formapproval.appro_title}
+                    required
                   />
                 </div>
               </div>
@@ -102,6 +111,7 @@ function PurchaseApproval({
                     onChange={handleData}
                     name="appro_comment"
                     value={formapproval.appro_comment}
+                    required
                   />
                 </div>
               </div>
