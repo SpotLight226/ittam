@@ -156,13 +156,11 @@ public class Asset_RequestController {
         System.out.println(requestBody.toString());
 
         UserRequestVO vo = new UserRequestVO();
-        vo.setUserq_kind(String.valueOf(requestBody.get("assetName")));
-        vo.setCategory_num(Integer.valueOf((String)requestBody.get("category_num")));
-        vo.setAssets_num(Integer.valueOf((String)requestBody.get("assets_num")));
+        vo.setUserq_kind(String.valueOf(requestBody.get("assets_name")));
         vo.setUserq_title(String.valueOf(requestBody.get("userq_title")));
         vo.setUserq_comment(String.valueOf(requestBody.get("userq_comment")));
         vo.setUsername(String.valueOf(requestBody.get("username")));
-        int data = assetRequestService.AssetUsageRequest(vo);
+        int data = assetRequestService.AssetBuyRequest(vo);
 
         return new ResponseEntity<>(data,HttpStatus.OK);
     }

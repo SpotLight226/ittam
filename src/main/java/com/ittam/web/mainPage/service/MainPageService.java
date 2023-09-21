@@ -23,7 +23,7 @@ public interface MainPageService {
     public Integer getUserCnt_usingReq(String username); //사원의 사용신청건수
     public Integer getUserCnt_buyReq(String username); //사원의 구매요청건수
     public List<Map<String, Object>> getMyAssetList(String username); //사원이 사용 중인 자산목록
-    public void updateReturn_yn( Map<String, Object> map); //반납요청에 대한 승인반려처리
+    public void updateReturn_yn( Map<String, Object> map); //반납요청에 대한 승인처리
     public void updateAssetUsing(Integer assets_num); //반납교환처리된 자산은 사용보류처리
     public void deleteCancelReq(Integer return_num); //교환반납 요청 취소하기
     public Map<Object, Object> getAssetChartAllNum(); //날짜별로 전체 자산 개수 가져오기
@@ -41,6 +41,10 @@ public interface MainPageService {
     public Integer getMyServerCnt(String username); //내가 사용하는 서버 개수
     public List<Map<String, Object>> getRecentAssetsList(Integer nnn); //최근 nnn개의 자산 리스트 가져오기
     public List<NoticeVO> getNoticeList(); //최근 공지사항 목록
+    public UserVO getMyInfo(String username); //헤더 내 정보가져오기
+    public Integer getFinalUsingCnt(); //상위 관리자가 최종사용승인해야 할 건수
+    public Integer getFinalBuyCnt(); //상위 관리자가 최종구매승인해야 할 건수
+    public Integer getFinalDisCnt(); //상위 관리자가 최종 수리/폐기해야 할 건수
 
 
 }

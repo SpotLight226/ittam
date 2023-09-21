@@ -41,4 +41,8 @@ public interface MainPageMapper {
     public Integer getMyServerCnt(String usrname); //내가 사용하는 서버 개수
     public List<Map<String, Object>> getRecentAssetsList(Integer nnn); //최근 nnn개의 자산 리스트 가져오기
     public List<NoticeVO> getNoticeList(); //최근 공지사항 목록
+    public UserVO getMyInfo(String username); //헤더 내 정보가져오기
+    public Integer getFinalUsingCnt(); //상위 관리자가 최종사용승인해야 할 건수
+    public Integer getFinalBuyCnt(); //상위 관리자가 최종구매승인해야 할 건수
+    public Integer getFinalDisCnt(); //상위 관리자가 최종 수리/폐기해야 할 건수
 }

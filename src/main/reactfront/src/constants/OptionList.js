@@ -98,3 +98,40 @@ export const ITAssetsApprovalOptionList = [
     name: '반려',
   },
 ];
+
+//asset_request
+export const AssetAllListOption = [
+{
+  value: "number",
+      name: "번호",
+},
+{
+  value: "name",
+      name: "자산명",
+},
+{
+  value: "status",
+      name: "자산상태",
+},
+{
+  value: "mfc",
+      name: "제조사",
+},
+{
+  value: "seriel",
+      name: "시리얼",
+},
+{
+  value: "war",
+      name: "보증기간",
+},
+{
+  value: "category",
+      name: "카테고리",
+},
+{
+  value: "apro",
+      name: "사용신청",
+},
+
+];

@@ -4,10 +4,33 @@ import AssetAllListTable from './AssetAllListTable';
 import {Link, useParams, useLocation} from 'react-router-dom';
 import Pagenation from "../../component/Pagenation";
 import ITAssetsInfo from "./ITAssetsInfo";
-import AssetDetailModal from "./AssetDetailModal";
+import AssetDetailModal from "./AssetDetailModal"
+import {AssetAllListOption} from "../../constants/OptionList";
+import ControlMenu from "../../component/ControlMenu";
 
+const validAssetNames = [ // 유효한 자산명 목록
+  'PC',
+  '소프트웨어',
+  '주변기기',
+  '서버',
+  '데스크탑',
+  '노트북',
+  'Microsoft Office',
+  '파워포인트',
+  '엑셀',
+  '워드',
+  '한글과컴퓨터',
+  '인텔리제이',
+  '키보드',
+  '마우스',
+  '복합기',
+  '프린터',
+  '스캐너',
+  '서버용하드',
+];
 
 const AssetAllList = () => {
+  const token = localStorage.getItem("token");
   const username = localStorage.getItem("username");
 
   const [AssetRequest, setAssetRequest] = useState([]); // 전체 자산 리스트
@@ -80,6 +103,9 @@ const AssetAllList = () => {
         inputText: inputText,
         path:path
       },
+      headers: {
+        Authorization : token
+      },
     })
         .then((response) => {
           setInputInnerDate(response.data);
@@ -97,7 +123,11 @@ const AssetAllList = () => {
   useEffect(() => {
 
     if(inputInnerData.assets_name === "" || inputInnerData.length === 0 && path === "/itassets"){
-      axios.get('http://localhost:9191/AssetRequest/AssetRequestList')
+      axios.get('http://localhost:9191/AssetRequest/AssetRequestList',{
+        headers: {
+          Authorization : token
+        },
+      })
           .then((res) => setAssetRequest(res.data));
       // console.log(inputInnerData);
     }else{
@@ -209,7 +239,11 @@ const AssetAllList = () => {
   const AssetUsageRequestForm = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post('/AssetRequest/AssetUsageRequest', innerData);
+      const response = await axios.post('/AssetRequest/AssetUsageRequest', innerData, {
+        headers: {
+          Authorization : token
+        },
+      });
       if (response.data) {
         setInnerDate({
           //초기화
@@ -258,8 +292,6 @@ const AssetAllList = () => {
   const [innerBuyData, setInnerBuyDate] = useState({ // 승인, 반려 버튼 눌렀을 때 해당 행의 값 state로 관리
     username:username || '',
     assets_name : "",
-    category_num : "",
-    assets_num : "",
     userq_title :"",
     userq_comment : "",
   });
@@ -270,8 +302,6 @@ const AssetAllList = () => {
     setInnerBuyDate({
       //초기화
       assets_name: "",
-      category_num: "",
-      assets_num: "",
       userq_title: "",
       userq_comment: "",
     });
@@ -283,35 +313,129 @@ const AssetAllList = () => {
       [name]: value,
     }));
   };
+
+
   const AssetBuyRequestForm = async (e) => {
     e.preventDefault();
+
+    if (!validAssetNames.includes(innerBuyData.assets_name)) {
+      // 유효한 자산명이 아닌 경우
+      alert('유효한 자산명을 입력하세요: ' + validAssetNames.join(', '));
+      return;
+    }
+
     try {
-      const response = await axios.post('/AssetRequest/AssetBuyRequest', innerBuyData);
+      const response = await axios.post('/AssetRequest/AssetBuyRequest', innerBuyData,{
+        headers: {
+          Authorization : token
+        },
+      });
       //초기화
       if (response.data) {
         setInnerBuyDate({
           assets_name: "",
-          category_num: "",
-          assets_num: "",
           userq_title: "",
           userq_comment: "",
         });
         handleBuyClose()
         alert("정상적으로 사용 신청이 처리되었습니다.");
       }
-
     } catch (error) {
       console.error("사용 신청 처리에 실패하였습니다.", error);
       alert("사용 신청 처리에 실패하였습니다.");
       setInnerBuyDate({
         assets_name: "",
-        category_num: "",
-        assets_num: "",
         userq_title: "",
         userq_comment: "",
       });
 
     }
+  };
+
+  // 1. 정렬을 위한 state
+  const [sortType, setSortType] = useState("number"); // 정렬 컬럼 state
+  const [checkClass, setCheckClass] = useState(false); // 내림, 오름 차순 선택 state
+
+  // 2. 각 정렬 선택에 따른 데이터 정렬 함수
+  const getProcessedList = () => {
+    // 기존 리스트는 수정하지 않기 위해서 깊은 복사
+    const copyList = JSON.parse(JSON.stringify(AssetRequest));
+
+    // 각 선택된 링크에 대한 비교함수
+    const compare = (a, b) => {
+      // 선택된 컬럼에 대해서 case 별로 분류
+      switch (sortType) {
+        case "number": {
+          // 번호 : 숫자 비교 => 문자열 일 수도 있으니 parseInt 로 감싼다
+          if (checkClass) {
+            return parseInt(b.index) - parseInt(a.index); // 오름차순
+          } else {
+            return parseInt(a.index) - parseInt(b.index); // 내림차순
+          }
+        }
+        case "name": {
+          // 이름 : 문자열을 사전 순으로 비교한다
+          if (checkClass) {
+            return b.assets_name.localeCompare(a.assets_name);
+          } else {
+            return a.assets_name.localeCompare(b.assets_name);
+          }
+        }
+        // case "id": {
+        //   // 사원번호 : 부서 빼고 번호만 비교
+        //   const a_id = parseInt(a.username.slice(3, a.username.length));
+        //   const b_id = parseInt(b.username.slice(3, b.username.length));
+        //
+        //   if (checkClass) {
+        //     return b_id - a_id;
+        //   } else {
+        //     return a_id - b_id;
+        //   }
+        // }
+        // case "depart": {
+        //   // 부서
+        //   if (checkClass) {
+        //     return b.user_depart.localeCompare(a.user_depart);
+        //   } else {
+        //     return a.user_depart.localeCompare(b.user_depart);
+        //   }
+        // }
+        // case "auth": {
+        //   // 권한
+        //   if (checkClass) {
+        //     return b.role.localeCompare(a.role);
+        //   } else {
+        //     return a.role.localeCompare(b.role);
+        //   }
+        // }
+        // case "email": {
+        //   // 이메일
+        //   if (checkClass) {
+        //     return b.user_email.localeCompare(a.user_email);
+        //   } else {
+        //     return a.user_email.localeCompare(b.user_email);
+        //   }
+        // }
+        // case "date": {
+        //   // 입사일 : Date 를 비교해야 하므로 state의 날짜 문자열을 가지고 와서 새로운 Date 객체에 넣고 getTime()을 사용해 ms로 변환 후 비교
+        //   const a_date = new Date(a.user_joindate).getTime();
+        //   const b_date = new Date(b.user_joindate).getTime();
+        //
+        //   if (checkClass) {
+        //     return b_date - a_date;
+        //   } else {
+        //     return a_date - b_date;
+        //   }
+        // }
+        default: {
+          return null;
+        }
+      }
+    };
+
+    // 비교함수에따라 정렬
+    const sortedList = copyList.sort(compare);
+    return sortedList;
   };
 
 
@@ -382,56 +506,31 @@ const AssetAllList = () => {
                     <table className="table datatable">
                       <thead>
                       <tr>
-                        <th data-sortable="true">
-                          <input type={"checkbox"}/>
-                        </th>
-                        <th data-sortable="true">
-                          <Link to="#" className="datatable-sorter">
-                            #
+                        <th data-sortable="true" className="ControlMenu">
+                          <Link
+                              to="#"
+
+                          >
+                            V
                           </Link>
                         </th>
-                        <th data-sortable="true">
-                          <Link to="#" className="datatable-sorter">
-                            자산명
-                          </Link>
-                        </th>
-                        <th data-sortable="true">
-                          <Link to="#" className="datatable-sorter">
-                            자산상태
-                          </Link>
-                        </th>
-                        <th data-sortable="true">
-                          <Link to="#" className="datatable-sorter">
-                            제조사
-                          </Link>
-                        </th>
-                        <th data-sortable="true">
-                          <Link to="#" className="datatable-sorter">
-                            시리얼
-                          </Link>
-                        </th>
-                        <th data-sortable="true">
-                          <Link to="#" className="datatable-sorter">
-                            보증기간
-                          </Link>
-                        </th>
-                        <th data-sortable="true">
-                          <Link to="#" className="datatable-sorter">
-                            카테고리
-                          </Link>
-                        </th>
-                        <th data-sortable="true">
-                          <Link to="#" className="datatable-sorter">
-                            사용신청
-                          </Link>
-                        </th>
+                        {AssetAllListOption.map((it, idx) => (
+                            <ControlMenu
+                                key={idx}
+                                {...it}
+                                checkClass={checkClass}
+                                sortType={sortType}
+                                setSortType={setSortType}
+                                setCheckClass={setCheckClass}
+                            />
+                        ))}
                       </tr>
                       </thead>
 
                       {/* 테이블 시작 */}
 
                       <tbody>
-                      {AssetRequest.slice(
+                      {getProcessedList().slice(
                           (currentPage - 1) * itemsPerPage,
                           currentPage * itemsPerPage
                       ).map((item, index) => (
