@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from "react";
-import { Link } from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 import "../styles/Style.css";
 import axios from "axios";
 
@@ -7,6 +7,9 @@ function Header() {
   const token = localStorage.getItem("token");
   const username = localStorage.getItem('username');
   const [myInfo, setMyInfo] = useState({});
+  const [myAlarmList, setMyAlarmList] = useState([]);
+  const [myAlarmCnt, setMyAlarmCnt] = useState(0);
+  const navigate = useNavigate(); // navigate 함수 생성
   const getMyInfo = (username) => {
     axios({
       url: "/mainPage/getMyInfo",
@@ -22,9 +25,62 @@ function Header() {
         .catch(error => console.log(error))
   }
 
+  const getMyAlarmList = (username) => {
+    axios({
+      url: "/mainPage/getMyAlarmList",
+      method: "get",
+      headers: {
+        Authorization : token
+      },
+      params: {
+        username: username
+      }
+    }) .then(response => {setMyAlarmList(response.data); console.log(response.data);})
+        .catch(error => console.log(error))
+  }
+  const getMyAlarmCnt = (username) => {
+    axios({
+      url: "/mainPage/getMyAlarmCnt",
+      method: "get",
+      headers: {
+        Authorization : token
+      },
+      params: {
+        username: username
+      }
+    }).then(response => {console.log(response.data); setMyAlarmCnt(response.data);})
+        .catch(error => console.log(error))
+  }
+
+  const handleMyAlamConfirm = (e, alarm_num) => {
+    e.stopPropagation();
+    axios({
+      url: "/mainPage/handleMyAlamConfirm",
+      method: "put",
+      headers: {
+        Authorization : token
+      },
+      params: {
+        alarm_num: alarm_num
+      }
+    }).then(response => {
+      console.log(response.data);
+      getMyAlarmList(username);
+      getMyAlarmCnt(username);
+      })
+        .catch(error => console.log(error))
+
+    navigate("/user/userMain_using");
+  }
+
+
+
   useEffect(() => {
     getMyInfo(username);
+    getMyAlarmList(username);
+    getMyAlarmCnt(username);
   }, []);
+
 
   if(window.location.pathname === '/') return null
 
@@ -78,70 +134,76 @@ function Header() {
             <li className="nav-item dropdown">
               <Link to="####" className="nav-link nav-icon" data-bs-toggle="dropdown">
                 <i className="bi bi-bell"></i>
-                <span className="badge bg-primary badge-number">4</span>
+                {myAlarmCnt !== 0 && <span className="badge bg-primary badge-number">{myAlarmCnt}</span>}
               </Link>
               {/* <!-- End Notification Icon --> */}
 
-              <ul className="dropdown-menu dropdown-menu-end dropdown-menu-arrow notifications">
+              <ul className="dropdown-menu dropdown-menu-end dropdown-menu-arrow notifications" style={{overflow: 'scroll', maxHeight: '486px'}}>
                 <li className="dropdown-header">
-                  You have 4 new notifications
+                  You have {myAlarmCnt} new notifications
                   <Link to="####">
                   <span className="badge rounded-pill bg-primary p-2 ms-2">
                     View all
                   </span>
                   </Link>
                 </li>
-                <li>
-                  <hr className="dropdown-divider"></hr>
-                </li>
+                {
+                  myAlarmList.map((a, i) => {
+                    return <div onClick={(e) => handleMyAlamConfirm(e, a.alarm_num)} key={i} style={{cursor: 'pointer'}}>
+                      <li>
+                        <hr className="dropdown-divider"></hr>
+                      </li>
+                      <li className="notification-item">
+                        <i className="bi bi-exclamation-circle text-warning"></i>
+                        <div>
+                          <h4>관리자 {a.alarm_status}처리 완료</h4>
+                          <p>요청하신 {a.assets_name}({a.assets_detail_name})의 {a.alarm_type}처리가 완료되었습니다.</p>
+                          <p>{a.alarm_regdate}</p>
+                        </div>
+                      </li>
 
-                <li className="notification-item">
-                  <i className="bi bi-exclamation-circle text-warning"></i>
-                  <div>
-                    <h4>Lorem Ipsum</h4>
-                    <p>Quae dolorem earum veritatis oditseno</p>
-                    <p>30 min. ago</p>
-                  </div>
-                </li>
+                    </div>
+                  })
+                }
 
-                <li>
-                  <hr className="dropdown-divider"></hr>
-                </li>
+                {/*<li>*/}
+                {/*  <hr className="dropdown-divider"></hr>*/}
+                {/*</li>*/}
 
-                <li className="notification-item">
-                  <i className="bi bi-x-circle text-danger"></i>
-                  <div>
-                    <h4>Atque rerum nesciunt</h4>
-                    <p>Quae dolorem earum veritatis oditseno</p>
-                    <p>1 hr. ago</p>
-                  </div>
-                </li>
+                {/*<li className="notification-item">*/}
+                {/*  <i className="bi bi-x-circle text-danger"></i>*/}
+                {/*  <div>*/}
+                {/*    <h4>Atque rerum nesciunt</h4>*/}
+                {/*    <p>Quae dolorem earum veritatis oditseno</p>*/}
+                {/*    <p>1 hr. ago</p>*/}
+                {/*  </div>*/}
+                {/*</li>*/}
 
-                <li>
-                  <hr className="dropdown-divider"></hr>
-                </li>
+                {/*<li>*/}
+                {/*  <hr className="dropdown-divider"></hr>*/}
+                {/*</li>*/}
 
-                <li className="notification-item">
-                  <i className="bi bi-check-circle text-success"></i>
-                  <div>
-                    <h4>Sit rerum fuga</h4>
-                    <p>Quae dolorem earum veritatis oditseno</p>
-                    <p>2 hrs. ago</p>
-                  </div>
-                </li>
+                {/*<li className="notification-item">*/}
+                {/*  <i className="bi bi-check-circle text-success"></i>*/}
+                {/*  <div>*/}
+                {/*    <h4>Sit rerum fuga</h4>*/}
+                {/*    <p>Quae dolorem earum veritatis oditseno</p>*/}
+                {/*    <p>2 hrs. ago</p>*/}
+                {/*  </div>*/}
+                {/*</li>*/}
 
-                <li>
-                  <hr className="dropdown-divider"></hr>
-                </li>
+                {/*<li>*/}
+                {/*  <hr className="dropdown-divider"></hr>*/}
+                {/*</li>*/}
 
-                <li className="notification-item">
-                  <i className="bi bi-info-circle text-primary"></i>
-                  <div>
-                    <h4>Dicta reprehenderit</h4>
-                    <p>Quae dolorem earum veritatis oditseno</p>
-                    <p>4 hrs. ago</p>
-                  </div>
-                </li>
+                {/*<li className="notification-item">*/}
+                {/*  <i className="bi bi-info-circle text-primary"></i>*/}
+                {/*  <div>*/}
+                {/*    <h4>Dicta reprehenderit</h4>*/}
+                {/*    <p>Quae dolorem earum veritatis oditseno</p>*/}
+                {/*    <p>4 hrs. ago</p>*/}
+                {/*  </div>*/}
+                {/*</li>*/}
 
                 <li>
                   <hr className="dropdown-divider"></hr>

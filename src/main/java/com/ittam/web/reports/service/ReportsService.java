@@ -26,8 +26,12 @@ public interface ReportsService {
 //////////////////////////////////////////////////
     public Map<String, Integer> getAssetStickNum();
 
-
+//////////////////////////////////////////////////
     public Map<String, Integer> getCPUNum();
     public Map<String, Integer> getGPUNum();
     public Map<String, Integer> getMFGNum();
+
+//////////////////////////////////////////////////
+//////////////////////////////////////////////////
+    public Map<Object, Object> getRadialBarNum();
 }

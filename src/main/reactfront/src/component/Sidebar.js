@@ -298,8 +298,8 @@ function Sidebar() {
         {/* <!-- End Icons Nav --> */}
         <li className="nav-item">
           <Link to="admin/reports" className="nav-link collapsed">
-            <i className="bi bi-bar-chart"></i>
-            <span>리포트</span>
+            <i className="bi bi-graph-up"></i>
+            <span>자산 리포트</span>
           </Link>
         </li>
 

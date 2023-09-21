@@ -7,6 +7,7 @@ function ReturnDetailModal({ setOpenModal_exchange, num, returnList, getreturnLi
 
     const [mustChoice, setMustChoice] = useState("선택하기");
 
+
   let thisList = () => {
     return returnList.find(x => x.RETURN_NUM == num)
   }
@@ -42,6 +43,7 @@ function ReturnDetailModal({ setOpenModal_exchange, num, returnList, getreturnLi
   }
 
 
+
   const exchangeAsset = (return_status) => {
     const exchangeForm = {
       assets_num_now: thisList().ASSETS_NUM,
@@ -49,7 +51,9 @@ function ReturnDetailModal({ setOpenModal_exchange, num, returnList, getreturnLi
       assets_detail_name_later: mustChoice.split(",")[1],
       username : thisList().username,
       return_num: thisList().RETURN_NUM,
-      return_status: return_status
+      return_status: return_status,
+      assets_name: thisList().ASSETS_NAME,
+      assets_detail_name: thisList().ASSETS_DETAIL_NAME
     }
 
 
@@ -72,10 +76,10 @@ function ReturnDetailModal({ setOpenModal_exchange, num, returnList, getreturnLi
 
   }
 
-  const return_yn = (return_status) => {
+  const cancelExchange = (return_status) => {
 
     axios({
-        url: "mainPage/return_yn",
+        url: "/mainPage/cancelExchange",
         method: "post",
         headers: {
             Authorization : token
@@ -124,9 +128,6 @@ function ReturnDetailModal({ setOpenModal_exchange, num, returnList, getreturnLi
             <hr/>
         </div>
         <div className="body">
-
-
-
 
 
             <div className="row mb-3">
@@ -201,7 +202,7 @@ function ReturnDetailModal({ setOpenModal_exchange, num, returnList, getreturnLi
                 thisList().RETURN_STATUS==='승인대기'?
                     <>
           <button onClick={() => {mustChoice!=='선택하기' ? exchangeAsset('승인') : alert('교환할 자산을 선택하세요')}} id="cancelBtn">승인</button>
-          <button onClick={() => return_yn('반려')}>반려</button>
+          <button onClick={() => cancelExchange('반려')}>반려</button>
                     </>
                 : <button style={{backgroundColor: 'gray'}} disabled>{thisList().RETURN_STATUS}처리</button>
 

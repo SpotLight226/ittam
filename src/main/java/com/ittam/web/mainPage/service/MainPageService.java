@@ -28,16 +28,17 @@ public interface MainPageService {
     public void deleteCancelReq(Integer return_num); //교환반납 요청 취소하기
     public Map<Object, Object> getAssetChartAllNum(); //날짜별로 전체 자산 개수 가져오기
     public Map<Object, Object> getAssetChartUsingNum(); //날짜별로 전체 사용중인 자산 개수 가져오기
-    public Map<Object, Object> getAssetChartDisposeNum(); //날짜별로 전체 사용중인 자산 개수 가져오기
+    public Map<Object, Object> getAssetChartDisposeNum(); //날짜별로 전체 폐기한 자산 개수 가져오기
     public void exchangeAsset_exchange(Map<String, Object> map); //교환할 제품 사용중 처리하기
-    public void exchangeAsset_cancel(Map<String, Object> map); //교환된 제품 사용보류 처리하기
+    public void exchangeAsset_cancel(Map<String, Object> map); //교환된 제품 사용가능 처리하기
     public void exchangeAsset_assetlog(Map<String, Object> map);
+
     public List<UserRequestVO> getMyRequestList(String username); //내가 사용 구매 요청한 리스트 가져오기
     public void deleteUsingPerchaseReq(Integer userq_num); //사용 구매 신청 취소
     public void registLeaveReq(String username); //퇴사요청
     public Integer getMyPcCnt(String username); //내가 사용하는 pc 개수
     public Integer getMySwCnt(String username); //내가 사용하는 sw 개수
-    public Integer getMyEtcCnt(String username); //내가 사용한느 주변기기 개수
+    public Integer getMyEtcCnt(String username); //내가 사용하는 주변기기 개수
     public Integer getMyServerCnt(String username); //내가 사용하는 서버 개수
     public List<Map<String, Object>> getRecentAssetsList(Integer nnn); //최근 nnn개의 자산 리스트 가져오기
     public List<NoticeVO> getNoticeList(); //최근 공지사항 목록
@@ -45,6 +46,11 @@ public interface MainPageService {
     public Integer getFinalUsingCnt(); //상위 관리자가 최종사용승인해야 할 건수
     public Integer getFinalBuyCnt(); //상위 관리자가 최종구매승인해야 할 건수
     public Integer getFinalDisCnt(); //상위 관리자가 최종 수리/폐기해야 할 건수
+    ////////////////////////
+    public void registAlam(Map<String, Object> map); //알람등록하기
+    public List<AlarmVO> getMyAlarmList(String username); //내 알람가져오기
+    public void handleMyAlamConfirm(Integer alarm_num); //알람읽음처리하기
+    public Integer getMyAlarmCnt(String username); //알림개수세기
 
 
 }

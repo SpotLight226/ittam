@@ -68,4 +68,11 @@ public class ReportsController {
 //    public ResponseEntity<Map<String, Integer>> getMFGNum() {
 //        return new ResponseEntity<>()
 //    }
+
+    @GetMapping("/getRadialBarNum")
+    public ResponseEntity<Map<Object, Object>> getRadialBarNum() {
+        System.out.println("kkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk");
+        Map<Object,Object> map = reportsService.getRadialBarNum();
+        return new ResponseEntity<>(map, HttpStatus.OK);
+    }
 }

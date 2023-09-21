@@ -8,6 +8,7 @@ import axios from "axios";
 function AreaChart({all, using, dispose}) {
 
 
+
 const date_n = (n) => {
   const today = new Date();
   let today_n = new Date();

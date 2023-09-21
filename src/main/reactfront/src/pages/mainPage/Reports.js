@@ -9,6 +9,7 @@ import CPUChart from '../../component/Chart/CPUChart';
 import GPUChart from '../../component/Chart/GPUChart';
 import MFGChart from '../../component/Chart/MFGChart';
 import DepartAssetChart from "../../component/Chart/DepartAssetChart";
+import AssetRadialBarChart from "../../component/Chart/AssetRadialBarChart";
 
 function Reports() {
   const token = localStorage.getItem("token");
@@ -19,6 +20,7 @@ function Reports() {
   const [CPUNum, setCPUNum] = useState();
   const [GPUNum, setGPUNum] = useState();
   const [MFGNum, setMFGNum] = useState();
+  const [categoryNum, setCategoryNum] = useState();
 
 
 
@@ -99,12 +101,33 @@ function Reports() {
     });
   }
 
+  const getRadialBarNum = () => {
+    axios({
+      url: "/reports/getRadialBarNum",
+      method: "get",
+      headers: {
+        Authorization : token
+      },
+    })
+        .then((response) => {
+          console.log(response.data);
+          setCategoryNum(response.data);
+        })
+        .catch((error) => {
+          alert("데이터 조회에 실패하였습니다.");
+        });
+  }
+
+
+
+
   useEffect(() => {
     getCardNum();
     getDepartNum();
     getAssetStickNum();
     getCPUNum();
     getGPUNum();
+    getRadialBarNum();
   }, [])
 
 
@@ -269,6 +292,35 @@ function Reports() {
 
                     </div>
 
+                    <div className="col-lg-4">
+
+                      <div className="card" >
+                        <div className="card-body" style={{ backgroundColor: 'rgb(219 228 245)', borderRadius: '8px'  }}>
+                          <h5 className="card-title" style={{ fontWeight: "800" }}>카테고리별 사용률</h5>
+                          {categoryNum!=undefined ? <AssetRadialBarChart categoryNum={categoryNum}/> :
+                              <div className="d-flex justify-content-center">
+                                <div className="spinner-border text-primary" role="status">
+                                  <span className="visually-hidden">Loading...</span>
+                                </div>
+                              </div>
+                          }
+
+                        </div>
+                      </div>
+
+                    </div>
+
+
+
+
+
+
+
+
+
+
+
+
 
                     <div className="col-lg-4">
 
@@ -315,6 +367,7 @@ function Reports() {
                       </div>
 
                     </div>
+
 
 
 

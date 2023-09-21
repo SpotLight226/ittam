@@ -264,7 +264,7 @@ function AdminMain() {
                   <div className="card">
 
                     <div className="card-body">
-                      <Link to="/admin/reports"><h5 className="card-title" style={{fontWeight: "800"}}>자산 사용률 <span>| 전체 리포트 보기</span></h5></Link>
+                      <Link to="/admin/reports"><h5 className="card-title" style={{fontWeight: "800"}}>일주일간의 자산 현황 <span>| 전체 리포트 보기</span></h5></Link>
 
                       {/*  <!-- Line Chart --> */}
                       {(all!==undefined && using!==undefined && dispose!==undefined) ? <div id="reportsChart"><AreaChart all={all} using={using} dispose={dispose}/></div> :
@@ -286,7 +286,7 @@ function AdminMain() {
                   <div className="card">
 
                     <div className="card-body">
-                      <h5 className="card-title" style={{fontWeight: "800"}}>자산 사용률 <span>| 전체 리포트 보기</span></h5>
+                      <h5 className="card-title" style={{fontWeight: "800"}}>전체 자산 사용률 <span>| 전체 리포트 보기</span></h5>
 
                       {cardNum !== undefined ? <UsingRateChart cardNum={cardNum}/> :
                           <div className="d-flex justify-content-center">
@@ -444,9 +444,9 @@ function AdminMain() {
                         <thead>
                         <tr className="table-light">
                           <th scope="col" style={{width: '100px'}}>카테고리</th>
-                          <th scope="col">자산명</th>
+                          <th scope="col" style={{width: '100px'}}>자산명</th>
                           <th scope="col">자산스펙</th>
-                          <th scope="col">추가날짜</th>
+                          <th scope="col" style={{width: '100px'}}>추가날짜</th>
                           {/* <th scope="col">Revenue</th> */}
                         </tr>
                         </thead>

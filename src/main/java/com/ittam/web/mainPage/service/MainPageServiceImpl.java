@@ -138,6 +138,8 @@ public class MainPageServiceImpl implements MainPageService{
         mainPageMapper.exchangeAsset_assetlog(map);
     }
 
+
+
     @Override
     public List<UserRequestVO> getMyRequestList(String username) {
         return mainPageMapper.getMyRequestList(username);
@@ -202,6 +204,26 @@ public class MainPageServiceImpl implements MainPageService{
     @Override
     public Integer getFinalDisCnt() {
         return mainPageMapper.getFinalDisCnt();
+    }
+
+    @Override
+    public void registAlam(Map<String, Object> map) {
+        mainPageMapper.registAlam(map);
+    }
+
+    @Override
+    public List<AlarmVO> getMyAlarmList(String username) {
+        return mainPageMapper.getMyAlarmList(username);
+    }
+
+    @Override
+    public void handleMyAlamConfirm(Integer alarm_num) {
+        mainPageMapper.handleMyAlamConfirm(alarm_num);
+    }
+
+    @Override
+    public Integer getMyAlarmCnt(String username) {
+        return mainPageMapper.getMyAlarmCnt(username);
     }
 
 
