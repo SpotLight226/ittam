@@ -269,7 +269,7 @@ function NoticeDetail() {
                       <img src={noticeimg.noticeimg_path} alt="이미지" style={{ maxWidth: '500px', width: '100%', height: 'auto' }}/>
                     </p>
                     }
-                    <div style={{ textAlign: 'center', marginBottom: '30px' }}>{notice.notice_content}</div>
+                    <div style={{ textAlign: 'center', marginBottom: '30px', whiteSpace: 'pre' }}>{notice.notice_content}</div>
 
 
 

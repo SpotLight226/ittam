@@ -87,7 +87,7 @@ public class MainPageController {
     //반납하기
     @PostMapping("/updateReturn_yn")
     public ResponseEntity<String> updateReturn_yn(@RequestBody Map<String, Object> map) {
-        System.out.println(00000);
+
         mainPageService.updateReturn_yn(map);
         mainPageService.updateAssetUsing((Integer) map.get("assets_num"));
         return new ResponseEntity<>("승인처리",HttpStatus.OK);
@@ -130,13 +130,22 @@ public class MainPageController {
     //교환신청 승인처리하기
     @PostMapping ("/exchangeAsset")
     public ResponseEntity<String> exchangeAsset(@RequestBody Map<String, Object> map) {
+        map.put("alarm_type", "교환");
         mainPageService.exchangeAsset_exchange(map);
         mainPageService.exchangeAsset_cancel(map);
         mainPageService.updateReturn_yn(map);
         mainPageService.exchangeAsset_assetlog(map);
-//        System.out.println("assets_num_now:   " + map.get("assets_num_later"));
-//        System.out.println("assets_num_now:   " + map.get("assets_num_now"));
+        mainPageService.registAlam(map); //알람
         return new ResponseEntity<>("승인처리되었습니다", HttpStatus.OK);
+    }
+
+    //교환신청 반려처리하기
+    @PostMapping("/cancelExchange")
+    public ResponseEntity<String> cancelExchange(@RequestBody Map<String, Object> map) {
+        map.put("alarm_type", "교환");
+        mainPageService.updateReturn_yn(map);
+
+        return new ResponseEntity<>("반려처리되었습니다", HttpStatus.OK);
     }
 
     //내가 사용 및 구매 요청한 리스트 가져오기
@@ -207,6 +216,26 @@ public class MainPageController {
         map.put("leaveReq", num4);
 
         return new ResponseEntity<>(map, HttpStatus.OK);
+    }
+
+    //내 알람리스트 가져오기
+    @GetMapping("/getMyAlarmList")
+    public ResponseEntity<List<AlarmVO>> getMyAlarmList(@RequestParam String username){
+        List<AlarmVO> list = mainPageService.getMyAlarmList(username);
+        return new ResponseEntity<>(list, HttpStatus.OK);
+    }
+
+    //알람읽음처리하기
+    @PutMapping("/handleMyAlamConfirm")
+    public ResponseEntity<String> handleMyAlamConfirm(@RequestParam Integer alarm_num) {
+        mainPageService.handleMyAlamConfirm(alarm_num);
+        return new ResponseEntity<>("알람을 읽음", HttpStatus.OK);
+    }
+
+    @GetMapping("/getMyAlarmCnt")
+    public ResponseEntity<Integer> getMyAlarmCnt(@RequestParam String username) {
+        Integer cnt = mainPageService.getMyAlarmCnt(username);
+        return new ResponseEntity<>(cnt, HttpStatus.OK);
     }
 
 }

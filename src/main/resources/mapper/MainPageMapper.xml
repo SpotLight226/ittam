@@ -28,10 +28,11 @@
     <select id="getSelectAssetList">
         SELECT *
         FROM ITASSETS a
-                 LEFT JOIN PCSPEC pc ON (a.assets_name LIKE '%노트북%' OR a.assets_name LIKE '%데스크탑%') AND a.spec_num = pc.spec_num
-                 LEFT JOIN SWSPEC sw ON (a.assets_name LIKE '%Microsoft Office%' OR a.assets_name LIKE '%파워포인트%' OR a.assets_name LIKE '엑셀' OR a.assets_name LIKE '워드' OR a.assets_name LIKE '한글과컴퓨터' OR a.assets_name LIKE '인텔리제이' ) AND a.spec_num = sw.spec_num
-                 LEFT JOIN SERVERSPEC sv ON (a.assets_name LIKE '%서버용하드%') AND a.spec_num = sv.spec_num
-                 LEFT JOIN ETCSPEC etc ON a.spec_num = etc.spec_num AND a.assets_name NOT LIKE '%노트북%' AND a.assets_name NOT LIKE '%데스크탑%' AND a.assets_name NOT LIKE '%서버용하드%' AND a.assets_name NOT LIKE '%Microsoft Office%' AND a.assets_name NOT LIKE '%파워포인트%' AND a.assets_name NOT LIKE '%워드%' AND a.assets_name NOT LIKE '%한글과컴퓨터%' AND a.assets_name NOT LIKE '%인텔리제이%'
+                 LEFT JOIN GROUP_CATEGORY gc on a.CATEGORY_NUM = gc.CATEGORY_NUM
+                 LEFT JOIN PCSPEC pc ON (a.category_num = 5 OR a.category_num = 6) AND a.spec_num = pc.spec_num
+                 LEFT JOIN SWSPEC sw ON (a.category_num = 7 OR a.category_num = 8 OR a.category_num = 9 OR a.category_num = 10 OR a.category_num = 11 OR a.category_num = 12 ) AND a.spec_num = sw.spec_num
+                 LEFT JOIN SERVERSPEC sv ON (a.category_num = 18) AND a.spec_num = sv.spec_num
+                 LEFT JOIN ETCSPEC etc ON a.spec_num = etc.spec_num AND a.category_num != 5 AND a.category_num != 6 AND a.category_num != 18 AND a.category_num != 7 AND a.category_num != 8 AND a.category_num != 9 AND a.category_num != 10 AND a.category_num != 11 AND a.category_num != 12
         where a.CATEGORY_NUM= #{category_num} and a.ASSETS_STATUS = '사용가능';
     </select>
     <select id="getUserInfo" resultType="UserVO">
@@ -58,11 +59,12 @@
     <select id="getMyAssetList">
         SELECT *
         FROM ITASSETS a
-                 LEFT JOIN PCSPEC pc ON (a.assets_name LIKE '%노트북%' OR a.assets_name LIKE '%데스크탑%') AND a.spec_num = pc.spec_num
-                 LEFT JOIN SWSPEC sw ON (a.assets_name LIKE '%Microsoft Office%' OR a.assets_name LIKE '%파워포인트%' OR a.assets_name LIKE '엑셀' OR a.assets_name LIKE '워드' OR a.assets_name LIKE '한글과컴퓨터' OR a.assets_name LIKE '인텔리제이' ) AND a.spec_num = sw.spec_num
-                 LEFT JOIN SERVERSPEC sv ON (a.assets_name LIKE '%서버용하드%') AND a.spec_num = sv.spec_num
-                 LEFT JOIN ETCSPEC etc ON a.spec_num = etc.spec_num AND a.assets_name NOT LIKE '%노트북%' AND a.assets_name NOT LIKE '%데스크탑%' AND a.assets_name NOT LIKE '%서버용하드%' AND a.assets_name NOT LIKE '%Microsoft Office%' AND a.assets_name NOT LIKE '%파워포인트%' AND a.assets_name NOT LIKE '%워드%' AND a.assets_name NOT LIKE '%한글과컴퓨터%' AND a.assets_name NOT LIKE '%인텔리제이%'
-                 LEFT JOIN STOCK_RETURN sr on a.ASSETS_NUM = sr.ASSETS_NUM
+                 LEFT JOIN GROUP_CATEGORY gc on a.CATEGORY_NUM = gc.CATEGORY_NUM
+                 LEFT JOIN PCSPEC pc ON (a.category_num = 5 OR a.category_num = 6) AND a.spec_num = pc.spec_num
+                 LEFT JOIN SWSPEC sw ON (a.category_num = 7 OR a.category_num = 8 OR a.category_num = 9 OR a.category_num = 10 OR a.category_num = 11 OR a.category_num = 12 ) AND a.spec_num = sw.spec_num
+                 LEFT JOIN SERVERSPEC sv ON (a.category_num = 18) AND a.spec_num = sv.spec_num
+                 LEFT JOIN ETCSPEC etc ON a.spec_num = etc.spec_num AND a.category_num != 5 AND a.category_num != 6 AND a.category_num != 18 AND a.category_num != 7 AND a.category_num != 8 AND a.category_num != 9 AND a.category_num != 10 AND a.category_num != 11 AND a.category_num != 12
+        LEFT JOIN STOCK_RETURN sr on a.ASSETS_NUM = sr.ASSETS_NUM
         where a.username=#{username}
         order by rent_date desc
     </select>
@@ -83,72 +85,43 @@
 
     <select id="getAssetChartAllNum">
         SELECT
-            SUM(CASE WHEN ADD_DATE <![CDATA[<=]]> DATE_SUB(NOW(), INTERVAL 6 DAY) THEN 1 ELSE 0 END) AS day6,
-            SUM(CASE WHEN ADD_DATE <![CDATA[<=]]> DATE_SUB(NOW(), INTERVAL 5 DAY) THEN 1 ELSE 0 END) AS day5,
-            SUM(CASE WHEN ADD_DATE <![CDATA[<=]]> DATE_SUB(NOW(), INTERVAL 4 DAY) THEN 1 ELSE 0 END) AS day4,
-            SUM(CASE WHEN ADD_DATE <![CDATA[<=]]> DATE_SUB(NOW(), INTERVAL 3 DAY) THEN 1 ELSE 0 END) AS day3,
-            SUM(CASE WHEN ADD_DATE <![CDATA[<=]]> DATE_SUB(NOW(), INTERVAL 2 DAY) THEN 1 ELSE 0 END) AS day2,
-            SUM(CASE WHEN ADD_DATE <![CDATA[<=]]> DATE_SUB(NOW(), INTERVAL 1 DAY) THEN 1 ELSE 0 END) AS day1,
-            SUM(CASE WHEN ADD_DATE <![CDATA[<=]]> DATE_SUB(NOW(), INTERVAL 0 DAY) THEN 1 ELSE 0 END) AS today
-        FROM ITASSETS where ASSETS_STATUS = '사용중' OR ASSETS_STATUS='사용가능';
+            COALESCE(SUM(CASE WHEN ADD_DATE <![CDATA[<=]]> DATE_SUB(NOW(), INTERVAL 6 DAY) THEN 1 ELSE 0 END), 0) AS day6,
+            COALESCE(SUM(CASE WHEN ADD_DATE <![CDATA[<=]]> DATE_SUB(NOW(), INTERVAL 5 DAY) THEN 1 ELSE 0 END), 0) AS day5,
+            COALESCE(SUM(CASE WHEN ADD_DATE <![CDATA[<=]]> DATE_SUB(NOW(), INTERVAL 4 DAY) THEN 1 ELSE 0 END), 0) AS day4,
+            COALESCE(SUM(CASE WHEN ADD_DATE <![CDATA[<=]]> DATE_SUB(NOW(), INTERVAL 3 DAY) THEN 1 ELSE 0 END), 0) AS day3,
+            COALESCE(SUM(CASE WHEN ADD_DATE <![CDATA[<=]]> DATE_SUB(NOW(), INTERVAL 2 DAY) THEN 1 ELSE 0 END), 0) AS day2,
+            COALESCE(SUM(CASE WHEN ADD_DATE <![CDATA[<=]]> DATE_SUB(NOW(), INTERVAL 1 DAY) THEN 1 ELSE 0 END), 0) AS day1,
+            COALESCE(SUM(CASE WHEN ADD_DATE <![CDATA[<=]]> DATE_SUB(NOW(), INTERVAL 0 DAY) THEN 1 ELSE 0 END), 0) AS today
+        FROM ITASSETS where ASSETS_STATUS = '사용중' OR ASSETS_STATUS='사용가능'
 
---         SELECT
---         SUM(CASE WHEN ADD_DATE <![CDATA[>=]]> DATE_SUB(NOW(), INTERVAL 6 DAY) AND ADD_DATE <![CDATA[<]]> DATE_SUB(NOW(), INTERVAL 5 DAY) THEN 1 ELSE 0 END) AS day6,
---         SUM(CASE WHEN ADD_DATE <![CDATA[>=]]> DATE_SUB(NOW(), INTERVAL 5 DAY) AND ADD_DATE <![CDATA[<]]> DATE_SUB(NOW(), INTERVAL 4 DAY) THEN 1 ELSE 0 END) AS day5,
---         SUM(CASE WHEN ADD_DATE <![CDATA[>=]]> DATE_SUB(NOW(), INTERVAL 4 DAY) AND ADD_DATE <![CDATA[<]]> DATE_SUB(NOW(), INTERVAL 3 DAY) THEN 1 ELSE 0 END) AS day4,
---         SUM(CASE WHEN ADD_DATE <![CDATA[>=]]> DATE_SUB(NOW(), INTERVAL 3 DAY) AND ADD_DATE <![CDATA[<]]> DATE_SUB(NOW(), INTERVAL 2 DAY) THEN 1 ELSE 0 END) AS day3,
---         SUM(CASE WHEN ADD_DATE <![CDATA[>=]]> DATE_SUB(NOW(), INTERVAL 2 DAY) AND ADD_DATE <![CDATA[<]]> DATE_SUB(NOW(), INTERVAL 1 DAY) THEN 1 ELSE 0 END) AS day2,
---         SUM(CASE WHEN ADD_DATE <![CDATA[>=]]> DATE_SUB(NOW(), INTERVAL 1 DAY) AND ADD_DATE <![CDATA[<]]> DATE_SUB(NOW(), INTERVAL 0 DAY) THEN 1 ELSE 0 END) AS day1,
---         SUM(CASE WHEN ADD_DATE <![CDATA[>=]]> DATE_SUB(NOW(), INTERVAL 0 DAY) THEN 1 ELSE 0 END) AS today
---         FROM ITASSETS
---         WHERE ASSETS_STATUS = '사용중' or ASSETS_STATUS = '사용가능'
 
     </select>
 
     <select id="getAssetChartUsingNum">
         SELECT
-        SUM(CASE WHEN ADD_DATE <![CDATA[<=]]> DATE_SUB(NOW(), INTERVAL 6 DAY) THEN 1 ELSE 0 END) AS day6,
-        SUM(CASE WHEN ADD_DATE <![CDATA[<=]]> DATE_SUB(NOW(), INTERVAL 5 DAY) THEN 1 ELSE 0 END) AS day5,
-        SUM(CASE WHEN ADD_DATE <![CDATA[<=]]> DATE_SUB(NOW(), INTERVAL 4 DAY) THEN 1 ELSE 0 END) AS day4,
-        SUM(CASE WHEN ADD_DATE <![CDATA[<=]]> DATE_SUB(NOW(), INTERVAL 3 DAY) THEN 1 ELSE 0 END) AS day3,
-        SUM(CASE WHEN ADD_DATE <![CDATA[<=]]> DATE_SUB(NOW(), INTERVAL 2 DAY) THEN 1 ELSE 0 END) AS day2,
-        SUM(CASE WHEN ADD_DATE <![CDATA[<=]]> DATE_SUB(NOW(), INTERVAL 1 DAY) THEN 1 ELSE 0 END) AS day1,
-        SUM(CASE WHEN ADD_DATE <![CDATA[<=]]> DATE_SUB(NOW(), INTERVAL 0 DAY) THEN 1 ELSE 0 END) AS today
+            COALESCE(SUM(CASE WHEN ADD_DATE <![CDATA[<=]]> DATE_SUB(NOW(), INTERVAL 6 DAY) THEN 1 ELSE 0 END), 0) AS day6,
+            COALESCE(SUM(CASE WHEN ADD_DATE <![CDATA[<=]]> DATE_SUB(NOW(), INTERVAL 5 DAY) THEN 1 ELSE 0 END), 0) AS day5,
+            COALESCE(SUM(CASE WHEN ADD_DATE <![CDATA[<=]]> DATE_SUB(NOW(), INTERVAL 4 DAY) THEN 1 ELSE 0 END), 0) AS day4,
+            COALESCE(SUM(CASE WHEN ADD_DATE <![CDATA[<=]]> DATE_SUB(NOW(), INTERVAL 3 DAY) THEN 1 ELSE 0 END), 0) AS day3,
+            COALESCE(SUM(CASE WHEN ADD_DATE <![CDATA[<=]]> DATE_SUB(NOW(), INTERVAL 2 DAY) THEN 1 ELSE 0 END), 0) AS day2,
+            COALESCE(SUM(CASE WHEN ADD_DATE <![CDATA[<=]]> DATE_SUB(NOW(), INTERVAL 1 DAY) THEN 1 ELSE 0 END), 0) AS day1,
+            COALESCE(SUM(CASE WHEN ADD_DATE <![CDATA[<=]]> DATE_SUB(NOW(), INTERVAL 0 DAY) THEN 1 ELSE 0 END), 0) AS today
         FROM ITASSETS where ASSETS_STATUS = '사용중'
 
---             SELECT
---                 SUM(CASE WHEN ADD_DATE <![CDATA[>=]]> DATE_SUB(NOW(), INTERVAL 6 DAY) AND ADD_DATE <![CDATA[<]]> DATE_SUB(NOW(), INTERVAL 5 DAY) THEN 1 ELSE 0 END) AS day6,
---                 SUM(CASE WHEN ADD_DATE <![CDATA[>=]]> DATE_SUB(NOW(), INTERVAL 5 DAY) AND ADD_DATE <![CDATA[<]]> DATE_SUB(NOW(), INTERVAL 4 DAY) THEN 1 ELSE 0 END) AS day5,
---                 SUM(CASE WHEN ADD_DATE <![CDATA[>=]]> DATE_SUB(NOW(), INTERVAL 4 DAY) AND ADD_DATE <![CDATA[<]]> DATE_SUB(NOW(), INTERVAL 3 DAY) THEN 1 ELSE 0 END) AS day4,
---                 SUM(CASE WHEN ADD_DATE <![CDATA[>=]]> DATE_SUB(NOW(), INTERVAL 3 DAY) AND ADD_DATE <![CDATA[<]]> DATE_SUB(NOW(), INTERVAL 2 DAY) THEN 1 ELSE 0 END) AS day3,
---                 SUM(CASE WHEN ADD_DATE <![CDATA[>=]]> DATE_SUB(NOW(), INTERVAL 2 DAY) AND ADD_DATE <![CDATA[<]]> DATE_SUB(NOW(), INTERVAL 1 DAY) THEN 1 ELSE 0 END) AS day2,
---                 SUM(CASE WHEN ADD_DATE <![CDATA[>=]]> DATE_SUB(NOW(), INTERVAL 1 DAY) AND ADD_DATE <![CDATA[<]]> DATE_SUB(NOW(), INTERVAL 0 DAY) THEN 1 ELSE 0 END) AS day1,
---                 SUM(CASE WHEN ADD_DATE <![CDATA[>=]]> DATE_SUB(NOW(), INTERVAL 0 DAY) THEN 1 ELSE 0 END) AS today
---             FROM ITASSETS
---             WHERE ASSETS_STATUS = '사용중'
     </select>
 
     <select id="getAssetChartDisposeNum">
         SELECT
-        SUM(CASE WHEN ADD_DATE <![CDATA[<=]]> DATE_SUB(NOW(), INTERVAL 6 DAY) THEN 1 ELSE 0 END) AS day6,
-        SUM(CASE WHEN ADD_DATE <![CDATA[<=]]> DATE_SUB(NOW(), INTERVAL 5 DAY) THEN 1 ELSE 0 END) AS day5,
-        SUM(CASE WHEN ADD_DATE <![CDATA[<=]]> DATE_SUB(NOW(), INTERVAL 4 DAY) THEN 1 ELSE 0 END) AS day4,
-        SUM(CASE WHEN ADD_DATE <![CDATA[<=]]> DATE_SUB(NOW(), INTERVAL 3 DAY) THEN 1 ELSE 0 END) AS day3,
-        SUM(CASE WHEN ADD_DATE <![CDATA[<=]]> DATE_SUB(NOW(), INTERVAL 2 DAY) THEN 1 ELSE 0 END) AS day2,
-        SUM(CASE WHEN ADD_DATE <![CDATA[<=]]> DATE_SUB(NOW(), INTERVAL 1 DAY) THEN 1 ELSE 0 END) AS day1,
-        SUM(CASE WHEN ADD_DATE <![CDATA[<=]]> DATE_SUB(NOW(), INTERVAL 0 DAY) THEN 1 ELSE 0 END) AS today
+        COALESCE(SUM(CASE WHEN ADD_DATE <![CDATA[<=]]> DATE_SUB(NOW(), INTERVAL 6 DAY) THEN 1 ELSE 0 END), 0) AS day6,
+        COALESCE(SUM(CASE WHEN ADD_DATE <![CDATA[<=]]> DATE_SUB(NOW(), INTERVAL 5 DAY) THEN 1 ELSE 0 END), 0) AS day5,
+        COALESCE(SUM(CASE WHEN ADD_DATE <![CDATA[<=]]> DATE_SUB(NOW(), INTERVAL 4 DAY) THEN 1 ELSE 0 END), 0) AS day4,
+        COALESCE(SUM(CASE WHEN ADD_DATE <![CDATA[<=]]> DATE_SUB(NOW(), INTERVAL 3 DAY) THEN 1 ELSE 0 END), 0) AS day3,
+        COALESCE(SUM(CASE WHEN ADD_DATE <![CDATA[<=]]> DATE_SUB(NOW(), INTERVAL 2 DAY) THEN 1 ELSE 0 END), 0) AS day2,
+        COALESCE(SUM(CASE WHEN ADD_DATE <![CDATA[<=]]> DATE_SUB(NOW(), INTERVAL 1 DAY) THEN 1 ELSE 0 END), 0) AS day1,
+        COALESCE(SUM(CASE WHEN ADD_DATE <![CDATA[<=]]> DATE_SUB(NOW(), INTERVAL 0 DAY) THEN 1 ELSE 0 END), 0) AS today
         FROM ITASSETS where ASSETS_STATUS = '폐기'
 
---         SELECT
---             SUM(CASE WHEN ADD_DATE <![CDATA[>=]]> DATE_SUB(NOW(), INTERVAL 6 DAY) AND ADD_DATE <![CDATA[<]]> DATE_SUB(NOW(), INTERVAL 5 DAY) THEN 1 ELSE 0 END) AS day6,
---             SUM(CASE WHEN ADD_DATE <![CDATA[>=]]> DATE_SUB(NOW(), INTERVAL 5 DAY) AND ADD_DATE <![CDATA[<]]> DATE_SUB(NOW(), INTERVAL 4 DAY) THEN 1 ELSE 0 END) AS day5,
---             SUM(CASE WHEN ADD_DATE <![CDATA[>=]]> DATE_SUB(NOW(), INTERVAL 4 DAY) AND ADD_DATE <![CDATA[<]]> DATE_SUB(NOW(), INTERVAL 3 DAY) THEN 1 ELSE 0 END) AS day4,
---             SUM(CASE WHEN ADD_DATE <![CDATA[>=]]> DATE_SUB(NOW(), INTERVAL 3 DAY) AND ADD_DATE <![CDATA[<]]> DATE_SUB(NOW(), INTERVAL 2 DAY) THEN 1 ELSE 0 END) AS day3,
---             SUM(CASE WHEN ADD_DATE <![CDATA[>=]]> DATE_SUB(NOW(), INTERVAL 2 DAY) AND ADD_DATE <![CDATA[<]]> DATE_SUB(NOW(), INTERVAL 1 DAY) THEN 1 ELSE 0 END) AS day2,
---             SUM(CASE WHEN ADD_DATE <![CDATA[>=]]> DATE_SUB(NOW(), INTERVAL 1 DAY) AND ADD_DATE <![CDATA[<]]> DATE_SUB(NOW(), INTERVAL 0 DAY) THEN 1 ELSE 0 END) AS day1,
---             SUM(CASE WHEN ADD_DATE <![CDATA[>=]]> DATE_SUB(NOW(), INTERVAL 0 DAY) THEN 1 ELSE 0 END) AS today
---         FROM ITASSETS
---         WHERE ASSETS_STATUS = '폐기'
+
     </select>
 
     <update id="exchangeAsset_exchange">
@@ -161,6 +134,7 @@
     <update id="exchangeAsset_assetlog">
         update STOCK_RETURN set RETURN_ASSETS_DETAIL_NAME=#{assets_detail_name_later} where return_num = #{return_num}
     </update>
+
     <select id="getMyRequestList">
         select * from USER_REQUEST where username = #{username} ORDER BY userq_regdate DESC;
     </select>
@@ -193,10 +167,10 @@
     <select id="getRecentAssetsList">
         select * from ITASSETS a
                           LEFT JOIN GROUP_CATEGORY gc on a.CATEGORY_NUM = gc.CATEGORY_NUM
-                          LEFT JOIN PCSPEC pc ON (a.assets_name LIKE '%노트북%' OR a.assets_name LIKE '%데스크탑%') AND a.spec_num = pc.spec_num
-                          LEFT JOIN SWSPEC sw ON (a.assets_name LIKE '%Microsoft Office%' OR a.assets_name LIKE '%파워포인트%' OR a.assets_name LIKE '엑셀' OR a.assets_name LIKE '워드' OR a.assets_name LIKE '한글과컴퓨터' OR a.assets_name LIKE '인텔리제이' ) AND a.spec_num = sw.spec_num
-                          LEFT JOIN SERVERSPEC sv ON (a.assets_name LIKE '%서버용하드%') AND a.spec_num = sv.spec_num
-                          LEFT JOIN ETCSPEC etc ON a.spec_num = etc.spec_num AND a.assets_name NOT LIKE '%노트북%' AND a.assets_name NOT LIKE '%데스크탑%' AND a.assets_name NOT LIKE '%서버용하드%' AND a.assets_name NOT LIKE '%Microsoft Office%' AND a.assets_name NOT LIKE '%파워포인트%' AND a.assets_name NOT LIKE '%워드%' AND a.assets_name NOT LIKE '%한글과컴퓨터%' AND a.assets_name NOT LIKE '%인텔리제이%'
+                          LEFT JOIN PCSPEC pc ON (a.category_num = 5 OR a.category_num = 6) AND a.spec_num = pc.spec_num
+                          LEFT JOIN SWSPEC sw ON (a.category_num = 7 OR a.category_num = 8 OR a.category_num = 9 OR a.category_num = 10 OR a.category_num = 11 OR a.category_num = 12 ) AND a.spec_num = sw.spec_num
+                          LEFT JOIN SERVERSPEC sv ON (a.category_num = 18) AND a.spec_num = sv.spec_num
+                          LEFT JOIN ETCSPEC etc ON a.spec_num = etc.spec_num AND a.category_num != 5 AND a.category_num != 6 AND a.category_num != 18 AND a.category_num != 7 AND a.category_num != 8 AND a.category_num != 9 AND a.category_num != 10 AND a.category_num != 11 AND a.category_num != 12
         order by add_date desc limit #{nnn};
     </select>
     <select id="getNoticeList">
@@ -215,6 +189,19 @@
         select count(*) from STOCK_APPROVAL where APPRO_KIND = '폐기' or APPRO_KIND = '수리' and APPRO_YN = 'N'
     </select>
 
+    <insert id="registAlam">
+        insert into ALARM(username, ASSETS_NAME, ASSETS_DETAIL_NAME, ALARM_TYPE, ALARM_STATUS) values(#{username}, #{assets_name}, #{assets_detail_name}, #{alarm_type}, #{return_status})
+    </insert>
+
+    <select id="getMyAlarmList">
+        select * from ALARM where username = #{username} and ALARM_YN = "N" order by ALARM_REGDATE desc
+    </select>
+    <update id="handleMyAlamConfirm">
+        update ALARM set ALARM_YN = 'Y' where alarm_num = #{alarm_num}
+    </update>
+    <select id="getMyAlarmCnt">
+        select count(*) from ALARM where ALARM_YN = "N" and username = #{username}
+    </select>
 
 
 </mapper>

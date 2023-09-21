@@ -441,10 +441,10 @@ function HighAdminMain() {
                       <table className="table" style={{marginTop: '10px'}}>
                         <thead>
                         <tr className="table-light">
-                          <th scope="col">카테고리</th>
-                          <th scope="col">자산명</th>
+                          <th scope="col" style={{width: '100px'}}>카테고리</th>
+                          <th scope="col" style={{width: '100px'}}>자산명</th>
                           <th scope="col">자산스펙</th>
-                          <th scope="col">추가날짜</th>
+                          <th scope="col" style={{width: '100px'}}>추가날짜</th>
                           {/* <th scope="col">Revenue</th> */}
                         </tr>
                         </thead>

@@ -10,7 +10,7 @@ function DounutChart_user({myAssetChartCnt}) {
       chart: {
         type: 'donut',
       },
-      labels: ['PC', '스프트웨어', '주변기기', '서버'],
+      labels: ['PC', '소프트웨어', '주변기기', '서버'],
       colors:['#4b0082', '#6a5acd', '#9C27B0', '#dda0dd'],
       responsive: [{
         breakpoint: 480,

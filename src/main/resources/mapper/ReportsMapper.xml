@@ -53,21 +53,39 @@
     <select id="getCPUNum">
         SELECT count(*)
         FROM ITASSETS a
-                 LEFT JOIN PCSPEC pc ON (a.assets_name LIKE '%노트북%' OR a.assets_name LIKE '%데스크탑%') AND a.spec_num = pc.spec_num
-                 LEFT JOIN SWSPEC sw ON (a.assets_name LIKE '%Microsoft Office%' OR a.assets_name LIKE '%파워포인트%' OR a.assets_name LIKE '엑셀' OR a.assets_name LIKE '워드' OR a.assets_name LIKE '한글과컴퓨터' OR a.assets_name LIKE '인텔리제이' ) AND a.spec_num = sw.spec_num
-                 LEFT JOIN SERVERSPEC sv ON (a.assets_name LIKE '%서버용하드%') AND a.spec_num = sv.spec_num
-                 LEFT JOIN ETCSPEC etc ON a.spec_num = etc.spec_num AND a.assets_name NOT LIKE '%노트북%' AND a.assets_name NOT LIKE '%데스크탑%' AND a.assets_name NOT LIKE '%서버용하드%' AND a.assets_name NOT LIKE '%Microsoft Office%' AND a.assets_name NOT LIKE '%파워포인트%' AND a.assets_name NOT LIKE '%워드%' AND a.assets_name NOT LIKE '%한글과컴퓨터%' AND a.assets_name NOT LIKE '%인텔리제이%'
+                 LEFT JOIN GROUP_CATEGORY gc on a.CATEGORY_NUM = gc.CATEGORY_NUM
+                 LEFT JOIN PCSPEC pc ON (a.category_num = 5 OR a.category_num = 6) AND a.spec_num = pc.spec_num
+                 LEFT JOIN SWSPEC sw ON (a.category_num = 7 OR a.category_num = 8 OR a.category_num = 9 OR a.category_num = 10 OR a.category_num = 11 OR a.category_num = 12 ) AND a.spec_num = sw.spec_num
+                 LEFT JOIN SERVERSPEC sv ON (a.category_num = 18) AND a.spec_num = sv.spec_num
+                 LEFT JOIN ETCSPEC etc ON a.spec_num = etc.spec_num AND a.category_num != 5 AND a.category_num != 6 AND a.category_num != 18 AND a.category_num != 7 AND a.category_num != 8 AND a.category_num != 9 AND a.category_num != 10 AND a.category_num != 11 AND a.category_num != 12
         where SPEC_CPU like CONCAT('%', #{cpu}, '%')
 
     </select>
     <select id="getGPUNum">
         SELECT count(*)
         FROM ITASSETS a
-        LEFT JOIN PCSPEC pc ON (a.assets_name LIKE '%노트북%' OR a.assets_name LIKE '%데스크탑%') AND a.spec_num = pc.spec_num
-        LEFT JOIN SWSPEC sw ON (a.assets_name LIKE '%Microsoft Office%' OR a.assets_name LIKE '%파워포인트%' OR a.assets_name LIKE '엑셀' OR a.assets_name LIKE '워드' OR a.assets_name LIKE '한글과컴퓨터' OR a.assets_name LIKE '인텔리제이' ) AND a.spec_num = sw.spec_num
-        LEFT JOIN SERVERSPEC sv ON (a.assets_name LIKE '%서버용하드%') AND a.spec_num = sv.spec_num
-        LEFT JOIN ETCSPEC etc ON a.spec_num = etc.spec_num AND a.assets_name NOT LIKE '%노트북%' AND a.assets_name NOT LIKE '%데스크탑%' AND a.assets_name NOT LIKE '%서버용하드%' AND a.assets_name NOT LIKE '%Microsoft Office%' AND a.assets_name NOT LIKE '%파워포인트%' AND a.assets_name NOT LIKE '%워드%' AND a.assets_name NOT LIKE '%한글과컴퓨터%' AND a.assets_name NOT LIKE '%인텔리제이%'
+                 LEFT JOIN GROUP_CATEGORY gc on a.CATEGORY_NUM = gc.CATEGORY_NUM
+                 LEFT JOIN PCSPEC pc ON (a.category_num = 5 OR a.category_num = 6) AND a.spec_num = pc.spec_num
+                 LEFT JOIN SWSPEC sw ON (a.category_num = 7 OR a.category_num = 8 OR a.category_num = 9 OR a.category_num = 10 OR a.category_num = 11 OR a.category_num = 12 ) AND a.spec_num = sw.spec_num
+                 LEFT JOIN SERVERSPEC sv ON (a.category_num = 18) AND a.spec_num = sv.spec_num
+                 LEFT JOIN ETCSPEC etc ON a.spec_num = etc.spec_num AND a.category_num != 5 AND a.category_num != 6 AND a.category_num != 18 AND a.category_num != 7 AND a.category_num != 8 AND a.category_num != 9 AND a.category_num != 10 AND a.category_num != 11 AND a.category_num != 12
         where SPEC_GPU like CONCAT('%', #{gpu}, '%')
 
+    </select>
+    <select id="getMFGNum">
+
+    </select>
+
+    <select id="getAssetsAllNum">
+        select gc.CATEGORY_PARENT_NUM, count(*) as allCat from ITASSETS it
+        left join GROUP_CATEGORY gc on it.category_num = gc.category_num
+        where ASSETS_STATUS = '사용가능' or ASSETS_STATUS = '사용중'
+        group by gc.CATEGORY_PARENT_NUM
+    </select>
+    <select id="getAssetsUsingNum">
+        select gc.CATEGORY_PARENT_NUM, count(*) as usingCat from ITASSETS it
+        left join GROUP_CATEGORY gc on it.category_num = gc.category_num
+        where ASSETS_STATUS = '사용중'
+        group by gc.CATEGORY_PARENT_NUM
     </select>
 </mapper>

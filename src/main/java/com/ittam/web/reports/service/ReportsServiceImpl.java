@@ -140,4 +140,12 @@ public class ReportsServiceImpl implements ReportsService{
     public Map<String, Integer> getMFGNum() {
         return null;
     }
+
+    @Override
+    public Map<Object, Object> getRadialBarNum() {
+        Map<Object, Object> map = new HashMap<>();
+        map.put("all", reportsMapper.getAssetsAllNum());
+        map.put("using", reportsMapper.getAssetsUsingNum());
+        return map;
+    }
 }

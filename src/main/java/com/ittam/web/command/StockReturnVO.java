@@ -20,5 +20,6 @@ public class StockReturnVO {
     private String return_comment;
     private Timestamp return_date;
     private String return_status;
+    private String return_assets_detail_name;
 
 }

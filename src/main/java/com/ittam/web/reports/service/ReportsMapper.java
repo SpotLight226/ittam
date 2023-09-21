@@ -4,6 +4,9 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.security.core.parameters.P;
 
+import java.util.List;
+import java.util.Map;
+
 @Mapper
 public interface ReportsMapper {
 
@@ -28,4 +31,9 @@ public interface ReportsMapper {
 
     public Integer getCPUNum(String cpu);
     public Integer getGPUNum(String gpu);
+    public Map<String, Integer> getMFGNum();
+
+//////////////////////////////////////////////////
+    public List<Map<Object, Object>> getAssetsAllNum();
+    public List<Map<Object, Object>> getAssetsUsingNum();
 }

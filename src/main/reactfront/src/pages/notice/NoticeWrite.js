@@ -134,7 +134,7 @@ function NoticeWrite() {
                         className="form-control"
                         name="content"
                         id="inputContent"
-                        style={{ height: "500px" }}
+                        style={{ height: "500px"}}
                       />
                     </div>
                   </div>
