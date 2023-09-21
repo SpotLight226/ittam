@@ -85,8 +85,12 @@ function ReturnDetailModal({ setOpenModal_exchange, num, returnList, getreturnLi
             Authorization : token
         },
         data: {
+            username : thisList().username,
             return_status: return_status,
-            return_num: thisList().RETURN_NUM
+            return_num: thisList().RETURN_NUM,
+            assets_name: thisList().ASSETS_NAME,
+            assets_detail_name: thisList().ASSETS_DETAIL_NAME
+
         }
     })
         .then(response => {

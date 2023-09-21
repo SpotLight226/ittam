@@ -432,7 +432,7 @@ function AdminMain() {
                   <div className="card top-selling overflow-auto">
 
                     <div className="card-body pb-0" style={{paddingTop: '20px'}}>
-                     <Link to="/adminitassets"><h5 className="card-title" style={{fontWeight: "800", display: 'inline'}}>재고구매사항 <span>| 전체보기</span></h5></Link>
+                     <Link to="/adminitassets"><h5 className="card-title" style={{fontWeight: "800", display: 'inline'}}>최근재고구매사항 <span>| 전체보기</span></h5></Link>
                       <select style={{display:'inline', marginLeft: '10px'}} onChange={(e) => {setNnn(parseInt(e.target.value));}}>
                         <option value="5">5개</option>
                         <option value="7">7개</option>

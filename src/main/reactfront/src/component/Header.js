@@ -25,19 +25,23 @@ function Header() {
         .catch(error => console.log(error))
   }
 
-  const getMyAlarmList = (username) => {
-    axios({
-      url: "/mainPage/getMyAlarmList",
-      method: "get",
-      headers: {
-        Authorization : token
-      },
-      params: {
-        username: username
-      }
-    }) .then(response => {setMyAlarmList(response.data); console.log(response.data);})
+  const getMyAlarmList =  (username) => {
+     axios({
+        url: "/mainPage/getMyAlarmList",
+        method: "get",
+        headers: {
+          Authorization : token
+        },
+        params: {
+          username: username
+        }
+      }).then(response => {setMyAlarmList(response.data); console.log("dd"+response.data);})
         .catch(error => console.log(error))
-  }
+
+    };
+
+
+
   const getMyAlarmCnt = (username) => {
     axios({
       url: "/mainPage/getMyAlarmCnt",
@@ -51,6 +55,9 @@ function Header() {
     }).then(response => {console.log(response.data); setMyAlarmCnt(response.data);})
         .catch(error => console.log(error))
   }
+
+
+
 
   const handleMyAlamConfirm = (e, alarm_num) => {
     e.stopPropagation();
@@ -79,6 +86,7 @@ function Header() {
     getMyInfo(username);
     getMyAlarmList(username);
     getMyAlarmCnt(username);
+
   }, []);
 
 
@@ -157,7 +165,7 @@ function Header() {
                         <i className="bi bi-exclamation-circle text-warning"></i>
                         <div>
                           <h4>관리자 {a.alarm_status}처리 완료</h4>
-                          <p>요청하신 {a.assets_name}({a.assets_detail_name})의 {a.alarm_type}처리가 완료되었습니다.</p>
+                          <p>요청하신 {a.assets_name}({a.assets_detail_name})의 {a.alarm_type} {a.alarm_status}처리가 완료되었습니다.</p>
                           <p>{a.alarm_regdate}</p>
                         </div>
                       </li>

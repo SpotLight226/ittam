@@ -87,9 +87,10 @@ public class MainPageController {
     //반납하기
     @PostMapping("/updateReturn_yn")
     public ResponseEntity<String> updateReturn_yn(@RequestBody Map<String, Object> map) {
-
+        map.put("alarm_type", "반납");
         mainPageService.updateReturn_yn(map);
         mainPageService.updateAssetUsing((Integer) map.get("assets_num"));
+        mainPageService.registAlam(map); //알람
         return new ResponseEntity<>("승인처리",HttpStatus.OK);
     }
 
@@ -144,7 +145,7 @@ public class MainPageController {
     public ResponseEntity<String> cancelExchange(@RequestBody Map<String, Object> map) {
         map.put("alarm_type", "교환");
         mainPageService.updateReturn_yn(map);
-
+        mainPageService.registAlam(map); //알람
         return new ResponseEntity<>("반려처리되었습니다", HttpStatus.OK);
     }
 
