@@ -48,7 +48,7 @@
     <select id="getAssetStickNum">
         SELECT count(*) FROM ittam.ITASSETS as it
                                  left join GROUP_CATEGORY as gc on it.CATEGORY_NUM = gc.CATEGORY_NUM
-        where Month(ADD_DATE) <![CDATA[<=]]> MONTH(DATE_SUB(NOW(), INTERVAL #{n} MONTH)) and CATEGORY_PARENT_NUM = #{category_num};
+        WHERE DATE(add_date) <![CDATA[<=]]> DATE(NOW()) - INTERVAL #{n} MONTH and CATEGORY_PARENT_NUM = #{category_num};
     </select>
     <select id="getCPUNum">
         SELECT count(*)

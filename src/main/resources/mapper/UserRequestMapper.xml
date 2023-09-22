@@ -10,12 +10,12 @@
     </select>
 
     <update id="UserRequestApprove" parameterType="java.util.Map">
-        update USER_REQUEST set userq_yn = '최종사용승인', userq_grantor = #{username}, userq_okdate = now()
+        update USER_REQUEST set userq_yn = '관리자사용승인', userq_grantor = #{username}, userq_okdate = now()
         where userq_NUM = #{userq_num}
     </update>
 
     <update id="UserRequestreturn" parameterType="java.util.Map">
-        update USER_REQUEST set userq_yn = '최종사용반려', userq_grantor = #{username}, userq_okdate = now()
+        update USER_REQUEST set userq_yn = '관리자사용반려', userq_grantor = #{username}, userq_okdate = now()
         where userq_NUM = #{userq_num}
     </update>
 

@@ -30,20 +30,12 @@ function AssetStickChart({stickNum}) {
         type: 'bar',
         height: 350,
         stacked: true,
+        stackType: '100%'
       },
       plotOptions: {
         bar: {
           horizontal: true,
-          dataLabels: {
-            total: {
-              enabled: true,
-              offsetX: 0,
-              style: {
-                fontSize: '13px',
-                fontWeight: 900
-              }
-            }
-          }
+          
         },
       },
       stroke: {
@@ -69,7 +61,7 @@ function AssetStickChart({stickNum}) {
       tooltip: {
         y: {
           formatter: function (val) {
-            return val + "K"
+            return val
           }
         }
       },
@@ -92,7 +84,7 @@ function AssetStickChart({stickNum}) {
 
   return (
     <div id="chart">
-    <ReactApexChart options={data.options} series={data.series} type="bar" height={315} />
+    <ReactApexChart options={data.options} series={data.series} type="bar" height={315}/>
   </div>
 
   )

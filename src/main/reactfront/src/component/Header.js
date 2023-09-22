@@ -380,12 +380,21 @@ function Header() {
                     className="nav-link nav-profile d-flex align-items-center pe-0"
                     data-bs-toggle="dropdown"
               >
-                <img
-                    src="/assets/img/profile-img.jpg"
-                    alt="Profile"
-                    className="rounded-circle"
-                ></img>
-                <span className="d-none d-md-block dropdown-toggle ps-2">
+                {/*<img*/}
+                {/*    src="/assets/img/profile-img.jpg"*/}
+                {/*    alt="Profile"*/}
+                {/*    className="rounded-circle"*/}
+                {/*></img>*/}
+                {
+                  myInfo.role === 'ROLE_HIGH_ADMIN' ? 
+                  <i className="bx bxs-user-circle" style={{fontSize: '40px', color: 'purple'}}></i> :
+                  (
+                    myInfo.role === 'ROLE_ADMIN' ?
+                    <i className="bx bxs-user-circle" style={{fontSize: '40px', color: 'green'}}></i> :
+                    <i className="bx bxs-user-circle" style={{fontSize: '40px', color: 'skyblue'}}></i> 
+                  )
+                }
+                <span className="d-none d-md-block dropdown-toggle ps-2" style={{fontSize: '20px'}}>
                 {myInfo.user_name}
               </span>
               </Link>

@@ -3,7 +3,7 @@ import "../../styles/MainPageStyle/ReturnDetailModal.css";
 import axios from "axios";
 
 
-function ReqDetailModal({ setOpenReqDetailModal, username, myRequestList, userq_num, getMyRequestList, token}) {
+function ReqDetailModal({ setOpenReqDetailModal, username, myRequestList, userq_num, getMyRequestList, token, myInfo}) {
 
   let thisList = () => {
     return myRequestList.find(x => x.userq_num === userq_num)
@@ -70,7 +70,7 @@ function ReqDetailModal({ setOpenReqDetailModal, username, myRequestList, userq_
               <div className="row mb-3">
                 <label className="col-sm-2 col-form-label">신청자</label>
                 <div className="col-sm-10">
-                  <input type="text" className="form-control" value={username} disabled />
+                  <input type="text" className="form-control" value={myInfo.user_name} disabled />
 
                 </div>
               </div>
@@ -101,28 +101,12 @@ function ReqDetailModal({ setOpenReqDetailModal, username, myRequestList, userq_
 
 
 
-              {/* <div className="row mb-3 userModalAsk-btn">
-                <label className="col-sm-2 col-form-label"></label>
-
-                <div className="col-sm-10">
-                {
-                  thisList().userq_yn.includes('승인') || thisList().userq_yn.includes('반려') ? 
-                  <button type="button"  className="btn btn-primary" style={{marginRight: '0px', backgroundColor: 'gray', border: 'gray', width: '300px'}} onClick={() => { setOpenReqDetailModal(false)}}>처리완료</button>
-                  :
-                  <>
-                  <button type="button" className="btn btn-primary" style={{ marginRight: '10px', backgroundColor: 'gray', border: 'gray' }} onClick={() => { setOpenReqDetailModal(false)}}>뒤로가기</button>
-                  <button type="submit" className="btn btn-primary" onClick={cancelReq_btn}>취소하기</button>
-                  </>
-
-                }
-                 </div>
-               </div> */}
 
                <div className="footer" style={{paddingBottom: '5px'}}>
                {
                   thisList().userq_yn.includes('승인') || thisList().userq_yn.includes('반려') ? 
                  
-                  <button  type="button" className="btn btn-primary" style={{backgroundColor: 'gray', width: '140px', border: 'none', marginLeft: '210px'}} disabled>처리완료</button>
+                  <button  type="button" className="btn btn-primary" style={{backgroundColor: 'gray', width: '140px', border: 'none', marginLeft: '210px'}} disabled>{thisList().userq_yn === '관리자사용승인' || thisList().userq_yn === '관리자구매승인' ? '최종승인대기중' : (thisList().userq_yn === '최종사용승인' || thisList().userq_yn === '최종구매승인' ? '승인완료' : '반려처리')}</button>
                   :
                   <>
                   <button type="button" className="btn btn-primary" style={{ marginRight: '10px', backgroundColor: 'gray', border: 'gray', marginLeft: '190px' }} onClick={() => { setOpenReqDetailModal(false)}}>뒤로가기</button>
