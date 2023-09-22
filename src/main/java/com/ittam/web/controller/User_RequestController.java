@@ -164,6 +164,7 @@ public class User_RequestController {
         vo.setUserq_comment(requestBody.get("userq_comment"));
         vo.setUserq_title(requestBody.get("userq_title"));
         vo.setUserq_num(Integer.valueOf(requestBody.get("userq_num")));
+        System.out.println(requestBody.toString());
         try {
             userRequestService.UserRequestBuyApprove(vo, requestBody.get("username"));
             userRequestService.UserRequestBuyApproveB(vo);
