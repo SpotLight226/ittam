@@ -15,11 +15,12 @@
             sv.*,
             c.category_name
         FROM ITASSETS a
-                 LEFT JOIN PCSPEC pc ON (a.assets_name LIKE '%노트북%' OR a.assets_name LIKE '%데스크탑%') AND a.spec_num = pc.spec_num
-                 LEFT JOIN SWSPEC sw ON (a.assets_name LIKE '%소프트웨어%') AND a.spec_num = sw.spec_num
-                 LEFT JOIN SERVERSPEC sv ON (a.assets_name LIKE '%서버%') AND a.spec_num = sv.spec_num
-                 LEFT JOIN ETCSPEC etc ON a.spec_num = etc.spec_num AND a.assets_name NOT LIKE '%노트북%' AND a.assets_name NOT LIKE '%데스크탑%' AND a.assets_name NOT LIKE '%서버%' AND a.assets_name NOT LIKE '%소프트웨어%'
-                 LEFT JOIN GROUP_CATEGORY c ON a.CATEGORY_NUM = c.CATEGORY_NUM;
+                 LEFT JOIN PCSPEC pc ON (a.CATEGORY_NUM = 5 OR a.CATEGORY_NUM = 6) AND a.spec_num = pc.spec_num
+                 LEFT JOIN SWSPEC sw ON (a.CATEGORY_NUM = 7 OR a.CATEGORY_NUM = 8 OR a.CATEGORY_NUM = 9 OR a.CATEGORY_NUM = 10 OR a.CATEGORY_NUM = 11 OR a.CATEGORY_NUM = 12) AND a.spec_num = sw.spec_num
+                 LEFT JOIN SERVERSPEC sv ON (a.CATEGORY_NUM = 18) AND a.spec_num = sv.spec_num
+                 LEFT JOIN ETCSPEC etc ON a.spec_num = etc.spec_num
+                 LEFT JOIN GROUP_CATEGORY c ON a.CATEGORY_NUM = c.CATEGORY_NUM
+        WHERE a.assets_status = '사용가능';
     </select>
 
     <!-- 전체 자산 목록 검색 -->
@@ -32,12 +33,12 @@
             sv.*,
             c.category_name
         FROM ITASSETS a
-                 LEFT JOIN PCSPEC pc ON (a.assets_name LIKE '%노트북%' OR a.assets_name LIKE '%데스크탑%') AND a.spec_num = pc.spec_num
-                 LEFT JOIN SWSPEC sw ON (a.assets_name LIKE '%Microsoft Office%' OR a.assets_name LIKE '%파워포인트%' OR a.assets_name LIKE '엑셀' OR a.assets_name LIKE '워드' OR a.assets_name LIKE '한글과컴퓨터' OR a.assets_name LIKE '인텔리제이' ) AND a.spec_num = sw.spec_num
-                 LEFT JOIN SERVERSPEC sv ON (a.assets_name LIKE '%서버용하드%') AND a.spec_num = sv.spec_num
-                 LEFT JOIN ETCSPEC etc ON a.spec_num = etc.spec_num AND a.assets_name NOT LIKE '%노트북%' AND a.assets_name NOT LIKE '%데스크탑%' AND a.assets_name NOT LIKE '%서버용하드%' AND a.assets_name NOT LIKE '%Microsoft Office%' AND a.assets_name NOT LIKE '%파워포인트%' AND a.assets_name NOT LIKE '%워드%' AND a.assets_name NOT LIKE '%한글과컴퓨터%' AND a.assets_name NOT LIKE '%인텔리제이%'
+                 LEFT JOIN PCSPEC pc ON (a.CATEGORY_NUM = 5 OR a.CATEGORY_NUM = 6) AND a.spec_num = pc.spec_num
+                 LEFT JOIN SWSPEC sw ON (a.CATEGORY_NUM = 7 OR a.CATEGORY_NUM = 8 OR a.CATEGORY_NUM = 9 OR a.CATEGORY_NUM = 10 OR a.CATEGORY_NUM = 11 OR a.CATEGORY_NUM = 12) AND a.spec_num = sw.spec_num
+                 LEFT JOIN SERVERSPEC sv ON (a.CATEGORY_NUM = 18) AND a.spec_num = sv.spec_num
+                 LEFT JOIN ETCSPEC etc ON a.spec_num = etc.spec_num
                  LEFT JOIN GROUP_CATEGORY c ON a.CATEGORY_NUM = c.CATEGORY_NUM
-        WHERE a.assets_name = #{inputText};
+        WHERE a.assets_status = '사용가능' AND a.assets_name = #{inputText};
     </select>
 
     <!--    pc-->
@@ -50,12 +51,13 @@
             sv.*,
             c.category_name
         FROM ITASSETS a
-                 LEFT JOIN PCSPEC pc ON (a.assets_name LIKE '%노트북%' OR a.assets_name LIKE '%데스크탑%') AND a.spec_num = pc.spec_num
-                 LEFT JOIN SWSPEC sw ON (a.assets_name LIKE '%Microsoft Office%' OR a.assets_name LIKE '%파워포인트%' OR a.assets_name LIKE '엑셀' OR a.assets_name LIKE '워드' OR a.assets_name LIKE '한글과컴퓨터' OR a.assets_name LIKE '인텔리제이' ) AND a.spec_num = sw.spec_num
-                 LEFT JOIN SERVERSPEC sv ON (a.assets_name LIKE '%서버용하드%') AND a.spec_num = sv.spec_num
-                 LEFT JOIN ETCSPEC etc ON a.spec_num = etc.spec_num AND a.assets_name NOT LIKE '%노트북%' AND a.assets_name NOT LIKE '%데스크탑%' AND a.assets_name NOT LIKE '%서버용하드%' AND a.assets_name NOT LIKE '%Microsoft Office%' AND a.assets_name NOT LIKE '%파워포인트%' AND a.assets_name NOT LIKE '%워드%' AND a.assets_name NOT LIKE '%한글과컴퓨터%' AND a.assets_name NOT LIKE '%인텔리제이%'
+                 LEFT JOIN PCSPEC pc ON (a.CATEGORY_NUM = 5 OR a.CATEGORY_NUM = 6) AND a.spec_num = pc.spec_num
+                 LEFT JOIN SWSPEC sw ON (a.CATEGORY_NUM = 7 OR a.CATEGORY_NUM = 8 OR a.CATEGORY_NUM = 9 OR a.CATEGORY_NUM = 10 OR a.CATEGORY_NUM = 11 OR a.CATEGORY_NUM = 12) AND a.spec_num = sw.spec_num
+                 LEFT JOIN SERVERSPEC sv ON (a.CATEGORY_NUM = 18) AND a.spec_num = sv.spec_num
+                 LEFT JOIN ETCSPEC etc ON a.spec_num = etc.spec_num
                  LEFT JOIN GROUP_CATEGORY c ON a.CATEGORY_NUM = c.CATEGORY_NUM
-        WHERE a.assets_name IN ('데스크탑', '노트북');
+        WHERE (a.CATEGORY_NUM = 5 OR a.CATEGORY_NUM = 6) AND a.assets_status = '사용가능';
+
     </select>
 
 
@@ -69,12 +71,17 @@
             sv.*,
             c.category_name
         FROM ITASSETS a
-                 LEFT JOIN PCSPEC pc ON (a.assets_name LIKE '%노트북%' OR a.assets_name LIKE '%데스크탑%') AND a.spec_num = pc.spec_num
-                 LEFT JOIN SWSPEC sw ON (a.assets_name LIKE '%Microsoft Office%' OR a.assets_name LIKE '%파워포인트%' OR a.assets_name LIKE '엑셀' OR a.assets_name LIKE '워드' OR a.assets_name LIKE '한글과컴퓨터' OR a.assets_name LIKE '인텔리제이' ) AND a.spec_num = sw.spec_num
-                 LEFT JOIN SERVERSPEC sv ON (a.assets_name LIKE '%서버용하드%') AND a.spec_num = sv.spec_num
-                 LEFT JOIN ETCSPEC etc ON a.spec_num = etc.spec_num AND a.assets_name NOT LIKE '%노트북%' AND a.assets_name NOT LIKE '%데스크탑%' AND a.assets_name NOT LIKE '%서버용하드%' AND a.assets_name NOT LIKE '%Microsoft Office%' AND a.assets_name NOT LIKE '%파워포인트%' AND a.assets_name NOT LIKE '%워드%' AND a.assets_name NOT LIKE '%한글과컴퓨터%' AND a.assets_name NOT LIKE '%인텔리제이%'
-                 LEFT JOIN GROUP_CATEGORY c ON a.CATEGORY_NUM = c.CATEGORY_NUM
-        WHERE a.assets_name LIKE '%소프트웨어%';
+                 LEFT JOIN PCSPEC pc ON (a.CATEGORY_NUM = 5 OR a.CATEGORY_NUM = 6) AND a.spec_num = pc.spec_num
+                 LEFT JOIN SWSPEC sw ON (a.CATEGORY_NUM = 7 OR a.CATEGORY_NUM = 8 OR a.CATEGORY_NUM = 9 OR a.CATEGORY_NUM = 10 OR a.CATEGORY_NUM = 11 OR a.CATEGORY_NUM = 12) AND a.spec_num = sw.spec_num
+                 LEFT JOIN SERVERSPEC sv ON (a.CATEGORY_NUM = 18) AND a.spec_num = sv.spec_num
+                 LEFT JOIN ETCSPEC etc ON a.spec_num = etc.spec_num
+            AND a.CATEGORY_NUM != 5
+         AND a.CATEGORY_NUM != 6
+         AND a.CATEGORY_NUM != 18
+         AND a.CATEGORY_NUM != 7
+         LEFT JOIN GROUP_CATEGORY c ON a.CATEGORY_NUM = c.CATEGORY_NUM
+        WHERE (a.CATEGORY_NUM = 7 OR a.CATEGORY_NUM = 8 OR a.CATEGORY_NUM = 9 OR a.CATEGORY_NUM = 10 OR a.CATEGORY_NUM = 11 OR a.CATEGORY_NUM = 12)
+        AND a.assets_status = '사용가능';
     </select>
 
     <!--    sv-->
@@ -87,12 +94,16 @@
             sv.*,
             c.category_name
         FROM ITASSETS a
-                 LEFT JOIN PCSPEC pc ON a.spec_num = pc.spec_num
-                 LEFT JOIN SWSPEC sw ON a.spec_num = sw.spec_num
-                 LEFT JOIN SERVERSPEC sv ON a.spec_num = sv.spec_num
+                 LEFT JOIN PCSPEC pc ON (a.CATEGORY_NUM = 5 OR a.CATEGORY_NUM = 6) AND a.spec_num = pc.spec_num
+                 LEFT JOIN SWSPEC sw ON (a.CATEGORY_NUM = 7 OR a.CATEGORY_NUM = 8 OR a.CATEGORY_NUM = 9 OR a.CATEGORY_NUM = 10 OR a.CATEGORY_NUM = 11 OR a.CATEGORY_NUM = 12) AND a.spec_num = sw.spec_num
+                 LEFT JOIN SERVERSPEC sv ON (a.CATEGORY_NUM = 18) AND a.spec_num = sv.spec_num
                  LEFT JOIN ETCSPEC etc ON a.spec_num = etc.spec_num
-                 LEFT JOIN GROUP_CATEGORY c ON a.CATEGORY_NUM = c.CATEGORY_NUM
-        WHERE a.assets_name LIKE '%서버%';
+            AND a.CATEGORY_NUM != 5
+         AND a.CATEGORY_NUM != 6
+         AND a.CATEGORY_NUM != 18
+         AND a.CATEGORY_NUM != 7
+         LEFT JOIN GROUP_CATEGORY c ON a.CATEGORY_NUM = c.CATEGORY_NUM
+        WHERE a.CATEGORY_NUM = 18 AND a.assets_status = '사용가능';
     </select>
 
     <!--    etc-->
@@ -105,15 +116,19 @@
             sv.*,
             c.category_name
         FROM ITASSETS a
-                 LEFT JOIN PCSPEC pc ON a.spec_num = pc.spec_num
-                 LEFT JOIN SWSPEC sw ON a.spec_num = sw.spec_num
-                 LEFT JOIN SERVERSPEC sv ON a.spec_num = sv.spec_num
+                 LEFT JOIN PCSPEC pc ON (a.CATEGORY_NUM = 5 OR a.CATEGORY_NUM = 6) AND a.spec_num = pc.spec_num
+                 LEFT JOIN SWSPEC sw ON (a.CATEGORY_NUM = 7 OR a.CATEGORY_NUM = 8 OR a.CATEGORY_NUM = 9 OR a.CATEGORY_NUM = 10 OR a.CATEGORY_NUM = 11 OR a.CATEGORY_NUM = 12) AND a.spec_num = sw.spec_num
+                 LEFT JOIN SERVERSPEC sv ON (a.CATEGORY_NUM = 18) AND a.spec_num = sv.spec_num
                  LEFT JOIN ETCSPEC etc ON a.spec_num = etc.spec_num
-                 LEFT JOIN GROUP_CATEGORY c ON a.CATEGORY_NUM = c.CATEGORY_NUM
-        WHERE a.assets_name NOT LIKE '%노트북%'
-          AND a.assets_name NOT LIKE '%데스크탑%'
-          AND a.assets_name NOT LIKE '%서버%'
-          AND a.assets_name NOT LIKE '%소프트웨어%';
+            AND a.CATEGORY_NUM != 5
+         AND a.CATEGORY_NUM != 6
+         AND a.CATEGORY_NUM != 18
+         AND a.CATEGORY_NUM != 7
+         LEFT JOIN GROUP_CATEGORY c ON a.CATEGORY_NUM = c.CATEGORY_NUM
+        WHERE (a.CATEGORY_NUM != 5
+          AND a.CATEGORY_NUM != 6 AND a.CATEGORY_NUM != 7 AND a.CATEGORY_NUM != 8 AND a.CATEGORY_NUM != 9
+          AND a.CATEGORY_NUM != 10 AND a.CATEGORY_NUM != 11 AND a.CATEGORY_NUM != 12 AND a.CATEGORY_NUM != 18)
+          AND a.assets_status = '사용가능';
     </select>
 
 
@@ -134,8 +149,8 @@
                  LEFT JOIN SERVERSPEC sv ON a.spec_num = sv.spec_num
                  LEFT JOIN ETCSPEC etc ON a.spec_num = etc.spec_num
                  LEFT JOIN GROUP_CATEGORY c ON a.CATEGORY_NUM = c.CATEGORY_NUM
-        WHERE
-            a.assets_name IN ('데스크탑', '노트북')AND a.assets_name IN (#{inputText});
+        WHERE (a.CATEGORY_NUM = 5 OR a.CATEGORY_NUM = 6)
+          AND a.assets_name IN (#{inputText});
     </select>
 
     <!--SW 검색-->
@@ -153,8 +168,8 @@
                  LEFT JOIN SERVERSPEC sv ON a.spec_num = sv.spec_num
                  LEFT JOIN ETCSPEC etc ON a.spec_num = etc.spec_num
                  LEFT JOIN GROUP_CATEGORY c ON a.CATEGORY_NUM = c.CATEGORY_NUM
-        WHERE
-            a.assets_name IN ('소프트웨어')AND a.assets_name IN (#{inputText});
+        WHERE a.CATEGORY_NUM = 7
+          AND a.assets_name IN (#{inputText});
     </select>
 
     <!--SV 검색-->
@@ -167,13 +182,17 @@
             sv.*,
             c.category_name
         FROM ITASSETS a
-                 LEFT JOIN PCSPEC pc ON a.spec_num = pc.spec_num
-                 LEFT JOIN SWSPEC sw ON a.spec_num = sw.spec_num
-                 LEFT JOIN SERVERSPEC sv ON a.spec_num = sv.spec_num
+                 LEFT JOIN PCSPEC pc ON (a.CATEGORY_NUM = 5 OR a.CATEGORY_NUM = 6) AND a.spec_num = pc.spec_num
+                 LEFT JOIN SWSPEC sw ON (a.CATEGORY_NUM = 7 OR a.CATEGORY_NUM = 8 OR a.CATEGORY_NUM = 9 OR a.CATEGORY_NUM = 10 OR a.CATEGORY_NUM = 11 OR a.CATEGORY_NUM = 12) AND a.spec_num = sw.spec_num
+                 LEFT JOIN SERVERSPEC sv ON (a.CATEGORY_NUM = 18) AND a.spec_num = sv.spec_num
                  LEFT JOIN ETCSPEC etc ON a.spec_num = etc.spec_num
-                 LEFT JOIN GROUP_CATEGORY c ON a.CATEGORY_NUM = c.CATEGORY_NUM
-        WHERE
-            a.assets_name IN ('서버')AND a.assets_name IN (#{inputText});
+            AND a.CATEGORY_NUM != 5
+         AND a.CATEGORY_NUM != 6
+         AND a.CATEGORY_NUM != 18
+         AND a.CATEGORY_NUM != 7
+         LEFT JOIN GROUP_CATEGORY c ON a.CATEGORY_NUM = c.CATEGORY_NUM
+        WHERE a.CATEGORY_NUM = 18;
+          AND a.assets_name IN (#{inputText});
     </select>
 
     <!--ETC 검색-->
@@ -186,17 +205,18 @@
             sv.*,
             c.category_name
         FROM ITASSETS a
-                 LEFT JOIN PCSPEC pc ON a.spec_num = pc.spec_num
-                 LEFT JOIN SWSPEC sw ON a.spec_num = sw.spec_num
-                 LEFT JOIN SERVERSPEC sv ON a.spec_num = sv.spec_num
+                 LEFT JOIN PCSPEC pc ON (a.CATEGORY_NUM = 5 OR a.CATEGORY_NUM = 6) AND a.spec_num = pc.spec_num
+                 LEFT JOIN SWSPEC sw ON (a.CATEGORY_NUM = 7 OR a.CATEGORY_NUM = 8 OR a.CATEGORY_NUM = 9 OR a.CATEGORY_NUM = 10 OR a.CATEGORY_NUM = 11 OR a.CATEGORY_NUM = 12) AND a.spec_num = sw.spec_num
+                 LEFT JOIN SERVERSPEC sv ON (a.CATEGORY_NUM = 18) AND a.spec_num = sv.spec_num
                  LEFT JOIN ETCSPEC etc ON a.spec_num = etc.spec_num
-                 LEFT JOIN GROUP_CATEGORY c ON a.CATEGORY_NUM = c.CATEGORY_NUM
-        WHERE
-            (a.assets_name LIKE '%inputText%'
-                OR a.assets_name LIKE '%노트북%'
-                OR a.assets_name LIKE '%데스크탑%'
-                OR a.assets_name LIKE '%서버%'
-                OR a.assets_name LIKE '%소프트웨어%')
+            AND a.CATEGORY_NUM != 5
+         AND a.CATEGORY_NUM != 6
+         AND a.CATEGORY_NUM != 18
+         AND a.CATEGORY_NUM != 7
+         LEFT JOIN GROUP_CATEGORY c ON a.CATEGORY_NUM = c.CATEGORY_NUM
+        WHERE a.CATEGORY_NUM != 5
+          AND a.CATEGORY_NUM != 6 AND a.CATEGORY_NUM != 7 AND a.CATEGORY_NUM != 8 AND a.CATEGORY_NUM != 9
+          AND a.CATEGORY_NUM != 10 AND a.CATEGORY_NUM != 11 AND a.CATEGORY_NUM != 12 AND a.CATEGORY_NUM != 18;
           AND a.assets_name IN ('%inputText%');
 
     </select>

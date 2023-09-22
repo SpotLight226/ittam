@@ -9,24 +9,8 @@ import {AssetAllListOption} from "../../constants/OptionList";
 import ControlMenu from "../../component/ControlMenu";
 
 const validAssetNames = [ // 유효한 자산명 목록
-  'PC',
-  '소프트웨어',
-  '주변기기',
-  '서버',
-  '데스크탑',
-  '노트북',
-  'Microsoft Office',
-  '파워포인트',
-  '엑셀',
-  '워드',
-  '한글과컴퓨터',
-  '인텔리제이',
-  '키보드',
-  '마우스',
-  '복합기',
-  '프린터',
-  '스캐너',
-  '서버용하드',
+  'PC', '소프트웨어', '주변기기', '서버', '데스크탑', '노트북', 'Microsoft Office', '파워포인트', '엑셀',
+  '워드', '한글과컴퓨터', '인텔리제이', '키보드', '마우스', '복합기', '프린터', '스캐너', '서버용하드',
 ];
 
 const AssetAllList = () => {
@@ -37,52 +21,22 @@ const AssetAllList = () => {
   const [inputText, setInputText] = useState('');
 
   const [inputInnerData, setInputInnerDate] = useState({ // 검색 시 list 관리를 위한 state
-    assets_name : "",
-    assets_status : "",
-    spec_mfg : "",
-    spec_seriel : "",
-    spec_warranty : "",
-    category_name : "",
-    spec_num : "",
-    assets_num : "",
+    assets_name : "", assets_status : "", spec_mfg : "", spec_seriel : "", spec_warranty : "",
+    category_name : "", spec_num : "", assets_num : "",
     //
-    sw_mfg: '',
-    sw_spec_seriel: '',
-    sw_spec_warranty: '',
-    sw_purchase_date: '',
-    sw_price: '',
+    sw_mfg: '', sw_spec_seriel: '', sw_spec_warranty: '', sw_purchase_date: '', sw_price: '',
     /* etcspec */
-    etc_mfg: '',
-    etc_spec_warranty: '',
-    etc_purchase_date: '',
-    etc_price: '',
+    etc_mfg: '', etc_spec_warranty: '', etc_purchase_date: '', etc_price: '',
     /* pcspec */
-    spec_cpu: '',
-    spec_ram: '',
-    spec_mainboard: '',
-    spec_power: '',
-    spec_gpu: '',
-    spec_hdd: '',
-    spec_ssd: '',
-    spec_ops: '',
+    spec_cpu: '', spec_ram: '', spec_mainboard: '', spec_power: '', spec_gpu: '', spec_hdd: '', spec_ssd: '', spec_ops: '',
     // spec_mfg: '',
     // spec_seriel: '',
     spec_purchase_date: '',
     /* serverspec */
-    server_mfg: '',
-    server_spec_warranty: '',
-    server_capa: '',
-    server_price: '',
-    server_purchase_date: '',
-    server_interface: '',
-    server_average_life: '',
-    server_rpm: '',
-    server_datarecovery_life: '',
+    server_mfg: '', server_spec_warranty: '', server_capa: '', server_price: '', server_purchase_date: '', server_interface: '', server_average_life: '', server_rpm: '', server_datarecovery_life: '',
     /* 승인요청 */
-    username: '',
-    appro_title: '',
-    appro_comment: '',
-    category_num:''
+    username: '', appro_title: '', appro_comment: '', category_num:''
+
   });
 
 
@@ -119,7 +73,7 @@ const AssetAllList = () => {
         });
   };
 
-  // 자산 목록 리스트
+  // 자산 목록 리스트`
   useEffect(() => {
 
     if(inputInnerData.assets_name === "" || inputInnerData.length === 0 && path === "/itassets"){
@@ -155,7 +109,6 @@ const AssetAllList = () => {
   const [currentPage, setCurrentPage] = useState(1); // 현재 페이지
   const pagesPerGroup = 10; // 한 그룹에 표시할 페이지 수
   const currentGroup = Math.ceil(currentPage / pagesPerGroup); // 현재 페이지 그룹
-
   const startPage = (currentGroup - 1) * pagesPerGroup; // 시작 페이지
   const endPage = Math.min(currentGroup * pagesPerGroup, totalPages); // 끝 페이지
 
@@ -173,22 +126,16 @@ const AssetAllList = () => {
     let dayOfWeek = week[now.getDay()];
     let hours = now.getHours();
     let minutes = now.getMinutes();
-
     return todayYear + "년 " + todayMonth + "월 " + todayDate + "일 " + dayOfWeek + " ";
   }
-
   //상세페이지
-
   const [selectedItem, setSelectedItem] = useState(null);
   const handleModal = (item) => {
     setSelectedItem(item);
   };
-
-
   //사용 신청 모달창
   const handleToggle = (e) => { // 승인 모달창 핸들러
     let basicModal = document.getElementById("basicModal");
-
     basicModal.classList.toggle("show");
     basicModal.style.display = ((basicModal.style.display !== 'none') ? 'none' : 'block');
     setInnerDate({
@@ -197,37 +144,26 @@ const AssetAllList = () => {
       category_num: e.target.closest(".prod-box").querySelector(".category_num").textContent,
       assets_num: e.target.closest(".prod-box").querySelector(".assets_num").textContent,
     });
-
     // 모달 센터로 이동
     const modal = document.querySelector(".modalmodal .card");
     modal.style.left = `calc(50% - ${modal.clientWidth / 2}px)`;
     modal.style.top = `calc(50% - ${modal.clientHeight / 2}px)`;
   };
-
-  const handleClose =() =>  { // 사용신청 모달창 닫는
+  // 사용신청 모달창 닫는 핸들러
+  const handleClose =() =>  {
     let basicModal = document.getElementById("basicModal");
     basicModal.style.display = "none";
     basicModal.classList.toggle("show");
     setInnerDate({
       //초기화
-      assets_name: "",
-      category_num: "",
-      assets_num: "",
-      userq_title: "",
-      userq_comment: "",
+      assets_name: "", category_num: "", assets_num: "", userq_title: "", userq_comment: "",
     });
   };
-
-
-  const [innerData, setInnerDate] = useState({ // 승인, 반려 버튼 눌렀을 때 해당 행의 값 state로 관리
-    username:username || '',
-    assets_name : "",
-    category_num : "",
-    assets_num : "",
-    userq_title :"",
-    userq_comment : "",
+    // 사용신청 버튼 눌렀을 때 해당 행의 값 state로 관리
+  const [innerData, setInnerDate] = useState({
+    username:username || '', assets_name : "", category_num : "", assets_num : "",
+    userq_title :"", userq_comment : "",
   });
-
   const handleChange = (e) => {
     const { name, value } = e.target;
     setInnerDate((prevData) => ({
@@ -235,7 +171,7 @@ const AssetAllList = () => {
       [name]: value,
     }));
   };
-
+  // 사용신청 폼
   const AssetUsageRequestForm = async (e) => {
     e.preventDefault();
     try {
@@ -247,31 +183,20 @@ const AssetAllList = () => {
       if (response.data) {
         setInnerDate({
           //초기화
-          assets_name: "",
-          category_num: "",
-          assets_num: "",
-          userq_title: "",
-          userq_comment: "",
+          assets_name: "", category_num: "", assets_num: "", userq_title: "", userq_comment: "",
         });
         handleClose();
         alert("정상적으로 사용 신청이 처리되었습니다.");
       }
-
     } catch (error) {
       console.error("사용 신청 처리에 실패하였습니다.", error);
       alert("사용 신청 처리에 실패하였습니다.");
       setInnerDate({
         //초기화
-        assets_name: "",
-        category_num: "",
-        assets_num: "",
-        userq_title: "",
-        userq_comment: "",
+        assets_name: "", category_num: "", assets_num: "", userq_title: "", userq_comment: "",
       });
     }
   };
-
-
   // 구매 사용 신청
   const handleToggleBuy = (e) => { // 구매신청 모달창 핸들러
     let basicModal = document.getElementById("basicModalBuy");
@@ -288,12 +213,8 @@ const AssetAllList = () => {
     });
 
   }
-
   const [innerBuyData, setInnerBuyDate] = useState({ // 승인, 반려 버튼 눌렀을 때 해당 행의 값 state로 관리
-    username:username || '',
-    assets_name : "",
-    userq_title :"",
-    userq_comment : "",
+    username:username || '', assets_name : "", userq_title :"", userq_comment : "",
   });
   const handleBuyClose = () =>  { // 구매신청 모달창 닫는
     let basicModalBuy = document.getElementById("basicModalBuy");
@@ -301,9 +222,7 @@ const AssetAllList = () => {
     basicModalBuy.classList.toggle("show");
     setInnerBuyDate({
       //초기화
-      assets_name: "",
-      userq_title: "",
-      userq_comment: "",
+      assets_name: "", userq_title: "", userq_comment: "",
     });
   };
   const handleBuyChange = (e) => {
@@ -313,8 +232,6 @@ const AssetAllList = () => {
       [name]: value,
     }));
   };
-
-
   const AssetBuyRequestForm = async (e) => {
     e.preventDefault();
 
@@ -333,9 +250,7 @@ const AssetAllList = () => {
       //초기화
       if (response.data) {
         setInnerBuyDate({
-          assets_name: "",
-          userq_title: "",
-          userq_comment: "",
+          assets_name: "", userq_title: "", userq_comment: "",
         });
         handleBuyClose()
         alert("정상적으로 사용 신청이 처리되었습니다.");
@@ -344,11 +259,8 @@ const AssetAllList = () => {
       console.error("사용 신청 처리에 실패하였습니다.", error);
       alert("사용 신청 처리에 실패하였습니다.");
       setInnerBuyDate({
-        assets_name: "",
-        userq_title: "",
-        userq_comment: "",
+        assets_name: "", userq_title: "", userq_comment: "",
       });
-
     }
   };
 
@@ -374,59 +286,50 @@ const AssetAllList = () => {
           }
         }
         case "name": {
-          // 이름 : 문자열을 사전 순으로 비교한다
           if (checkClass) {
             return b.assets_name.localeCompare(a.assets_name);
           } else {
             return a.assets_name.localeCompare(b.assets_name);
           }
         }
-        // case "id": {
-        //   // 사원번호 : 부서 빼고 번호만 비교
-        //   const a_id = parseInt(a.username.slice(3, a.username.length));
-        //   const b_id = parseInt(b.username.slice(3, b.username.length));
-        //
-        //   if (checkClass) {
-        //     return b_id - a_id;
-        //   } else {
-        //     return a_id - b_id;
-        //   }
-        // }
-        // case "depart": {
-        //   // 부서
-        //   if (checkClass) {
-        //     return b.user_depart.localeCompare(a.user_depart);
-        //   } else {
-        //     return a.user_depart.localeCompare(b.user_depart);
-        //   }
-        // }
-        // case "auth": {
-        //   // 권한
-        //   if (checkClass) {
-        //     return b.role.localeCompare(a.role);
-        //   } else {
-        //     return a.role.localeCompare(b.role);
-        //   }
-        // }
-        // case "email": {
-        //   // 이메일
-        //   if (checkClass) {
-        //     return b.user_email.localeCompare(a.user_email);
-        //   } else {
-        //     return a.user_email.localeCompare(b.user_email);
-        //   }
-        // }
-        // case "date": {
-        //   // 입사일 : Date 를 비교해야 하므로 state의 날짜 문자열을 가지고 와서 새로운 Date 객체에 넣고 getTime()을 사용해 ms로 변환 후 비교
-        //   const a_date = new Date(a.user_joindate).getTime();
-        //   const b_date = new Date(b.user_joindate).getTime();
-        //
-        //   if (checkClass) {
-        //     return b_date - a_date;
-        //   } else {
-        //     return a_date - b_date;
-        //   }
-        // }
+        case "status": {
+          if (checkClass) {
+            return b.assets_status.localeCompare(a.assets_status);
+          } else {
+            return a.assets_status.localeCompare(b.assets_status);
+          }
+        }
+        case "mfg": {
+          if (checkClass) {
+            return b.spec_mfg.localeCompare(a.spec_mfg);
+          } else {
+            return a.spec_mfg.localeCompare(b.spec_mfg);
+          }
+        }
+
+        case "seriel": {
+          // 권한
+          if (checkClass) {
+            return b.spec_seriel.localeCompare(a.spec_seriel);
+          } else {
+            return a.spec_seriel.localeCompare(b.spec_seriel);
+          }
+        }
+        case "war": {
+          if (checkClass) {
+            return b.spec_warranty.localeCompare(a.spec_warranty);
+          } else {
+            return a.spec_warranty.localeCompare(b.spec_warranty);
+          }
+        }
+        case "category": {
+
+          if (checkClass) {
+            return b.category_name.localeCompare(a.category_name);
+          } else {
+            return a.category_name.localeCompare(b.category_name);
+          }
+        }
         default: {
           return null;
         }
@@ -440,8 +343,60 @@ const AssetAllList = () => {
 
 
 
+  //일괄 사용 신청
+  const [isChecked, setIsChecked] = useState(false);
+  const [isButtonVisible, setIsButtonVisible] = useState(false); // 초기에는 버튼 숨김
+
+  const [isCheckedList, setIsCheckedList] = useState([]);
+  const toggleAllCheckboxes  = (index) =>{
+    if(!isChecked){
+      setIsChecked(!isChecked); // isChecked를 true로 바꾼다
+      setIsButtonVisible(!isChecked); //setIsButtonVisible를 true로 바꾼다
+
+      const updatedIsCheckedList = [...isCheckedList];
+      updatedIsCheckedList[index] = !updatedIsCheckedList[index];
+      setIsCheckedList(updatedIsCheckedList);
+    }else{
+      setIsChecked(!isChecked); // isChecked를 true로 바꾼다
+      setIsButtonVisible(!isChecked); //setIsButtonVisible를 true로 바꾼다
 
 
+      const updatedIsCheckedList = [...isCheckedList];
+      updatedIsCheckedList[index] = !updatedIsCheckedList[index];
+      setIsCheckedList(updatedIsCheckedList);
+    }
+
+  }
+
+  const [assetsAllList, setAssetsAllList] = useState([]);
+
+  // assets_name이 선택되었을 때 호출되는 콜백 함수
+  const handleAssetNameSelect = (assetName) => {
+    // assetsAllList 배열에 선택된 assets_name을 추가합니다.
+    setAssetsAllList([...assetsAllList, assetName]);
+  };
+
+  // assets_name이 선택 해제되었을 때 호출되는 콜백 함수
+  const handleAssetNameDeselect = (assetName) => {
+    // assetsAllList 배열에서 선택 해제된 assets_name을 제거합니다.
+    const updatedList = assetsAllList.filter((name) => name !== assetName);
+    setAssetsAllList(updatedList);
+  };
+  console.log(isChecked.length + "길이")
+  console.log(assetsAllList + "자산이름");
+
+  const handleToggle2 = (e) => {
+    let basicModal = document.getElementById("basicModal");
+    basicModal.classList.toggle("show");
+    basicModal.style.display = ((basicModal.style.display !== 'none') ? 'none' : 'block');
+    setInnerDate({
+      ...innerData,
+    });
+    // 모달 센터로 이동
+    const modal3 = document.querySelector(".modalmodal .card");
+    modal3.style.left = `calc(50% - ${modal3.clientWidth / 2}px)`;
+    modal3.style.top = `calc(50% - ${modal3.clientHeight / 2}px)`;
+  };
 
 
   return (
@@ -465,7 +420,7 @@ const AssetAllList = () => {
               <div className="col-lg-12">
                 <div className="card">
                   <div className="card-body">
-                    <h5 className="card-title">전체 자산 수 : </h5>
+                    <h5 className="card-title">전체 자산</h5>
                     <div className="datatable-wrapper datatable-loading nofooter sortable searchable fixed-columns">
                       <div className="datatable-top">
                         <div className="datatable-dropdown">
@@ -487,10 +442,25 @@ const AssetAllList = () => {
                         </div>
 
                         <div className="datatable-search">
+                          {isChecked && (
+                              <button
+                                  className="btn btn-primary assetBuytBtn"
+                                  type="button"
+                                  style={{
+                                    marginRight: "25px",
+                                  }}
+                                  data-bs-formtarget="#basicModal"
+                                  onClick={handleToggle2}
+                                  id="assetBuytBtn"
+                              >
+                                + 일괄사용신청
+                              </button>
+                          )}
                           <button className="btn btn-primary assetBuytBtn"
                                   type="button" style={{marginRight:"25px"}}
                                   data-bs-formtarget="#basicModal"
-                                  onClick={handleToggleBuy} id="assetBuytBtn">+ 구매신청</button>
+                                  onClick={handleToggleBuy} id="assetBuytBtn">+ 구매신청
+                          </button>
                           <input
                               className="datatable-input"
                               placeholder="검색"
@@ -507,12 +477,11 @@ const AssetAllList = () => {
                       <thead>
                       <tr>
                         <th data-sortable="true" className="ControlMenu">
-                          <Link
-                              to="#"
-
-                          >
-                            V
-                          </Link>
+                          <input
+                              checked={isChecked}
+                              onChange={toggleAllCheckboxes}
+                              type="checkbox"
+                          />
                         </th>
                         {AssetAllListOption.map((it, idx) => (
                             <ControlMenu
@@ -540,7 +509,11 @@ const AssetAllList = () => {
                               index={index}
                               func={handleToggle}
                               handleModal={handleModal}
-                              // todayTime={todayTime}
+                              isButtonVisible={isButtonVisible}
+                              isChecked={isChecked} // isChecked 상태를 자식 컴포넌트로 전달
+                              setIsChecked={() => toggleAllCheckboxes (index)} // 각 행의 체크 상태 업데이트 함수 전달
+                              onAssetNameSelect={handleAssetNameSelect} // 선택 시 호출되는 콜백 함수
+                              onAssetNameDeselect={handleAssetNameDeselect} // 선택 해제 시 호출되는 콜백 함수
                           />
                       ))}
                       </tbody>
@@ -575,10 +548,8 @@ const AssetAllList = () => {
         <div className="modal modalmodal" id="basicModal"  style={{display : "none"}} >
           <div className="card" style={{width: '600px', borderRadius: "8px"}} onClick={(e) => e.stopPropagation()}>
             <div className="card-body">
-
               <h5 className="card-title" style={{ paddingBottom: "0px" }}>자산 사용 신청</h5>
               <hr />
-
               <form method="post" name="AssetUsageRequestForm" onSubmit={(e) => AssetUsageRequestForm(e)}>
 
                 <div className="modal-body">
@@ -606,7 +577,6 @@ const AssetAllList = () => {
                       <input type="email" className="form-control" value={todayTime()} disabled />
                     </div>
                   </div>
-
                   <div className="row mb-3 position-relative">
                     <label htmlFor="validationTooltip03" className="col-sm-2 col-form-label needs-validation" >신청제목</label>
                     <div className="col-sm-10">
@@ -620,8 +590,6 @@ const AssetAllList = () => {
                       </div>
                     </div>
                   </div>
-
-
                   <div className="row mb-3">
                     <label htmlFor="inputText" className="col-sm-2 col-form-label">신청사유</label>
                     <div className="col-sm-10">
@@ -710,7 +678,7 @@ const AssetAllList = () => {
                                 onChange={handleBuyChange}
                                 value={innerBuyData.userq_comment}
                                 required
-                                placeholder={"신청사유와 자산의 간략한 스펙을 기입하세요"}
+                                placeholder={"신청사유와 자산의 간략한 사양을 기입하세요"}
                       ></textarea>
                     </div>
                   </div>
@@ -729,6 +697,77 @@ const AssetAllList = () => {
           </div>
         </div>
         {/*구매 신청 모달 끝*/}
+
+        {/* 일괄 사용신청 모달창 */}
+        <div className="modal modalmodal3" id="basicModalAll"  style={{display : "none"}} >
+          <div className="card" style={{width: '600px', borderRadius: "8px"}} onClick={(e) => e.stopPropagation()}>
+            <div className="card-body">
+              <h5 className="card-title" style={{ paddingBottom: "0px" }}>자산 사용 신청</h5>
+              <hr />
+              <form method="post" name="AssetUsageRequestForm" onSubmit={(e) => AssetUsageRequestForm(e)}>
+
+                <div className="modal-body">
+
+                  <div className="row mb-3">
+                    <label htmlFor="" className="col-sm-2 col-form-label">신청자산</label>
+                    <div className="col-sm-10">
+                      <input type="text" className="form-control"
+                             name="assets_name"
+                             onChange={handleChange}
+                             value={innerData.assets_name}
+                             disabled
+                      />
+                    </div>
+                  </div>
+                  <div className="row mb-3">
+                    <label className="col-sm-2 col-form-label">신청자</label>
+                    <div className="col-sm-10">
+                      <input type="text" className="form-control" name="username" value={username || ''} disabled />
+                    </div>
+                  </div>
+                  <div className="row mb-3">
+                    <label htmlFor="inputText" className="col-sm-2 col-form-label">신청날짜</label>
+                    <div className="col-sm-10">
+                      <input type="email" className="form-control" value={todayTime()} disabled />
+                    </div>
+                  </div>
+                  <div className="row mb-3 position-relative">
+                    <label htmlFor="validationTooltip03" className="col-sm-2 col-form-label needs-validation" >신청제목</label>
+                    <div className="col-sm-10">
+                      <input type="text" className="form-control" id="validationTooltip01"
+                             required
+                             name="userq_title"
+                             onChange={handleChange}
+                             value={innerData.userq_title}
+                      />
+                      <div className="invalid-tooltip">
+                      </div>
+                    </div>
+                  </div>
+                  <div className="row mb-3">
+                    <label htmlFor="inputText" className="col-sm-2 col-form-label">신청사유</label>
+                    <div className="col-sm-10">
+                      <textarea className="form-control userModalAst-text"
+                                name="userq_comment"
+                                onChange={handleChange}
+                                value={innerData.userq_comment}
+                                required></textarea>
+                    </div>
+                  </div>
+                  <div className="row mb-3 userModalAsk-btn">
+                    <label className="col-sm-2 col-form-label"></label>
+                    <div className="col-sm-10">
+                      <button type="button" className="btn btn-primary" style={{ marginRight: '10px', backgroundColor: 'gray', border: 'gray' }} onClick={handleClose}>뒤로가기</button>
+                      <button type="submit" className="btn btn-primary">신청하기</button>
+
+                    </div>
+                  </div>
+                </div>
+              </form>{/* <!-- End General Form Elements --> */}
+            </div>
+          </div>
+        </div>
+        {/*사용 신청 모달 끝*/}
 
       </div>
   );

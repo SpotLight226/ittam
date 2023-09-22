@@ -8,10 +8,6 @@ import ITAssetsInfo from './ITAssetsInfo';
 import ITAssetsModify from './ITAssetsModify';
 import PurchaseApproval from './PurchaseApproval';
 
-import base64 from 'base-64';
-import ControlMenu from '../../component/ControlMenu';
-import { ItassetsOptionList } from '../../constants/OptionList';
-import ITAssetsItem from './ITAssetsItem';
 
 function ITAssets() {
   // const contextValues = useContext(userInfoContext); // 항상 가장 위에서 선언해야 사용 가능
@@ -19,19 +15,19 @@ function ITAssets() {
   const token = localStorage.getItem('token');
 
   // const { userId, role } = contextValues || {}; // 들어온 값 없으면 공백으로
-  useEffect(() => {
-    const token = localStorage.getItem('token');
-    let payload = token.substring(
-      token.indexOf('.') + 1,
-      token.lastIndexOf('.')
-    );
-    let dec = JSON.parse(base64.decode(payload));
-    let role = dec.role;
-    if (role !== 'ROLE_ADMIN' && role !== 'ROLE_HIGH_ADMIN') {
-      alert('접근 권한이 없습니다.');
-      window.history.back();
-    }
-  }, []);
+  // useEffect(() => {
+  //   const token = localStorage.getItem('token');
+  //   let payload = token.substring(
+  //     token.indexOf('.') + 1,
+  //     token.lastIndexOf('.')
+  //   );
+  //   let dec = JSON.parse(base64.decode(payload));
+  //   let role = dec.role;
+  //   if (role !== 'ROLE_ADMIN' && role !== 'ROLE_HIGH_ADMIN') {
+  //     alert('접근 권한이 없습니다.');
+  //     window.history.back();
+  //   }
+  // }, []);
 
   const [selectedType, setSelectedType] = useState('선택하지않음');
   /* 폼데이터 초기화 */
@@ -155,9 +151,21 @@ function ITAssets() {
     setSelectedChild(selectedValue);
   };
 
-  const [selectedStatus, setSelectedStatus] = useState('');
-  const handleSelectChange2 = (e) => {
-    setSelectedStatus(e.target.value);
+  /* 체크박스 */
+  const [statusFilters, setStatusFilters] = useState({
+    사용가능: false,
+    사용중: false,
+    수리: false,
+    폐기: false,
+  });
+
+  const handleCheckboxChange = (e) => {
+    const { name, checked } = e.target;
+    setStatusFilters((prev) => ({
+      ...prev,
+      [name]: checked,
+    }));
+    setCurrentPage(1);
   };
 
   /* 검색기능 */
@@ -165,11 +173,21 @@ function ITAssets() {
   const filteredData = data.filter((item) => {
     const matchesSearchTerm = item.assets_name.includes(searchTerm);
 
-    const selectFilter = selectedStatus
-      ? item.assets_status === selectedStatus
+    /* 체크박스  */
+    const statusList = ['사용가능', '사용중', '수리', '폐기'];
+
+    // 체크된 상태인 것이 있는지 확인
+    const isAnyFilterChecked = statusList.some(
+      (status) => statusFilters[status]
+    );
+
+    const statusFilter = isAnyFilterChecked
+      ? statusList.some(
+          (status) => statusFilters[status] && item.assets_status === status
+        )
       : true;
 
-    return matchesSearchTerm && selectFilter;
+    return matchesSearchTerm && statusFilter;
   });
 
   const [searchInput, setSearchInput] = useState('');
@@ -238,8 +256,6 @@ function ITAssets() {
           assets_tag: '',
           assets_name: selectedType,
         });
-        setSelectedType('선택하지않음');
-        setSelectedParent('선택하지않음');
       }
       closeModal();
       itassetList();
@@ -462,105 +478,6 @@ function ITAssets() {
 
     return `${year}년 ${month}월 ${day}일 `;
   }
-  const getProcessedOption = () => {
-    const copyOptionList = JSON.parse(JSON.stringify(ItassetsOptionList));
-
-    return copyOptionList.filter(
-      (it) =>
-        it.value !== 'leaveDate' &&
-        it.value !== 'detail' &&
-        it.value !== 'process'
-    );
-  };
-
-  // 1. 정렬을 위한 state
-  const [sortType, setSortType] = useState('number'); // 정렬 컬럼 state
-  const [checkClass, setCheckClass] = useState(false); // 내림, 오름 차순 선택 state
-
-  // 2. 각 정렬 선택에 따른 데이터 정렬 함수
-  const getProcessedList = () => {
-    // 기존 리스트는 수정하지 않기 위해서 깊은 복사
-    const copyList = JSON.parse(JSON.stringify(filteredData));
-
-    // 각 선택된 링크에 대한 비교함수
-    const compare = (a, b) => {
-      // 선택된 컬럼에 대해서 case 별로 분류
-      switch (sortType) {
-        case 'assets_num': {
-          // 번호 : 숫자 비교 => 문자열 일 수도 있으니 parseInt 로 감싼다
-          if (checkClass) {
-            return parseInt(b.assets_num) - parseInt(a.assets_num); // 오름차순
-          } else {
-            return parseInt(a.assets_num) - parseInt(b.assets_num); // 내림차순
-          }
-        }
-        case 'assets_name': {
-          // 이름 : 문자열을 사전 순으로 비교한다
-          if (checkClass) {
-            return b.assets_name.localeCompare(a.assets_name);
-          } else {
-            return a.assets_name.localeCompare(b.assets_name);
-          }
-        }
-        case 'assets_status': {
-          // 부서
-          if (checkClass) {
-            return b.assets_status.localeCompare(a.assets_status);
-          } else {
-            return a.assets_status.localeCompare(b.assets_status);
-          }
-        }
-        case 'username': {
-          // 두 문자열이 모두 존재하는지 확인
-          const aExists = a.username !== null && a.username !== undefined;
-          const bExists = b.username !== null && b.username !== undefined;
-
-          // 둘 중 하나만 존재한다면, 그 존재하는 문자열을 먼저 오게 합니다.
-          if (aExists && !bExists) return -1;
-          if (!aExists && bExists) return 1;
-
-          // 둘 다 존재하지 않는다면 같은 값으로 간주합니다.
-          if (!aExists && !bExists) return 0;
-
-          // 둘 다 존재할 때는 정상적인 비교를 수행합니다.
-          if (checkClass) {
-            return b.username.localeCompare(a.username);
-          } else {
-            return a.username.localeCompare(b.username);
-          }
-        }
-        case 'add_date': {
-          // 입사일 : Date 를 비교해야 하므로 state의 날짜 문자열을 가지고 와서 새로운 Date 객체에 넣고 getTime()을 사용해 ms로 변환 후 비교
-          const a_add_date = new Date(a.add_date).getTime();
-          const b_add_date = new Date(b.add_date).getTime();
-
-          if (checkClass) {
-            return b_add_date - a_add_date;
-          } else {
-            return a_add_date - b_add_date;
-          }
-        }
-        case 'rent_date': {
-          // 입사일 : Date 를 비교해야 하므로 state의 날짜 문자열을 가지고 와서 새로운 Date 객체에 넣고 getTime()을 사용해 ms로 변환 후 비교
-          const a_rent_date = new Date(a.rent_date).getTime();
-          const b_rent_date = new Date(b.rent_date).getTime();
-
-          if (checkClass) {
-            return b_rent_date - a_rent_date;
-          } else {
-            return a_rent_date - b_rent_date;
-          }
-        }
-        default: {
-          return null;
-        }
-      }
-    };
-
-    // 비교함수에따라 정렬
-    const sortedList = copyList.sort(compare);
-    return sortedList;
-  };
 
   return (
     <main id="main" className="main">
@@ -642,22 +559,34 @@ function ITAssets() {
                         </select>
                       </label>
                     </div>
-
-                    <div className="datatable-dropdown assetsDrop">
-                      <label htmlFor="">
-                        <select
-                          className="datatable-selector"
-                          id="assets-select"
-                          onChange={handleSelectChange2}
-                        >
-                          <option value="0">자산 상태</option>
-                          <option value="사용가능">사용가능</option>
-                          <option value="사용중">사용중</option>
-                          <option value="폐기">폐기</option>
-                          <option value="수리">수리</option>
-                        </select>
-                      </label>
-                    </div>
+                    <input
+                      type="checkbox"
+                      name="사용가능"
+                      onChange={handleCheckboxChange}
+                      value="사용가능"
+                    />
+                    사용가능
+                    <input
+                      type="checkbox"
+                      name="사용중"
+                      onChange={handleCheckboxChange}
+                      value="사용중"
+                    />
+                    사용중
+                    <input
+                      type="checkbox"
+                      name="수리"
+                      onChange={handleCheckboxChange}
+                      value="수리"
+                    />
+                    수리
+                    <input
+                      type="checkbox"
+                      name="폐기"
+                      onChange={handleCheckboxChange}
+                      value="폐기"
+                    />
+                    폐기
                     {/* 검색바 */}
                     <div className="datatable-search">
                       <input
@@ -698,7 +627,7 @@ function ITAssets() {
                 <table className="table datatable">
                   <thead>
                     <tr>
-                      {/* <th scope="col">
+                      <th scope="col">
                         <Link to="#" className="datatable-sorter">
                           #
                         </Link>
@@ -733,27 +662,17 @@ function ITAssets() {
                         <Link to="#" className="datatable-sorter">
                           폐기/수리요청
                         </Link>
-                      </th> */}
-                      {getProcessedOption().map((it, idx) => (
-                        <ControlMenu
-                          key={idx}
-                          {...it}
-                          checkClass={checkClass}
-                          sortType={sortType}
-                          setSortType={setSortType}
-                          setCheckClass={setCheckClass}
-                        />
-                      ))}
+                      </th>
                     </tr>
                   </thead>
                   <tbody>
-                    {getProcessedList()
+                    {filteredData
                       .slice(
                         (currentPage - 1) * itemsPerPage,
                         currentPage * itemsPerPage
                       )
                       .map((item, index) => (
-                        /* <tr key={index}>
+                        <tr key={index}>
                           <th scope="row">
                             {(currentPage - 1) * itemsPerPage + index + 1}
                           </th>
@@ -784,22 +703,7 @@ function ITAssets() {
                               폐기/수리요청
                             </button>
                           </td>
-                        </tr> */
-                        <ITAssetsItem
-                          key={index}
-                          isUser={true}
-                          currentPage={currentPage}
-                          itemsPerPage={itemsPerPage}
-                          index={index}
-                          handleModal={() => handleModal(item)}
-                          assets_name={item.assets_name}
-                          assets_detail_name={item.assets_detail_name}
-                          assets_status={item.assets_status}
-                          username={item.username}
-                          add_date={item.add_date}
-                          rent_date={item.rent_date}
-                          formatDate={formatDate}
-                        />
+                        </tr>
                       ))}
                   </tbody>
                 </table>
