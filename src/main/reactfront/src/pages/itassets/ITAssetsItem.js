@@ -40,6 +40,7 @@ const ITAssetsItem = ({
           data-bs-toggle="modal"
           data-bs-target="#basicModal"
           onClick={() => handleModal(item)}
+          disabled={username ? true : false} 
         >
           폐기/수리요청
         </button>

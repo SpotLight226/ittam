@@ -154,9 +154,14 @@ function ITAssets() {
     setSelectedChild(selectedValue);
   };
 
-  const [selectedStatus, setSelectedStatus] = useState('');
+  const [selectedStatus, setSelectedStatus] = useState(null);
   const handleSelectChange2 = (e) => {
-    setSelectedStatus(e.target.value);
+    const value = e.target.value;
+      if (value === "0") {
+        setSelectedStatus(null);
+      } else {
+        setSelectedStatus(value);
+      }
   };
 
   /* 검색기능 */
@@ -165,8 +170,8 @@ function ITAssets() {
     const matchesSearchTerm = item.assets_name.includes(searchTerm);
 
     const selectFilter = selectedStatus
-      ? item.assets_status === selectedStatus
-      : true;
+    ? item.assets_status === selectedStatus
+    : true;
 
     return matchesSearchTerm && selectFilter;
   });
@@ -658,7 +663,7 @@ function ITAssets() {
                           id="assets-select"
                           onChange={handleSelectChange2}
                         >
-                          <option value="0">자산 상태</option>
+                          <option value="0">전체 목록</option>
                           <option value="사용가능">사용가능</option>
                           <option value="사용중">사용중</option>
                           <option value="폐기">폐기</option>
