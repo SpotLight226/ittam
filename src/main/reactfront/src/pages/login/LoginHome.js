@@ -18,7 +18,7 @@ function LoginHome() {
   const [emailAuthCompleted, setEmailAuthCompleted] = useState(false); // 이메일 인증 완려 여부
   const [isTimerActive, setIsTimerActive] = useState(false); // 타이머 활성화 여부
   const [emailAuth, SetEmailAuth] = useState(''); // 이메일 인증
-  const [cookies, setCookie] = useCookies(["rememberUserId"]); // 쿠키
+  const [cookies, setCookie] = useCookies(["userId"]); // 쿠키
   const [rememberME, setRememberME] = useState(false); // 아이디 저장하기 유무
 
 
@@ -189,7 +189,12 @@ function LoginHome() {
         let role = dec.role;
         console.log(role);
         handleChange(username, role);
-        setCookie("userId", username); // 쿠키 저장
+
+        if(rememberME){
+          console.log("리멤버미 : "+rememberME)
+          setCookie("userId", username); // 쿠키 저장
+        }
+
         alert('로그인 성공');
         //window.location.href = "/";
         if (role === 'ROLE_USER') {
@@ -214,6 +219,7 @@ function LoginHome() {
   const handleOnChange = (e) => {
     setRememberME(e.target.checked);
     if(!e.target.checked){
+      console.log("쿠키삭제");
       deleteCookie("userId");
     }
   }
@@ -222,8 +228,8 @@ function LoginHome() {
     if (cookies.userId !== undefined) {
       setUsername(cookies.userId);
       setRememberME(true);
-    }
-  }, []);
+    } 
+  }, [rememberME]);
 
   return (
     <div>
