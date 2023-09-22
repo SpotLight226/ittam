@@ -2,6 +2,8 @@ import React, {useEffect, useState} from "react";
 import {Link, useNavigate} from "react-router-dom";
 import "../styles/Style.css";
 import axios from "axios";
+import base64 from 'base-64';
+
 
 function Header() {
   const token = localStorage.getItem("token");
@@ -9,6 +11,8 @@ function Header() {
   const [myInfo, setMyInfo] = useState({});
   const [myAlarmList, setMyAlarmList] = useState([]);
   const [myAlarmCnt, setMyAlarmCnt] = useState(0);
+  const [tokenExpiration, setTokenExpiration] = useState(""); // 토큰 만료까지 남은 시간을 상태로 관리
+
   const navigate = useNavigate(); // navigate 함수 생성
 
   const regdate = (add) => {
@@ -23,6 +27,38 @@ function Header() {
 
     return todayYear + "-" + (todayMonth >= 10 ? todayMonth : '0'+todayMonth) + "-" + (todayDate >= 10 ? todayDate : '0'+todayDate);
   }
+
+  const getTokenExpirationDate = (token) => {
+    if(token != undefined){
+      let payload = token.substring(
+        token.indexOf('.') + 1,
+        token.lastIndexOf('.')
+  ); 
+  
+      localStorage.setItem('token', token);
+      let dec = JSON.parse(base64.decode(payload));
+      if (!dec.exp) return null;
+      const expirationDate = new Date(0);
+      expirationDate.setUTCSeconds(dec.exp);
+      return expirationDate;
+    }
+  };
+
+  const tokenExpirationDate = getTokenExpirationDate(token);
+  const formatExpirationDate = (expirationDate) => {
+    if (!expirationDate) return "";
+    return expirationDate.toLocaleString(); // 원하는 형식으로 날짜를 표시할 수 있습니다.
+  };
+  // 토큰 만료까지 남은 시간을 계산하는 함수
+  const calculateTokenRemainingTime = (expirationDate) => {
+    if (!expirationDate) return "";
+    const currentTime = new Date();
+    const remainingTime = expirationDate - currentTime;
+    if (remainingTime <= 0) return "토큰 만료됨";
+    const minutes = Math.floor((remainingTime % (1000 * 60 * 60)) / (1000 * 60));
+    const seconds = Math.floor((remainingTime % (1000 * 60)) / 1000);
+    return `${minutes}분 ${seconds}초`;
+  };
 
 
   const getMyInfo = (username) => {
@@ -104,8 +140,21 @@ function Header() {
     getMyAlarmList(username);
     getMyAlarmCnt(username);
 
+     // 토큰 만료까지 남은 시간을 1초마다 업데이트하는 코드
+     const intervalId = setInterval(() => {
+      if (tokenExpirationDate) {
+        setTokenExpiration(calculateTokenRemainingTime(tokenExpirationDate));
+      }
+    }, 1000);
+
+    // 컴포넌트가 언마운트될 때 interval 해제
+    return () => {
+      clearInterval(intervalId);
+    };
+
   }, []);
 
+  console.log("토큰 만료 시간:", formatExpirationDate(tokenExpirationDate));
 
   if(window.location.pathname === '/') return null
 
@@ -128,6 +177,7 @@ function Header() {
         </div>
         {/* <!-- End Logo --> */}
 
+       
         <div className="search-bar">
           <form
               className="search-form d-flex align-items-center"
@@ -155,6 +205,14 @@ function Header() {
               </Link>
             </li>
             {/* <!-- End Search Icon--> */}
+
+            <div className="token-expiration tokenTime">
+              {tokenExpirationDate && (
+                <span>
+                  {calculateTokenRemainingTime(tokenExpirationDate)}
+                </span>
+              )}
+            </div>
 
             <li className="nav-item dropdown">
               <Link to="####" className="nav-link nav-icon" data-bs-toggle="dropdown">
@@ -197,10 +255,7 @@ function Header() {
                                         <p>요청하신 {a.USERQ_KIND}의 {a.ALARM_TYPE} {a.ASSETS_STATUS}처리가 완료되었습니다.</p>
                                         <p>{regdate(a.ALARM_REGDATE)}</p>
                                       </div>
-
-
                               )
-
                         }
                       </li>
 
@@ -218,6 +273,9 @@ function Header() {
               {/* <!-- End Notification Dropdown Items --> */}
             </li>
             {/* <!-- End Notification Nav --> */}
+
+           
+
 
             <li className="nav-item dropdown">
               <Link to="####"
@@ -262,6 +320,9 @@ function Header() {
                 <li>
                   <hr className="dropdown-divider"></hr>
                 </li>
+
+
+
 
                 <li className="message-item">
                   <Link to="####">
@@ -312,6 +373,7 @@ function Header() {
               {/* <!-- End Messages Dropdown Items --> */}
             </li>
             {/* <!-- End Messages Nav --> */}
+
 
             <li className="nav-item dropdown pe-3">
               <Link to="####"
