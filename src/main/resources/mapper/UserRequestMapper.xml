@@ -9,14 +9,14 @@
         select * from USER_REQUEST WHERE userq_yn = '사원사용요청' ORDER BY userq_num ASC;
     </select>
 
-    <update id="UserRequestApprove" parameterType="int">
-        update USER_REQUEST set userq_yn = '최종사용승인', userq_grantor = '관리자', userq_okdate = now()
-        where userq_NUM = #{userq_NUM}
+    <update id="UserRequestApprove" parameterType="java.util.Map">
+        update USER_REQUEST set userq_yn = '최종사용승인', userq_grantor = #{username}, userq_okdate = now()
+        where userq_NUM = #{userq_num}
     </update>
 
-    <update id="UserRequestreturn" parameterType="int">
-        update USER_REQUEST set userq_yn = '최종사용반려', userq_grantor = '관리자', userq_okdate = now()
-        where userq_NUM = #{userq_NUM}
+    <update id="UserRequestreturn" parameterType="java.util.Map">
+        update USER_REQUEST set userq_yn = '최종사용반려', userq_grantor = #{username}, userq_okdate = now()
+        where userq_NUM = #{userq_num}
     </update>
 
     <select id="UserRequestSearch" resultType="UserRequestVO">
@@ -60,9 +60,9 @@
         select * from USER_REQUEST WHERE userq_yn = '사원구매요청' ORDER BY userq_num ASC;
     </select>
 
-    <update id="UserRequestBuyApprove" parameterType="int">
-        update USER_REQUEST set userq_yn = '관리자구매승인', userq_grantor = '관리자', userq_okdate = now()
-        where userq_NUM = #{userq_num}
+    <update id="UserRequestBuyApprove" parameterType="java.util.Map">
+        update USER_REQUEST set userq_yn = '관리자구매승인', userq_grantor = #{username}, userq_okdate = now()
+        where userq_NUM = #{userRequestVO.userq_num}
     </update>
 
     <insert id="UserRequestBuyApproveB" parameterType="UserRequestVO">
@@ -84,8 +84,8 @@
                  #{vo.userq_num} )
     </insert>
 
-    <update id="UserRequestBuyReturn" parameterType="int">
-        update USER_REQUEST set userq_yn = '관리자구매반려', userq_grantor = '관리자', userq_okdate = now()
+    <update id="UserRequestBuyReturn" parameterType="java.util.Map">
+        update USER_REQUEST set userq_yn = '관리자구매반려', userq_grantor = #{username}, userq_okdate = now()
         where userq_NUM = #{userq_num}
     </update>
 
@@ -133,14 +133,14 @@
         select * from USER_REQUEST WHERE userq_yn = '관리자사용승인' ORDER BY userq_num ASC;
     </select>
 
-    <update id="HighUserRequestApprove" parameterType="int">
-        update USER_REQUEST set userq_yn = '최종사용승인', userq_grantor = '관리자', userq_okdate = now()
-        where userq_NUM = #{userq_NUM}
+    <update id="HighUserRequestApprove" parameterType="java.util.Map">
+        update USER_REQUEST set userq_yn = '최종사용승인', userq_grantor = #{username}, userq_okdate = now()
+        where userq_NUM = #{userq_num}
     </update>
 
-    <update id="HighUserRequestReturn" parameterType="int">
-        update USER_REQUEST set userq_yn = '최종사용반려', userq_grantor = '관리자', userq_okdate = now()
-        where userq_NUM = #{userq_NUM}
+    <update id="HighUserRequestReturn" parameterType="java.util.Map">
+        update USER_REQUEST set userq_yn = '최종사용반려', userq_grantor = #{username}, userq_okdate = now()
+        where userq_NUM = #{userq_num}
     </update>
 
     <select id="HighUserRequestSearch" resultType="UserRequestVO">
@@ -153,14 +153,14 @@
         select * from USER_REQUEST WHERE userq_yn = '관리자구매승인' ORDER BY userq_num ASC;
     </select>
 
-    <update id="HighUserBuyRequestApprove" parameterType="int">
-        update USER_REQUEST set userq_yn = '최종구매승인', userq_grantor = '관리자', userq_okdate = now()
-        where userq_NUM = #{userq_NUM}
+    <update id="HighUserBuyRequestApprove" parameterType="java.util.Map">
+        update USER_REQUEST set userq_yn = '최종구매승인', userq_grantor = #{username}, userq_okdate = now()
+        where userq_NUM = #{userq_num}
     </update>
 
     <update id="HighUserBuyRequestReturn" parameterType="int">
-        update USER_REQUEST set userq_yn = '최종구매반려', userq_grantor = '관리자', userq_okdate = now()
-        where userq_NUM = #{userq_NUM}
+        update USER_REQUEST set userq_yn = '최종구매반려', userq_grantor = #{username}, userq_okdate = now()
+        where userq_NUM = #{userq_num}
     </update>
 
     <select id="HighUserBuyRequestSearch" resultType="UserRequestVO">

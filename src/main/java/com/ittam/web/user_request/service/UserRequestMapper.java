@@ -9,8 +9,8 @@ import java.util.ArrayList;
 @Mapper
 public interface UserRequestMapper {
     public ArrayList<UserRequestVO> UserRequestList();
-    public int UserRequestApprove(@Param("userq_NUM") int userq_NUM, @Param("username") String username);
-    public int UserRequestreturn(@Param("userq_NUM") int userq_NUM, @Param("username")String username);
+    public int UserRequestApprove(@Param("userq_num") int userq_num, @Param("username") String username);
+    public int UserRequestreturn(@Param("userq_num") int userq_num, @Param("username")String username);
     public ArrayList<UserRequestVO> UserRequestSearch (String inputText);
     public ArrayList<UserRequestVO> UserRequestHandle();
     public ArrayList<UserRequestVO> UserRequestHandleSearch(@Param("inputText") String inputText, @Param("pageNav") ArrayList<String> pageNav);
@@ -21,7 +21,7 @@ public interface UserRequestMapper {
     public int UserRequestBuyApprove(@Param("userRequestVO")UserRequestVO userRequestVO, @Param("username") String username); // (관리자 페이지) 신청 승인 처리
     public int UserRequestBuyApproveB(@Param("vo")UserRequestVO vo);
 
-    public int UserRequestBuyReturn(@Param("userq_NUM") int userq_NUM, @Param("username") String username); // (관리자 페이지) 신청 반려 처리
+    public int UserRequestBuyReturn(@Param("userq_num") int userq_num, @Param("username") String username); // (관리자 페이지) 신청 반려 처리
     public ArrayList<UserRequestVO> UserRequestBuySearch (String inputText); // (관리자 페이지) 검색 리스트
     public ArrayList<UserRequestVO> UserRequestBuyHandlePage(); // (관리자 처리 페이지) 목록 리스트
     public ArrayList<UserRequestVO> UserRequestBuyHandleSearch(String inputText, ArrayList<String> pageNav); // (관리자 신청 페이지) 검색 리스트
@@ -29,13 +29,13 @@ public interface UserRequestMapper {
     public ArrayList<UserRequestVO> UserRequestBuyCategorySearch(String category_num, ArrayList<String> navText); // (관리자) 자산별 검색 select
     ////////////////////////////////////// 최종 관리자
     public ArrayList<UserRequestVO> HighUserRequestList(); // (관리자 페이지) 신청 조회 페이지 리스트
-    public int HighUserRequestApprove(@Param("userq_NUM") int userq_NUM, @Param("username") String username); // (관리자 페이지) 신청 승인 처리
-    public int HighUserRequestReturn(@Param("userq_NUM")int userq_NUM, @Param("username")String username); // (관리자 페이지) 신청 반려 처리
+    public int HighUserRequestApprove(@Param("userq_num") int userq_num, @Param("username") String username); // (관리자 페이지) 신청 승인 처리
+    public int HighUserRequestReturn(@Param("userq_num")int userq_num, @Param("username")String username); // (관리자 페이지) 신청 반려 처리
     public ArrayList<UserRequestVO> HighUserRequestSearch (String inputText); // (관리자 페이지) 검색 리스트
 
     public ArrayList<UserRequestVO> HighUserBuyRequestList(); // (관리자 페이지) 신청 조회 페이지 리스트
-    public int HighUserBuyRequestApprove(@Param("userq_NUM") int userq_NUM, @Param("username") String username); // (관리자 페이지) 신청 승인 처리
-    public int HighUserBuyRequestReturn(@Param("userq_NUM") int userq_NUM, @Param("username") String username); // (관리자 페이지) 신청 반려 처리
+    public int HighUserBuyRequestApprove(@Param("userq_num") int userq_num, @Param("username") String username); // (관리자 페이지) 신청 승인 처리
+    public int HighUserBuyRequestReturn(@Param("userq_num") int userq_num, @Param("username") String username); // (관리자 페이지) 신청 반려 처리
     public ArrayList<UserRequestVO> HighUserBuyRequestSearch (String inputText); // (관리자 페이지) 검색 리스트
 
     public ArrayList<UserRequestVO> HighUserRequestHandlePage(); // (관리자 처리 페이지) 목록 리스트
