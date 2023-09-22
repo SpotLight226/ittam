@@ -1,7 +1,9 @@
-import React, { useEffect, useContext, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useEffect, useContext, useState, useRef } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
+import { BsArrowClockwise } from "react-icons/bs";
 
-import { UserDispatchContext, UserStateContext } from "./Users";
+import { UserStateContext } from "./Users";
+import { tokenInfoContext } from "../../component/TokenInfoProvider";
 import UserItem from "./UserItem";
 import Pagenation from "../../component/Pagenation";
 import ControlMenu from "../../component/ControlMenu";
@@ -11,6 +13,67 @@ import axios from "axios";
 
 const UserList = () => {
   const userList = useContext(UserStateContext);
+  const token = localStorage.getItem("token");
+  const { userRole } = useContext(tokenInfoContext);
+
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  const searchRef = useRef();
+  // 검색
+  const [inputText, setInputText] = useState(""); // 검색창 value
+  const [searchOption, setSearchOption] = useState("all");
+  const [searchResult, setSearchResult] = useState([]);
+
+  const dataId = useRef(0); // 검색된 데이터에 추가하기 위한 ref
+
+  useEffect(() => {
+    const queryParams = new URLSearchParams(location.search); // URL 쿼리 문자열 파싱
+    const searchParam = queryParams.get("value") || "";
+    const searchOptionParam = queryParams.get("option") || "all";
+
+    setInputText(searchParam);
+    setSearchOption(searchOptionParam);
+  }, [location]);
+
+  // 검색 핸들링
+  const handleSearchEnter = (event) => {
+    if (event.key === "Enter") {
+      // URL 업데이트
+      const newValue = encodeURIComponent(inputText);
+      const newOption = encodeURIComponent(searchOption);
+      const url = `/users/userList?value=${newValue}&option=${newOption}`;
+      // navigate로 url업데이트
+      navigate(url);
+
+      axios({
+        url: `/user/userSearch?value=${newValue}&option=${newOption}`,
+        method: "get",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: token,
+        },
+      })
+        .then((res) => {
+          const searchData = res.data.map((it) => {
+            dataId.current += 1;
+            return {
+              id: dataId.current,
+              ...it,
+            };
+          });
+          setSearchResult(searchData); // 검색 결과 업데이트
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    } else {
+      setSearchResult([]);
+    }
+  };
+
+  // 검색 결과를 렌더링할 데이터 선택
+  const dataToRender = searchResult.length > 0 ? searchResult : userList;
 
   //// 모달
   const [modalStatus, setModalStatus] = useState(false); // 모달 핸들링 위한 state
@@ -45,8 +108,17 @@ const UserList = () => {
 
   const getModalContent = async (userId) => {
     if (userId) {
-      axios
-        .post("/User/UserDetail", { userId })
+      axios({
+        url: "/user/userDetail",
+        method: "post",
+        data: {
+          userId: userId,
+        },
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: token,
+        },
+      })
         .then((res) => {
           // 가져온 데이터를 state에 맵핑
           const userData = res.data;
@@ -62,7 +134,10 @@ const UserList = () => {
             role: userData.role,
           });
         })
-        .catch((err) => alert("사용자 상세정보를 가져오는데 실패했습니다"));
+        .catch((err) => {
+          alert("사용자 상세정보를 가져오는데 실패했습니다");
+          console.log(err);
+        });
     }
   };
 
@@ -86,7 +161,7 @@ const UserList = () => {
   // 2. 각 정렬 선택에 따른 데이터 정렬 함수
   const getProcessedList = () => {
     // 기존 리스트는 수정하지 않기 위해서 깊은 복사
-    const copyList = JSON.parse(JSON.stringify(userList));
+    const copyList = JSON.parse(JSON.stringify(dataToRender));
 
     // 각 선택된 링크에 대한 비교함수
     const compare = (a, b) => {
@@ -165,6 +240,17 @@ const UserList = () => {
     return sortedList;
   };
 
+  //리셋 버튼
+  const resetBtn = () => {
+    // 검색 데이터 초기화
+    setSearchResult([]);
+    setInputText("");
+
+    // 쿼리 파라미터를 제거하고 기존 주소로 이동
+    navigate("/users/userList");
+  };
+  /////////////////////////////
+
   /* 몇개씩 보이고 싶은지 */
   const [itemsPerPage, setItemPerPage] = useState(10); // 페이지당 10개의 아이템  useState(처음에 보이고싶은 개수)
   const handleSelectorChange = (event) => {
@@ -212,11 +298,40 @@ const UserList = () => {
                       </label>
                     </div>
                     <div className="datatable-search">
+                      <button
+                        type="button"
+                        className="btn btn-primary reset-btn"
+                      >
+                        <BsArrowClockwise
+                          style={{
+                            width: "30px",
+                            height: "30px",
+                            color: "gray",
+                          }}
+                          onClick={resetBtn}
+                        />
+                      </button>
+
+                      <select
+                        className="datatable-selector selected-search"
+                        value={searchOption}
+                        onChange={(e) => setSearchOption(e.target.value)}
+                      >
+                        <option value="all">모두</option>
+                        <option value="name">이름</option>
+                        <option value="userId">사원번호</option>
+                        <option value="depart">부서</option>
+                        <option value="email">이메일</option>
+                      </select>
                       <input
                         className="datatable-input"
                         placeholder="검색"
                         type="search"
                         title="Search within table"
+                        value={inputText}
+                        ref={searchRef}
+                        onChange={(e) => setInputText(e.target.value)}
+                        onKeyPress={handleSearchEnter}
                       />
                     </div>
                   </div>

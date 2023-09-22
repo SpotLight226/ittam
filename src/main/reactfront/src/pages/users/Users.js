@@ -1,8 +1,9 @@
-import React, { useEffect, useReducer, useRef } from "react";
+import React, { useContext, useEffect, useReducer, useRef } from "react";
 
 import { useParams } from "react-router-dom";
 
 // pages
+import { tokenInfoContext } from "../../component/TokenInfoProvider";
 import UserList from "./UserList";
 import UserReg from "./UserReg";
 import UserLeave from "./UserLeave";
@@ -10,36 +11,14 @@ import PageTitle from "../../component/PageTitle";
 import axios from "axios";
 
 const reducer = (state, action) => {
-  let newState = [];
-
   switch (action.type) {
     case "INIT": {
       return action.data;
-    }
-    case "CREATE": {
-      const newItem = {
-        ...action.data,
-      };
-      newState = [newItem, ...state]; // 새로운 아이템을 추가
-      break;
-    }
-    case "REMOVE": {
-      newState = state.filter((it) => it.id !== action.targetId); // id가 타켓의 id가 아닌 것만 newState로
-      break;
-    }
-    case "EDIT": {
-      newState = state.map((it) =>
-        // 전체 데이터를 변경가능
-        it.id === action.data.id ? { ...action.data } : it
-      );
-      break;
     }
     default: {
       return state;
     }
   }
-
-  return newState;
 };
 
 // 모든 컴포넌트에 보낼 Context
@@ -50,15 +29,54 @@ const Users = () => {
   const page = useParams().page;
   const subPage = useParams().subPage;
 
+  const token = localStorage.getItem("token");
+  const { userRole } = useContext(tokenInfoContext);
+
   const dataId = useRef(0);
   // 데이터 받아올 useReducer
   const [data, dispatch] = useReducer(reducer, []);
+
+  // 데이터를 다시 불러와서 state를 업데이트하는 함수
+  const getDataAndDispatch = async () => {
+    dataId.current = 0; // 다시 불러올 때 dataId를 0으로 초기화
+
+    try {
+      const res = await axios({
+        url: "/user/userList",
+        method: "get",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: token,
+        },
+      });
+      const mappedData = res.data.map((it) => {
+        dataId.current += 1;
+        return {
+          id: dataId.current,
+          ...it,
+        };
+      });
+      dispatch({
+        type: "INIT",
+        data: mappedData,
+      });
+    } catch (err) {
+      console.log(err);
+    }
+  };
 
   useEffect(() => {
     // 데이터 가져오는 부분
     const getData = async () => {
       try {
-        const res = await axios.get("/User/UserList");
+        const res = await axios({
+          url: "/user/userList",
+          method: "get",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: token,
+          },
+        });
         const mappedData = res.data.map((it) => {
           dataId.current += 1;
           return {
@@ -76,23 +94,21 @@ const Users = () => {
     };
 
     getData(); // 데이터 가져오기
-  }, []); //
+  }, [token]); //
 
   // 새 유저 추가
   const onCreate = (content) => {
     axios
-      .post("/User/UserRegist", content)
+      .post("/user/userRegist", content, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: token,
+        },
+      })
       .then((res) => {
         if (res.data === 1) {
-          dataId.current += 1;
-          const newData = {
-            id: dataId.current,
-            ...content,
-          };
-          dispatch({
-            type: "CREATE",
-            data: newData,
-          });
+          // 데이터 수정 후 다시 불러와서 업데이트
+          getDataAndDispatch();
         } else {
           alert("등록에 실패하였습니다");
         }
@@ -103,30 +119,40 @@ const Users = () => {
   // 유저 수정
   const onEdit = (targetId, role) => {
     axios({
-      url: "/User/UserEdit",
+      url: "/user/userEdit",
       method: "post",
       data: {
         targetId: targetId,
         role: role,
       },
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: token,
+      },
     })
       .then((res) => {
-        dispatch({
-          type: "EDIT",
-          data: {
-            username: targetId,
-            role: role,
-          },
-        });
+        // 데이터 수정 후 다시 불러와서 업데이트
+        getDataAndDispatch();
         alert(res.data);
       })
       .catch((err) => alert(err.data));
   };
 
   // 유저 삭제
-  const onRemove = () => {
-    dispatch({
-      type: "REMOVE",
+  const onRemove = (targetId) => {
+    axios({
+      url: "/user/userRemove",
+      method: "post",
+      data: {
+        targetId: targetId,
+      },
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: token,
+      },
+    }).then((res) => {
+      getDataAndDispatch();
+      alert(res.data);
     });
   };
 
@@ -148,7 +174,7 @@ const Users = () => {
 
   return (
     <UserStateContext.Provider value={data}>
-      <UserDispatchContext.Provider value={{ onCreate, onEdit }}>
+      <UserDispatchContext.Provider value={{ onCreate, onEdit, onRemove }}>
         <div className="Users">
           <main id="main" className="main">
             <PageTitle page={page} subPage={subPage} />
