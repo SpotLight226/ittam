@@ -1,26 +1,26 @@
-import axios from "axios";
-import { useContext, useEffect, useState } from "react";
-import { BsFillPersonCheckFill } from "react-icons/bs";
-import EmailAuthTime from "./EmailAuthTime";
-import { useNavigate } from "react-router-dom";
-import base64 from "base-64";
-import { tokenInfoContext } from "../../component/TokenInfoProvider";
+import axios from 'axios';
+import React, { useEffect, useState } from 'react';
+import { BsFillPersonCheckFill } from 'react-icons/bs';
+import EmailAuthTime from './EmailAuthTime';
+import { useNavigate } from 'react-router-dom';
+import base64 from 'base-64';
+import { tokenInfoContext } from '../../component/TokenInfoProvider';
 
 function LoginHome() {
-  const handleChange = useContext(tokenInfoContext);
+  const { handleChange } = React.useContext(tokenInfoContext);
 
   // const {authResponse, setAuthResponse} = useState("");
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
   const [passwordMismatch, setPasswordMismatch] = useState(false); // 비밀번호 변경 시 비밀번호 불일치 여부 저장
   const [emailAuthCompleted, setEmailAuthCompleted] = useState(false); // 이메일 인증 완려 여부
   const [isTimerActive, setIsTimerActive] = useState(false); // 타이머 활성화 여부
-  const [emailAuth, SetEmailAuth] = useState("");
+  const [emailAuth, SetEmailAuth] = useState('');
   const navigate = useNavigate();
 
   // 이메일 인증 타임아웃 처리
   const handleEmailAuthTimeout = () => {
-    let yourPassword3 = document.getElementById("yourPassword3");
+    let yourPassword3 = document.getElementById('yourPassword3');
 
     setEmailAuthCompleted(true); // 이메일 인증 타임아웃 발생 시 처리할 로직
     setIsTimerActive(false); // 타이머 비활성화
@@ -31,32 +31,32 @@ function LoginHome() {
   const authBtn = (e) => {
     // 비밀번호 찾기 인증번호 요청
     let target = e.target;
-    if (target.innerText === "인증번호 확인") {
+    if (target.innerText === '인증번호 확인') {
       // 인증번호 확인 버튼
-      target.setAttribute("data-bs-dismiss", "modal");
-      let authNum = document.getElementById("yourPassword3").value;
-      console.log("입력한 인증번호 : " + authNum);
+      target.setAttribute('data-bs-dismiss', 'modal');
+      let authNum = document.getElementById('yourPassword3').value;
+      console.log('입력한 인증번호 : ' + authNum);
       if (authNum == emailAuth) {
-        alert("인증번호가 확인되었습니다.");
-        let passwordReset = document.getElementById("passwordReset");
-        let verticalycentered = document.getElementById("verticalycentered");
-        passwordReset.classList.add("show");
-        passwordReset.style.display = "block";
-        verticalycentered.classList.remove("show");
-        verticalycentered.style.display = "none";
+        alert('인증번호가 확인되었습니다.');
+        let passwordReset = document.getElementById('passwordReset');
+        let verticalycentered = document.getElementById('verticalycentered');
+        passwordReset.classList.add('show');
+        passwordReset.style.display = 'block';
+        verticalycentered.classList.remove('show');
+        verticalycentered.style.display = 'none';
 
         return;
       }
     }
 
-    if (target.classList.contains("auth")) {
+    if (target.classList.contains('auth')) {
       // 이메일 입력 후 인증번호 요청 버튼 클릭
-      let emailInput = document.getElementById("yourPassword2").value;
+      let emailInput = document.getElementById('yourPassword2').value;
 
       axios({
         // 등록되어있는 이메일 여부 확인
-        url: "http://localhost:9191/loginPage/passwordFind",
-        method: "post",
+        url: 'http://localhost:9191/loginPage/passwordFind',
+        method: 'post',
         data: {
           emailInput: emailInput,
         },
@@ -64,53 +64,53 @@ function LoginHome() {
         .then((response) => {
           // 조회
           if (response.data.length !== 0) {
-            alert("인증번호가 발송되었습니다.");
-            target.innerText = "인증번호 확인";
-            target.classList.remove("auth");
-            let open = document.getElementById("yourPassword3");
-            open.disabled = ""; // 인증번호 비활성화 풀기
+            alert('인증번호가 발송되었습니다.');
+            target.innerText = '인증번호 확인';
+            target.classList.remove('auth');
+            let open = document.getElementById('yourPassword3');
+            open.disabled = ''; // 인증번호 비활성화 풀기
 
             axios({
               // 인증번호 전송 axios
-              url: "http://localhost:9191/loginPage/authSend",
-              method: "post",
+              url: 'http://localhost:9191/loginPage/authSend',
+              method: 'post',
               data: {
                 emailInput: emailInput,
               },
             })
               .then((response) => {
                 // 인증번호 전송
-                console.log("전달된 인증번호 : " + response.data);
+                console.log('전달된 인증번호 : ' + response.data);
                 SetEmailAuth(response.data);
                 setIsTimerActive(true); // 타이머 활성화
                 return;
               })
               .catch((error) => {
                 // 등록되지 않은 이메일
-                alert("인증번호 전송에 실패하였습니다.");
+                alert('인증번호 전송에 실패하였습니다.');
               });
           } else {
-            alert("등록되지 않은 이메일입니다.");
+            alert('등록되지 않은 이메일입니다.');
           }
         })
         .catch((error) => {
           // 등록되지 않은 이메일
-          alert("데이터 확인에 실패하였습니다.");
+          alert('데이터 확인에 실패하였습니다.');
         });
     }
   };
 
   const passwordModify = (e) => {
     // 비밀번호 변경하기
-    let passwordReset1 = document.getElementById("passwordReset1").value;
-    let passwordReset2 = document.getElementById("passwordReset2").value;
-    let emailInput = document.getElementById("yourPassword2").value;
+    let passwordReset1 = document.getElementById('passwordReset1').value;
+    let passwordReset2 = document.getElementById('passwordReset2').value;
+    let emailInput = document.getElementById('yourPassword2').value;
 
-    if (passwordReset1 === passwordReset2 && passwordReset1 !== "") {
+    if (passwordReset1 === passwordReset2 && passwordReset1 !== '') {
       axios({
         // 인증번호 전송 axios
-        url: "http://localhost:9191/loginPage/passwordModify",
-        method: "post",
+        url: 'http://localhost:9191/loginPage/passwordModify',
+        method: 'post',
         data: {
           passwordReset: passwordReset1,
           emailInput: emailInput,
@@ -123,7 +123,7 @@ function LoginHome() {
         })
         .catch((error) => {
           // 등록되지 않은 이메일
-          alert("비밀번호 변경에 실패하였습니다.");
+          alert('비밀번호 변경에 실패하였습니다.');
         });
 
       setPasswordMismatch(false); // 비밀번호가 일치하면 상태를 초기화
@@ -134,68 +134,68 @@ function LoginHome() {
 
   const closeBtn = () => {
     // 비밀번호 변경 창 닫기
-    let passwordReset1 = document.getElementById("passwordReset1");
-    let passwordReset2 = document.getElementById("passwordReset2");
-    let passwordReset = document.getElementById("passwordReset");
-    let modalBackdrop = document.querySelector(".modal-backdrop");
-    let emailInput = document.getElementById("yourPassword2");
-    let yourPassword3 = document.getElementById("yourPassword3");
-    let authBtnContext = document.getElementById("authBtnContext");
-    passwordReset.classList.remove("show");
-    passwordReset.style.display = "none";
-    modalBackdrop.classList.remove("show");
-    modalBackdrop.style.display = "none";
-    document.body.classList.remove("modal-open");
-    document.body.removeAttribute("style");
+    let passwordReset1 = document.getElementById('passwordReset1');
+    let passwordReset2 = document.getElementById('passwordReset2');
+    let passwordReset = document.getElementById('passwordReset');
+    let modalBackdrop = document.querySelector('.modal-backdrop');
+    let emailInput = document.getElementById('yourPassword2');
+    let yourPassword3 = document.getElementById('yourPassword3');
+    let authBtnContext = document.getElementById('authBtnContext');
+    passwordReset.classList.remove('show');
+    passwordReset.style.display = 'none';
+    modalBackdrop.classList.remove('show');
+    modalBackdrop.style.display = 'none';
+    document.body.classList.remove('modal-open');
+    document.body.removeAttribute('style');
 
-    passwordReset1.value = "";
-    passwordReset2.value = "";
-    emailInput.value = "";
-    yourPassword3.value = "";
+    passwordReset1.value = '';
+    passwordReset2.value = '';
+    emailInput.value = '';
+    yourPassword3.value = '';
     yourPassword3.disabled = true;
-    authBtnContext.innerText = "인증번호 받기";
-    authBtnContext.classList.add("auth");
+    authBtnContext.innerText = '인증번호 받기';
+    authBtnContext.classList.add('auth');
   };
 
   const login = async (e) => {
     // 로그인
     e.preventDefault();
     const formData = new FormData();
-    formData.append("username", username);
-    formData.append("password", password);
+    formData.append('username', username);
+    formData.append('password', password);
 
     try {
-      const response = await fetch("http://localhost:9191/login", {
-        method: "POST",
+      const response = await fetch('http://localhost:9191/login', {
+        method: 'POST',
         body: formData,
       });
       const data = await response.json(); // JSON으로 파싱
 
       if (response.status === 200) {
         const username = data.username; // username
-        localStorage.setItem("username", username);
+        localStorage.setItem('username', username);
         const token = data.token; // 암호된 토큰
         let payload = token.substring(
-          token.indexOf(".") + 1,
-          token.lastIndexOf(".")
+          token.indexOf('.') + 1,
+          token.lastIndexOf('.')
         ); // 토큰 진짜 가져오기
-        localStorage.setItem("token", token);
+        localStorage.setItem('token', token);
         let dec = JSON.parse(base64.decode(payload));
         let role = dec.role;
         console.log(role);
         handleChange(username, role);
-        alert("로그인 성공");
+        alert('로그인 성공');
         //window.location.href = "/";
-        if (role === "ROLE_USER") {
-          window.location.href = "/user/userMain";
-        } else if (role === "ROLE_ADMIN" || role === "ROLE_HIGH_ADMIN") {
-          window.location.href = "/admin/adminMain";
+        if (role === 'ROLE_USER') {
+          window.location.href = '/user/userMain';
+        } else if (role === 'ROLE_ADMIN' || role === 'ROLE_HIGH_ADMIN') {
+          window.location.href = '/admin/adminMain';
         }
       } else {
-        alert("로그인 실패");
+        alert('로그인 실패');
       }
     } catch (error) {
-      console.error("로그인 요청 중 오류 발생:", error);
+      console.error('로그인 요청 중 오류 발생:', error);
     }
   };
 
@@ -334,7 +334,7 @@ function LoginHome() {
         className="modal fade"
         id="verticalycentered"
         tabIndex="-1"
-        style={{ display: "none" }}
+        style={{ display: 'none' }}
       >
         <div className="modal-dialog modal-dialog-centered">
           <div className="modal-content">
@@ -429,7 +429,7 @@ function LoginHome() {
         className="modal fade"
         id="passwordReset"
         tabIndex="-2"
-        style={{ display: "none" }}
+        style={{ display: 'none' }}
       >
         <div className="modal-dialog modal-dialog-centered">
           <div className="modal-content">
@@ -468,7 +468,7 @@ function LoginHome() {
                   id="passwordReset2"
                 />
                 {passwordMismatch && (
-                  <span style={{ color: "red" }}>
+                  <span style={{ color: 'red' }}>
                     비밀번호가 일치하지 않습니다.
                   </span>
                 )}
