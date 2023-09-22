@@ -1,6 +1,7 @@
 package com.ittam.web.controller;
 
 import com.ittam.web.command.UserRequestVO;
+import com.ittam.web.mainPage.service.MainPageService;
 import com.ittam.web.user_request.service.UserRequestService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -9,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Map;
 
 @RestController
@@ -19,6 +21,10 @@ public class User_RequestController {
     @Autowired
     @Qualifier("userRequestService")
     private UserRequestService userRequestService;
+
+    @Autowired
+    @Qualifier("mainPageService")
+    private MainPageService mainPageService;
 
 
     @GetMapping("/UserRequestList") // (관리자 페이지) 신청 조회 페이지 리스트
@@ -49,6 +55,14 @@ public class User_RequestController {
         System.out.println(requestBody.toString());
 
         try {
+            /////알람관련 추가사항/////
+            Map<String, Object> map = new HashMap<>();
+            map.put("username", requestBody.get("req_username"));
+            map.put("userq_num", requestBody.get("userq_NUM"));
+            map.put("alarm_type", "사용신청");
+            map.put("alarm_status", "반려");
+            mainPageService.registAlarm_req(map);
+            ////////////////////////
             userRequestService.UserRequestreturn(Integer.parseInt(requestBody.get("userq_NUM")), requestBody.get("username"));
             count1++;
             return ResponseEntity.ok("자산 사용 승인이 반려되었습니다." + count1);
@@ -182,6 +196,14 @@ public class User_RequestController {
         System.out.println(requestBody.toString());
 
         try {
+            /////알람관련 추가사항/////
+            Map<String, Object> map = new HashMap<>();
+            map.put("username", requestBody.get("req_username"));
+            map.put("userq_num", requestBody.get("userq_NUM"));
+            map.put("alarm_type", "구매신청");
+            map.put("alarm_status", "반려");
+            mainPageService.registAlarm_req(map);
+            ////////////////////////
             userRequestService.UserRequestBuyReturn(Integer.parseInt(requestBody.get("userq_NUM")), requestBody.get("username"));
             count3++;
             return ResponseEntity.ok("자산 사용 승인이 반려되었습니다." + count3);
@@ -293,6 +315,14 @@ public class User_RequestController {
         System.out.println(requestBody.toString());
         System.out.println(requestBody.get("username"));
         try {
+            /////알람관련 추가사항/////
+            Map<String, Object> map = new HashMap<>();
+            map.put("username", requestBody.get("req_username"));
+            map.put("userq_num", requestBody.get("userq_NUM"));
+            map.put("alarm_type", "사용신청");
+            map.put("alarm_status", "승인");
+            mainPageService.registAlarm_req(map);
+            ////////////////////////
             userRequestService.HighUserRequestApprove(Integer.parseInt(requestBody.get("userq_NUM")), requestBody.get("username"));
             count4++;
             return ResponseEntity.ok("자산 사용 승인이 완료되었습니다." + count4);
@@ -309,6 +339,14 @@ public class User_RequestController {
         System.out.println(requestBody.toString());
 
         try {
+            /////알람관련 추가사항/////
+            Map<String, Object> map = new HashMap<>();
+            map.put("username", requestBody.get("req_username"));
+            map.put("userq_num", requestBody.get("userq_NUM"));
+            map.put("alarm_type", "사용신청");
+            map.put("alarm_status", "반려");
+            mainPageService.registAlarm_req(map);
+            ////////////////////////
             userRequestService.HighUserRequestReturn(Integer.parseInt(requestBody.get("userq_NUM")), requestBody.get("username"));
             count5++;
             return ResponseEntity.ok("자산 사용 승인이 반려되었습니다." + count5);
@@ -344,6 +382,14 @@ public class User_RequestController {
     public ResponseEntity<String> HighUserBuyRequestApprove(@RequestBody Map<String, String> requestBody){
         System.out.println(requestBody.toString());
         try {
+            /////알람관련 추가사항/////
+            Map<String, Object> map = new HashMap<>();
+            map.put("username", requestBody.get("req_username"));
+            map.put("userq_num", requestBody.get("userq_NUM"));
+            map.put("alarm_type", "구매신청");
+            map.put("alarm_status", "승인");
+            mainPageService.registAlarm_req(map);
+            ////////////////////////
             userRequestService.HighUserBuyRequestApprove(Integer.parseInt(requestBody.get("userq_NUM")), requestBody.get("username"));
             count4++;
             return ResponseEntity.ok("자산 사용 승인이 완료되었습니다." + count4);
@@ -360,6 +406,14 @@ public class User_RequestController {
         System.out.println(requestBody.toString());
 
         try {
+            /////알람관련 추가사항/////
+            Map<String, Object> map = new HashMap<>();
+            map.put("username", requestBody.get("req_username"));
+            map.put("userq_num", requestBody.get("userq_NUM"));
+            map.put("alarm_type", "구매신청");
+            map.put("alarm_status", "반려");
+            mainPageService.registAlarm_req(map);
+            ////////////////////////
             userRequestService.HighUserBuyRequestReturn(Integer.parseInt(requestBody.get("userq_NUM")), requestBody.get("username"));
             count5++;
             return ResponseEntity.ok("자산 사용 승인이 반려되었습니다." + count5);

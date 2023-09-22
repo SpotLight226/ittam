@@ -315,13 +315,6 @@ function Reports() {
 
 
 
-
-
-
-
-
-
-
                     <div className="col-lg-4">
 
                       <div className="card" >

@@ -1,10 +1,11 @@
 import "../../styles/Style.css";
 import "../../styles/MainPageStyle/UserStyle.css";
-import {useEffect, useState} from "react";
+import React, {useEffect, useState} from "react";
 import axios from "axios";
 import ReturnReqModal from '../../component/Modal/ReturnReqModal';
 import ReturnCancelModal from "../../component/Modal/ReturnCancelModal";
 import {Link} from "react-router-dom";
+import Pagenation from "../../component/Pagenation";
 function UserMain_using() {
   const token = localStorage.getItem("token");
 
@@ -144,6 +145,49 @@ function UserMain_using() {
 
 
 
+  ///////////////////////////////
+  /* 몇개씩 보이고 싶은지 */
+  const [itemsPerPage, setItemPerPage] = useState(5); // 페이지당 10개의 아이템  useState(처음에 보이고싶은 개수)
+  const handleSelectorChange = (event) => {
+    setItemPerPage(parseInt(event.target.value));
+    setCurrentPage(1);
+  };
+
+
+  const myAssetListFilter = () => {
+    const copyList = [...myAssetList];
+    return copyList.filter(a => {
+        if (choiceCatogory === 'all') {
+          return a.CATEGORY_NUM >= 1;
+        } else if (choiceCatogory === 'pc') {
+          return a.CATEGORY_NUM === 5 || a.CATEGORY_NUM === 6 || a.CATEGORY_NUM === 1;
+        } else if (choiceCatogory === 'sw') {
+          return a.CATEGORY_NUM >= 7 && a.CATEGORY_NUM <= 12 || a.CATEGORY_NUM === 2;
+        } else if (choiceCatogory === 'etc') {
+          return a.CATEGORY_NUM >= 13 && a.CATEGORY_NUM <= 17 || a.CATEGORY_NUM === 3;
+        } else {
+          return a.CATEGORY_NUM === 18 || a.CATEGORY_NUM === 4;
+        }
+      }
+
+  )}
+
+  const [currentPage, setCurrentPage] = useState(1); // 현재 페이지
+  const totalPages = Math.ceil(myAssetListFilter().length / itemsPerPage);
+  /* 페이지네이션 */
+  /* const totalPages = Math.ceil(data.length / itemsPerPage); */
+  const pagesPerGroup = 5; // 한 그룹에 표시할 페이지 수
+  const currentGroup = Math.ceil(currentPage / pagesPerGroup); // 현재 페이지 그룹
+
+  const startPage = (currentGroup - 1) * pagesPerGroup; // 시작 페이지
+  const endPage = Math.min(currentGroup * pagesPerGroup, totalPages); // 끝 페이지
+
+  const handleClick = (pageNumber) => {
+    setCurrentPage(pageNumber);
+  };
+
+
+
 
   return (
       <main id="main" className="main">
@@ -188,7 +232,7 @@ function UserMain_using() {
               {
                 myAssetList.length > 0 ?
                     <>
-            <select className='choiceCatogory' style={{width:'200px', marginBottom:'10px', height: '30px'}} onChange={(e) => {setChoiceCategory(e.target.value)}}>
+            <select className='choiceCatogory' style={{width:'200px', marginBottom:'10px', height: '30px'}} onChange={(e) => {setChoiceCategory(e.target.value); setCurrentPage(1);}}>
               <option value="all">전체목록</option>
               <option value="pc">PC/노트북</option>
               <option value="sw">소프트웨어</option>
@@ -212,23 +256,12 @@ function UserMain_using() {
                     <tbody>
 
                     {
-                      myAssetList.filter(a => {
-                            if (choiceCatogory === 'all') {
-                              return a.CATEGORY_NUM >= 1;
-                            } else if (choiceCatogory === 'pc') {
-                              return a.CATEGORY_NUM === 5 || a.CATEGORY_NUM === 6 || a.CATEGORY_NUM === 1;
-                            } else if (choiceCatogory === 'sw') {
-                              return a.CATEGORY_NUM >= 7 && a.CATEGORY_NUM <= 12 || a.CATEGORY_NUM === 2;
-                            } else if (choiceCatogory === 'etc') {
-                              return a.CATEGORY_NUM >= 13 && a.CATEGORY_NUM <= 17 || a.CATEGORY_NUM === 3;
-                            } else {
-                              return a.CATEGORY_NUM === 18 || a.CATEGORY_NUM === 4;
-                            }
-                          }
-
+                      myAssetListFilter().slice(
+                          (currentPage - 1) * itemsPerPage,
+                          currentPage * itemsPerPage
                       ).map((a, i) => {
                         return <tr key={i}>
-                          <th scope="row">{i + 1}</th>
+                          <th scope="row">{(currentPage - 1) * itemsPerPage + i + 1}</th>
                           <td>{a.ASSETS_NAME}{a.ASSETS_DETAIL_NAME}|{a.ASSETS_NUM}</td>
                           <td style={{fontSize:"14px", color: "gray", width: '800px'}}>{a.SPEC_CPU!==undefined? a.SPEC_CPU+' |':''}
                             {a.SPEC_RAM!==undefined? a.SPEC_RAM+" |":''}
@@ -290,6 +323,14 @@ function UserMain_using() {
             {/*  <!-- End Default Table Example --> */}
           </div>
         </div>
+        {/* 페이징네이션 */}
+        <Pagenation
+            currentPage={currentPage}
+            totalPages={totalPages}
+            startPage={startPage}
+            endPage={endPage}
+            handleClick={handleClick}
+        />
 
 
 

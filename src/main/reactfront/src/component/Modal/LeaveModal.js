@@ -29,8 +29,8 @@ function LeaveModal({ setOpenLeaveModal, username, getUserInfo, token }) {
       <div className="card" style={{ width: "600px", borderRadius: "8px" }}>
         <div className="card-body">
           <div style={{ textAlign: "center", marginTop: "50px" }}>
-            <h1>퇴사신청을 하시겠습니까?</h1>
-            <p>여기에다가 뭐라고 쓸까ㅏㅏㅏㅏㅏㅏ 넘 구리자나</p>
+            <h1 style={{fontSize: '30px', fontWeight: '600', color: 'red'}}>퇴사신청을 하시겠습니까?</h1>
+            <p>퇴사신청 후에는 취소가 되지 않으며 <br/> 취소 시에는 관리자에게 직접 문의바랍니다.</p>
           </div>
 
           <div
@@ -42,7 +42,7 @@ function LeaveModal({ setOpenLeaveModal, username, getUserInfo, token }) {
               <button
                 type="button"
                 className="btn btn-outline-secondary"
-                style={{ marginRight: "30px" }}
+                style={{ marginRight: "20px" }}
                 onClick={() => {
                   setOpenLeaveModal(false);
                 }}

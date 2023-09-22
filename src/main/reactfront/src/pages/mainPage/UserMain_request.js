@@ -104,7 +104,7 @@ function UserMain_request() {
                                     <td><Link to="#" onClick={() => {setOpenReqDetailModal(true); setUserq_num(a.userq_num)}}>{a.userq_title}</Link></td>
                                     <td>{a.userq_count}</td>
                                     <td>{a.userq_regdate}</td>
-                                    <td>{a.userq_yn.includes('최종사용승인') ? "승인" : (a.userq_yn.includes('사원사용') || a.userq_yn.includes('관리자사용') ? "승인대기" : (a.userq_yn.includes('반려') ? '반려' : '승인대기'))}</td>
+                                    <td style={{color: 'blue', fontWeight: '600'}}>{a.userq_yn.includes('최종사용승인') ? "승인" : (a.userq_yn.includes('사원사용') || a.userq_yn.includes('관리자사용') ? "승인대기" : (a.userq_yn.includes('반려') ? '반려' : '승인대기'))}</td>
 
                                 </tr>
                           })
@@ -163,7 +163,7 @@ function UserMain_request() {
                                     <td><Link to="#" onClick={() => {setOpenReqDetailModal(true); setUserq_num(a.userq_num)}}>{a.userq_title}</Link></td>
                                     <td>{a.userq_count}</td>
                                     <td>{a.userq_regdate}</td>
-                                    <td>{a.userq_yn.includes('최종구매승인') ? "승인" : (a.userq_yn.includes('사원사용') ? "승인대기" : (a.userq_yn.includes('반려') ? '반려' : '승인대기'))}</td>
+                                    <td style={{color: 'blue', fontWeight: '600'}}>{a.userq_yn.includes('최종구매승인') ? "승인" : (a.userq_yn.includes('사원사용') ? "승인대기" : (a.userq_yn.includes('반려') ? '반려' : '승인대기'))}</td>
 
                                 </tr>
                           })

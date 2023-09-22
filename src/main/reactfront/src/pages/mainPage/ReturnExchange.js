@@ -1,10 +1,11 @@
 import "../../styles/Style.css";
 
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import axios from "axios";
 import ReturnDetailModal_return from '../../component/Modal/ReturnDetailModal_return';
 import ReturnDetailModal_exchange from "../../component/Modal/ReturnDetailModal_exchange";
 import {Link} from "react-router-dom";
+import Pagenation from "../../component/Pagenation";
 
 
 
@@ -69,6 +70,56 @@ function ReturnExchange() {
     return time;
   }
 
+  /* 몇개씩 보이고 싶은지 */
+  const [itemsPerPage, setItemPerPage] = useState(10); // 페이지당 10개의 아이템  useState(처음에 보이고싶은 개수)
+  const handleSelectorChange = (event) => {
+    setItemPerPage(parseInt(event.target.value));
+    setCurrentPage(1);
+  };
+
+
+    const copyReturnList = [...returnList];
+    const returnList1 = () => copyReturnList.filter(a => {
+      if(choice === 'all') {
+        return a.RETURN_KIND === '교환' || a.RETURN_KIND === '반납'
+      } else if(choice === 'exh') {
+        return a.RETURN_KIND === '교환'
+      } else {
+        return a.RETURN_KIND === '반납'
+      }
+    }).filter(a => a.RETURN_STATUS === '승인대기');
+    const returnList2 = () => copyReturnList.filter(a => {
+      if(choice === 'all') {
+        return a.RETURN_KIND === '교환' || a.RETURN_KIND === '반납'
+      } else if(choice === 'exh') {
+        return a.RETURN_KIND === '교환'
+      } else {
+        return a.RETURN_KIND === '반납'
+      }
+    }).filter(a => a.RETURN_STATUS !== '승인대기');
+
+  const newReturnList = () => {
+
+    return returnList1() && returnList2();
+  }
+
+  const [currentPage, setCurrentPage] = useState(1); // 현재 페이지
+  const totalPages = Math.ceil(newReturnList().length / itemsPerPage);
+  /* 페이지네이션 */
+  /* const totalPages = Math.ceil(data.length / itemsPerPage); */
+  const pagesPerGroup = 10; // 한 그룹에 표시할 페이지 수
+  const currentGroup = Math.ceil(currentPage / pagesPerGroup); // 현재 페이지 그룹
+
+  const startPage = (currentGroup - 1) * pagesPerGroup; // 시작 페이지
+  const endPage = Math.min(currentGroup * pagesPerGroup, totalPages); // 끝 페이지
+
+  const handleClick = (pageNumber) => {
+    setCurrentPage(pageNumber);
+  };
+
+
+
+
   return (
     <>
     <main id="main" className="main">
@@ -87,7 +138,7 @@ function ReturnExchange() {
       <div className="card">
         <div className="card-body">
           <h5 className="card-title" style={{fontWeight: "800"}}>교환 및 반납 요청</h5>
-          <select className='choiceCatogory' style={{width:'150px', marginBottom:'10px', height: '30px'}} onChange={(e) => setChoice(e.target.value)}>
+          <select className='choiceCatogory' style={{width:'150px', marginBottom:'10px', height: '30px'}} onChange={(e) => {setChoice(e.target.value); setCurrentPage(1)}}>
             <option value="all">전체목록</option>
             <option value="exh">교환</option>
             <option value="ret">반납</option>
@@ -111,19 +162,14 @@ function ReturnExchange() {
             </thead>
             <tbody>
               {
-                
-                returnList.filter(a => {
-                  if(choice === 'all') {
-                    return a.RETURN_KIND === '교환' || a.RETURN_KIND === '반납'
-                  } else if(choice === 'exh') {
-                    return a.RETURN_KIND === '교환'
-                  } else {
-                    return a.RETURN_KIND === '반납'
-                  }
-                }).filter(a => a.RETURN_STATUS === '승인대기').map((a, i) => {
+
+                returnList1().slice(
+                    (currentPage - 1) * itemsPerPage,
+                    currentPage * itemsPerPage
+                ).map((a, i) => {
 
                   return <tr key={i}>
-                    <th scope="row">{i + 1}</th>
+                    <th scope="row">{(currentPage - 1) * itemsPerPage + i + 1}</th>
                     <td>{a.RETURN_KIND}</td>
                     <td>{a.USER_NAME}</td>
                     <td>{a.ASSETS_NAME}</td>
@@ -139,18 +185,12 @@ function ReturnExchange() {
               }
 
               {
-                returnList.filter(a => a.RETURN_STATUS !== '승인대기').filter(a => {
-                  if(choice === 'all') {
-                    return a.RETURN_KIND === '교환' || a.RETURN_KIND === '반납'
-                  } else if(choice === 'exh') {
-                    return a.RETURN_KIND === '교환'
-                  } else {
-                    return a.RETURN_KIND === '반납'
-                  }
-                }).filter(a => a.RETURN_STATUS !== '승인대기')
-                    .map((a, i) => {
+                returnList2().slice(
+                    (currentPage - 1) * itemsPerPage,
+                    currentPage * itemsPerPage
+                ).map((a, i) => {
                   return <tr key={i}>
-                  <th scope="row">{count + i + 1}</th>
+                  <th scope="row">{(currentPage - 1) * itemsPerPage + count + i + 1}</th>
                   <td>{a.RETURN_KIND}</td>
                   <td>{a.USER_NAME}</td>
                   <td>{a.ASSETS_NAME}</td>
@@ -175,6 +215,17 @@ function ReturnExchange() {
 
     {openModal_return && <ReturnDetailModal_return setOpenModal_return={setOpenModal_return} num={num} returnList={returnList} getreturnList={getreturnList} token={token}/>}
       {openModal_exchange && <ReturnDetailModal_exchange setOpenModal_exchange={setOpenModal_exchange} num={num} returnList={returnList} getreturnList={getreturnList} token={token}/>}
+
+      {/* 페이징네이션 */}
+      <Pagenation
+          currentPage={currentPage}
+          totalPages={totalPages}
+          startPage={startPage}
+          endPage={endPage}
+          handleClick={handleClick}
+      />
+
+
     </main>
     </>
   );

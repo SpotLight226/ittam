@@ -55,7 +55,7 @@ function Mypage() {
       setUsername(username);
     }
     getUserInfo(username);
-  }, [userInfo])
+  }, [])
 
 
   //////////////////최후의 방법 모달창을 새로 만든다!!!!!!!!!!!!///////////////////
@@ -160,9 +160,9 @@ function Mypage() {
                         setUsername(userInfo.username);
                         setModifyPage(true)}}>내 정보수정하기</button>
                     </li>
-                    <li className="nav-item">
-                      <button className="nav-link" data-bs-toggle="tab" data-bs-target="#profile-change-password" onClick={modifyPage ? resetProfile : null}>비밀번호 변경</button>
-                    </li>
+                    {/*<li className="nav-item">*/}
+                    {/*  <button className="nav-link" data-bs-toggle="tab" data-bs-target="#profile-change-password" onClick={modifyPage ? resetProfile : null}>비밀번호 변경</button>*/}
+                    {/*</li>*/}
                           </>
                           : null
 

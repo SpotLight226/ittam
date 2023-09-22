@@ -138,8 +138,16 @@ function UserMain() {
         <div className="row">
           <div className="col-lg-3">
 
+
+                <img src="../assets/img/ittam2.png" style={{width: '350px', marginLeft: '40px'}}/>
+              </div>
+
+
+
+          <div className="col-lg-3">
+
             <div className="card">
-              <div className="card-body">
+              <div className="card-body" style={{height: '325px'}}>
                 <h5 className="card-title" style={{fontWeight: "800"}}>나의 자산 현황</h5>
                 {(myAssetChartCnt!==undefined ? <DounutChart_user myAssetChartCnt={myAssetChartCnt}/> :
                     <div className="d-flex justify-content-center">
@@ -158,16 +166,7 @@ function UserMain() {
             </div>
 
           </div>
-           <div className="col-lg-3">
 
-            <div className="card">
-              <div className="card-body">
-                <h5 className="card-title" style={{fontWeight: "800"}}>나의 자산 현황</h5>
-
-              </div>
-            </div>
-
-          </div>
 
           <div className="col-lg-6">
 
