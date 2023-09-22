@@ -1,10 +1,11 @@
-import { useCallback, useContext, useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useContext, useEffect, useState } from "react";
 
 import { UserDispatchContext } from "../../pages/users/Users";
+import { tokenInfoContext } from "../TokenInfoProvider";
 
 const UserModal = ({ modalContent, closeModal }) => {
   const { onEdit } = useContext(UserDispatchContext);
+  const { userRole } = useContext(tokenInfoContext);
 
   const [yearsInCompany, setYearsInCompany] = useState(null); // 년차
   const [ismodify, setIsModify] = useState(false); // 수정여부
@@ -101,7 +102,7 @@ const UserModal = ({ modalContent, closeModal }) => {
             >
               닫기
             </button>
-            {ismodify ? (
+            {userRole === "ROLE_HIGH_ADMIN" && ismodify ? (
               <button
                 type="button"
                 className="btn btn-primary"
@@ -112,7 +113,7 @@ const UserModal = ({ modalContent, closeModal }) => {
               >
                 변경 완료
               </button>
-            ) : (
+            ) : userRole === "ROLE_HIGH_ADMIN" ? (
               <button
                 type="button"
                 className="btn btn-primary"
@@ -122,7 +123,7 @@ const UserModal = ({ modalContent, closeModal }) => {
               >
                 권한 변경
               </button>
-            )}
+            ) : null}
           </div>
         </div>
       </div>

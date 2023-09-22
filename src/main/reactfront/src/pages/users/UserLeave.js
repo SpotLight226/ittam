@@ -4,6 +4,8 @@ import { BsArrowClockwise } from "react-icons/bs";
 import axios from "axios";
 
 import { UserStateContext } from "./Users";
+import { tokenInfoContext } from "../../component/TokenInfoProvider";
+
 import UserItem from "./UserItem";
 import Pagenation from "../../component/Pagenation";
 import { UserOptionList } from "../../constants/OptionList"; // 옵션들을 정의해둔 list에서 객체로 사용할 옵션을 가져온다
@@ -12,11 +14,21 @@ import UserLeaveModal from "../../component/Modal/UserLeaveModal";
 
 const UserLeave = () => {
   const userList = useContext(UserStateContext);
+  const token = localStorage.getItem("token");
+  const { userRole } = useContext(tokenInfoContext);
 
   const filteredList = userList.filter((it) => it.user_leave_yn === "Y"); // 퇴사 신청한 리스트
 
   const navigate = useNavigate();
   const location = useLocation();
+
+  // 권한 체크 및 경고 메시지 함수
+  const checkUserRole = () => {
+    if (userRole !== "ROLE_ADMIN" && userRole !== "ROLE_HIGH_ADMIN") {
+      alert("권한이 없습니다.");
+      navigate(-1); // 뒤로 이동
+    }
+  };
 
   // 검색
   const [inputText, setInputText] = useState(""); // 검색창 value
@@ -32,6 +44,9 @@ const UserLeave = () => {
 
     setInputText(searchParam);
     setSearchOption(searchOptionParam);
+
+    // 페이지 로딩 시 권한 체크
+    checkUserRole();
   }, [location]);
 
   // 검색 핸들링
@@ -44,8 +59,14 @@ const UserLeave = () => {
       // navigate로 url업데이트
       navigate(url);
 
-      axios
-        .get(`/user/userSearch?value=${newValue}&option=${newOption}`)
+      axios({
+        url: `/user/userSearch?value=${newValue}&option=${newOption}`,
+        method: "get",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: token,
+        },
+      })
         .then((res) => {
           const searchData = res.data
             .filter((it) => it.user_leave_yn === "Y")
@@ -56,7 +77,13 @@ const UserLeave = () => {
                 ...it,
               };
             });
-          setSearchResult(searchData); // 검색 결과 업데이트
+          if (searchData.length < 1) {
+            alert("검색결과가 없습니다");
+            setInputText("");
+            navigate("/user/userLeave");
+          } else {
+            setSearchResult(searchData); // 검색 결과 업데이트
+          }
         })
         .catch((err) => {
           console.log(err);
@@ -102,8 +129,17 @@ const UserLeave = () => {
   // 퇴사 신청 상세 콘텐츠
   const getModalContent = async (userId) => {
     if (userId) {
-      axios
-        .post("/user/userDetail", { userId })
+      axios({
+        url: "/user/userDetail",
+        method: "post",
+        data: {
+          userId: userId,
+        },
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: token,
+        },
+      })
         .then((res) => {
           // 가져온 데이터를 state에 맵핑
           const userData = res.data;
