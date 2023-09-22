@@ -325,6 +325,7 @@ public class User_RequestController {
             mainPageService.registAlarm_req(map);
             ////////////////////////
             userRequestService.HighUserRequestApprove(Integer.parseInt(requestBody.get("userq_NUM")), requestBody.get("username"));
+            userRequestService.HighUserRequestApproveB(Integer.parseInt(requestBody.get("assets_num")), requestBody.get("req_username"));
             count4++;
             return ResponseEntity.ok("자산 사용 승인이 완료되었습니다." + count4);
         } catch (Exception e) {

@@ -28,6 +28,7 @@ public interface UserRequestService {
     ////////////////////////////////////// 최종 관리자
     public ArrayList<UserRequestVO> HighUserRequestList(); // (관리자 페이지) 신청 조회 페이지 리스트
     public int HighUserRequestApprove(int userq_NUM, String username); // (관리자 페이지) 신청 승인 처리
+    public int HighUserRequestApproveB(int assets_num, String req_username); // (관리자 페이지) 신청 승인 처리
     public int HighUserRequestReturn(int userq_NUM, String username); // (관리자 페이지) 신청 반려 처리
     public ArrayList<UserRequestVO> HighUserRequestSearch (String inputText); // (관리자 페이지) 검색 리스트
 

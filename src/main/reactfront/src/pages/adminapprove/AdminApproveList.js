@@ -21,7 +21,8 @@ function AdminApprove() {
     username : "",
     userqTITLE : "",
     userqCOMMENT : "",
-    categoryNUM : ""
+    categoryNUM : "",
+    assets_num : ""
   });
   const [inputInnerData, setInputInnerDate] = useState({ // 검색 시 list 관리를 위한 state
     userqNUM : "",
@@ -30,7 +31,8 @@ function AdminApprove() {
     username : "",
     userqTITLE : "",
     userqCOMMENT : "",
-    categoryNUM : ""
+    categoryNUM : "",
+    assets_num : "",
   });
   const handleToggle = (e) => { // 승인 모달창 핸들러
     let basicModal = document.getElementById("basicModal");
@@ -45,6 +47,7 @@ function AdminApprove() {
       userqCOMMENT : e.target.closest(".prod-box").querySelector(".userq_COMMENT").textContent,
       userqNUM : e.target.closest(".prod-box").querySelector(".userq_NUM").textContent,
       categoryNUM : e.target.closest(".prod-box").querySelector(".category_NUM").textContent,
+      assets_num : e.target.closest(".prod-box").querySelector(".assets_num").textContent,
     });
   };
   const handleBackToggle = (e) => { // 반려 모달창 핸들러
@@ -60,6 +63,7 @@ function AdminApprove() {
       userqCOMMENT : e.target.closest(".prod-box").querySelector(".userq_COMMENT").textContent,
       userqNUM : e.target.closest(".prod-box").querySelector(".userq_NUM").textContent,
       categoryNUM : e.target.closest(".prod-box").querySelector(".category_NUM").textContent,
+      assets_num : e.target.closest(".prod-box").querySelector(".assets_num").textContent,
     });
 
 
@@ -74,7 +78,7 @@ function AdminApprove() {
     basicModalBack.style.display = "none";
     basicModalBack.classList.toggle("show");
   };
-  const ApproveForm = (e, userqNUM) => { // Spring Boot로 승인 요청
+  const ApproveForm = (e, userqNUM, assets_num) => { // Spring Boot로 승인 요청
     e.preventDefault();
     axios({
       url: 'http://localhost:9191/admin/high/UserRequestApprove',
@@ -83,8 +87,8 @@ function AdminApprove() {
         userq_NUM: userqNUM,
         username : username,
         ///알람관련 추가사항////
-        req_username: innerData.username
-
+        req_username: innerData.username,
+        assets_num : assets_num
       },
       headers: {
         Authorization : token
@@ -362,10 +366,11 @@ function AdminApprove() {
                   <hr />
                   <p>해당 자산 사용신청을 승인처리 하시겠습니까?</p>
                   <input className="userq_NUM" type="hidden" value={innerData.userqNUM}/>
+                  <input className="assets_num" type="hidden" value={innerData.assets_num}/>
                 </div>
                 <div className="modal-footer">
                   <button type="button" className="btn btn-secondary" data-bs-dismiss="modal" onClick={handleClose}>취소</button>
-                  <button type="button" className="btn btn-primary" onClick={(e) => ApproveForm(e, innerData.userqNUM)}>승인</button>
+                  <button type="button" className="btn btn-primary" onClick={(e) => ApproveForm(e, innerData.userqNUM, innerData.assets_num)}>승인</button>
                 </div>
               </form>
             </div>
