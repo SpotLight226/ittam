@@ -128,208 +128,174 @@ function Sidebar() {
                   </Link>
                 </div>
               </li>
-              <Link to="/itassets/use">
-                <span>자산 사용 일괄 신청</span>
-              </Link>
             </ul>
           </li>
         )}
         {/* <!-- End Components Nav --> */}
-
-        <li className="nav-item">
-          <Link
-            to="####"
-            className="nav-link collapsed"
-            data-bs-target="#forms-nav"
-            data-bs-toggle="collapse"
-          >
-            <i className="bi bi-journal-text"></i>
-            <span>IT 자산</span>
-            <i className="bi bi-chevron-down ms-auto"></i>
-          </Link>
-          <ul
-            id="forms-nav"
-            className="nav-content collapse "
-            data-bs-parent="#sidebar-nav"
-          >
-            <li>
-              <Link to="/adminitassets">
-                <i className="bi bi-circle"></i>
-                <span>재고 관리</span>
-              </Link>
-            </li>
-          </ul>
-        </li>
+        {userRole == 'ROLE_ADMIN' && (
+          <li className="nav-item">
+            <Link
+              to="####"
+              className="nav-link collapsed"
+              data-bs-target="#forms-nav"
+              data-bs-toggle="collapse"
+            >
+              <i className="bi bi-journal-text"></i>
+              <span>IT 자산</span>
+              <i className="bi bi-chevron-down ms-auto"></i>
+            </Link>
+            <ul
+              id="forms-nav"
+              className="nav-content collapse "
+              data-bs-parent="#sidebar-nav"
+            >
+              <li>
+                <Link to="/adminitassets">
+                  <i className="bi bi-circle"></i>
+                  <span>재고 관리</span>
+                </Link>
+              </li>
+            </ul>
+          </li>
+        )}
         {/* <!-- End Forms Nav --> */}
+        {userRole == 'ROLE_ADMIN' && (
+          <li className="nav-item">
+            <Link
+              to="#"
+              className="nav-link collapsed"
+              data-bs-target="#charts-nav"
+              data-bs-toggle="collapse"
+            >
+              <i className="bi bi-bar-chart"></i>
+              <span>사용자 신청</span>
+              <i className="bi bi-chevron-down ms-auto"></i>
+            </Link>
+            <ul
+              id="charts-nav"
+              className="nav-content collapse "
+              data-bs-parent="#sidebar-nav"
+            >
+              <li>
+                <Link to="/admin/approveList">
+                  <i className="bi bi-circle"></i>
+                  <span>사용 신청 목록</span>
+                </Link>
+              </li>
+              <li>
+                <Link to="/admin/approveHandle">
+                  <i className="bi bi-circle"></i>
+                  <span>사용 처리 목록</span>
+                </Link>
+              </li>
+              <li>
+                <Link to="/admin/approveBuyList">
+                  <i className="bi bi-circle"></i>
+                  <span>구매 신청 목록</span>
+                </Link>
+              </li>
+              <li>
+                <Link to="/admin/approveBuyHandle">
+                  <i className="bi bi-circle"></i>
+                  <span>구매 처리 목록</span>
+                </Link>
+              </li>
+            </ul>
+          </li>
+        )}
 
-        <li className="nav-item">
-          <Link
-            to="####"
-            className="nav-link collapsed"
-            data-bs-target="#tables-nav"
-            data-bs-toggle="collapse"
-          >
-            <i className="bi bi-layout-text-window-reverse"></i>
-            <span>결제 신청</span>
-            <i className="bi bi-chevron-down ms-auto"></i>
-          </Link>
-          <ul
-            id="tables-nav"
-            className="nav-content collapse "
-            data-bs-parent="#sidebar-nav"
-          >
-            <li>
-              <Link to="####">
-                <i className="bi bi-circle"></i>
-                <span>General Tables</span>
-              </Link>
-            </li>
-            <li>
-              <Link to="####">
-                <i className="bi bi-circle"></i>
-                <span>Data Tables</span>
-              </Link>
-            </li>
-          </ul>
-        </li>
-        {/* <!-- End Tables Nav --> */}
-
-        <li className="nav-item">
-          <Link
-            to="#"
-            className="nav-link collapsed"
-            data-bs-target="#charts-nav"
-            data-bs-toggle="collapse"
-          >
-            <i className="bi bi-bar-chart"></i>
-            <span>사용자 신청</span>
-            <i className="bi bi-chevron-down ms-auto"></i>
-          </Link>
-          <ul
-            id="charts-nav"
-            className="nav-content collapse "
-            data-bs-parent="#sidebar-nav"
-          >
-            <li>
-              <Link to="/admin/approveList">
-                <i className="bi bi-circle"></i>
-                <span>사용 신청 목록</span>
-              </Link>
-            </li>
-            <li>
-              <Link to="/admin/approveHandle">
-                <i className="bi bi-circle"></i>
-                <span>사용 처리 목록</span>
-              </Link>
-            </li>
-            <li>
-              <Link to="/admin/approveBuyList">
-                <i className="bi bi-circle"></i>
-                <span>구매 신청 목록</span>
-              </Link>
-            </li>
-            <li>
-              <Link to="/admin/approveBuyHandle">
-                <i className="bi bi-circle"></i>
-                <span>구매 처리 목록</span>
-              </Link>
-            </li>
-          </ul>
-        </li>
-        <li className="nav-item">
-          <Link
-            to="#"
-            className="nav-link collapsed"
-            data-bs-target="#high-nav"
-            data-bs-toggle="collapse"
-          >
-            <i className="bi bi-bar-chart"></i>
-            <span>관리자 신청</span>
-            <i className="bi bi-chevron-down ms-auto"></i>
-          </Link>
-          <ul
-            id="high-nav"
-            className="nav-content collapse "
-            data-bs-parent="#sidebar-nav"
-          >
-            <li>
-              <Link to="/highAdmin/approveList">
-                <i className="bi bi-circle"></i>
-                <span>최종 사용 신청 목록</span>
-              </Link>
-            </li>
-            <li>
-              <Link to="/highAdmin/approveBuyList">
-                <i className="bi bi-circle"></i>
-                <span> 최종 구매 신청 목록</span>
-              </Link>
-            </li>
-            <li>
-              <Link to="/highAdmin/approveHandle">
-                <i className="bi bi-circle"></i>
-                <span>최종 사용 처리 목록</span>
-              </Link>
-            </li>
-            <li>
-              <Link to="/highAdmin/approveBuyHandle">
-                <i className="bi bi-circle"></i>
-                <span>최종 구매 처리 목록</span>
-              </Link>
-            </li>
-            <li>
-              <Link to="/itassetsapproval">
-                <i className="bi bi-circle"></i>
-                <span>폐기/수리 처리 목록</span>
-              </Link>
-            </li>
-          </ul>
-        </li>
-
+        {userRole == 'ROLE_HIGH_ADMIN' && (
+          <li className="nav-item">
+            <Link
+              to="#"
+              className="nav-link collapsed"
+              data-bs-target="#high-nav"
+              data-bs-toggle="collapse"
+            >
+              <i className="bi bi-bar-chart"></i>
+              <span>관리자 신청</span>
+              <i className="bi bi-chevron-down ms-auto"></i>
+            </Link>
+            <ul
+              id="high-nav"
+              className="nav-content collapse "
+              data-bs-parent="#sidebar-nav"
+            >
+              <li>
+                <Link to="/highAdmin/approveList">
+                  <i className="bi bi-circle"></i>
+                  <span>최종 사용 신청 목록</span>
+                </Link>
+              </li>
+              <li>
+                <Link to="/highAdmin/approveHandle">
+                  <i className="bi bi-circle"></i>
+                  <span>최종 사용 처리 목록</span>
+                </Link>
+              </li>
+              <li>
+                <Link to="/itassetsapproval">
+                  <i className="bi bi-circle"></i>
+                  <span>구매/폐기/수리 처리 목록</span>
+                </Link>
+              </li>
+              <li>
+                <Link to="/highAdmin/approveBuyHandle">
+                  <i className="bi bi-circle"></i>
+                  <span>최종 구매 처리 목록</span>
+                </Link>
+              </li>
+            </ul>
+          </li>
+        )}
         {/* <!-- End Charts Nav --> */}
-
-        <li className="nav-item">
-          <Link
-            to="####"
-            className="nav-link collapsed"
-            data-bs-target="#icons-nav"
-            data-bs-toggle="collapse"
-          >
-            <i className="bi bi-gem"></i>
-            <span>사용자 관리</span>
-            <i className="bi bi-chevron-down ms-auto"></i>
-          </Link>
-          <ul
-            id="icons-nav"
-            className="nav-content collapse "
-            data-bs-parent="#sidebar-nav"
-          >
-            <li>
-              <Link to="users/userReg">
-                <i className="bi bi-circle"></i>
-                <span>사용자 등록</span>
-              </Link>
-            </li>
-            <li>
-              <Link to="/users/userList">
-                <i className="bi bi-circle"></i>
-                <span>사용자 목록</span>
-              </Link>
-            </li>
-            <li>
-              <Link to="users/userLeave">
-                <i className="bi bi-circle"></i>
-                <span>퇴사 신청</span>
-              </Link>
-            </li>
-          </ul>
-        </li>
+        {(userRole == 'ROLE_HIGH_ADMIN' || userRole == 'ROLE_ADMIN') && (
+          <li className="nav-item">
+            <Link
+              to="####"
+              className="nav-link collapsed"
+              data-bs-target="#icons-nav"
+              data-bs-toggle="collapse"
+            >
+              <i className="bi bi-gem"></i>
+              <span>사용자 관리</span>
+              <i className="bi bi-chevron-down ms-auto"></i>
+            </Link>
+            <ul
+              id="icons-nav"
+              className="nav-content collapse "
+              data-bs-parent="#sidebar-nav"
+            >
+              <li>
+                <Link to="users/userReg">
+                  <i className="bi bi-circle"></i>
+                  <span>사용자 등록</span>
+                </Link>
+              </li>
+              <li>
+                <Link to="/users/userList">
+                  <i className="bi bi-circle"></i>
+                  <span>사용자 목록</span>
+                </Link>
+              </li>
+              <li>
+                <Link to="users/userLeave">
+                  <i className="bi bi-circle"></i>
+                  <span>퇴사 신청</span>
+                </Link>
+              </li>
+            </ul>
+          </li>
+        )}
         {/* <!-- End Icons Nav --> */}
-        <li className="nav-item">
-          <Link to="admin/reports" className="nav-link collapsed">
-            <i className="bi bi-graph-up"></i>
-            <span>자산 리포트</span>
-          </Link>
-        </li>
+        {(userRole == 'ROLE_HIGH_ADMIN' || userRole == 'ROLE_ADMIN') && (
+          <li className="nav-item">
+            <Link to="admin/reports" className="nav-link collapsed">
+              <i className="bi bi-graph-up"></i>
+              <span>자산 리포트</span>
+            </Link>
+          </li>
+        )}
 
         <li className="nav-heading">설정</li>
 
@@ -340,14 +306,6 @@ function Sidebar() {
           </Link>
         </li>
         {/* <!-- End Profile Page Nav --> */}
-
-        <li className="nav-item">
-          <Link to="####" className="nav-link collapsed">
-            <i className="bi bi-question-circle"></i>
-            <span>설정</span>
-          </Link>
-        </li>
-        {/* <!-- End F.A.Q Page Nav --> */}
       </ul>
     </aside>
   );
