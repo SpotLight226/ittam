@@ -54,7 +54,7 @@ function ReqDetailModal({ setOpenReqDetailModal, username, myRequestList, userq_
         <div className="card" style={{width: '600px', borderRadius: "8px"}} onClick={(e) => e.stopPropagation()}>
           <div className="card-body">
 
-            <h5 className="card-title" style={{ paddingBottom: "0px" }}>사용 및 구매 신청</h5>
+            <h5 className="card-title" style={{ paddingBottom: "0px" }}>{thisList().userq_yn.includes("사용") ? "사용요청" : "구매요청"} 등록 상세정보</h5>
             <hr />
 
 

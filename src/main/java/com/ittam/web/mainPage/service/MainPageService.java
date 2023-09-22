@@ -47,10 +47,14 @@ public interface MainPageService {
     public Integer getFinalBuyCnt(); //상위 관리자가 최종구매승인해야 할 건수
     public Integer getFinalDisCnt(); //상위 관리자가 최종 수리/폐기해야 할 건수
     ////////////////////////
-    public void registAlam(Map<String, Object> map); //알람등록하기
-    public List<AlarmVO> getMyAlarmList(String username); //내 알람가져오기
+    public void registAlarm(Map<String, Object> map); //알람등록하기
+    public List<Map<String, Object>> getMyAlarmList(String username); //내 알람가져오기
     public void handleMyAlamConfirm(Integer alarm_num); //알람읽음처리하기
+    public void handleMyAlamConfirm2(Integer alarm_num); //알람읽음처리하기
     public Integer getMyAlarmCnt(String username); //알림개수세기
+
+    /////////////////////////////
+    public void registAlarm_req(Map<String, Object> map);
 
 
 }

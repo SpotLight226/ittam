@@ -207,13 +207,16 @@ public class MainPageServiceImpl implements MainPageService{
     }
 
     @Override
-    public void registAlam(Map<String, Object> map) {
-        mainPageMapper.registAlam(map);
+    public void registAlarm(Map<String, Object> map) {
+        mainPageMapper.registAlarm(map);
     }
 
     @Override
-    public List<AlarmVO> getMyAlarmList(String username) {
-        return mainPageMapper.getMyAlarmList(username);
+    public List<Map<String, Object>> getMyAlarmList(String username) {
+        List<Map<String, Object>> list1 = mainPageMapper.getMyAlarmList(username);
+        List<Map<String, Object>> list2 = mainPageMapper.getMyAlarmList2(username);
+        list1.addAll(list2);
+        return list1;
     }
 
     @Override
@@ -222,8 +225,19 @@ public class MainPageServiceImpl implements MainPageService{
     }
 
     @Override
+    public void handleMyAlamConfirm2(Integer alarm_num) {
+        mainPageMapper.handleMyAlamConfirm2(alarm_num);
+    }
+
+    @Override
     public Integer getMyAlarmCnt(String username) {
-        return mainPageMapper.getMyAlarmCnt(username);
+        System.out.println("개수:"+mainPageMapper.getMyAlarmCnt2(username));
+        return mainPageMapper.getMyAlarmCnt(username) + mainPageMapper.getMyAlarmCnt2(username);
+    }
+
+    @Override
+    public void registAlarm_req(Map<String, Object> map) {
+        mainPageMapper.registAlarm_req(map);
     }
 
 

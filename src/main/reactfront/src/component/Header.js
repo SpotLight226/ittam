@@ -10,6 +10,21 @@ function Header() {
   const [myAlarmList, setMyAlarmList] = useState([]);
   const [myAlarmCnt, setMyAlarmCnt] = useState(0);
   const navigate = useNavigate(); // navigate 함수 생성
+
+  const regdate = (add) => {
+    let now = new Date(add);
+    let todayYear = now.getFullYear();
+    let todayMonth = now.getMonth() + 1;
+    let todayDate = now.getDate();
+    const week = ['(일)', '(월)', '(화)', '(수)', '(목)', '(금)', '(토)'];
+    let dayOfWeek = week[now.getDay()];
+    let hours = now.getHours();
+    let minutes = now.getMinutes();
+
+    return todayYear + "-" + (todayMonth >= 10 ? todayMonth : '0'+todayMonth) + "-" + (todayDate >= 10 ? todayDate : '0'+todayDate);
+  }
+
+
   const getMyInfo = (username) => {
     axios({
       url: "/mainPage/getMyInfo",
@@ -35,7 +50,7 @@ function Header() {
         params: {
           username: username
         }
-      }).then(response => {setMyAlarmList(response.data); console.log("dd"+response.data);})
+      }).then(response => {setMyAlarmList(response.data); console.log(response.data);})
         .catch(error => console.log(error))
 
     };
@@ -59,7 +74,7 @@ function Header() {
 
 
 
-  const handleMyAlamConfirm = (e, alarm_num) => {
+  const handleMyAlamConfirm = (e, alarm_num, alarm_type) => {
     e.stopPropagation();
     axios({
       url: "/mainPage/handleMyAlamConfirm",
@@ -68,7 +83,8 @@ function Header() {
         Authorization : token
       },
       params: {
-        alarm_num: alarm_num
+        alarm_num: alarm_num,
+        alarm_type: alarm_type
       }
     }).then(response => {
       console.log(response.data);
@@ -76,8 +92,9 @@ function Header() {
       getMyAlarmCnt(username);
       })
         .catch(error => console.log(error))
-
-    navigate("/user/userMain_using");
+    alarm_type === '교환' || alarm_type === '반납' ?
+    navigate("/user/userMain_using") :
+        navigate("/user/userMain_request")
   }
 
 
@@ -146,79 +163,57 @@ function Header() {
               </Link>
               {/* <!-- End Notification Icon --> */}
 
-              <ul className="dropdown-menu dropdown-menu-end dropdown-menu-arrow notifications" style={{overflow: 'scroll', maxHeight: '486px'}}>
+              <ul className="dropdown-menu dropdown-menu-end dropdown-menu-arrow notifications" style={{overflow: 'scroll', maxHeight: '486px', width: '330px'}}>
                 <li className="dropdown-header">
-                  You have {myAlarmCnt} new notifications
-                  <Link to="####">
-                  <span className="badge rounded-pill bg-primary p-2 ms-2">
-                    View all
-                  </span>
-                  </Link>
+                   {myAlarmCnt}개의 알림이 있습니다.
+                  {/*<Link to="####">*/}
+                  {/*<span className="badge rounded-pill bg-primary p-2 ms-2">*/}
+                  {/*  View all*/}
+                  {/*</span>*/}
+                  {/*</Link>*/}
                 </li>
                 {
                   myAlarmList.map((a, i) => {
-                    return <div onClick={(e) => handleMyAlamConfirm(e, a.alarm_num)} key={i} style={{cursor: 'pointer'}}>
+                    return <div onClick={(e) => handleMyAlamConfirm(e, a.ALARM_NUM, a.ALARM_TYPE)} key={i} style={{cursor: 'pointer'}}>
                       <li>
                         <hr className="dropdown-divider"></hr>
                       </li>
                       <li className="notification-item">
                         <i className="bi bi-exclamation-circle text-warning"></i>
+                        {
+                          a.ALARM_TYPE === '교환' || a.ALARM_TYPE === '반납' ?
                         <div>
-                          <h4>관리자 {a.alarm_status}처리 완료</h4>
-                          <p>요청하신 {a.assets_name}({a.assets_detail_name})의 {a.alarm_type} {a.alarm_status}처리가 완료되었습니다.</p>
-                          <p>{a.alarm_regdate}</p>
-                        </div>
+                          <h4>관리자 {a.ALARM_TYPE}처리 완료</h4>
+                          <p>요청하신 {a.ASSETS_NAME}({a.ASSETS_DETAIL_NAME})의 {a.ALARM_TYPE} {a.ASSETS_STATUS}처리가 완료되었습니다.</p>
+                          <p>{regdate(a.ALARM_REGDATE)}</p>
+                        </div> :(a.ALARM_TYPE === '사용신청' ?
+                              <div>
+                                <h4>관리자 {a.ALARM_TYPE}처리 완료</h4>
+                                <p>요청하신 {a.ASSETS_NAME}({a.ASSETS_DETAIL_NAME})의 {a.ALARM_TYPE} {a.ASSETS_STATUS}처리가 완료되었습니다.</p>
+                                <p>{regdate(a.ALARM_REGDATE)}</p>
+                              </div> :
+                                      <div>
+                                        <h4>관리자 {a.ALARM_TYPE}처리 완료</h4>
+                                        <p>요청하신 {a.USERQ_KIND}의 {a.ALARM_TYPE} {a.ASSETS_STATUS}처리가 완료되었습니다.</p>
+                                        <p>{regdate(a.ALARM_REGDATE)}</p>
+                                      </div>
+
+
+                              )
+
+                        }
                       </li>
 
                     </div>
                   })
                 }
 
-                {/*<li>*/}
-                {/*  <hr className="dropdown-divider"></hr>*/}
-                {/*</li>*/}
-
-                {/*<li className="notification-item">*/}
-                {/*  <i className="bi bi-x-circle text-danger"></i>*/}
-                {/*  <div>*/}
-                {/*    <h4>Atque rerum nesciunt</h4>*/}
-                {/*    <p>Quae dolorem earum veritatis oditseno</p>*/}
-                {/*    <p>1 hr. ago</p>*/}
-                {/*  </div>*/}
-                {/*</li>*/}
-
-                {/*<li>*/}
-                {/*  <hr className="dropdown-divider"></hr>*/}
-                {/*</li>*/}
-
-                {/*<li className="notification-item">*/}
-                {/*  <i className="bi bi-check-circle text-success"></i>*/}
-                {/*  <div>*/}
-                {/*    <h4>Sit rerum fuga</h4>*/}
-                {/*    <p>Quae dolorem earum veritatis oditseno</p>*/}
-                {/*    <p>2 hrs. ago</p>*/}
-                {/*  </div>*/}
-                {/*</li>*/}
-
-                {/*<li>*/}
-                {/*  <hr className="dropdown-divider"></hr>*/}
-                {/*</li>*/}
-
-                {/*<li className="notification-item">*/}
-                {/*  <i className="bi bi-info-circle text-primary"></i>*/}
-                {/*  <div>*/}
-                {/*    <h4>Dicta reprehenderit</h4>*/}
-                {/*    <p>Quae dolorem earum veritatis oditseno</p>*/}
-                {/*    <p>4 hrs. ago</p>*/}
-                {/*  </div>*/}
-                {/*</li>*/}
-
                 <li>
                   <hr className="dropdown-divider"></hr>
                 </li>
-                <li className="dropdown-footer">
-                  <Link to="####">Show all notifications</Link>
-                </li>
+                {/*<li className="dropdown-footer">*/}
+                {/*  <Link to="####">Show all notifications</Link>*/}
+                {/*</li>*/}
               </ul>
               {/* <!-- End Notification Dropdown Items --> */}
             </li>

@@ -81,7 +81,10 @@ function AdminApprove() {
       method: 'post',
       data: {
         userq_NUM: userqNUM,
-        username : username
+        username : username,
+        ///알람관련 추가사항////
+        req_username: innerData.username
+
       },
       headers: {
         Authorization : token
@@ -111,7 +114,9 @@ function AdminApprove() {
       method: 'post',
       data: {
         userq_NUM: userqNUM,
-        username : username
+        username : username,
+        ///알람관련 추가사항////
+        req_username: innerData.username
       },
       headers: {
         Authorization : token
