@@ -34,7 +34,6 @@ function ITAssetsModify({
                     name="appro_title"
                     onChange={appro}
                     value={formStatus.appro_title}
-                    required
                   />
                 </div>
               </div>
@@ -67,7 +66,6 @@ function ITAssetsModify({
                   placeholder="username"
                   name="username"
                   value={username || ''}
-                  readOnly
                 />
               </div>
               {/* </div> */}
@@ -86,7 +84,6 @@ function ITAssetsModify({
                     onChange={appro}
                     name="appro_comment"
                     value={formStatus.appro_comment}
-                    required
                   />
                 </div>
               </div>

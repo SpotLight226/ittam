@@ -13,12 +13,12 @@ function LoginHome() {
   // const {authResponse, setAuthResponse} = useState("");
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-  
+
   const [passwordMismatch, setPasswordMismatch] = useState(false); // 비밀번호 변경 시 비밀번호 불일치 여부 저장
   const [emailAuthCompleted, setEmailAuthCompleted] = useState(false); // 이메일 인증 완려 여부
   const [isTimerActive, setIsTimerActive] = useState(false); // 타이머 활성화 여부
   const [emailAuth, SetEmailAuth] = useState(''); // 이메일 인증
-  const [cookies, setCookie] = useCookies(["rememberUserId"]); // 쿠키 
+  const [cookies, setCookie] = useCookies(["rememberUserId"]); // 쿠키
   const [rememberME, setRememberME] = useState(false); // 아이디 저장하기 유무
 
 
@@ -222,7 +222,7 @@ function LoginHome() {
     if (cookies.userId !== undefined) {
       setUsername(cookies.userId);
       setRememberME(true);
-    } 
+    }
   }, []);
 
   return (

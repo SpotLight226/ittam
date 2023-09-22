@@ -185,9 +185,6 @@ function UserMain_using() {
         <div className="card">
           <div className="card-body">
             <h5 className="card-title" style={{fontWeight: "800"}}>사용중인 자산 목록</h5>
-              {
-                myAssetList.length > 0 ?
-                    <>
             <select className='choiceCatogory' style={{width:'200px', marginBottom:'10px', height: '30px'}} onChange={(e) => {setChoiceCategory(e.target.value)}}>
               <option value="all">전체목록</option>
               <option value="pc">PC/노트북</option>
@@ -209,84 +206,77 @@ function UserMain_using() {
 
               </tr>
               </thead>
-                    <tbody>
+              <tbody>
 
-                    {
-                      myAssetList.filter(a => {
-                            if (choiceCatogory === 'all') {
-                              return a.CATEGORY_NUM >= 1;
-                            } else if (choiceCatogory === 'pc') {
-                              return a.CATEGORY_NUM === 5 || a.CATEGORY_NUM === 6 || a.CATEGORY_NUM === 1;
-                            } else if (choiceCatogory === 'sw') {
-                              return a.CATEGORY_NUM >= 7 && a.CATEGORY_NUM <= 12 || a.CATEGORY_NUM === 2;
-                            } else if (choiceCatogory === 'etc') {
-                              return a.CATEGORY_NUM >= 13 && a.CATEGORY_NUM <= 17 || a.CATEGORY_NUM === 3;
-                            } else {
-                              return a.CATEGORY_NUM === 18 || a.CATEGORY_NUM === 4;
-                            }
-                          }
+              {
+                myAssetList.filter(a => {
+                  if (choiceCatogory === 'all') {
+                    return a.CATEGORY_NUM >= 1;
+                  } else if (choiceCatogory === 'pc') {
+                    return a.CATEGORY_NUM === 5 || a.CATEGORY_NUM === 6 || a.CATEGORY_NUM === 1;
+                  } else if (choiceCatogory === 'sw') {
+                    return a.CATEGORY_NUM >= 7 && a.CATEGORY_NUM <= 12 || a.CATEGORY_NUM === 2;
+                  } else if (choiceCatogory === 'etc') {
+                    return a.CATEGORY_NUM >= 13 && a.CATEGORY_NUM <= 17 || a.CATEGORY_NUM === 3;
+                  } else {
+                    return a.CATEGORY_NUM === 18 || a.CATEGORY_NUM === 4;
+                  }
+                }
+                  
+                ).map((a, i) => {
+                  return <tr key={i}>
+                <th scope="row">{i + 1}</th>
+                <td>{a.ASSETS_NAME}{a.ASSETS_DETAIL_NAME}|{a.ASSETS_NUM}</td>
+                <td style={{fontSize:"14px", color: "gray", width: '800px'}}>{a.SPEC_CPU!==undefined? a.SPEC_CPU+' |':''}
+                                                                              {a.SPEC_RAM!==undefined? a.SPEC_RAM+" |":''}
+                                                                              {a.SPEC_MAINBOARD!==undefined? a.SPEC_MAINBOARD+" |":''}
+                                                                              {a.SPEC_POWER!==undefined?a.SPEC_POWER+' |':''}
+                                                                              {a.SPEC_GPU!==undefined?a.SPEC_GPU+' |':''}
+                                                                              {a.SPEC_HDD!==undefined?a.SPEC_HDD+' |':''}
+                                                                              {a.SPEC_SSD!==undefined?a.SPEC_SSD+" |":''}
+                                                                              {a.SPEC_OPS!==undefined?a.SPEC_OPS+" |":''}
+                                                                              {a.SPEC_MFG!==undefined?a.SPEC_MFG+" |":''}
+                                                                              {a.SPEC_SERIEL!==undefined?a.SPEC_SERIEL+" |":''}
+                                                                              {/*{a.SPEC_PURCHASE_DATE!==undefined?a.SPEC_PURCHASE_DATE+" |":''}*/}
+                                                                              {a.SPEC_WARRANTY!==undefined?a.SPEC_WARRANTY+" |":''}
+                                                                              {a.SW_MFG!==undefined?a.SW_MFG+" |":''}
+                                                                              {a.SW_SPEC_SERIEL!==undefined?a.SW_SPEC_SERIEL+" |":''}
+                                                                              {a.SW_SPEC_WARRANTY!==undefined?a.SW_SPEC_WARRANTY+" |":''}
+                                                                              {/*{a.SW_PURCHASE_DATE!==undefined?a.SW_PURCHASE_DATE+" |":''}*/}
+                                                                              {a.SW_PRICE!==undefined?a.SW_PRICE+" |":''}
+                                                                              {a.SERVER_MFG!==undefined?a.SERVER_MFG+" |":''}
+                                                                              {a.SERVER_PRICE!==undefined?a.SERVER_PRICE+" |":''}
+                                                                              {/*{a.SERVER_PURCHASE_DATE!==undefined?a.SERVER_PURCHASE_DATE+" |":''}*/}
+                                                                              {a.SERVER_INTERFACE!==undefined?a.SERVER_INTERFACE+" |":''}
+                                                                              {a.SERVER_AVERAGE_LIFE!==undefined?a.SERVER_AVERAGE_LIFE+" |":''}
+                                                                              {a.SERVER_RPM!==undefined?a.SERVER_RPM+" |":''}
+                                                                              {a.SERVER_DATARECOVERY_LIFE!==undefined?a.SERVER_DATARECOVERY_LIFE+" |":''}
+                                                                              {a.ETC_MFG!==undefined?a.ETC_MFG+" |":''}
+                                                                              {a.ETC_SPEC_WARRANTY!==undefined?a.ETC_SPEC_WARRANTY+" |":''}
+                                                                              {/*{a.ETC_PURCHASE_DATE!==undefined?a.ETC_PURCHASE_DATE+" |":''}*/}
+                                                                              {a.ETC_PRICE!==undefined?a.ETC_PRICE+" |":''}</td>
+                <td>{rentDate(a.RENT_DATE)}</td>
+                <td>{a.ASSETS_STATUS}</td>
 
-                      ).map((a, i) => {
-                        return <tr key={i}>
-                          <th scope="row">{i + 1}</th>
-                          <td>{a.ASSETS_NAME}{a.ASSETS_DETAIL_NAME}|{a.ASSETS_NUM}</td>
-                          <td style={{fontSize:"14px", color: "gray", width: '800px'}}>{a.SPEC_CPU!==undefined? a.SPEC_CPU+' |':''}
-                            {a.SPEC_RAM!==undefined? a.SPEC_RAM+" |":''}
-                            {a.SPEC_MAINBOARD!==undefined? a.SPEC_MAINBOARD+" |":''}
-                            {a.SPEC_POWER!==undefined?a.SPEC_POWER+' |':''}
-                            {a.SPEC_GPU!==undefined?a.SPEC_GPU+' |':''}
-                            {a.SPEC_HDD!==undefined?a.SPEC_HDD+' |':''}
-                            {a.SPEC_SSD!==undefined?a.SPEC_SSD+" |":''}
-                            {a.SPEC_OPS!==undefined?a.SPEC_OPS+" |":''}
-                            {a.SPEC_MFG!==undefined?a.SPEC_MFG+" |":''}
-                            {a.SPEC_SERIEL!==undefined?a.SPEC_SERIEL+" |":''}
-                            {/*{a.SPEC_PURCHASE_DATE!==undefined?a.SPEC_PURCHASE_DATE+" |":''}*/}
-                            {a.SPEC_WARRANTY!==undefined?a.SPEC_WARRANTY+" |":''}
-                            {a.SW_MFG!==undefined?a.SW_MFG+" |":''}
-                            {a.SW_SPEC_SERIEL!==undefined?a.SW_SPEC_SERIEL+" |":''}
-                            {a.SW_SPEC_WARRANTY!==undefined?a.SW_SPEC_WARRANTY+" |":''}
-                            {/*{a.SW_PURCHASE_DATE!==undefined?a.SW_PURCHASE_DATE+" |":''}*/}
-                            {a.SW_PRICE!==undefined?a.SW_PRICE+" |":''}
-                            {a.SERVER_MFG!==undefined?a.SERVER_MFG+" |":''}
-                            {a.SERVER_PRICE!==undefined?a.SERVER_PRICE+" |":''}
-                            {/*{a.SERVER_PURCHASE_DATE!==undefined?a.SERVER_PURCHASE_DATE+" |":''}*/}
-                            {a.SERVER_INTERFACE!==undefined?a.SERVER_INTERFACE+" |":''}
-                            {a.SERVER_AVERAGE_LIFE!==undefined?a.SERVER_AVERAGE_LIFE+" |":''}
-                            {a.SERVER_RPM!==undefined?a.SERVER_RPM+" |":''}
-                            {a.SERVER_DATARECOVERY_LIFE!==undefined?a.SERVER_DATARECOVERY_LIFE+" |":''}
-                            {a.ETC_MFG!==undefined?a.ETC_MFG+" |":''}
-                            {a.ETC_SPEC_WARRANTY!==undefined?a.ETC_SPEC_WARRANTY+" |":''}
-                            {/*{a.ETC_PURCHASE_DATE!==undefined?a.ETC_PURCHASE_DATE+" |":''}*/}
-                            {a.ETC_PRICE!==undefined?a.ETC_PRICE+" |":''}</td>
-                          <td>{rentDate(a.RENT_DATE)}</td>
-                          <td>{a.ASSETS_STATUS}</td>
+                <td>
+                  {a.RETURN_STATUS}
+                  {
 
-                          <td>
+                    a.RETURN_STATUS===undefined || a.RETURN_STATUS === '승인'?
+                  <button type="button" className="userMain-ask userMain-modalBtn" onClick={() => {setOpenModal(true); setMyAssetNum(a.ASSETS_NUM)}}>교환/반납</button>
+                    // : ( a.RETURN_STATUS==='승인대기' ?
+                        : <button type="button" className="userMain-ask userMain-modalBtn" style={{backgroundColor: "orange"}} onClick={() => {setOpenCancelModal(true); setMyAssetNum(a.ASSETS_NUM)}}>{a.RETURN_KIND}취소</button>
+                        //     : <button type="button" className="userMain-ask userMain-modalBtn" style={{backgroundColor: "darkgreen"}} disabled>{a.RETURN_KIND}완료</button>
+                        // )
 
-                            {
+                  }
+                </td>
 
-                              a.RETURN_STATUS===undefined || a.RETURN_STATUS === '승인' || a.RETURN_STATUS === '반려'?
-                                  <button type="button" className="userMain-ask userMain-modalBtn" onClick={() => {setOpenModal(true); setMyAssetNum(a.ASSETS_NUM)}}>교환/반납</button>
-                                  : <button type="button" className="userMain-ask userMain-modalBtn" style={{backgroundColor: "#b5bfd1", paddingLeft: '7px', paddingRight: '7px'}} onClick={() => {setOpenCancelModal(true); setMyAssetNum(a.ASSETS_NUM)}}>{a.RETURN_KIND}취소</button>
-
-                            }
-                          </td>
-
-                        </tr>
-                      })
-                    }
-                    </tbody>
-
-
-
-            </table>
-                    </>
-                    :
-                    <div style={{margin:'0 auto'}}>
-                    <img src="../assets/img/ittam4.png" alt="iii" style={{width: '500px'}}/>
-                    </div>
-
+              </tr>
+                })
               }
+              </tbody>
+            </table>
             {/*  <!-- End Default Table Example --> */}
           </div>
         </div>
