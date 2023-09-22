@@ -1,32 +1,27 @@
-import {useContext, useEffect, useState} from 'react';
-
+import { useContext, useEffect, useState } from 'react';
 import Pagenation from '../../component/Pagenation';
 import axios from 'axios';
 import ApprovalComment from '../approve/ApprovalComment';
-
-import base64 from 'base-64';
 import { ITAssetsApprovalOptionList } from '../../constants/OptionList';
 import ControlMenu from '../../component/ControlMenu';
 import ITAssetsApprovalItem from './ITAssetsApprovalItem';
+import { useNavigate } from 'react-router-dom';
+import { tokenInfoContext } from '../../component/TokenInfoProvider';
 
 function ITAssetsApproval() {
-  // const contextValues = useContext(userInfoContext); // 항상 가장 위에서 선언해야 사용 가능
-  let username = localStorage.getItem('username');
+  const { userRole, username } = useContext(tokenInfoContext);
+  const navigate = useNavigate();
   const token = localStorage.getItem('token');
 
-  // const { userId, role } = contextValues || {}; // 들어온 값 없으면 공백으로
-
   useEffect(() => {
-    const token = localStorage.getItem('token');
-    let payload = token.substring(
-      token.indexOf('.') + 1,
-      token.lastIndexOf('.')
-    );
-    let dec = JSON.parse(base64.decode(payload));
-    let role = dec.role;
-    if (role !== 'ROLE_HIGH_ADMIN') {
-      alert('접근 권한이 없습니다.');
-      window.history.back();
+    if (userRole !== 'ROLE_ADMIN' && userRole !== 'ROLE_HIGH_ADMIN') {
+      if (userRole === 'ROLE_USER') {
+        navigate('/user/userMain');
+      } else if (userRole === 'ROLE_ADMIN') {
+        navigate('/admin/adminMain');
+      } else if (userRole === 'ROLE_HIGH_ADMIN') {
+        navigate('/highadmin/highAdminMain');
+      }
     }
   }, []);
 
@@ -231,42 +226,6 @@ function ITAssetsApproval() {
                 <table className="table datatable">
                   <thead>
                     <tr>
-                      {/* <th scope="col">
-                        <Link to="#" className="datatable-sorter">
-                          #
-                        </Link>
-                      </th>
-
-                      <th scope="col">
-                        <Link to="#" className="datatable-sorter">
-                          신청인
-                        </Link>
-                      </th>
-                      <th scope="col">
-                        <Link to="#" className="datatable-sorter">
-                          제목
-                        </Link>
-                      </th>
-                      <th scope="col">
-                        <Link to="#" className="datatable-sorter">
-                          신청종류
-                        </Link>
-                      </th>
-                      <th scope="col">
-                        <Link to="#" className="datatable-sorter">
-                          신청일
-                        </Link>
-                      </th>
-                      <th scope="col">
-                        <Link to="#" className="datatable-sorter">
-                          승인
-                        </Link>
-                      </th>
-                      <th scope="col">
-                        <Link to="#" className="datatable-sorter">
-                          반려
-                        </Link>
-                      </th> */}
                       {getProcessedOption().map((it, idx) => (
                         <ControlMenu
                           {...it}
@@ -285,42 +244,6 @@ function ITAssetsApproval() {
                         currentPage * itemsPerPage
                       )
                       .map((item, index) => (
-                        /* <tr key={index}>
-                          <th scope="row">
-                            {(currentPage - 1) * itemsPerPage + index + 1}
-                          </th>
-                          <td>{item.username}</td>
-                          <td>
-                            <Link
-                              to="#"
-                              style={{ color: 'black' }}
-                              data-bs-toggle="modal"
-                              data-bs-target="#modalDialogScrollable"
-                              onClick={() => handleModal(item)}
-                            >
-                              {item.appro_title}
-                            </Link>
-                          </td>
-                          <td>{item.appro_kind}</td>
-                          <td>{formatDate(item.appro_date)}</td>
-                          <td>
-                            <button
-                              type="submit"
-                              className="btn btn-primary"
-                              onClick={() => handleSubmit(item)}
-                            >
-                              승인
-                            </button>
-                          </td>
-                          <td>
-                            <button
-                              className="btn btn-primary"
-                              onClick={() => handleNsubmit(item)}
-                            >
-                              반려
-                            </button>
-                          </td>
-                        </tr> */
                         <ITAssetsApprovalItem
                           key={index}
                           isUser={true}

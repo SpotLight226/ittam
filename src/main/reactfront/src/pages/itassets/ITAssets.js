@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import React from 'react';
 import axios from 'axios';
 import Pagenation from '../../component/Pagenation';
@@ -7,29 +7,28 @@ import ITAssetsInsert from './ITAssetsInsert';
 import ITAssetsInfo from './ITAssetsInfo';
 import ITAssetsModify from './ITAssetsModify';
 import PurchaseApproval from './PurchaseApproval';
-
-import base64 from 'base-64';
 import ControlMenu from '../../component/ControlMenu';
 import { ItassetsOptionList } from '../../constants/OptionList';
 import ITAssetsItem from './ITAssetsItem';
+import { BsArrowClockwise } from 'react-icons/bs';
+import { tokenInfoContext } from '../../component/TokenInfoProvider';
+import { useNavigate } from 'react-router-dom';
 
 function ITAssets() {
-  // const contextValues = useContext(userInfoContext); // 항상 가장 위에서 선언해야 사용 가능
-  let username = localStorage.getItem('username');
+  const { userRole, username } = useContext(tokenInfoContext);
+  const navigate = useNavigate();
+
   const token = localStorage.getItem('token');
 
-  // const { userId, role } = contextValues || {}; // 들어온 값 없으면 공백으로
   useEffect(() => {
-    const token = localStorage.getItem('token');
-    let payload = token.substring(
-      token.indexOf('.') + 1,
-      token.lastIndexOf('.')
-    );
-    let dec = JSON.parse(base64.decode(payload));
-    let role = dec.role;
-    if (role !== 'ROLE_ADMIN' && role !== 'ROLE_HIGH_ADMIN') {
-      alert('접근 권한이 없습니다.');
-      window.history.back();
+    if (userRole !== 'ROLE_ADMIN' && userRole !== 'ROLE_HIGH_ADMIN') {
+      if (userRole === 'ROLE_USER') {
+        navigate('/user/userMain');
+      } else if (userRole === 'ROLE_ADMIN') {
+        navigate('/admin/adminMain');
+      } else if (userRole === 'ROLE_HIGH_ADMIN') {
+        navigate('/highadmin/highAdminMain');
+      }
     }
   }, []);
 
@@ -331,11 +330,7 @@ function ITAssets() {
       console.log('에러남', error);
     }
   };
-  /* 모달창 닫을때 리셋 */
-  // const closeReset = () => {
-  //   setSelectedType('선택하지않음');
-  //   setSelectedParent('선택하지않음');
-  // };
+
   const statusReset = () => {
     setAssetstatus(selectedItem ? selectedItem.assets_status : '');
     setFormStatus({
@@ -395,6 +390,15 @@ function ITAssets() {
     setIsModalOpen1(false);
     setSelectedType('선택하지않음');
     setSelectedParent('선택하지않음');
+  }
+  function modalClose1() {
+    setIsModalOpen1(false);
+    setSelectedType('선택하지않음');
+    setSelectedParent('선택하지않음');
+    setFormapproval({
+      appro_title: '',
+      appro_comment: '',
+    });
   }
   /* 구매요청 */
   const [formapproval, setFormapproval] = useState({
@@ -530,7 +534,6 @@ function ITAssets() {
           }
         }
         case 'add_date': {
-          // 입사일 : Date 를 비교해야 하므로 state의 날짜 문자열을 가지고 와서 새로운 Date 객체에 넣고 getTime()을 사용해 ms로 변환 후 비교
           const a_add_date = new Date(a.add_date).getTime();
           const b_add_date = new Date(b.add_date).getTime();
 
@@ -541,7 +544,6 @@ function ITAssets() {
           }
         }
         case 'rent_date': {
-          // 입사일 : Date 를 비교해야 하므로 state의 날짜 문자열을 가지고 와서 새로운 Date 객체에 넣고 getTime()을 사용해 ms로 변환 후 비교
           const a_rent_date = new Date(a.rent_date).getTime();
           const b_rent_date = new Date(b.rent_date).getTime();
 
@@ -560,6 +562,12 @@ function ITAssets() {
     // 비교함수에따라 정렬
     const sortedList = copyList.sort(compare);
     return sortedList;
+  };
+
+  const handleReset = () => {
+    setSearchInput('');
+    setSearchTerm('');
+    itassetList();
   };
 
   return (
@@ -616,7 +624,7 @@ function ITAssets() {
         formapproval={formapproval}
         purchaseSubmit={purchaseSubmit}
         handleSelectChange1={handleSelectChange1}
-        modalClose={modalClose}
+        modalClose1={modalClose1}
       />
       <section className="section">
         <div className="row">
@@ -660,6 +668,19 @@ function ITAssets() {
                     </div>
                     {/* 검색바 */}
                     <div className="datatable-search">
+                      <button
+                        type="button"
+                        className="btn btn-primary reset-btn"
+                      >
+                        <BsArrowClockwise
+                          style={{
+                            width: '30px',
+                            height: '30px',
+                            color: 'gray',
+                          }}
+                          onClick={handleReset}
+                        />
+                      </button>
                       <input
                         className="datatable-input"
                         placeholder="검색"
@@ -683,8 +704,6 @@ function ITAssets() {
                       <button
                         type="button"
                         className="btn btn-primary"
-                        // data-bs-toggle="modal"
-                        // data-bs-target="#scrollingModal"
                         onClick={() => handleButtonClick(category)}
                         style={{ marginLeft: '10px' }}
                       >
@@ -698,42 +717,6 @@ function ITAssets() {
                 <table className="table datatable">
                   <thead>
                     <tr>
-                      {/* <th scope="col">
-                        <Link to="#" className="datatable-sorter">
-                          #
-                        </Link>
-                      </th>
-                      <th scope="col">
-                        <Link to="#" className="datatable-sorter">
-                          자산 이름
-                        </Link>
-                      </th>
-                      <th scope="col">
-                        <Link to="#" className="datatable-sorter">
-                          자산 상태
-                        </Link>
-                      </th>
-                      <th scope="col">
-                        <Link to="#" className="datatable-sorter">
-                          사용중인 사원번호
-                        </Link>
-                      </th>
-                      <th scope="col">
-                        <Link to="#" className="datatable-sorter">
-                          등록일
-                        </Link>
-                      </th>
-                      <th scope="col">
-                        <Link to="#" className="datatable-sorter">
-                          대여일
-                        </Link>
-                      </th>
-
-                      <th scope="col">
-                        <Link to="#" className="datatable-sorter">
-                          폐기/수리요청
-                        </Link>
-                      </th> */}
                       {getProcessedOption().map((it, idx) => (
                         <ControlMenu
                           key={idx}
@@ -753,38 +736,6 @@ function ITAssets() {
                         currentPage * itemsPerPage
                       )
                       .map((item, index) => (
-                        /* <tr key={index}>
-                          <th scope="row">
-                            {(currentPage - 1) * itemsPerPage + index + 1}
-                          </th>
-
-                          <td>
-                            <Link
-                              to="#"
-                              style={{ color: 'black' }}
-                              onClick={() => handleModal(item)}
-                              data-bs-toggle="modal"
-                              data-bs-target="#modalDialogScrollable"
-                            >
-                              {item.assets_name + ' ' + item.assets_detail_name}
-                            </Link>
-                          </td>
-                          <td>{item.assets_status}</td>
-                          <td>{item.username}</td>
-                          <td>{formatDate(item.add_date)}</td>
-                          <td>{formatDate(item.rent_date)}</td>
-                          <td>
-                            <button
-                              type="button"
-                              className="btn btn-primary"
-                              data-bs-toggle="modal"
-                              data-bs-target="#basicModal"
-                              onClick={() => handleModal(item)}
-                            >
-                              폐기/수리요청
-                            </button>
-                          </td>
-                        </tr> */
                         <ITAssetsItem
                           key={index}
                           isUser={true}
