@@ -178,6 +178,7 @@ public class User_RequestController {
         vo.setUserq_comment(requestBody.get("userq_comment"));
         vo.setUserq_title(requestBody.get("userq_title"));
         vo.setUserq_num(Integer.valueOf(requestBody.get("userq_num")));
+        System.out.println(requestBody.toString());
         try {
             userRequestService.UserRequestBuyApprove(vo, requestBody.get("username"));
             userRequestService.UserRequestBuyApproveB(vo);
@@ -312,7 +313,7 @@ public class User_RequestController {
     int count4 = 0;
     @PostMapping("/high/UserRequestApprove") // (최종 관리자 페이지) 신청 승인 처리
     public ResponseEntity<String> HighUserRequestApprove(@RequestBody Map<String, String> requestBody){
-        System.out.println(requestBody.toString());
+
         System.out.println(requestBody.get("username"));
         try {
             /////알람관련 추가사항/////

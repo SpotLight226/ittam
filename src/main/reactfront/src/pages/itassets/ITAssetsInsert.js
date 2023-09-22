@@ -26,11 +26,7 @@ function ITAssetsInsert({
       <div className="modal-body">
         <form method="POST" onSubmit={handleSubmit}>
           {/* 부모 카테고리 선택 */}
-          <select
-            className="datatable-selector"
-            onChange={handleParentChange}
-            value={selectedParent}
-          >
+          <select onChange={handleParentChange} value={selectedParent}>
             <option value="">선택하지않음</option>
             {categories
               .filter((cat) => !cat.category_parent_num)
@@ -41,11 +37,7 @@ function ITAssetsInsert({
               ))}
           </select>
 
-          <select
-            className="datatable-selector"
-            onChange={handleSelectChange}
-            value={selectedType}
-          >
+          <select onChange={handleSelectChange} value={selectedType}>
             <option value="">선택하지않음</option>
             {categories
               .filter(
@@ -381,7 +373,7 @@ function ITAssetsInsert({
                   htmlFor="inputNumber"
                   className="col-sm-2 col-form-label"
                 >
-                  OPS
+                  운영체제
                 </label>
                 <div className="col-sm-10">
                   <input

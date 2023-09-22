@@ -14,9 +14,8 @@ import java.util.ArrayList;
 import java.util.Map;
 
 @Controller
-//@RequestMapping("/login")
 @RequestMapping("/user")
-@CrossOrigin(origins = "http://localhost:3000")
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 public class UserController {
 
     @Autowired

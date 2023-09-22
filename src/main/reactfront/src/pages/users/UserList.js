@@ -1,5 +1,5 @@
-import React, { useEffect, useContext, useState, useRef } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import React, { useEffect, useContext, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 import { UserDispatchContext, UserStateContext } from "./Users";
 import UserItem from "./UserItem";
@@ -11,66 +11,6 @@ import axios from "axios";
 
 const UserList = () => {
   const userList = useContext(UserStateContext);
-  let username = localStorage.getItem("username");
-  const token = localStorage.getItem("token");
-
-  const navigate = useNavigate();
-  const location = useLocation();
-
-  // 검색
-  const [inputText, setInputText] = useState(""); // 검색창 value
-  const [searchOption, setSearchOption] = useState("all");
-  const [searchResult, setSearchResult] = useState([]);
-
-  const dataId = useRef(0); // 검색된 데이터에 추가하기 위한 ref
-
-  useEffect(() => {
-    const queryParams = new URLSearchParams(location.search); // URL 쿼리 문자열 파싱
-    const searchParam = queryParams.get("value") || "";
-    const searchOptionParam = queryParams.get("option") || "all";
-
-    setInputText(searchParam);
-    setSearchOption(searchOptionParam);
-  }, [location]);
-
-  // 검색 핸들링
-  const handleSearchEnter = (event) => {
-    if (event.key === "Enter") {
-      // URL 업데이트
-      const newValue = encodeURIComponent(inputText);
-      const newOption = encodeURIComponent(searchOption);
-      const url = `/users/userList?value=${newValue}&option=${newOption}`;
-      // navigate로 url업데이트
-      navigate(url);
-
-      axios({
-        url: `/user/userSearch?value=${newValue}&option=${newOption}`,
-        method: "get",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: token,
-        },
-      })
-        .then((res) => {
-          const searchData = res.data.map((it) => {
-            dataId.current += 1;
-            return {
-              id: dataId.current,
-              ...it,
-            };
-          });
-          setSearchResult(searchData); // 검색 결과 업데이트
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-    } else {
-      setSearchResult([]);
-    }
-  };
-
-  // 검색 결과를 렌더링할 데이터 선택
-  const dataToRender = searchResult.length > 0 ? searchResult : userList;
 
   //// 모달
   const [modalStatus, setModalStatus] = useState(false); // 모달 핸들링 위한 state
@@ -106,7 +46,7 @@ const UserList = () => {
   const getModalContent = async (userId) => {
     if (userId) {
       axios
-        .post("/user/userDetail", { userId })
+        .post("/User/UserDetail", { userId })
         .then((res) => {
           // 가져온 데이터를 state에 맵핑
           const userData = res.data;
@@ -146,7 +86,7 @@ const UserList = () => {
   // 2. 각 정렬 선택에 따른 데이터 정렬 함수
   const getProcessedList = () => {
     // 기존 리스트는 수정하지 않기 위해서 깊은 복사
-    const copyList = JSON.parse(JSON.stringify(dataToRender));
+    const copyList = JSON.parse(JSON.stringify(userList));
 
     // 각 선택된 링크에 대한 비교함수
     const compare = (a, b) => {
@@ -272,25 +212,11 @@ const UserList = () => {
                       </label>
                     </div>
                     <div className="datatable-search">
-                      <select
-                        className="datatable-selector selected-search"
-                        value={searchOption}
-                        onChange={(e) => setSearchOption(e.target.value)}
-                      >
-                        <option value="all">모두</option>
-                        <option value="name">이름</option>
-                        <option value="userId">사원번호</option>
-                        <option value="depart">부서</option>
-                        <option value="email">이메일</option>
-                      </select>
                       <input
                         className="datatable-input"
                         placeholder="검색"
                         type="search"
                         title="Search within table"
-                        value={inputText}
-                        onChange={(e) => setInputText(e.target.value)}
-                        onKeyPress={handleSearchEnter}
                       />
                     </div>
                   </div>

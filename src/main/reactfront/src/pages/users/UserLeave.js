@@ -1,133 +1,22 @@
-import { useEffect, useContext, useState, useRef } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
-import axios from "axios";
+import { useContext, useState } from "react";
 
 import { UserStateContext } from "./Users";
 import UserItem from "./UserItem";
 import Pagenation from "../../component/Pagenation";
 import { UserOptionList } from "../../constants/OptionList"; // 옵션들을 정의해둔 list에서 객체로 사용할 옵션을 가져온다
 import ControlMenu from "../../component/ControlMenu";
-import UserLeaveModal from "../../component/Modal/UserLeaveModal";
 
 const UserLeave = () => {
   const userList = useContext(UserStateContext);
 
   const filteredList = userList.filter((it) => it.user_leave_yn === "Y"); // 퇴사 신청한 리스트
 
-  const navigate = useNavigate();
-  const location = useLocation();
-
-  // 검색
-  const [inputText, setInputText] = useState(""); // 검색창 value
-  const [searchOption, setSearchOption] = useState("all");
-  const [searchResult, setSearchResult] = useState([]);
-
-  const dataId = useRef(0); // 검색된 데이터에 추가하기 위한 ref
-
-  useEffect(() => {
-    const queryParams = new URLSearchParams(location.search); // URL 쿼리 문자열 파싱
-    const searchParam = queryParams.get("value") || "";
-    const searchOptionParam = queryParams.get("option") || "all";
-
-    setInputText(searchParam);
-    setSearchOption(searchOptionParam);
-  }, [location]);
-
-  // 검색 핸들링
-  const handleSearchEnter = (event) => {
-    if (event.key === "Enter") {
-      // URL 업데이트
-      const newValue = encodeURIComponent(inputText);
-      const newOption = encodeURIComponent(searchOption);
-      const url = `/users/userLeave?value=${newValue}&option=${newOption}`;
-      // navigate로 url업데이트
-      navigate(url);
-
-      axios
-        .get(`/user/userSearch?value=${newValue}&option=${newOption}`)
-        .then((res) => {
-          const searchData = res.data
-            .filter((it) => it.user_leave_yn === "Y")
-            .map((it) => {
-              dataId.current += 1;
-              return {
-                id: dataId.current,
-                ...it,
-              };
-            });
-          setSearchResult(searchData); // 검색 결과 업데이트
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-    } else {
-      setSearchResult([]);
-    }
-  };
-
-  // 검색 결과를 렌더링할 데이터 선택
-  const dataToRender = searchResult.length > 0 ? searchResult : filteredList;
-
-  //// 모달
-  const [modalStatus, setModalStatus] = useState(false); // 모달 핸들링 위한 state
-  const [modalContent, setModalContent] = useState({
-    username: "",
-    user_name: "",
-    user_email: "",
-    user_depart: "",
-    user_phone: "",
-    role: "",
-    user_leavedate: "",
-  }); // 모달 콘텐츠
-
-  // 모달 열기 전 state 설정
-  const handleModalOpen = async (userId) => {
-    if (userId) {
-      getModalContent(userId);
-    }
-  };
-
-  // 모달 닫기
-  const handleCloseModal = () => {
-    setModalStatus(false);
-  };
-
-  useEffect(() => {
-    if (modalContent.username) {
-      setModalStatus(true); // 모달 열기
-    }
-  }, [modalContent]);
-
-  // 퇴사 신청 상세 콘텐츠
-  const getModalContent = async (userId) => {
-    if (userId) {
-      axios
-        .post("/user/userDetail", { userId })
-        .then((res) => {
-          // 가져온 데이터를 state에 맵핑
-          const userData = res.data;
-
-          setModalContent({
-            username: userData.username,
-            user_name: userData.user_name,
-            user_email: userData.user_email,
-            user_depart: userData.user_depart,
-            user_phone: userData.user_phone,
-            role: userData.role,
-            user_leavedate: userData.user_joindate,
-          });
-        })
-        .catch((err) => alert("퇴사 상세정보를 가져오는데 실패했습니다"));
-    }
-  };
-  //모달 끝
-
   // 옵션에 필터를 걸어서 필요한 것만
   const getProcessedOption = () => {
     const copyOptionList = JSON.parse(JSON.stringify(UserOptionList));
 
     return copyOptionList.filter(
-      (it) => it.value !== "role" && it.value !== "date"
+      (it) => it.value !== "role" && it.value !== "email" && it.value !== "date"
     );
   };
 
@@ -138,7 +27,7 @@ const UserLeave = () => {
   // 2. 각 정렬 선택에 따른 데이터 정렬 함수
   const getProcessedList = () => {
     // 기존 리스트는 수정하지 않기 위해서 깊은 복사
-    const copyList = JSON.parse(JSON.stringify(dataToRender));
+    const copyList = JSON.parse(JSON.stringify(filteredList));
 
     // 각 선택된 링크에 대한 비교함수
     const compare = (a, b) => {
@@ -177,14 +66,6 @@ const UserLeave = () => {
             return b.user_depart.localeCompare(a.user_depart);
           } else {
             return a.user_depart.localeCompare(b.user_depart);
-          }
-        }
-        case "email": {
-          // 이메일
-          if (checkClass) {
-            return b.user_email.localeCompare(a.user_email);
-          } else {
-            return a.user_email.localeCompare(b.user_email);
           }
         }
         case "leaveDate": {
@@ -260,9 +141,6 @@ const UserLeave = () => {
                         placeholder="검색"
                         type="search"
                         title="Search within table"
-                        value={inputText}
-                        onChange={(e) => setInputText(e.target.value)}
-                        onKeyPress={handleSearchEnter}
                       />
                     </div>
                   </div>
@@ -291,19 +169,10 @@ const UserLeave = () => {
                         currentPage * itemsPerPage
                       )
                       .map((it, idx) => (
-                        <UserItem
-                          key={idx}
-                          {...it}
-                          idx={idx}
-                          onUserClick={handleModalOpen}
-                        />
+                        <UserItem key={idx} {...it} idx={idx} />
                       ))}
                   </tbody>
                 </table>
-                <UserLeaveModal
-                  closeModal={handleCloseModal}
-                  modalContent={modalContent}
-                />
               </div>
             </div>
           </div>

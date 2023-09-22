@@ -211,7 +211,7 @@ function HighAdminMain() {
                   <div className="col-xxl-3 col-md-3">
 
                     <div className="card info-card sales-card">
-                      <Link to="/itassetsapproval">
+                      <Link to="/admin/returnExchange">
                       <div className="card-body">
                         <h5 className="card-title" style={{fontWeight: "800"}}>폐기 및 수리 요청 미승인건<span>| This Year</span></h5>
 
@@ -262,7 +262,7 @@ function HighAdminMain() {
                   <div className="card">
 
                     <div className="card-body">
-                      <Link to="/admin/reports"><h5 className="card-title" style={{fontWeight: "800"}}>일주일간의 자산 현황 <span>| 전체 리포트 보기</span></h5></Link>
+                      <Link to="/admin/reports"><h5 className="card-title" style={{fontWeight: "800"}}>자산 사용률 <span>| 전체 리포트 보기</span></h5></Link>
 
                       {/*  <!-- Line Chart --> */}
                       {(all!==undefined && using!==undefined && dispose!==undefined) ? <div id="reportsChart"><AreaChart all={all} using={using} dispose={dispose}/></div> :
@@ -284,7 +284,7 @@ function HighAdminMain() {
                   <div className="card">
 
                     <div className="card-body">
-                      <h5 className="card-title" style={{fontWeight: "800"}}>전체 자산 사용률 <span>| 전체 리포트 보기</span></h5>
+                      <h5 className="card-title" style={{fontWeight: "800"}}>자산 사용률 <span>| 전체 리포트 보기</span></h5>
 
                       {cardNum !== undefined ? <UsingRateChart cardNum={cardNum}/> :
                           <div className="d-flex justify-content-center">
@@ -430,8 +430,8 @@ function HighAdminMain() {
                   <div className="card top-selling overflow-auto">
 
                     <div className="card-body pb-0" style={{paddingTop: '20px'}}>
-                     <Link to="/adminitassets"><h5 className="card-title" style={{fontWeight: "800", display: 'inline'}}>최근재고구매사항 <span>| 전체보기</span></h5></Link>
-                      <select style={{marginLeft: '10px', display:'inline'}} onChange={(e) => {setNnn(parseInt(e.target.value));}}>
+                     <Link to="/adminitassets"><h5 className="card-title" style={{fontWeight: "800", display: 'inline'}}>재고구매사항 <span>| 전체보기</span></h5></Link>
+                      <select style={{marginLeft: '1447px', display:'inline'}} onChange={(e) => {setNnn(parseInt(e.target.value));}}>
                         <option value="5">5개</option>
                         <option value="7">7개</option>
                         <option value="10">10개</option>
@@ -441,10 +441,10 @@ function HighAdminMain() {
                       <table className="table" style={{marginTop: '10px'}}>
                         <thead>
                         <tr className="table-light">
-                          <th scope="col" style={{width: '100px'}}>카테고리</th>
-                          <th scope="col" style={{width: '100px'}}>자산명</th>
+                          <th scope="col">카테고리</th>
+                          <th scope="col">자산명</th>
                           <th scope="col">자산스펙</th>
-                          <th scope="col" style={{width: '100px'}}>추가날짜</th>
+                          <th scope="col">추가날짜</th>
                           {/* <th scope="col">Revenue</th> */}
                         </tr>
                         </thead>
