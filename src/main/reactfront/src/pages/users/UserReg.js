@@ -108,6 +108,8 @@ const UserReg = () => {
 
   // 사원 번호 생성 함수
   const updateUserId = () => {
+    const randomTwoNumber = Math.floor(Math.random() * 100);
+
     // 부서
     const selectedDepart = departList.find(
       (it) => parseInt(it.depart_id) === parseInt(state.depart)
@@ -115,8 +117,45 @@ const UserReg = () => {
     // 입사일 을 아이디 생성위해 자름
     const subDate = state.date.replaceAll("-", "").slice(4, 9);
 
-    const userId = `${selectedDepart.depart_short}${subDate}${state.secondPhoneInput}`;
+    const userId = `${selectedDepart.depart_short}${subDate}${state.secondPhoneInput}${randomTwoNumber}`;
     setState({ ...state, userId: userId });
+  };
+
+  const isUserIdValid = () => {
+    return state.userId.trim() !== "";
+  };
+
+  const isUserNameValid = () => {
+    return state.name.trim() !== "";
+  };
+
+  const isPhoneInputValid = () => {
+    return (
+      state.firstPhoneInput.length === 4 && state.secondPhoneInput.length === 4
+    );
+  };
+
+  const isUserDepartValid = () => {
+    return state.depart !== 0;
+  };
+
+  const isEmailValid = () => {
+    return state.email.length !== 0;
+  };
+
+  const isAddressValid = () => {
+    return state.address.length !== 0;
+  };
+
+  const validCheck = () => {
+    return (
+      isAddressValid() &&
+      isEmailValid() &&
+      isPhoneInputValid() &&
+      isUserDepartValid() &&
+      isUserIdValid() &&
+      isUserNameValid()
+    );
   };
 
   const handleContent = () => {
@@ -128,7 +167,7 @@ const UserReg = () => {
 
     const joinPhone = `010-${state.firstPhoneInput}-${state.secondPhoneInput}`; // 연락처
 
-    const TempPw = `010${state.firstPhoneInput}${state.secondPhoneInput}`;
+    const TempPw = `${state.firstPhoneInput}${state.secondPhoneInput}`;
 
     setContent({
       username: state.userId,
@@ -174,7 +213,7 @@ const UserReg = () => {
                       type="text"
                       className="form-control"
                       id="userId"
-                      placeholder="마지막 생성"
+                      placeholder="입사일과 연락처를 입력하면 생성할 수 있습니다"
                       disabled
                       readOnly
                       value={state.userId}
@@ -346,7 +385,9 @@ const UserReg = () => {
                   <div className="userReg-btn-wrapper">
                     <button
                       type="submit"
-                      className="btn btn-primary"
+                      className={`btn ${
+                        validCheck() ? "btn-primary" : "btn-secondary disabled"
+                      }`}
                       onClick={handleSubmit}
                     >
                       등록

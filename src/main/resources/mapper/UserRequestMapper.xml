@@ -138,6 +138,11 @@
         where userq_NUM = #{userq_num}
     </update>
 
+    <update id="HighUserRequestApproveB" parameterType="java.util.Map">
+        update ITASSETS set assets_status = '사용중', username = #{req_username}, rent_date = now()
+        where assets_num = #{assets_num}
+    </update>
+
     <update id="HighUserRequestReturn" parameterType="java.util.Map">
         update USER_REQUEST set userq_yn = '최종사용반려', userq_grantor = #{username}, userq_okdate = now()
         where userq_NUM = #{userq_num}

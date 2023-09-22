@@ -30,6 +30,7 @@ public interface UserRequestMapper {
     ////////////////////////////////////// 최종 관리자
     public ArrayList<UserRequestVO> HighUserRequestList(); // (관리자 페이지) 신청 조회 페이지 리스트
     public int HighUserRequestApprove(@Param("userq_num") int userq_num, @Param("username") String username); // (관리자 페이지) 신청 승인 처리
+    public int HighUserRequestApproveB(@Param("assets_num") int userq_num, @Param("req_username") String req_username); // (관리자 페이지) 신청 승인 처리
     public int HighUserRequestReturn(@Param("userq_num")int userq_num, @Param("username")String username); // (관리자 페이지) 신청 반려 처리
     public ArrayList<UserRequestVO> HighUserRequestSearch (String inputText); // (관리자 페이지) 검색 리스트
 

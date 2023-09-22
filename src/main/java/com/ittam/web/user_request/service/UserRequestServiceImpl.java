@@ -110,8 +110,13 @@ public class UserRequestServiceImpl implements UserRequestService{
     }
 
     @Override
-    public int HighUserRequestApprove(int userq_NUM, String username) {
-        return userRequestMapper.HighUserRequestApprove(userq_NUM, username);
+    public int HighUserRequestApprove(int userq_NUM, String req_username) {
+        return userRequestMapper.HighUserRequestApprove(userq_NUM, req_username);
+    }
+
+    @Override
+    public int HighUserRequestApproveB(int assets_num, String username) {
+        return userRequestMapper.HighUserRequestApproveB(assets_num,username);
     }
 
     @Override

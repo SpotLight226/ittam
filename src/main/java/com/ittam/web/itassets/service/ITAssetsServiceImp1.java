@@ -93,7 +93,7 @@ public class ITAssetsServiceImp1 implements ITAssetsService{
     public int ITAssetsInsertSW(Map<String, Object> requestData) {
         ITAssetsVO vo = new ITAssetsVO();
         vo.setAssets_name((String) requestData.get("assets_name"));
-        vo.setAssets_detail_name(randomString(4));
+        vo.setAssets_detail_name(randomString(4) + "-" + randomString(4) + "-" + randomString(4));
 
         return iTAssetsMapper.ITAssetsInsertSW(vo);
     }
@@ -102,7 +102,7 @@ public class ITAssetsServiceImp1 implements ITAssetsService{
     public int ITAssetsInsertETC(Map<String, Object> requestData) {
         ITAssetsVO vo = new ITAssetsVO();
         vo.setAssets_name((String) requestData.get("assets_name"));
-        vo.setAssets_detail_name(randomString(4));
+        vo.setAssets_detail_name(randomString(4) + "-" + randomString(4) + "-" + randomString(4));
         return iTAssetsMapper.ITAssetsInsertETC(vo);
     }
 
@@ -110,7 +110,7 @@ public class ITAssetsServiceImp1 implements ITAssetsService{
     public int ITAssetsInsertPC(Map<String, Object> requestData) {
         ITAssetsVO vo = new ITAssetsVO();
         vo.setAssets_name((String) requestData.get("assets_name"));
-        vo.setAssets_detail_name(randomString(4));
+        vo.setAssets_detail_name(randomString(4) + "-" + randomString(4) + "-" + randomString(4));
         return iTAssetsMapper.ITAssetsInsertPC(vo);
     }
 
@@ -118,7 +118,7 @@ public class ITAssetsServiceImp1 implements ITAssetsService{
     public int ITAssetsInsertServer(Map<String, Object> requestData) {
         ITAssetsVO vo = new ITAssetsVO();
         vo.setAssets_name((String) requestData.get("assets_name"));
-        vo.setAssets_detail_name(randomString(4));
+        vo.setAssets_detail_name(randomString(4) + "-" + randomString(4) + "-" + randomString(4));
         return iTAssetsMapper.ITAssetsInsertServer(vo);
     }
 
