@@ -221,7 +221,7 @@ function Header() {
               </Link>
               {/* <!-- End Notification Icon --> */}
 
-              <ul className="dropdown-menu dropdown-menu-end dropdown-menu-arrow notifications" style={{overflow: 'scroll', maxHeight: '486px', width: '330px'}}>
+              <ul className="dropdown-menu dropdown-menu-end dropdown-menu-arrow notifications" style={{overflowY: 'scroll', maxHeight: '486px', width: '350px'}}>
                 <li className="dropdown-header">
                    {myAlarmCnt}개의 알림이 있습니다.
                   {/*<Link to="####">*/}
