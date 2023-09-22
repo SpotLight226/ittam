@@ -5,7 +5,7 @@ const AssetRequestListSWTable = ({index,
                                      assets_name,assets_status,spec_mfg,spec_seriel,spec_warranty,category_name,spec_num,assets_num,sw_mfg,sw_spec_seriel,sw_spec_warranty,sw_purchase_date,
                                      sw_price,etc_mfg,etc_spec_warranty,etc_purchase_date,etc_price,spec_cpu,spec_ram,spec_mainboard,spec_power,spec_gpu,spec_hdd,spec_ssd,spec_ops,spec_purchase_date,
                                      server_mfg, server_spec_warranty, server_capa, server_price, server_purchase_date, server_interface, server_average_life, server_rpm, server_datarecovery_life,
-                                     username, appro_title, appro_comment,
+                                     username, appro_title, appro_comment,category_num,
                                      func, handleModal
                                  }) => {
 
@@ -21,7 +21,7 @@ const AssetRequestListSWTable = ({index,
                 <input type={"checkbox"}/>
             </th>
             <th scope="row">{index + 1}</th>
-            <td className="assets_name">
+            <td>
                 <Link
                     to="#"
                     style={{ color: 'black' }}
@@ -33,14 +33,17 @@ const AssetRequestListSWTable = ({index,
                 </Link>
             </td>
             <td className="assets_status">{assets_status}</td>
-            <td className="spec_mfg">{spec_mfg}</td>
-            <td className="spec_seriel">{spec_seriel}</td>
-            <th className="spec_warranty">{spec_warranty}</th>
-            <th className="category_name">{category_name}</th>
+            <td className="spec_mfg">{sw_mfg}</td>
+            <td className="spec_seriel">{sw_spec_seriel}</td>
+            <td className="spec_warranty">{sw_spec_warranty}</td>
+            <td className="category_name">{category_name}</td>
+
+            <th className="assets_name" style={{ display: "none" }}>{assets_name}</th>
+            <th className="category_num" style={{ display: "none" }}>{category_num}</th>
             <th className="spec_num" style={{ display: "none" }}>{spec_num}</th>
             <th className="assets_num" style={{ display: "none" }}>{assets_num}</th>
             <td>
-                <button className="btn btn-primary approveBtn" type="button"   data-bs-formtarget="#basicModal" onClick={func} id="approveBtn">사용신청</button>
+                <button className="btn btn-primary approveBtn" type="button"   data-bs-formtarget="#basicModal" onClick={func} id="assetRequestBtn">사용신청</button>
             </td>
         </tr>
     );

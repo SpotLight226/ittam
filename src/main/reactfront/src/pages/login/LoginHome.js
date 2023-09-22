@@ -5,6 +5,7 @@ import EmailAuthTime from './EmailAuthTime';
 import { useNavigate } from 'react-router-dom';
 import base64 from 'base-64';
 import { tokenInfoContext } from '../../component/TokenInfoProvider';
+import { useCookies } from 'react-cookie';
 
 function LoginHome() {
   const { handleChange } = React.useContext(tokenInfoContext);
@@ -12,10 +13,15 @@ function LoginHome() {
   // const {authResponse, setAuthResponse} = useState("");
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+
   const [passwordMismatch, setPasswordMismatch] = useState(false); // 비밀번호 변경 시 비밀번호 불일치 여부 저장
   const [emailAuthCompleted, setEmailAuthCompleted] = useState(false); // 이메일 인증 완려 여부
   const [isTimerActive, setIsTimerActive] = useState(false); // 타이머 활성화 여부
-  const [emailAuth, SetEmailAuth] = useState('');
+  const [emailAuth, SetEmailAuth] = useState(''); // 이메일 인증
+  const [cookies, setCookie] = useCookies(["rememberUserId"]); // 쿠키
+  const [rememberME, setRememberME] = useState(false); // 아이디 저장하기 유무
+
+
   const navigate = useNavigate();
 
   // 이메일 인증 타임아웃 처리
@@ -163,7 +169,6 @@ function LoginHome() {
     const formData = new FormData();
     formData.append('username', username);
     formData.append('password', password);
-
     try {
       const response = await fetch('http://localhost:9191/login', {
         method: 'POST',
@@ -184,12 +189,15 @@ function LoginHome() {
         let role = dec.role;
         console.log(role);
         handleChange(username, role);
+        setCookie("userId", username); // 쿠키 저장
         alert('로그인 성공');
         //window.location.href = "/";
         if (role === 'ROLE_USER') {
           window.location.href = '/user/userMain';
-        } else if (role === 'ROLE_ADMIN' || role === 'ROLE_HIGH_ADMIN') {
+        } else if (role === 'ROLE_ADMIN') {
           window.location.href = '/admin/adminMain';
+        } else if (role === 'ROLE_HIGH_ADMIN'){
+          window.location.href = "highadmin/highAdminMain";
         }
       } else {
         alert('로그인 실패');
@@ -199,8 +207,22 @@ function LoginHome() {
     }
   };
 
+  function deleteCookie(name) {
+    document.cookie = name + '=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
+  }
+
+  const handleOnChange = (e) => {
+    setRememberME(e.target.checked);
+    if(!e.target.checked){
+      deleteCookie("userId");
+    }
+  }
+
   useEffect(() => {
-    //console.log(authResponse);
+    if (cookies.userId !== undefined) {
+      setUsername(cookies.userId);
+      setRememberME(true);
+    }
   }, []);
 
   return (
@@ -285,13 +307,15 @@ function LoginHome() {
                             <input
                               className="form-check-input"
                               type="checkbox"
-                              name="remember"
-                              value="true"
-                              id="rememberMe"
+                              name="remember-me"
+                              id="remember-me"
+                              onChange={(e) => handleOnChange(e)}
+                              checked={rememberME}
                             />
                             <label
                               className="form-check-label"
                               htmlFor="rememberMe"
+                              name=""
                             >
                               아이디 기억하기
                             </label>
