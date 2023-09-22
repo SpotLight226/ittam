@@ -1,7 +1,9 @@
 import React, { useEffect, useContext, useState, useRef } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
+import { BsArrowClockwise } from "react-icons/bs";
 
-import { UserDispatchContext, UserStateContext } from "./Users";
+import { UserStateContext } from "./Users";
+import { tokenInfoContext } from "../../component/TokenInfoProvider";
 import UserItem from "./UserItem";
 import Pagenation from "../../component/Pagenation";
 import ControlMenu from "../../component/ControlMenu";
@@ -11,12 +13,13 @@ import axios from "axios";
 
 const UserList = () => {
   const userList = useContext(UserStateContext);
-  let username = localStorage.getItem("username");
   const token = localStorage.getItem("token");
+  const { userRole } = useContext(tokenInfoContext);
 
   const navigate = useNavigate();
   const location = useLocation();
 
+  const searchRef = useRef();
   // 검색
   const [inputText, setInputText] = useState(""); // 검색창 value
   const [searchOption, setSearchOption] = useState("all");
@@ -105,8 +108,17 @@ const UserList = () => {
 
   const getModalContent = async (userId) => {
     if (userId) {
-      axios
-        .post("/user/userDetail", { userId })
+      axios({
+        url: "/user/userDetail",
+        method: "post",
+        data: {
+          userId: userId,
+        },
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: token,
+        },
+      })
         .then((res) => {
           // 가져온 데이터를 state에 맵핑
           const userData = res.data;
@@ -122,7 +134,10 @@ const UserList = () => {
             role: userData.role,
           });
         })
-        .catch((err) => alert("사용자 상세정보를 가져오는데 실패했습니다"));
+        .catch((err) => {
+          alert("사용자 상세정보를 가져오는데 실패했습니다");
+          console.log(err);
+        });
     }
   };
 
@@ -225,6 +240,17 @@ const UserList = () => {
     return sortedList;
   };
 
+  //리셋 버튼
+  const resetBtn = () => {
+    // 검색 데이터 초기화
+    setSearchResult([]);
+    setInputText("");
+
+    // 쿼리 파라미터를 제거하고 기존 주소로 이동
+    navigate("/users/userList");
+  };
+  /////////////////////////////
+
   /* 몇개씩 보이고 싶은지 */
   const [itemsPerPage, setItemPerPage] = useState(10); // 페이지당 10개의 아이템  useState(처음에 보이고싶은 개수)
   const handleSelectorChange = (event) => {
@@ -272,6 +298,20 @@ const UserList = () => {
                       </label>
                     </div>
                     <div className="datatable-search">
+                      <button
+                        type="button"
+                        className="btn btn-primary reset-btn"
+                      >
+                        <BsArrowClockwise
+                          style={{
+                            width: "30px",
+                            height: "30px",
+                            color: "gray",
+                          }}
+                          onClick={resetBtn}
+                        />
+                      </button>
+
                       <select
                         className="datatable-selector selected-search"
                         value={searchOption}
@@ -289,6 +329,7 @@ const UserList = () => {
                         type="search"
                         title="Search within table"
                         value={inputText}
+                        ref={searchRef}
                         onChange={(e) => setInputText(e.target.value)}
                         onKeyPress={handleSearchEnter}
                       />

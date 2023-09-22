@@ -1,8 +1,9 @@
-import React, { useEffect, useReducer, useRef, useState } from "react";
+import React, { useContext, useEffect, useReducer, useRef } from "react";
 
 import { useParams } from "react-router-dom";
 
 // pages
+import { tokenInfoContext } from "../../component/TokenInfoProvider";
 import UserList from "./UserList";
 import UserReg from "./UserReg";
 import UserLeave from "./UserLeave";
@@ -28,8 +29,8 @@ const Users = () => {
   const page = useParams().page;
   const subPage = useParams().subPage;
 
-  let username = localStorage.getItem("username");
   const token = localStorage.getItem("token");
+  const { userRole } = useContext(tokenInfoContext);
 
   const dataId = useRef(0);
   // 데이터 받아올 useReducer
@@ -98,18 +99,12 @@ const Users = () => {
   // 새 유저 추가
   const onCreate = (content) => {
     axios
-      .post(
-        "/user/userRegist",
-
-        content,
-
-        {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: token,
-          },
-        }
-      )
+      .post("/user/userRegist", content, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: token,
+        },
+      })
       .then((res) => {
         if (res.data === 1) {
           // 데이터 수정 후 다시 불러와서 업데이트

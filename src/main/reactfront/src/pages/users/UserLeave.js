@@ -1,5 +1,6 @@
 import { useEffect, useContext, useState, useRef } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
+import { BsArrowClockwise } from "react-icons/bs";
 import axios from "axios";
 
 import { UserStateContext } from "./Users";
@@ -209,6 +210,17 @@ const UserLeave = () => {
     return sortedList;
   };
 
+  // 리셋버튼
+  const resetBtn = () => {
+    // 검색 데이터 초기화
+    setSearchResult([]);
+    setInputText("");
+
+    // 쿼리 파라미터를 제거하고 기존 주소로 이동
+    navigate("/users/userLeave");
+  };
+  ////////////////////////
+
   /* 몇개씩 보이고 싶은지 */
   const [itemsPerPage, setItemPerPage] = useState(10); // 페이지당 10개의 아이템  useState(처음에 보이고싶은 개수)
   const handleSelectorChange = (event) => {
@@ -255,6 +267,20 @@ const UserLeave = () => {
                       </label>
                     </div>
                     <div className="datatable-search">
+                      <button
+                        type="button"
+                        className="btn btn-primary reset-btn"
+                      >
+                        <BsArrowClockwise
+                          style={{
+                            width: "30px",
+                            height: "30px",
+                            color: "gray",
+                          }}
+                          onClick={resetBtn}
+                        />
+                      </button>
+
                       <input
                         className="datatable-input"
                         placeholder="검색"
