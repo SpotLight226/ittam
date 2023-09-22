@@ -1,3 +1,5 @@
+import { tokenInfoContext } from "../../component/TokenInfoProvider";
+import { useContext } from "react";
 const UserItem = ({
   user_email,
   username,
@@ -15,6 +17,8 @@ const UserItem = ({
   const handleModal = () => {
     onUserClick(username);
   };
+
+  const { userRole } = useContext(tokenInfoContext);
 
   return (
     <tr className="prod-box">
