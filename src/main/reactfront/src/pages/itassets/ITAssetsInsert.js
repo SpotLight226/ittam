@@ -373,7 +373,7 @@ function ITAssetsInsert({
                   htmlFor="inputNumber"
                   className="col-sm-2 col-form-label"
                 >
-                  OPS
+                  운영체제
                 </label>
                 <div className="col-sm-10">
                   <input

@@ -1,17 +1,29 @@
-import { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { useContext, useEffect, useState } from 'react';
 import Pagenation from '../../component/Pagenation';
 import axios from 'axios';
 import ApprovalComment from '../approve/ApprovalComment';
-// import { useContext } from 'react';
-// import { userInfoContext } from '../../App';
+import { ITAssetsApprovalOptionList } from '../../constants/OptionList';
+import ControlMenu from '../../component/ControlMenu';
+import ITAssetsApprovalItem from './ITAssetsApprovalItem';
+import { useNavigate } from 'react-router-dom';
+import { tokenInfoContext } from '../../component/TokenInfoProvider';
 
 function ITAssetsApproval() {
-  // const contextValues = useContext(userInfoContext); // 항상 가장 위에서 선언해야 사용 가능
-  let username = localStorage.getItem('username');
+  const { userRole, username } = useContext(tokenInfoContext);
+  const navigate = useNavigate();
   const token = localStorage.getItem('token');
 
-  // const { userId, role } = contextValues || {}; // 들어온 값 없으면 공백으로
+  useEffect(() => {
+    if (userRole !== 'ROLE_ADMIN' && userRole !== 'ROLE_HIGH_ADMIN') {
+      if (userRole === 'ROLE_USER') {
+        navigate('/user/userMain');
+      } else if (userRole === 'ROLE_ADMIN') {
+        navigate('/admin/adminMain');
+      } else if (userRole === 'ROLE_HIGH_ADMIN') {
+        navigate('/highadmin/highAdminMain');
+      }
+    }
+  }, []);
 
   /* 결제요청목록 데이터 */
   const [data, setData] = useState([]);
@@ -109,6 +121,82 @@ function ITAssetsApproval() {
 
     return `${year}년 ${month}월 ${day}일 `;
   }
+
+  const getProcessedOption = () => {
+    const copyOptionList = JSON.parse(
+      JSON.stringify(ITAssetsApprovalOptionList)
+    );
+
+    return copyOptionList.filter(
+      (it) =>
+        it.value !== 'leaveDate' &&
+        it.value !== 'detail' &&
+        it.value !== 'process'
+    );
+  };
+
+  // 1. 정렬을 위한 state
+  const [sortType, setSortType] = useState('number'); // 정렬 컬럼 state
+  const [checkClass, setCheckClass] = useState(false); // 내림, 오름 차순 선택 state
+
+  const getProcessedList = () => {
+    const copyList = JSON.parse(JSON.stringify(data));
+
+    const compare = (a, b) => {
+      switch (sortType) {
+        case 'appro_num': {
+          if (checkClass) {
+            return parseInt(b.appro_num) - parseInt(a.appro_num); // 오름차순
+          } else {
+            return parseInt(a.appro_num) - parseInt(b.appro_num); // 내림차순
+          }
+        }
+        case 'username': {
+          const aExists = a.username !== null && a.username !== undefined;
+          const bExists = b.username !== null && b.username !== undefined;
+
+          if (aExists && !bExists) return -1;
+          if (!aExists && bExists) return 1;
+
+          if (!aExists && !bExists) return 0;
+
+          if (checkClass) {
+            return b.username.localeCompare(a.username);
+          } else {
+            return a.username.localeCompare(b.username);
+          }
+        }
+        case 'appro_title': {
+          if (checkClass) {
+            return b.appro_title.localeCompare(a.appro_title);
+          } else {
+            return a.appro_title.localeCompare(b.appro_title);
+          }
+        }
+        case 'appro_kind': {
+          if (checkClass) {
+            return b.appro_kind.localeCompare(a.appro_kind);
+          } else {
+            return a.appro_kind.localeCompare(b.appro_kind);
+          }
+        }
+        case 'appro_date': {
+          const a_appro_date = new Date(a.appro_date).getTime();
+          const b_appro_date = new Date(b.appro_date).getTime();
+
+          if (checkClass) {
+            return b_appro_date - a_appro_date;
+          } else {
+            return a_appro_date - b_appro_date;
+          }
+        }
+      }
+    };
+
+    // 비교함수에따라 정렬
+    const sortedList = copyList.sort(compare);
+    return sortedList;
+  };
   return (
     <main id="main" className="main">
       <div className="pagetitle">
@@ -132,93 +220,45 @@ function ITAssetsApproval() {
                 <div className="datatable-wrapper datatable-loading nofooter sortable searchable fixed-columns">
                   <div className="datatable-top"></div>
                 </div>
-                <h5 className="card-title">재고 관리</h5>
+                <h5 className="card-title">결제 요청</h5>
 
                 {/* <!-- 데이터 테이블 --> */}
                 <table className="table datatable">
                   <thead>
                     <tr>
-                      <th scope="col">
-                        <Link to="#" className="datatable-sorter">
-                          #
-                        </Link>
-                      </th>
-
-                      <th scope="col">
-                        <Link to="#" className="datatable-sorter">
-                          신청인
-                        </Link>
-                      </th>
-                      <th scope="col">
-                        <Link to="#" className="datatable-sorter">
-                          제목
-                        </Link>
-                      </th>
-                      <th scope="col">
-                        <Link to="#" className="datatable-sorter">
-                          신청종류
-                        </Link>
-                      </th>
-                      <th scope="col">
-                        <Link to="#" className="datatable-sorter">
-                          신청일
-                        </Link>
-                      </th>
-                      <th scope="col">
-                        <Link to="#" className="datatable-sorter">
-                          승인
-                        </Link>
-                      </th>
-                      <th scope="col">
-                        <Link to="#" className="datatable-sorter">
-                          반려
-                        </Link>
-                      </th>
+                      {getProcessedOption().map((it, idx) => (
+                        <ControlMenu
+                          {...it}
+                          checkClass={checkClass}
+                          sortType={sortType}
+                          setSortType={setSortType}
+                          setCheckClass={setCheckClass}
+                        />
+                      ))}
                     </tr>
                   </thead>
                   <tbody>
-                    {data
+                    {getProcessedList()
                       .slice(
                         (currentPage - 1) * itemsPerPage,
                         currentPage * itemsPerPage
                       )
                       .map((item, index) => (
-                        <tr key={index}>
-                          <th scope="row">
-                            {(currentPage - 1) * itemsPerPage + index + 1}
-                          </th>
-                          <td>{item.username}</td>
-                          <td>
-                            <Link
-                              to="#"
-                              style={{ color: 'black' }}
-                              data-bs-toggle="modal"
-                              data-bs-target="#modalDialogScrollable"
-                              onClick={() => handleModal(item)}
-                            >
-                              {item.appro_title}
-                            </Link>
-                          </td>
-                          <td>{item.appro_kind}</td>
-                          <td>{formatDate(item.appro_date)}</td>
-                          <td>
-                            <button
-                              type="submit"
-                              className="btn btn-primary"
-                              onClick={() => handleSubmit(item)}
-                            >
-                              승인
-                            </button>
-                          </td>
-                          <td>
-                            <button
-                              className="btn btn-primary"
-                              onClick={() => handleNsubmit(item)}
-                            >
-                              반려
-                            </button>
-                          </td>
-                        </tr>
+                        <ITAssetsApprovalItem
+                          key={index}
+                          isUser={true}
+                          currentPage={currentPage}
+                          itemsPerPage={itemsPerPage}
+                          index={index}
+                          handleModal={() => handleModal(item)}
+                          appro_title={item.appro_title}
+                          username={item.username}
+                          appro_kind={item.appro_kind}
+                          formatDate={formatDate}
+                          appro_date={item.appro_date}
+                          handleSubmit={() => handleSubmit(item)}
+                          handleNsubmit={() => handleNsubmit(item)}
+                        />
                       ))}
                   </tbody>
                 </table>
