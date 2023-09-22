@@ -60,7 +60,6 @@ public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
             // 토큰이 위조 또는 토큰이 만료
             response.setContentType("text/plain; charset=UTF8");
             response.sendError(403, "토큰위조 또는 토큰만료");
-
         }
 
 
