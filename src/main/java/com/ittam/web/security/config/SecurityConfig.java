@@ -3,6 +3,8 @@ package com.ittam.web.security.config;
 
 import com.ittam.web.security.filter.CustomLoginFilter;
 import com.ittam.web.security.filter.JwtAuthorizationFilter;
+import com.ittam.web.user.service.MyUserDetailService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -29,6 +31,9 @@ public class SecurityConfig {
         return new BCryptPasswordEncoder();
     }
 
+    // 나를기억해에서 사용할 UserDetailService
+    @Autowired
+    private MyUserDetailService myUserDetailService;
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -59,12 +64,6 @@ public class SecurityConfig {
                 .and()
                 .addFilter(new CustomLoginFilter(authenticationManager));
 
-        // api로 시작하는 요청에만 jwt필터가 실행됩니다.
-
-//        http.requestMatchers()
-//                .antMatchers("/**")
-//                .and()
-//                .addFilter(new JwtAuthorizationFilter(authenticationManager));
 
         http.requestMatchers()
                 .antMatchers("/admin/**")
@@ -81,6 +80,7 @@ public class SecurityConfig {
                 .and()
                 .addFilter(new JwtAuthorizationFilter(authenticationManager));
 
+
         return http.build();
     }
 
@@ -89,6 +89,8 @@ public class SecurityConfig {
     public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
         return authenticationConfiguration.getAuthenticationManager();
     }
+
+    ///////// remember me
 
 
     // 크로스 오리진 필터
