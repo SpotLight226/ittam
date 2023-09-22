@@ -291,7 +291,7 @@ public class User_RequestController {
     int count4 = 0;
     @PostMapping("/high/UserRequestApprove") // (최종 관리자 페이지) 신청 승인 처리
     public ResponseEntity<String> HighUserRequestApprove(@RequestBody Map<String, String> requestBody){
-        System.out.println(requestBody.toString());
+
         System.out.println(requestBody.get("username"));
         try {
             userRequestService.HighUserRequestApprove(Integer.parseInt(requestBody.get("userq_NUM")), requestBody.get("username"));
