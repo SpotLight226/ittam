@@ -36,6 +36,7 @@
 /* 유저 리스트에서 호버 */
 tbody .prod-box .userName .hover-bold:hover {
   font-weight: bold;
+  color: #ff5733;
 }
 
 /* 검색 창  */

@@ -20,6 +20,15 @@ const UserList = () => {
   const location = useLocation();
 
   const searchRef = useRef();
+
+  // 권한 체크 및 경고 메시지 함수
+  const checkUserRole = () => {
+    if (userRole !== "ROLE_ADMIN" && userRole !== "ROLE_HIGH_ADMIN") {
+      alert("권한이 없습니다.");
+      navigate(-1); // 뒤로 이동
+    }
+  };
+
   // 검색
   const [inputText, setInputText] = useState(""); // 검색창 value
   const [searchOption, setSearchOption] = useState("all");
@@ -34,6 +43,9 @@ const UserList = () => {
 
     setInputText(searchParam);
     setSearchOption(searchOptionParam);
+
+    // 페이지 로딩 시 권한 체크
+    checkUserRole();
   }, [location]);
 
   // 검색 핸들링
@@ -62,7 +74,14 @@ const UserList = () => {
               ...it,
             };
           });
-          setSearchResult(searchData); // 검색 결과 업데이트
+          if (searchData.length < 1) {
+            alert("검색결과가 없습니다");
+            setInputText("");
+            navigate("/user/userList");
+          } else {
+            setSearchResult(searchData); // 검색 결과 업데이트
+            navigate(url);
+          }
         })
         .catch((err) => {
           console.log(err);
@@ -202,7 +221,7 @@ const UserList = () => {
             return a.user_depart.localeCompare(b.user_depart);
           }
         }
-        case "auth": {
+        case "role": {
           // 권한
           if (checkClass) {
             return b.role.localeCompare(a.role);

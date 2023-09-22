@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -22,6 +23,9 @@ public class UserController {
     @Qualifier("userService")
     private UserService userService;
 
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
     // 사용자 목록
     @CrossOrigin(origins = "*", allowedHeaders = "*")
     @GetMapping("/userList")
@@ -34,10 +38,11 @@ public class UserController {
     @CrossOrigin(origins = "*", allowedHeaders = "*")
     @PostMapping("/userRegist")
     public ResponseEntity<Integer> userRegist(@RequestBody UserVO userVO) {
-        System.out.println("userVO = " + userVO);
-        int data = userService.userRegist(userVO);
 
-        System.out.println("data = " + data);
+        String encode = passwordEncoder.encode(userVO.getPassword());
+        userVO.setPassword(encode);
+
+        int data = userService.userRegist(userVO);
 
         if (data == 1) {
             return new ResponseEntity<>(data, HttpStatus.OK);
