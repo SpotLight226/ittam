@@ -138,7 +138,13 @@ public class ReportsServiceImpl implements ReportsService{
 
     @Override
     public Map<String, Integer> getMFGNum() {
-        return null;
+        Map<String , Integer> map = new HashMap<>();
+        map.put("Samsung", reportsMapper.getMFGNum("Samsung"));
+        map.put("Dell", reportsMapper.getMFGNum("Dell"));
+        map.put("HP", reportsMapper.getMFGNum("HP"));
+        map.put("Lenovo", reportsMapper.getMFGNum("Lenovo"));
+        map.put("Apple", reportsMapper.getMFGNum("Apple"));
+        return map;
     }
 
     @Override
@@ -146,6 +152,31 @@ public class ReportsServiceImpl implements ReportsService{
         Map<Object, Object> map = new HashMap<>();
         map.put("all", reportsMapper.getAssetsAllNum());
         map.put("using", reportsMapper.getAssetsUsingNum());
+        return map;
+    }
+
+    @Override
+    public Map<String, Integer> getSWMFGNum() {
+        Map<String, Integer> map = new HashMap<>();
+        map.put("Microsoft", reportsMapper.getSWMFGNum("Microsoft"));
+        map.put("한글과컴퓨터", reportsMapper.getSWMFGNum("한글과컴퓨터"));
+        map.put("JetBrain", reportsMapper.getSWMFGNum("JetBrain"));
+        return map;
+    }
+
+    @Override
+    public Map<String, Integer> getEtcMFGNum() {
+        Map<String, Integer> map = new HashMap<>();
+        map.put("Logitech", reportsMapper.getEtcMFGNum("Logitech"));
+        map.put("Samsung", reportsMapper.getEtcMFGNum("Samsung"));
+        map.put("LG", reportsMapper.getEtcMFGNum("LG"));
+        map.put("Sony", reportsMapper.getEtcMFGNum("Sony"));
+        map.put("Microsoft", reportsMapper.getEtcMFGNum("Microsoft"));
+        map.put("Corsair", reportsMapper.getEtcMFGNum("Corsair"));
+        map.put("Razer", reportsMapper.getEtcMFGNum("Razer"));
+        map.put("AOC", reportsMapper.getEtcMFGNum("AOC"));
+        map.put("Dell", reportsMapper.getEtcMFGNum("Dell"));
+        map.put("HP", reportsMapper.getEtcMFGNum("HP"));
         return map;
     }
 }

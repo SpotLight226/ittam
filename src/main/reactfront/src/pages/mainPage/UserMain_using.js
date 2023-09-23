@@ -19,6 +19,7 @@ function UserMain_using() {
   const [choiceCatogory, setChoiceCategory] = useState("all");
   const [openAlert, setOpenAlert] = useState(false);
   const [openCancelAlert, setOpenCancelAlert] = useState(false);
+  const [myInfo, setMyInfo] = useState({});
 
   const todayTime = () => {
     let now = new Date();
@@ -44,6 +45,21 @@ function UserMain_using() {
     let minutes = now.getMinutes();
 
     return todayYear + "-" + (todayMonth >= 10 ? todayMonth : '0'+todayMonth) + "-" + (todayDate >= 10 ? todayDate : '0'+todayDate);
+  }
+
+  const getMyInfo = (username) => {
+    axios({
+      url: "/mainPage/getMyInfo",
+      method: "get",
+      headers: {
+        Authorization : token
+      },
+      params: {
+        username: username
+      }
+    })
+        .then(response => {setMyInfo(response.data); console.log(response.data);})
+        .catch(error => console.log(error))
   }
 
 
@@ -141,6 +157,7 @@ function UserMain_using() {
       setUsername(username);
     }
     getMyAssetList(username);
+    getMyInfo(username);
   }, []);
 
 
@@ -192,7 +209,7 @@ function UserMain_using() {
   return (
       <main id="main" className="main">
         {
-            openModal && <ReturnReqModal setOpenModal={setOpenModal} handleSubmit={handleSubmit} handleChange={handleChange} todayTime={todayTime} inputTitle={inputTitle} inputComment={inputComment} setInputComment={setInputComment} setInputTitle={setInputTitle} myAssetList={myAssetList} myAssetNum={myAssetNum} username={username} setOpenAlert={setOpenAlert}/>
+            openModal && <ReturnReqModal setOpenModal={setOpenModal} handleSubmit={handleSubmit} handleChange={handleChange} todayTime={todayTime} inputTitle={inputTitle} inputComment={inputComment} setInputComment={setInputComment} setInputTitle={setInputTitle} myAssetList={myAssetList} myAssetNum={myAssetNum} username={username} setOpenAlert={setOpenAlert} myInfo={myInfo}/>
         }
         {
           openCancelMddal && <ReturnCancelModal setOpenCancelModal={setOpenCancelModal} myAssetList={myAssetList} myAssetNum={myAssetNum} getMyAssetList={getMyAssetList} username={username} setOpenCancelAlert={setOpenCancelAlert} token={token} setOpenAlert={setOpenAlert}/>
@@ -246,9 +263,9 @@ function UserMain_using() {
               <tr className="table-light">
                 <th scope="col">#</th>
                 <th scope="col">자산종류</th>
+                <th scope="col">자산번호</th>
                 <th scope="col">자산스펙</th>
                 <th scope="col">대여일자</th>
-                <th scope="col">자산상태</th>
                 <th scope="col">교환/반납</th>
 
               </tr>
@@ -262,7 +279,8 @@ function UserMain_using() {
                       ).map((a, i) => {
                         return <tr key={i}>
                           <th scope="row">{(currentPage - 1) * itemsPerPage + i + 1}</th>
-                          <td>{a.ASSETS_NAME}{a.ASSETS_DETAIL_NAME}|{a.ASSETS_NUM}</td>
+                          <td>{a.ASSETS_NAME}</td>
+                          <td>{a.ASSETS_DETAIL_NAME}</td>
                           <td style={{fontSize:"14px", color: "gray", width: '800px'}}>{a.SPEC_CPU!==undefined? a.SPEC_CPU+' |':''}
                             {a.SPEC_RAM!==undefined? a.SPEC_RAM+" |":''}
                             {a.SPEC_MAINBOARD!==undefined? a.SPEC_MAINBOARD+" |":''}
@@ -292,8 +310,6 @@ function UserMain_using() {
                             {/*{a.ETC_PURCHASE_DATE!==undefined?a.ETC_PURCHASE_DATE+" |":''}*/}
                             {a.ETC_PRICE!==undefined?a.ETC_PRICE+" |":''}</td>
                           <td>{rentDate(a.RENT_DATE)}</td>
-                          <td>{a.ASSETS_STATUS}</td>
-
                           <td>
 
                             {

@@ -12,7 +12,8 @@ function ReturnReqModal({
   setInputComment,
   myAssetList,
   myAssetNum,
-  username
+  username,
+  myInfo
 }) {
   let thisList = () => {
     return myAssetList.find((x) => x.ASSETS_NUM == myAssetNum);
@@ -92,7 +93,7 @@ function ReturnReqModal({
                 <input
                   type="text"
                   className="form-control"
-                  value={username}
+                  value={myInfo.user_name}
                   disabled
                 />
               </div>

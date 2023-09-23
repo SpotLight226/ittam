@@ -48,7 +48,7 @@
     <select id="getAssetStickNum">
         SELECT count(*) FROM ittam.ITASSETS as it
                                  left join GROUP_CATEGORY as gc on it.CATEGORY_NUM = gc.CATEGORY_NUM
-        where Month(ADD_DATE) <![CDATA[<=]]> MONTH(DATE_SUB(NOW(), INTERVAL #{n} MONTH)) and CATEGORY_PARENT_NUM = #{category_num};
+        WHERE DATE(add_date) <![CDATA[<=]]> DATE(NOW()) - INTERVAL #{n} MONTH and CATEGORY_PARENT_NUM = #{category_num};
     </select>
     <select id="getCPUNum">
         SELECT count(*)
@@ -73,6 +73,14 @@
 
     </select>
     <select id="getMFGNum">
+        SELECT count(*)
+        FROM ITASSETS a
+        LEFT JOIN GROUP_CATEGORY gc on a.CATEGORY_NUM = gc.CATEGORY_NUM
+        LEFT JOIN PCSPEC pc ON (a.category_num = 5 OR a.category_num = 6) AND a.spec_num = pc.spec_num
+        LEFT JOIN SWSPEC sw ON (a.category_num = 7 OR a.category_num = 8 OR a.category_num = 9 OR a.category_num = 10 OR a.category_num = 11 OR a.category_num = 12 ) AND a.spec_num = sw.spec_num
+        LEFT JOIN SERVERSPEC sv ON (a.category_num = 18) AND a.spec_num = sv.spec_num
+        LEFT JOIN ETCSPEC etc ON a.spec_num = etc.spec_num AND a.category_num != 5 AND a.category_num != 6 AND a.category_num != 18 AND a.category_num != 7 AND a.category_num != 8 AND a.category_num != 9 AND a.category_num != 10 AND a.category_num != 11 AND a.category_num != 12
+        where SPEC_MFG like CONCAT('%', #{mfg}, '%')
 
     </select>
 
@@ -87,5 +95,25 @@
         left join GROUP_CATEGORY gc on it.category_num = gc.category_num
         where ASSETS_STATUS = '사용중'
         group by gc.CATEGORY_PARENT_NUM
+    </select>
+    <select id="getSWMFGNum">
+        SELECT count(*)
+        FROM ITASSETS a
+                 LEFT JOIN GROUP_CATEGORY gc on a.CATEGORY_NUM = gc.CATEGORY_NUM
+                 LEFT JOIN PCSPEC pc ON (a.category_num = 5 OR a.category_num = 6) AND a.spec_num = pc.spec_num
+                 LEFT JOIN SWSPEC sw ON (a.category_num = 7 OR a.category_num = 8 OR a.category_num = 9 OR a.category_num = 10 OR a.category_num = 11 OR a.category_num = 12 ) AND a.spec_num = sw.spec_num
+                 LEFT JOIN SERVERSPEC sv ON (a.category_num = 18) AND a.spec_num = sv.spec_num
+                 LEFT JOIN ETCSPEC etc ON a.spec_num = etc.spec_num AND a.category_num != 5 AND a.category_num != 6 AND a.category_num != 18 AND a.category_num != 7 AND a.category_num != 8 AND a.category_num != 9 AND a.category_num != 10 AND a.category_num != 11 AND a.category_num != 12
+        where SW_MFG = #{mfg}
+    </select>
+    <select id="getEtcMFGNum">
+        SELECT count(*)
+        FROM ITASSETS a
+                 LEFT JOIN GROUP_CATEGORY gc on a.CATEGORY_NUM = gc.CATEGORY_NUM
+                 LEFT JOIN PCSPEC pc ON (a.category_num = 5 OR a.category_num = 6) AND a.spec_num = pc.spec_num
+                 LEFT JOIN SWSPEC sw ON (a.category_num = 7 OR a.category_num = 8 OR a.category_num = 9 OR a.category_num = 10 OR a.category_num = 11 OR a.category_num = 12 ) AND a.spec_num = sw.spec_num
+                 LEFT JOIN SERVERSPEC sv ON (a.category_num = 18) AND a.spec_num = sv.spec_num
+                 LEFT JOIN ETCSPEC etc ON a.spec_num = etc.spec_num AND a.category_num != 5 AND a.category_num != 6 AND a.category_num != 18 AND a.category_num != 7 AND a.category_num != 8 AND a.category_num != 9 AND a.category_num != 10 AND a.category_num != 11 AND a.category_num != 12
+        where ETC_MFG = #{etcmfg}
     </select>
 </mapper>

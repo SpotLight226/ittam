@@ -51,10 +51,10 @@
         select count(*) from STOCK_RETURN where return_kind='반납' and RETURN_STATUS='승인대기' and username=#{username}
     </select>
     <select id="getUserCnt_usingReq">
-        select count(*) from USER_REQUEST where USERQ_YN = '사원사용요청' and username=#{username}
+        select count(*) from USER_REQUEST where (USERQ_YN = '사원사용요청' or USERQ_YN = '관리자사용승인') and username=#{username}
     </select>
     <select id="getUserCnt_buyReq">
-        select count(*) from USER_REQUEST where USERQ_YN = '사원구매요청' and username=#{username}
+        select count(*) from USER_REQUEST where (USERQ_YN = '사원구매요청' or USERQ_YN = '관리자구매승인') and username=#{username}
     </select>
     <select id="getMyAssetList">
         select * from ITASSETS a

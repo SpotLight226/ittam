@@ -12,9 +12,25 @@ function UserMain_request() {
   const [myRequestList, setMyRequestList] = useState([]);
   const [openReqDetailModal, setOpenReqDetailModal] = useState(false);
   const [userq_num, setUserq_num] = useState(0);
+  const [myInfo, setMyInfo] = useState({});
 
-  const count_using = myRequestList.filter(a => a.userq_yn.includes('사용') && (a.userq_yn.includes('사원사용'))).length;
-  const count_buy = myRequestList.filter(a => a.userq_yn.includes('구매') && (a.userq_yn.includes('사원구매') || a.userq_yn.includes('관리자구매승인'))).length
+  const count_using = myRequestList.filter(a => a.userq_yn.includes('관리자사용') || (a.userq_yn.includes('사원사용'))).length;
+  const count_buy = myRequestList.filter(a => a.userq_yn.includes('구매') && (a.userq_yn.includes('반려') || a.userq_yn.includes('최종구매승인'))).length;
+
+  const getMyInfo = (username) => {
+    axios({
+      url: "/mainPage/getMyInfo",
+      method: "get",
+      headers: {
+        Authorization : token
+      },
+      params: {
+        username: username
+      }
+    })
+        .then(response => {setMyInfo(response.data); console.log(response.data);})
+        .catch(error => console.log(error))
+  }
 
 
   const getMyRequestList = (username) => {
@@ -40,6 +56,7 @@ function UserMain_request() {
       setUsername(username);
     }
     getMyRequestList(username);
+    getMyInfo(username);
 
   }, []);
 
@@ -49,7 +66,7 @@ function UserMain_request() {
 
     return (
         <main id="main" className="main">
-            {openReqDetailModal && <ReqDetailModal setOpenReqDetailModal={setOpenReqDetailModal} username={username} myRequestList={myRequestList} userq_num={userq_num} getMyRequestList={getMyRequestList} token={token}/>}
+            {openReqDetailModal && <ReqDetailModal setOpenReqDetailModal={setOpenReqDetailModal} username={username} myRequestList={myRequestList} userq_num={userq_num} getMyRequestList={getMyRequestList} token={token} myInfo={myInfo}/>}
 
           <div className="pagetitle">
             <h1>사용 및 구매신청 목록</h1>
@@ -104,7 +121,7 @@ function UserMain_request() {
                                     <td><Link to="#" onClick={() => {setOpenReqDetailModal(true); setUserq_num(a.userq_num)}}>{a.userq_title}</Link></td>
                                     <td>{a.userq_count}</td>
                                     <td>{a.userq_regdate}</td>
-                                    <td style={{color: 'blue', fontWeight: '600'}}>{a.userq_yn.includes('최종사용승인') ? "승인" : (a.userq_yn.includes('사원사용') || a.userq_yn.includes('관리자사용') ? "승인대기" : (a.userq_yn.includes('반려') ? '반려' : '승인대기'))}</td>
+                                    <td style={{color: 'blue', fontWeight: '600'}}>{a.userq_yn.includes('최종사용승인') ? "승인" : (a.userq_yn.includes('사원사용') || a.userq_yn.includes('관리자사용승인') ? "승인대기" : (a.userq_yn.includes('반려') ? '반려' : '승인대기'))}</td>
 
                                 </tr>
                           })
@@ -163,7 +180,7 @@ function UserMain_request() {
                                     <td><Link to="#" onClick={() => {setOpenReqDetailModal(true); setUserq_num(a.userq_num)}}>{a.userq_title}</Link></td>
                                     <td>{a.userq_count}</td>
                                     <td>{a.userq_regdate}</td>
-                                    <td style={{color: 'blue', fontWeight: '600'}}>{a.userq_yn.includes('최종구매승인') ? "승인" : (a.userq_yn.includes('사원사용') ? "승인대기" : (a.userq_yn.includes('반려') ? '반려' : '승인대기'))}</td>
+                                    <td style={{color: 'blue', fontWeight: '600'}}>{a.userq_yn.includes('최종구매승인') ? "승인" : (a.userq_yn.includes('사원구매') ? "승인대기" : (a.userq_yn.includes('반려') ? '반려' : '승인대기'))}</td>
 
                                 </tr>
                           })
@@ -180,7 +197,7 @@ function UserMain_request() {
                                     <td><Link to="#" onClick={() => {setOpenReqDetailModal(true); setUserq_num(a.userq_num)}}>{a.userq_title}</Link></td>
                                     <td>{a.userq_count}</td>
                                     <td>{a.userq_regdate}</td>
-                                    <td>{a.userq_yn.includes('최종구매승인') ? "승인" : (a.userq_yn.includes('사원사용') ? "승인대기" : (a.userq_yn.includes('반려') ? '반려' : '승인대기'))}</td>
+                                    <td>{a.userq_yn.includes('최종구매승인') ? "승인" : (a.userq_yn.includes('사원구매') ? "승인대기" : (a.userq_yn.includes('반려') ? '반려' : '승인대기'))}</td>
 
                                 </tr>
                             })

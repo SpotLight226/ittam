@@ -2,15 +2,15 @@ import { useState } from "react";
 
 import ReactApexChart from "react-apexcharts";
 
-function MFGChart({MFGNum}) {
+function EtcMFGChart({EtcMFGNum}) {
   const x = {
-    series: [MFGNum.Samsung, MFGNum.Dell, MFGNum.HP, MFGNum.Lenovo, MFGNum.Apple],
+    series: [EtcMFGNum.Logitech, EtcMFGNum.Samsung, EtcMFGNum.LG, EtcMFGNum.Sony, EtcMFGNum.Microsoft, EtcMFGNum.Corsair, EtcMFGNum.Razer, EtcMFGNum.AOC, EtcMFGNum.Dell, EtcMFGNum.HP],
     options: {
       chart: {
         type: 'donut',
       },
-      labels: ['Samsung', 'Dell', 'HP', 'Lenovo', 'Apple'],
-      colors:['#4b0082', '#6a5acd', '#9C27B0', '#dda0dd', '#4a6fc3'],
+      labels: ['Logitech', 'Samsung', 'LG', 'Sony', 'Microsoft', 'Corsair', 'Razer', 'AOC', 'Dell', 'HP'],
+      colors:['#4b0082', '#6a5acd', '#9C27B0', '#dda0dd', '#4a6fc3', '#4a6fc3', '#4a6fc3', '#4a6fc3', '#4a6fc3', '#4a6fc3'],
       responsive: [{
         breakpoint: 480,
         options: {
@@ -35,4 +35,4 @@ function MFGChart({MFGNum}) {
   )
 }
 
-export default MFGChart;
+export default EtcMFGChart;

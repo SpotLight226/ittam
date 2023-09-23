@@ -64,15 +64,24 @@ public class ReportsController {
     public ResponseEntity<Map<String, Integer>> getGPUNum() {
         return new ResponseEntity<>(reportsService.getGPUNum(), HttpStatus.OK);
     }
-//    @GetMapping("getMFGNum")
-//    public ResponseEntity<Map<String, Integer>> getMFGNum() {
-//        return new ResponseEntity<>()
-//    }
+    @GetMapping("getMFGNum")
+    public ResponseEntity<Map<String, Integer>> getMFGNum() {
+        return new ResponseEntity<>(reportsService.getMFGNum(), HttpStatus.OK);
+    }
 
     @GetMapping("/getRadialBarNum")
     public ResponseEntity<Map<Object, Object>> getRadialBarNum() {
-        System.out.println("kkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk");
         Map<Object,Object> map = reportsService.getRadialBarNum();
         return new ResponseEntity<>(map, HttpStatus.OK);
+    }
+
+    @GetMapping("/getSWMFGNum")
+    public ResponseEntity<Map<String, Integer>> getSWMFGNum() {
+        return new ResponseEntity<>(reportsService.getSWMFGNum(), HttpStatus.OK);
+    }
+    @GetMapping("/getEtcMFGNum")
+    public ResponseEntity<Map<String, Integer>> getEtcMFGNum() {
+
+        return new ResponseEntity<>(reportsService.getEtcMFGNum(), HttpStatus.OK);
     }
 }

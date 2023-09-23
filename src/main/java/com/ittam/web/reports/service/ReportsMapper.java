@@ -31,9 +31,11 @@ public interface ReportsMapper {
 
     public Integer getCPUNum(String cpu);
     public Integer getGPUNum(String gpu);
-    public Map<String, Integer> getMFGNum();
+    public Integer getMFGNum(String mfg);
 
 //////////////////////////////////////////////////
     public List<Map<Object, Object>> getAssetsAllNum();
     public List<Map<Object, Object>> getAssetsUsingNum();
+    public Integer getSWMFGNum(String swmfg);
+    public Integer getEtcMFGNum(String etcmfg);
 }
