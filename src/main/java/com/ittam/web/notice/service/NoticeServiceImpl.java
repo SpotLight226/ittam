@@ -67,22 +67,39 @@ public class NoticeServiceImpl  implements NoticeService{
     public void updateNotice(NoticeVO noticeVO, List<MultipartFile> multipartFiles) {
         noticeMapper.updateNotice(noticeVO);
 
-
         Date currentDate = new Date();
         Timestamp currentTimestamp = new Timestamp(currentDate.getTime());
 
-        List<NoticeImgVO> noticeImgVOList;
-
-        if(!multipartFiles.isEmpty()){
-            noticeImgVOList = s3Uploader.uploadImage(multipartFiles);
+        if (!multipartFiles.isEmpty()) {
+            // 이미지 파일이 있는 경우, 업로드 및 업데이트
+            List<NoticeImgVO> noticeImgVOList = s3Uploader.uploadImage(multipartFiles);
             noticeImgVOList.forEach(noticeImgVO -> {
                 noticeImgVO.setNotice_num2(noticeVO.getNotice_num());
                 noticeImgVO.setNoticeimg_regdate(currentTimestamp);
-                System.out.println((noticeImgVO));
+                System.out.println(noticeImgVO);
             });
             System.out.println("==================");
             System.out.println(noticeImgVOList.get(0).getNotice_num2());
             noticeMapper.updateNoticeImg(noticeImgVOList.get(0));
+        } else {
+            // 이미지 파일이 없는 경우
+            // 여기에서 기존 이미지를 삭제하거나, 새 이미지를 추가하거나 할 작업을 수행합니다.
+            // 예시로 기존 이미지를 삭제하고 새 이미지를 추가하는 코드를 보여드리겠습니다.
+
+            // 기존 이미지 삭제
+            NoticeImgVO noticeImgVOToDelete = new NoticeImgVO();
+            noticeImgVOToDelete.setNotice_num2(noticeVO.getNotice_num());
+            noticeMapper.deleteNoticeImg(noticeImgVOToDelete);
+
+            // 새 이미지 추가
+            List<NoticeImgVO> noticeImgVOListToAdd = s3Uploader.uploadImage(multipartFiles);
+            noticeImgVOListToAdd.forEach(noticeImgVO -> {
+                noticeImgVO.setNotice_num2(noticeVO.getNotice_num());
+                noticeImgVO.setNoticeimg_regdate(currentTimestamp);
+            });
+
+            // 이미지를 추가합니다.
+            noticeMapper.postNoticeImgList(noticeImgVOListToAdd);
         }
     }
 

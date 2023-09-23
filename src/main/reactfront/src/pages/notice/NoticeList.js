@@ -6,6 +6,7 @@ import { logDOM } from "@testing-library/react";
 import React, { useEffect, useLayoutEffect, useState } from "react";
 import "../../styles/NoticeList.css"
 import Pagenation from "../../component/Pagenation";
+import { BsArrowClockwise } from "react-icons/bs";
 
 function NoticeList() {
   
@@ -34,7 +35,8 @@ function NoticeList() {
     notice_hits: "",
     notice_num: "",
   });
-  
+
+
 
   
   // 각 검색어 필드에 대한 핸들러 함수
@@ -52,6 +54,7 @@ function NoticeList() {
       url: "http://localhost:9191/noticelist/searchTitle", // 검색을 처리할 서버 엔드포인트
       method: "get",
       headers: {
+        'Content-Type' : 'application/json;charset=utf-8',
         Authorization : token
       },
       params: searchText
@@ -75,6 +78,7 @@ function NoticeList() {
       url: "http://localhost:9191/noticelist", // 검색을 처리할 서버 엔드포인트
       method: "get",
       headers: {
+        'Content-Type' : 'application/json;charset=utf-8',
         Authorization : token
       }
     })
@@ -118,6 +122,7 @@ function NoticeList() {
       url: "http://localhost:9191/noticelist/expire", // 검색을 처리할 서버 엔드포인트
       method: "get",
       headers: {
+        'Content-Type' : 'application/json;charset=utf-8',
         Authorization : token
       }
     })
@@ -132,18 +137,28 @@ function NoticeList() {
       });
   };
 
-  const handleSearchDate = () => {
 
+  const handleSearchDate = () => {
     const searchStartDate = document.getElementById("searchStartDate");
     const searchEndDate = document.getElementById("searchEndDate");
-
-    console.log(searchStartDate.value);
-    console.log(searchEndDate.value);
-
-    const data = {
-      notice_regdate : searchStartDate.value,
-      notice_enddate : searchEndDate.value
+  
+    const startDate = searchStartDate.value;
+    const endDate = searchEndDate.value;
+  
+    console.log(startDate);
+    console.log(endDate);
+  
+    // 시작일과 종료일 중 적어도 하나가 비어 있는 경우
+    if (!startDate || !endDate) {
+      alert('등록일과 만료일을 모두 설정해주세요.');
+      return; // 검색을 중지하고 알림만 표시
     }
+  
+    const data = {
+      notice_regdate: startDate,
+      notice_enddate: endDate,
+    }
+    
 
     axios({
       url: "http://localhost:9191/noticelist/searchDate", // 검색을 처리할 서버 엔드포인트
@@ -203,7 +218,7 @@ function NoticeList() {
   const handleSelectorChange = (event) => {
     setItemPerPage(Number(event.target.value));
   };
-
+  
   const totalPages = Math.ceil(noticeList.length / itemsPerPage);
   /* 페이지네이션 */
   const [currentPage, setCurrentPage] = useState(1); // 현재 페이지
@@ -217,6 +232,32 @@ function NoticeList() {
   const handleClick = (pageNumber) => {
     setCurrentPage(pageNumber);
   };
+
+  const resetBtn = () => {
+    setSearchText({
+      notice_regdate: "",
+      notice_title: "",
+      notice_name: "",
+      notice_enddate: "",
+      notice_content: "",
+      notice_hits: "",
+      notice_num: "",
+    });
+  
+    // 날짜 입력 필드 초기화
+    const searchStartDate = document.getElementById("searchStartDate");
+    const searchEndDate = document.getElementById("searchEndDate");
+  
+    if (searchStartDate && searchEndDate) {
+      searchStartDate.value = "";
+      searchEndDate.value = "";
+    }
+  
+    // 페이지를 다시 로드 (원상태로 돌아감)
+    getList();
+  };
+
+
 
   return (
     <div>
@@ -274,6 +315,8 @@ function NoticeList() {
                   
 
                       <div className="datatable-search">
+                      <button type="button" className="btn btn-primary reset-btn"><BsArrowClockwise style={{width : "30px", height : "30px", color : "gray"}}
+                                                                                                        onClick={resetBtn}/></button>
                         <input
                           type="search"
                           value={searchText.notice_title}
