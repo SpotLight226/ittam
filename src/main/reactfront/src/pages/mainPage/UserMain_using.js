@@ -164,7 +164,7 @@ function UserMain_using() {
 
   ///////////////////////////////
   /* 몇개씩 보이고 싶은지 */
-  const [itemsPerPage, setItemPerPage] = useState(5); // 페이지당 10개의 아이템  useState(처음에 보이고싶은 개수)
+  const [itemsPerPage, setItemPerPage] = useState(10); // 페이지당 10개의 아이템  useState(처음에 보이고싶은 개수)
   const handleSelectorChange = (event) => {
     setItemPerPage(parseInt(event.target.value));
     setCurrentPage(1);
@@ -193,7 +193,7 @@ function UserMain_using() {
   const totalPages = Math.ceil(myAssetListFilter().length / itemsPerPage);
   /* 페이지네이션 */
   /* const totalPages = Math.ceil(data.length / itemsPerPage); */
-  const pagesPerGroup = 5; // 한 그룹에 표시할 페이지 수
+  const pagesPerGroup = 10; // 한 그룹에 표시할 페이지 수
   const currentGroup = Math.ceil(currentPage / pagesPerGroup); // 현재 페이지 그룹
 
   const startPage = (currentGroup - 1) * pagesPerGroup; // 시작 페이지

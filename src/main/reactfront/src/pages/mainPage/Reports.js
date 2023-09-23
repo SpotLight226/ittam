@@ -367,7 +367,7 @@ function Reports() {
 
 
 
-                    <i class="bi bi-laptop" style={{fontSize: '50px'}}> PC/노트북</i>
+                    <i class="bi bi-laptop" style={{fontSize: '30px'}}> PC/노트북</i>
                     <div className="col-lg-4">
 
                       <div className="card" >
@@ -421,7 +421,7 @@ function Reports() {
                     </div>
 
                     <div className="col-lg-4">
-                    <i class="bi bi-file-earmark-word" style={{fontSize: '50px'}}> SW</i>
+                    <i class="bi bi-file-earmark-word" style={{fontSize: '30px'}}> SW</i>
                       <div className="card" >
                         <div className="card-body" style={{ backgroundColor: 'rgb(219 228 245)', borderRadius: '8px' }}>
                           <h5 className="card-title" style={{ fontWeight: "800" }}>제조사</h5>
@@ -439,7 +439,7 @@ function Reports() {
                     </div>
 
                     <div className="col-lg-4">
-                    <i class="bi bi-keyboard" style={{fontSize: '50px'}}> 주변기기</i>
+                    <i class="bi bi-keyboard" style={{fontSize: '30px'}}> 주변기기</i>
                       <div className="card" >
                         <div className="card-body" style={{ backgroundColor: 'rgb(219 228 245)', borderRadius: '8px' }}>
                           <h5 className="card-title" style={{ fontWeight: "800" }}>제조사</h5>
@@ -455,7 +455,7 @@ function Reports() {
                       </div>
 
                     </div><div className="col-lg-4">
-                    <i class="bi bi-hdd-stack" style={{fontSize: '50px'}}> 서버</i>
+                    <i class="bi bi-hdd-stack" style={{fontSize: '30px'}}> 서버</i>
                       <div className="card" >
                         <div className="card-body" style={{ backgroundColor: 'rgb(219 228 245)', borderRadius: '8px' }}>
                           <h5 className="card-title" style={{ fontWeight: "800" }}>제조사</h5>

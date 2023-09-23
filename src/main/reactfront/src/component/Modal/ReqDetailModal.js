@@ -19,7 +19,8 @@ function ReqDetailModal({ setOpenReqDetailModal, username, myRequestList, userq_
     let hours = now.getHours();
     let minutes = now.getMinutes();
 
-    return todayYear + "년 " + todayMonth + "월 " + todayDate + "일 " + dayOfWeek + " " +  hours + "시 " + minutes + "분";
+    return todayYear + "년 " + (todayMonth >= 10 ? todayMonth : '0'+todayMonth) + "월" + (todayDate >= 10 ? todayDate : '0'+todayDate) +"일 "+ (hours >= 10?hours : '0'+hours)+'시' +
+        (minutes >= 10?minutes:'0'+minutes)+ "분";
   }
 
 

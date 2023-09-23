@@ -247,9 +247,9 @@ function Mypage() {
                           <label for="profileImage" className="col-md-4 col-lg-3 col-form-label">프로필 사진</label>
                           <div className="col-md-8 col-lg-9">
                             <img src="assets/img/profile-img.jpg" alt="Profile" />
-                            <div className="pt-2">
-                              <button className="btn btn-primary btn-sm" title="Upload new profile image"><i className="bi bi-upload"></i></button>
-                            </div>
+                            {/*<div className="pt-2">*/}
+                            {/*  <button className="btn btn-primary btn-sm" title="Upload new profile image"><i className="bi bi-upload"></i></button>*/}
+                            {/*</div>*/}
                           </div>
                         </div>
 
