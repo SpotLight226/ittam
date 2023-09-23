@@ -40,7 +40,15 @@ const ITAssetsItem = ({
           data-bs-toggle="modal"
           data-bs-target="#basicModal"
           onClick={() => handleModal(item)}
-          disabled={username ? true : false} 
+          disabled={
+            username
+              ? true
+              : false || assets_status === '폐기'
+              ? true
+              : false || assets_status === '승인대기중'
+              ? true
+              : false
+          }
         >
           폐기/수리요청
         </button>

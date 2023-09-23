@@ -57,4 +57,12 @@
         WHERE category_num = #{category_num}
     </insert>
 
+    <update id="waitYN">
+        update ITASSETS set assets_status = '승인대기중' where assets_num = #{assets_num}
+    </update>
+
+    <update id="waitN">
+        update ITASSETS set assets_status = '사용가능' where assets_num = #{assets_num}
+    </update>
+
 </mapper>

@@ -79,6 +79,11 @@ public class AssetRequestServiceImpl implements AssetRequestService{
         return assetRequestMapper.AssetUsageRequest(vo);
     }
 
+    @Override
+    public int AssetUsageRequestUpdate(UserRequestVO vo) {
+        return assetRequestMapper.AssetUsageRequestUpdate(vo);
+    }
+
     //자산 구매 신청
     @Override
     public int AssetBuyRequest(UserRequestVO vo) {

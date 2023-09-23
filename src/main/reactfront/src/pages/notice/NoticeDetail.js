@@ -1,8 +1,10 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext  } from "react";
 import axios from "axios";
 import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
 import "../../styles/Style.css";
 import "../../styles/NoticeDetail.css";
+import { tokenInfoContext } from "../../component/TokenInfoProvider";
+
 
 const formatDate = (dateString) => {
   const date = new Date(dateString);
@@ -14,6 +16,7 @@ const formatDate = (dateString) => {
 
 function NoticeDetail() {
   const token = localStorage.getItem("token");
+  const { userRole, username, handleChange } = useContext(tokenInfoContext);
 
   const { id } = useParams(); // 파라미터에서 id를 가져옴
   const [notice, setNotice] = useState({}); // 게시글 데이터를 저장할 상태
@@ -274,6 +277,22 @@ function NoticeDetail() {
 
 
 
+                    {userRole == 'ROLE_USER' && (
+                   <div
+                    style={{
+                      display: "flex",
+                      justifyContent: "center",
+                      alignItems: "center",
+                    }}
+                  ><Link to="/noticelist">
+                  <button className="btn btn-primary listBtn" type="button" style={{ marginRight: "10px" }}>
+                  목록
+                  </button>
+                  </Link></div>
+                    )} 
+
+
+                {userRole == 'ROLE_ADMIN' &&  (
                   <div
                     style={{
                       display: "flex",
@@ -297,7 +316,40 @@ function NoticeDetail() {
                     <button className="btn btn-primary deleteBtn" type="button" onClick={handleDelete}>
                       삭제
                     </button>
-                  </div>
+                  </div> )}
+
+                  {userRole == 'ROLE_HIGH_ADMIN' &&  (
+                  <div
+                    style={{
+                      display: "flex",
+                      justifyContent: "center",
+                      alignItems: "center",
+                    }}
+                  >
+                    <button
+                      className="btn btn-primary writeBtn"
+                      type="button"
+                      style={{ marginRight: "10px" }}
+                      onClick={click_on_edit}
+                    >
+                      수정
+                    </button>
+                    <Link to="/noticelist">
+                    <button className="btn btn-primary listBtn" type="button" style={{ marginRight: "10px" }}>
+                    목록
+                    </button>
+                    </Link>
+                    <button className="btn btn-primary deleteBtn" type="button" onClick={handleDelete}>
+                      삭제
+                    </button>
+                  </div> )}
+
+
+
+
+
+
+
                 </form>
               </div>
             </div>

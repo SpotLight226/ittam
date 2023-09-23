@@ -51,18 +51,18 @@ export const AssetAllListOption = [
     value: 'status',
     name: '자산상태',
   },
-  // {
-  //   value: "mfg",
-  //       name: "제조사",
-  // },
-  // {
-  //   value: "seriel",
-  //       name: "시리얼",
-  // },
-  // {
-  //   value: "war",
-  //       name: "보증기간",
-  // },
+  {
+    value: "mfg",
+        name: "제조사",
+  },
+  {
+    value: "seriel",
+        name: "시리얼",
+  },
+  {
+    value: "war",
+        name: "보증기간",
+  },
   {
     value: 'category',
     name: '카테고리',

@@ -202,9 +202,9 @@ function Approve() {
   };
   /* 몇개씩 보이고 싶은지 */
   const [itemsPerPage, setItemPerPage] = useState(10); // 페이지당 10개의 아이템  useState(처음에 보이고싶은 개수)
-  // const handleSelectorChange = (event) => {
-  //   setItemPerPage(Number(event.target.value));
-  // };
+  const handleSelectorChange = (event) => {
+    setItemPerPage(Number(event.target.value));
+  };
   const totalPages = Math.ceil(userRequest.length / itemsPerPage); // 총 버튼 수
   const [currentPage, setCurrentPage] = useState(1); // 현재 페이지
   const pagesPerGroup = 10; // 한 그룹에 표시할 페이지 수
@@ -267,7 +267,9 @@ function Approve() {
                       <div className="datatable-top">
                         <div className="datatable-dropdown">
                           <label htmlFor="">
-                            <select className="datatable-selector">
+                            <select className="datatable-selector"
+                                    value={itemsPerPage}
+                                    onChange={handleSelectorChange}>
                               <option value="5">5</option>
                               <option value="10">10</option>
                               <option value="15">15</option>
@@ -338,7 +340,10 @@ function Approve() {
                       {/* 테이블리스트 */}
 
 
-                      {userRequest.map((item,index) => (
+                      {userRequest.slice(
+                          (currentPage - 1) * itemsPerPage,
+                          currentPage * itemsPerPage
+                      ).map((item,index) => (
                           <ApproveTable key={index} {...item} func={handleToggle} funcClose={handleBackToggle} index={index}/>
                       ))}
 

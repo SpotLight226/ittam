@@ -1,7 +1,7 @@
 import {Link} from "react-router-dom";
 import React from "react";
 
-const AssetRequestListSVTable = ({index,
+const AssetRequestListSVTable = ({index, currentPage, itemsPerPage,
                                      assets_name,assets_status,spec_mfg,spec_seriel,spec_warranty,category_name,spec_num,assets_num,sw_mfg,sw_spec_seriel,sw_spec_warranty,sw_purchase_date,
                                      sw_price,etc_mfg,etc_spec_warranty,etc_purchase_date,etc_price,spec_cpu,spec_ram,spec_mainboard,spec_power,spec_gpu,spec_hdd,spec_ssd,spec_ops,spec_purchase_date,
                                      server_mfg, server_spec_warranty, server_capa, server_price, server_purchase_date, server_interface, server_average_life, server_rpm, server_datarecovery_life,
@@ -35,9 +35,9 @@ const AssetRequestListSVTable = ({index,
     return (
         <tr className="prod-box">
             <th>
-                <input type={"checkbox"}/>
+                {/*<input type={"checkbox"}/>*/}
             </th>
-            <th scope="row">{index + 1}</th>
+            <th scope="row">{(currentPage - 1) * itemsPerPage + index + 1}</th>
             <td>
                 <Link
                     to="#"
