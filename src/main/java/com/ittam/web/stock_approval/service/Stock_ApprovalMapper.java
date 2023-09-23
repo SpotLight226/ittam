@@ -25,4 +25,8 @@ public interface Stock_ApprovalMapper {
 
     public void insertApproval(UserRequestVO vo3);
 
+    public void waitYN(ITAssetsVO vo1);
+
+    public void waitN(ITAssetsVO vo1);
+
 }

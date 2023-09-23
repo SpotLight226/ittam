@@ -84,8 +84,10 @@ public class  Stock_ApprovalController {
 //        vo.setAsset_seriel(randomString(4) + "-" + randomString(4) + "-" + randomString(4));
         vo.setAppro_comment((String) requestData.get("appro_comment"));
         vo.setAppro_kind((String) requestData.get("assets_status"));
-
         int data = stock_approvalService.statusUpdate(vo);
+        ITAssetsVO vo1 = new ITAssetsVO();
+        vo1.setAssets_num((int) requestData.get("assets_num"));
+        stock_approvalService.waitYN(vo1);
 
         return new ResponseEntity<>(data, HttpStatus.OK);
     }
@@ -95,12 +97,18 @@ public class  Stock_ApprovalController {
         Map<String, Object> itemData = (Map<String, Object>) requestData.get("item");
         StockApprovalVO vo = new StockApprovalVO();
         UserRequestVO vo3 = new UserRequestVO();
+        ITAssetsVO vo1 = new ITAssetsVO();
         int data = 0;
         vo.setAppro_num((int)itemData.get("appro_num"));
         stock_approvalService.ApprovY(vo);
 
         vo3.setUserq_num((int)itemData.get("userq_num"));
         stock_approvalService.finaln(vo3);
+
+        vo1.setAssets_num((int) itemData.get("assets_num"));
+        stock_approvalService.waitN(vo1);
+
+
         return new ResponseEntity<>(data, HttpStatus.OK);
     }
 
