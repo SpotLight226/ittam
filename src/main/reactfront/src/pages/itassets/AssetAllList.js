@@ -1,12 +1,12 @@
-import React, { useEffect, useState } from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import axios from 'axios';
 import AssetAllListTable from './AssetAllListTable';
 import {Link, useParams, useLocation} from 'react-router-dom';
 import Pagenation from "../../component/Pagenation";
-import ITAssetsInfo from "./ITAssetsInfo";
 import AssetDetailModal from "./AssetDetailModal"
 import {AssetAllListOption} from "../../constants/OptionList";
 import ControlMenu from "../../component/ControlMenu";
+import { tokenInfoContext } from '../../component/TokenInfoProvider';
 
 const validAssetNames = [ // 유효한 자산명 목록
   'PC', '소프트웨어', '주변기기', '서버', '데스크탑', '노트북', 'Microsoft Office', '파워포인트', '엑셀',
@@ -14,15 +14,15 @@ const validAssetNames = [ // 유효한 자산명 목록
 ];
 
 const AssetAllList = () => {
+  const { userRole,username} = useContext(tokenInfoContext);
   const token = localStorage.getItem("token");
-  const username = localStorage.getItem("username");
 
   const [AssetRequest, setAssetRequest] = useState([]); // 전체 자산 리스트
   const [inputText, setInputText] = useState('');
 
   const [inputInnerData, setInputInnerDate] = useState({ // 검색 시 list 관리를 위한 state
     assets_name : "", assets_status : "", spec_mfg : "", spec_seriel : "", spec_warranty : "",
-    category_name : "", spec_num : "", assets_num : "",
+    category_name : "", spec_num : "", assets_num : "", assets_detail_name :"",
     //
     sw_mfg: '', sw_spec_seriel: '', sw_spec_warranty: '', sw_purchase_date: '', sw_price: '',
     /* etcspec */
@@ -148,16 +148,39 @@ const AssetAllList = () => {
     const modal = document.querySelector(".modalmodal .card");
     modal.style.left = `calc(50% - ${modal.clientWidth / 2}px)`;
     modal.style.top = `calc(50% - ${modal.clientHeight / 2}px)`;
+
+
   };
   // 사용신청 모달창 닫는 핸들러
-  const handleClose =() =>  {
+  const handleClose = async () => {
     let basicModal = document.getElementById("basicModal");
     basicModal.style.display = "none";
     basicModal.classList.toggle("show");
     setInnerDate({
-      //초기화
-      assets_name: "", category_num: "", assets_num: "", userq_title: "", userq_comment: "",
+      assets_name: "",
+      category_num: "",
+      assets_num: "",
+      userq_title: "",
+      userq_comment: "",
     });
+
+    try {
+      // 전체 자산 목록을 다시 불러오는 함수 호출
+      const response = await axios.get('http://localhost:9191/AssetRequest/AssetRequestList', {
+        headers: {
+          Authorization: token
+        },
+      });
+
+      if (inputInnerData.assets_name === "" || inputInnerData.length === 0 && path === "/itassets") {
+        setAssetRequest(response.data);
+      } else {
+        setAssetRequest(inputInnerData);
+      }
+    } catch (error) {
+      console.error("전체 자산 목록을 불러오는 데 실패하였습니다.", error);
+      alert("전체 자산 목록을 불러오는 데 실패하였습니다.");
+    }
   };
     // 사용신청 버튼 눌렀을 때 해당 행의 값 state로 관리
   const [innerData, setInnerDate] = useState({
@@ -342,63 +365,6 @@ const AssetAllList = () => {
   };
 
 
-
-  //일괄 사용 신청
-  const [isChecked, setIsChecked] = useState(false);
-  const [isButtonVisible, setIsButtonVisible] = useState(false); // 초기에는 버튼 숨김
-
-  const [isCheckedList, setIsCheckedList] = useState([]);
-  const toggleAllCheckboxes  = (index) =>{
-    if(!isChecked){
-      setIsChecked(!isChecked); // isChecked를 true로 바꾼다
-      setIsButtonVisible(!isChecked); //setIsButtonVisible를 true로 바꾼다
-
-      const updatedIsCheckedList = [...isCheckedList];
-      updatedIsCheckedList[index] = !updatedIsCheckedList[index];
-      setIsCheckedList(updatedIsCheckedList);
-    }else{
-      setIsChecked(!isChecked); // isChecked를 true로 바꾼다
-      setIsButtonVisible(!isChecked); //setIsButtonVisible를 true로 바꾼다
-
-
-      const updatedIsCheckedList = [...isCheckedList];
-      updatedIsCheckedList[index] = !updatedIsCheckedList[index];
-      setIsCheckedList(updatedIsCheckedList);
-    }
-
-  }
-
-  const [assetsAllList, setAssetsAllList] = useState([]);
-
-  // assets_name이 선택되었을 때 호출되는 콜백 함수
-  const handleAssetNameSelect = (assetName) => {
-    // assetsAllList 배열에 선택된 assets_name을 추가합니다.
-    setAssetsAllList([...assetsAllList, assetName]);
-  };
-
-  // assets_name이 선택 해제되었을 때 호출되는 콜백 함수
-  const handleAssetNameDeselect = (assetName) => {
-    // assetsAllList 배열에서 선택 해제된 assets_name을 제거합니다.
-    const updatedList = assetsAllList.filter((name) => name !== assetName);
-    setAssetsAllList(updatedList);
-  };
-  console.log(isChecked.length + "길이")
-  console.log(assetsAllList + "자산이름");
-
-  const handleToggle2 = (e) => {
-    let basicModal = document.getElementById("basicModal");
-    basicModal.classList.toggle("show");
-    basicModal.style.display = ((basicModal.style.display !== 'none') ? 'none' : 'block');
-    setInnerDate({
-      ...innerData,
-    });
-    // 모달 센터로 이동
-    const modal3 = document.querySelector(".modalmodal .card");
-    modal3.style.left = `calc(50% - ${modal3.clientWidth / 2}px)`;
-    modal3.style.top = `calc(50% - ${modal3.clientHeight / 2}px)`;
-  };
-
-
   return (
       <div>
         <main id="main" className="main">
@@ -442,20 +408,17 @@ const AssetAllList = () => {
                         </div>
 
                         <div className="datatable-search">
-                          {isChecked && (
-                              <button
-                                  className="btn btn-primary assetBuytBtn"
-                                  type="button"
-                                  style={{
-                                    marginRight: "25px",
-                                  }}
-                                  data-bs-formtarget="#basicModal"
-                                  onClick={handleToggle2}
-                                  id="assetBuytBtn"
-                              >
-                                + 일괄사용신청
-                              </button>
-                          )}
+                              {/*<button*/}
+                              {/*    className="btn btn-primary assetBuytBtn"*/}
+                              {/*    type="button"*/}
+                              {/*    style={{*/}
+                              {/*      marginRight: "25px",*/}
+                              {/*    }}*/}
+                              {/*    data-bs-formtarget="#basicModal"*/}
+                              {/*    id="assetBuytBtn"*/}
+                              {/*>*/}
+                              {/*  + 일괄사용신청*/}
+                              {/*</button>*/}
                           <button className="btn btn-primary assetBuytBtn"
                                   type="button" style={{marginRight:"25px"}}
                                   data-bs-formtarget="#basicModal"
@@ -477,11 +440,9 @@ const AssetAllList = () => {
                       <thead>
                       <tr>
                         <th data-sortable="true" className="ControlMenu">
-                          <input
-                              checked={isChecked}
-                              onChange={toggleAllCheckboxes}
-                              type="checkbox"
-                          />
+                          {/*<input*/}
+                          {/*    type="checkbox"*/}
+                          {/*/>*/}
                         </th>
                         {AssetAllListOption.map((it, idx) => (
                             <ControlMenu
@@ -509,11 +470,8 @@ const AssetAllList = () => {
                               index={index}
                               func={handleToggle}
                               handleModal={handleModal}
-                              isButtonVisible={isButtonVisible}
-                              isChecked={isChecked} // isChecked 상태를 자식 컴포넌트로 전달
-                              setIsChecked={() => toggleAllCheckboxes (index)} // 각 행의 체크 상태 업데이트 함수 전달
-                              onAssetNameSelect={handleAssetNameSelect} // 선택 시 호출되는 콜백 함수
-                              onAssetNameDeselect={handleAssetNameDeselect} // 선택 해제 시 호출되는 콜백 함수
+                              currentPage={currentPage}
+                              itemsPerPage={itemsPerPage}
                           />
                       ))}
                       </tbody>
@@ -697,77 +655,6 @@ const AssetAllList = () => {
           </div>
         </div>
         {/*구매 신청 모달 끝*/}
-
-        {/* 일괄 사용신청 모달창 */}
-        <div className="modal modalmodal3" id="basicModalAll"  style={{display : "none"}} >
-          <div className="card" style={{width: '600px', borderRadius: "8px"}} onClick={(e) => e.stopPropagation()}>
-            <div className="card-body">
-              <h5 className="card-title" style={{ paddingBottom: "0px" }}>자산 사용 신청</h5>
-              <hr />
-              <form method="post" name="AssetUsageRequestForm" onSubmit={(e) => AssetUsageRequestForm(e)}>
-
-                <div className="modal-body">
-
-                  <div className="row mb-3">
-                    <label htmlFor="" className="col-sm-2 col-form-label">신청자산</label>
-                    <div className="col-sm-10">
-                      <input type="text" className="form-control"
-                             name="assets_name"
-                             onChange={handleChange}
-                             value={innerData.assets_name}
-                             disabled
-                      />
-                    </div>
-                  </div>
-                  <div className="row mb-3">
-                    <label className="col-sm-2 col-form-label">신청자</label>
-                    <div className="col-sm-10">
-                      <input type="text" className="form-control" name="username" value={username || ''} disabled />
-                    </div>
-                  </div>
-                  <div className="row mb-3">
-                    <label htmlFor="inputText" className="col-sm-2 col-form-label">신청날짜</label>
-                    <div className="col-sm-10">
-                      <input type="email" className="form-control" value={todayTime()} disabled />
-                    </div>
-                  </div>
-                  <div className="row mb-3 position-relative">
-                    <label htmlFor="validationTooltip03" className="col-sm-2 col-form-label needs-validation" >신청제목</label>
-                    <div className="col-sm-10">
-                      <input type="text" className="form-control" id="validationTooltip01"
-                             required
-                             name="userq_title"
-                             onChange={handleChange}
-                             value={innerData.userq_title}
-                      />
-                      <div className="invalid-tooltip">
-                      </div>
-                    </div>
-                  </div>
-                  <div className="row mb-3">
-                    <label htmlFor="inputText" className="col-sm-2 col-form-label">신청사유</label>
-                    <div className="col-sm-10">
-                      <textarea className="form-control userModalAst-text"
-                                name="userq_comment"
-                                onChange={handleChange}
-                                value={innerData.userq_comment}
-                                required></textarea>
-                    </div>
-                  </div>
-                  <div className="row mb-3 userModalAsk-btn">
-                    <label className="col-sm-2 col-form-label"></label>
-                    <div className="col-sm-10">
-                      <button type="button" className="btn btn-primary" style={{ marginRight: '10px', backgroundColor: 'gray', border: 'gray' }} onClick={handleClose}>뒤로가기</button>
-                      <button type="submit" className="btn btn-primary">신청하기</button>
-
-                    </div>
-                  </div>
-                </div>
-              </form>{/* <!-- End General Form Elements --> */}
-            </div>
-          </div>
-        </div>
-        {/*사용 신청 모달 끝*/}
 
       </div>
   );

@@ -31,6 +31,9 @@ public interface AssetRequestService {
 
     // 자산 사용 신청
     public int AssetUsageRequest(UserRequestVO vo);
+    public int AssetUsageRequestUpdate(UserRequestVO vo);
+
+    //자산 구매 신청
     public int AssetBuyRequest(UserRequestVO vo);
 
 
