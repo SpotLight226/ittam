@@ -58,5 +58,15 @@ public class Stock_approvalServiceImp1 implements Stock_approvalService{
         stockApprovalMapper.insertApproval(vo3);
     }
 
+    @Override
+    public void waitYN(ITAssetsVO vo1) {
+        stockApprovalMapper.waitYN(vo1);
+    }
+
+    @Override
+    public void waitN(ITAssetsVO vo1) {
+        stockApprovalMapper.waitN(vo1);
+    }
+
 
 }
