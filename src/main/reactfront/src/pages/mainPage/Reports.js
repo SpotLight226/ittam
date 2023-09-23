@@ -10,6 +10,8 @@ import GPUChart from '../../component/Chart/GPUChart';
 import MFGChart from '../../component/Chart/MFGChart';
 import DepartAssetChart from "../../component/Chart/DepartAssetChart";
 import AssetRadialBarChart from "../../component/Chart/AssetRadialBarChart";
+import SWMFGChart from '../../component/Chart/SWMFGChart';
+import EtcMFGChart from '../../component/Chart/EtcMFGChart';
 
 function Reports() {
   const token = localStorage.getItem("token");
@@ -21,6 +23,8 @@ function Reports() {
   const [GPUNum, setGPUNum] = useState();
   const [MFGNum, setMFGNum] = useState();
   const [categoryNum, setCategoryNum] = useState();
+  const [SWMFGNum, setSWMFGMun] = useState();
+  const [EtcMFGNum, setEtcMFGNum] = useState();
 
 
 
@@ -36,7 +40,7 @@ function Reports() {
       setCardNum(res.data)
           })
     .catch((error) => {
-      alert("데이터 조회에 실패하였습니다.");
+      console.log(error);
     });
   }
   const getDepartNum = () => {
@@ -52,7 +56,7 @@ function Reports() {
       setDepartNum(res.data)
           })
     .catch((error) => {
-      alert("데이터 조회에 실패하였습니다.");
+      console.log(error);
     });
   }
   const getAssetStickNum = () => {
@@ -67,7 +71,7 @@ function Reports() {
       setStickNum(res.data)
           })
     .catch((error) => {
-      alert("데이터 조회에 실패하였습니다.");
+      console.log(error);
     });
   }
   const getCPUNum = () => {
@@ -82,7 +86,7 @@ function Reports() {
       setCPUNum(res.data)
           })
     .catch((error) => {
-      alert("데이터 조회에 실패하였습니다.");
+      console.log(error);
     });
   }
   const getGPUNum = () => {
@@ -97,7 +101,23 @@ function Reports() {
       setGPUNum(res.data)
           })
     .catch((error) => {
-      alert("데이터 조회에 실패하였습니다.");
+      console.log(error);
+    });
+  }  
+  
+  const getMFGNum = () => {
+    axios({
+      url: "/reports/getMFGNum",
+      method: "get",
+      headers: {
+        Authorization : token
+      },
+    })
+    .then((res) => {
+      setMFGNum(res.data)
+          })
+    .catch((error) => {
+      console.log(error);
     });
   }
 
@@ -114,8 +134,38 @@ function Reports() {
           setCategoryNum(response.data);
         })
         .catch((error) => {
-          alert("데이터 조회에 실패하였습니다.");
+          console.log(error);
         });
+  }
+
+  const getSWMFGNum = () => {
+    axios({
+      url: "/reports/getSWMFGNum",
+      method: "get",
+      headers: {
+        Authorization : token
+      },
+    }).then((res) => {
+      setSWMFGMun(res.data)
+          })
+    .catch((error) => {
+      console.log(error);
+    });
+  }
+
+  const getEtcMFGNum = () => {
+    axios({
+      url: "/reports/getEtcMFGNum",
+      method: 'get',
+      headers: {
+        Authorization : token
+      },
+    }).then((res) => {
+      setEtcMFGNum(res.data)
+          })
+    .catch((error) => {
+      console.log(error);
+    });
   }
 
 
@@ -127,7 +177,10 @@ function Reports() {
     getAssetStickNum();
     getCPUNum();
     getGPUNum();
+    getMFGNum();
     getRadialBarNum();
+    getSWMFGNum();
+    // getEtcMFGNum();
   }, [])
 
 
@@ -314,7 +367,7 @@ function Reports() {
 
 
 
-
+                    <i class="bi bi-laptop" style={{fontSize: '50px'}}> PC/노트북</i>
                     <div className="col-lg-4">
 
                       <div className="card" >
@@ -354,12 +407,73 @@ function Reports() {
                       <div className="card" >
                         <div className="card-body" style={{ backgroundColor: 'rgb(219 228 245)', borderRadius: '8px' }}>
                           <h5 className="card-title" style={{ fontWeight: "800" }}>제조사</h5>
-                          <MFGChart />
+                          {MFGNum != undefined ? <MFGChart MFGNum={MFGNum}/> :
+                          <div className="d-flex justify-content-center">
+                          <div className="spinner-border text-primary" role="status">
+                            <span className="visually-hidden">Loading...</span>
+                          </div>
+                        </div>
+                          }
 
                         </div>
                       </div>
 
                     </div>
+
+                    <div className="col-lg-4">
+                    <i class="bi bi-file-earmark-word" style={{fontSize: '50px'}}> SW</i>
+                      <div className="card" >
+                        <div className="card-body" style={{ backgroundColor: 'rgb(219 228 245)', borderRadius: '8px' }}>
+                          <h5 className="card-title" style={{ fontWeight: "800" }}>제조사</h5>
+                          {SWMFGNum != undefined ? <SWMFGChart SWMFGNum={SWMFGNum}/> :
+                          <div className="d-flex justify-content-center">
+                          <div className="spinner-border text-primary" role="status">
+                            <span className="visually-hidden">Loading...</span>
+                          </div>
+                        </div>
+                          }
+
+                        </div>
+                      </div>
+
+                    </div>
+
+                    <div className="col-lg-4">
+                    <i class="bi bi-keyboard" style={{fontSize: '50px'}}> 주변기기</i>
+                      <div className="card" >
+                        <div className="card-body" style={{ backgroundColor: 'rgb(219 228 245)', borderRadius: '8px' }}>
+                          <h5 className="card-title" style={{ fontWeight: "800" }}>제조사</h5>
+                          {EtcMFGNum != undefined ? <EtcMFGChart EtcMFGNum={EtcMFGNum}/> :
+                          <div className="d-flex justify-content-center">
+                          <div className="spinner-border text-primary" role="status">
+                            <span className="visually-hidden">Loading...</span>
+                          </div>
+                        </div>
+                          }
+
+                        </div>
+                      </div>
+
+                    </div><div className="col-lg-4">
+                    <i class="bi bi-hdd-stack" style={{fontSize: '50px'}}> 서버</i>
+                      <div className="card" >
+                        <div className="card-body" style={{ backgroundColor: 'rgb(219 228 245)', borderRadius: '8px' }}>
+                          <h5 className="card-title" style={{ fontWeight: "800" }}>제조사</h5>
+                          {SWMFGNum != undefined ? <SWMFGChart SWMFGNum={SWMFGNum}/> :
+                          <div className="d-flex justify-content-center">
+                          <div className="spinner-border text-primary" role="status">
+                            <span className="visually-hidden">Loading...</span>
+                          </div>
+                        </div>
+                          }
+
+                        </div>
+                      </div>
+
+                    </div>
+
+
+
 
 
 
