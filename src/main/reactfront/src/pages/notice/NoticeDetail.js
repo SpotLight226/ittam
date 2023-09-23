@@ -292,7 +292,7 @@ function NoticeDetail() {
                     )} 
 
 
-                {userRole == 'ROLE_ADMIN' && userRole == 'ROLE_HIGH_ADMIN' && (
+                {userRole == 'ROLE_ADMIN' &&  (
                   <div
                     style={{
                       display: "flex",
@@ -317,6 +317,39 @@ function NoticeDetail() {
                       삭제
                     </button>
                   </div> )}
+
+                  {userRole == 'ROLE_HIGH_ADMIN' &&  (
+                  <div
+                    style={{
+                      display: "flex",
+                      justifyContent: "center",
+                      alignItems: "center",
+                    }}
+                  >
+                    <button
+                      className="btn btn-primary writeBtn"
+                      type="button"
+                      style={{ marginRight: "10px" }}
+                      onClick={click_on_edit}
+                    >
+                      수정
+                    </button>
+                    <Link to="/noticelist">
+                    <button className="btn btn-primary listBtn" type="button" style={{ marginRight: "10px" }}>
+                    목록
+                    </button>
+                    </Link>
+                    <button className="btn btn-primary deleteBtn" type="button" onClick={handleDelete}>
+                      삭제
+                    </button>
+                  </div> )}
+
+
+
+
+
+
+
                 </form>
               </div>
             </div>
