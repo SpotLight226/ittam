@@ -2,9 +2,11 @@ import React, { useEffect, useRef, useState } from "react";
 import axios from "axios";
 import "../../styles/Style.css";
 import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { getLCP } from "web-vitals";
 
 function NoticeWrite() {
 
+  const token = localStorage.getItem("token");
   let navigate = useNavigate();
   
 
@@ -38,11 +40,13 @@ function NoticeWrite() {
       url: 'http://localhost:9191/noticelist/write',
       method: 'post',
       headers: {
-        'Content-Type' : 'multipart/form-data'
+       'Content-Type': 'multipart/form-data',
+        Authorization: token,
       },
-      data: formData
+      data: formData,
     })
         .then((response) => {
+          console.log(1);
           console.log(response);
           alert("게시글이 작성되었습니다.");
           navigate("/NoticeList");
@@ -56,6 +60,7 @@ function NoticeWrite() {
   };
 
   useEffect(() => {
+    
   }, []);
 
   return (
