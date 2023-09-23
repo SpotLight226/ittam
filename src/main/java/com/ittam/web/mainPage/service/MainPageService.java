@@ -55,6 +55,10 @@ public interface MainPageService {
 
     /////////////////////////////
     public void registAlarm_req(Map<String, Object> map);
-
+    //////////////////////////////
+    public void registAlarm_admin(Map<String, Object> map);
+    public List<Map<String, Object>> getMyAlarmAdminList(String username); //내 알람가져오기
+    public void handleMyAlamAdminConfirm(Integer alarm_num); //알림읽음처리
+    public Integer getMyAlarmAdminCnt(String username); //알림개수세기
 
 }

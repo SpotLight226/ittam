@@ -245,4 +245,24 @@ public class MainPageController {
         return new ResponseEntity<>(cnt, HttpStatus.OK);
     }
 
+
+    ///////////////////////////////////////////////////////
+    @GetMapping("/getMyAlarmAdminList")
+    public ResponseEntity<List<Map<String, Object>>> getMyAlarmAdminList(@RequestParam String username){
+        List<Map<String, Object>> list = mainPageService.getMyAlarmAdminList(username);
+        return new ResponseEntity<>(list, HttpStatus.OK);
+    }
+
+    @PutMapping("/handleMyAlamAdminConfirm")
+    public ResponseEntity<String> handleMyAlamAdminConfirm(@RequestParam Integer alarm_num) {
+        mainPageService.handleMyAlamAdminConfirm(alarm_num);
+        return new ResponseEntity<>("읽음처리", HttpStatus.OK);
+    }
+
+    @GetMapping("/getMyAlarmAdminCnt")
+    public ResponseEntity<Integer> getMyAlarmAdminCnt(@RequestParam String username) {
+        Integer cnt = mainPageService.getMyAlarmAdminCnt(username);
+        return new ResponseEntity<>(cnt, HttpStatus.OK);
+    }
+
 }

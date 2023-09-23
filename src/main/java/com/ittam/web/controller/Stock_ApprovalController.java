@@ -3,12 +3,15 @@ package com.ittam.web.controller;
 import com.ittam.web.command.ITAssetsVO;
 import com.ittam.web.command.StockApprovalVO;
 import com.ittam.web.command.UserRequestVO;
+import com.ittam.web.mainPage.service.MainPageService;
 import com.ittam.web.stock_approval.service.Stock_approvalService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
@@ -20,6 +23,10 @@ public class  Stock_ApprovalController {
 
     @Autowired
     private Stock_approvalService stock_approvalService;
+
+    @Autowired
+    @Qualifier("mainPageService")
+    private MainPageService mainPageService;
 
 //    private String randomString(int length) {
 //        String characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
@@ -43,6 +50,18 @@ public class  Stock_ApprovalController {
     @PostMapping("/updateITStatus")
     public ResponseEntity<Integer> updateITStatus(@RequestBody Map<String, Object> requestData) {
         Map<String, Object> itemData = (Map<String, Object>) requestData.get("item");
+
+        ////////////////알람관련추가사항/////////////////////
+        Map<String, Object> map = new HashMap<>();
+        map.put("alarm_status", "승인");
+        map.put("alarm_type", itemData.get("appro_kind"));
+        map.put("username", itemData.get("username"));
+        map.put("assets_num", itemData.get("assets_num"));
+        map.put("category_num", itemData.get("category_num"));
+        mainPageService.registAlarm_admin(map);
+        ///////////////////////////////////////////////////
+
+
         System.out.println(itemData.toString());
         ITAssetsVO vo = new ITAssetsVO();
         StockApprovalVO vo2 = new StockApprovalVO();
@@ -95,6 +114,18 @@ public class  Stock_ApprovalController {
     @PostMapping("/approvalN")
     public ResponseEntity<Integer> approvalN(@RequestBody Map<String, Object> requestData) {
         Map<String, Object> itemData = (Map<String, Object>) requestData.get("item");
+
+        ////////////////알람관련추가사항/////////////////////
+        Map<String, Object> map = new HashMap<>();
+        map.put("alarm_status", "반려");
+        map.put("alarm_type", itemData.get("appro_kind"));
+        map.put("username", itemData.get("username"));
+        map.put("assets_num", itemData.get("assets_num"));
+        map.put("category_num", itemData.get("category_num"));
+        mainPageService.registAlarm_admin(map);
+        ///////////////////////////////////////////////////
+
+
         StockApprovalVO vo = new StockApprovalVO();
         UserRequestVO vo3 = new UserRequestVO();
         ITAssetsVO vo1 = new ITAssetsVO();

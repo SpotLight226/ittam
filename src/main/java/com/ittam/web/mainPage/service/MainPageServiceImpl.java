@@ -240,5 +240,25 @@ public class MainPageServiceImpl implements MainPageService{
         mainPageMapper.registAlarm_req(map);
     }
 
+    @Override
+    public void registAlarm_admin(Map<String, Object> map) {
+        mainPageMapper.registAlarm_admin(map);
+    }
+
+    @Override
+    public List<Map<String, Object>> getMyAlarmAdminList(String username) {
+        return mainPageMapper.getMyAlarmAdminList(username);
+    }
+
+    @Override
+    public void handleMyAlamAdminConfirm(Integer alarm_num) {
+        mainPageMapper.handleMyAlamAdminConfirm(alarm_num);
+    }
+
+    @Override
+    public Integer getMyAlarmAdminCnt(String username) {
+        return mainPageMapper.getMyAlarmAdminCnt(username);
+    }
+
 
 }

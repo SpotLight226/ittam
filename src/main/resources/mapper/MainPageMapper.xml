@@ -223,6 +223,22 @@
     <insert id="registAlarm_req">
         insert into ALARM_REQUEST(USERQ_NUM, username, ALARM_TYPE, ALARM_STATUS) values (#{userq_num}, #{username}, #{alarm_type}, #{alarm_status})
     </insert>
+    <insert id="registAlarm_admin">
+        insert into ALARM_ADMIN(ASSETS_NUM, CATEGORY_NUM, username, ALARM_TYPE, ALARM_STATUS) values (#{assets_num}, #{category_num}, #{username}, #{alarm_type}, #{alarm_status})
+    </insert>
+
+    <select id="getMyAlarmAdminList">
+        select * from ALARM_ADMIN as aa
+                          left join ITASSETS it on aa.assets_num = it.assets_num
+                          left join GROUP_CATEGORY gc on aa.category_num = gc.CATEGORY_NUM
+        where aa.username = #{username} and ALARM_YN = "N" order by ALARM_REGDATE desc
+    </select>
+    <update id="handleMyAlamAdminConfirm">
+        update ALARM_ADMIN set ALARM_YN = 'Y' where alarm_num = #{alarm_num}
+    </update>
+    <select id="getMyAlarmAdminCnt">
+        select count(*) from ALARM_ADMIN where ALARM_YN = "N" and username = #{username}
+    </select>
 
 
 </mapper>

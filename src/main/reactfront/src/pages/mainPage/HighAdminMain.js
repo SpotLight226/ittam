@@ -189,7 +189,7 @@ function HighAdminMain() {
                 <div className="col-xxl-3 col-md-3">
                   <div className="card info-card sales-card">
 
-                    <Link to="/highAdmin/approveBuyList">
+                    <Link to="/itassetsapproval">
                     <div className="card-body">
                       <h5 className="card-title" style={{fontWeight: "800"}}>최종자산구매요청 미승인건<span>| This Month</span></h5>
 

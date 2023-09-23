@@ -18,6 +18,22 @@ function Sidebar() {
             </Link>
           </li>
         )}
+        {userRole == 'ROLE_USER' && (
+            <li className="nav-item">
+              <Link to="/user/userMain_using" className="nav-link collapsed">
+                <i className="bi bi-check2-square"></i>
+                <span>나의 사용자산 목록</span>
+              </Link>
+            </li>
+        )}
+        {userRole == 'ROLE_USER' && (
+            <li className="nav-item">
+              <Link to="/user/userMain_request" className="nav-link collapsed">
+                <i className="bi bi-clipboard-check"></i>
+                <span>나의 사용/구매신청 목록</span>
+              </Link>
+            </li>
+        )}
         {userRole == 'ROLE_ADMIN' && (
           <li className="nav-item">
             <Link to="/admin/adminMain" className="nav-link">
