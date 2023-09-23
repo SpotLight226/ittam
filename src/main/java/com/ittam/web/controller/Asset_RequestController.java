@@ -146,6 +146,8 @@ public class Asset_RequestController {
         vo.setUserq_comment(String.valueOf(requestBody.get("userq_comment")));
         vo.setUsername(String.valueOf(requestBody.get("username")));
         int data = assetRequestService.AssetUsageRequest(vo);
+        assetRequestService.AssetUsageRequestUpdate(vo);
+
 
         return new ResponseEntity<>(data,HttpStatus.OK);
     }

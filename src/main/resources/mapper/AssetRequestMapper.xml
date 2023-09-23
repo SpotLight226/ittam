@@ -223,7 +223,7 @@
 
     <!--  사용신청 insert -->
 
-    <insert id="AssetUsageRequest" parameterType="com.ittam.web.command.UserRequestVO">
+    <insert id="AssetUsageRequest">
         INSERT INTO USER_REQUEST (username, category_num, assets_num, userq_title, userq_count, userq_regdate, userq_kind, userq_comment,userq_yn)
         VALUES (
                    #{username},
@@ -235,7 +235,14 @@
                    #{userq_kind},
                    #{userq_comment},
                    '사원사용요청'
-               )
+               );
+    </insert>
+
+    <!-- 두 번째 insert -->
+    <insert id="AssetUsageRequestUpdate">
+        UPDATE ITASSETS
+        SET ASSETS_STATUS = '사용승인대기'
+        WHERE ASSETS_NUM = #{assets_num};
     </insert>
 
     <!--  구매신청 insert  -->

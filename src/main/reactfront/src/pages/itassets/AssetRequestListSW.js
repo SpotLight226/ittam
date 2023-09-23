@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import axios from 'axios';
 import AssetAllListTable from './AssetAllListTable';
 import {Link, useParams, useLocation} from 'react-router-dom';
@@ -7,6 +7,7 @@ import Pagenation from "../../component/Pagenation";
 import AssetDetailModal from "./AssetDetailModal";
 import {AssetAllListOption, AssetETCOption} from "../../constants/OptionList";
 import ControlMenu from "../../component/ControlMenu";
+import {tokenInfoContext} from "../../component/TokenInfoProvider";
 
 const validAssetNames = [ // 유효한 자산명 목록
   'PC',
@@ -30,7 +31,7 @@ const validAssetNames = [ // 유효한 자산명 목록
 ];
 
 const AssetRequestListSW = () => {
-  const username = localStorage.getItem("username");
+  const { userRole,username} = useContext(tokenInfoContext);
   const token = localStorage.getItem("token");
   const [AssetRequest, setAssetRequest] = useState([]); // 전체 자산 리스트
   const [inputText, setInputText] = useState('');
@@ -156,14 +157,35 @@ const AssetRequestListSW = () => {
     modal.style.top = `calc(50% - ${modal.clientHeight / 2}px)`;
   };
   // 사용신청 모달창 닫는 핸들러
-  const handleClose =() =>  {
+  const handleClose = async () => {
     let basicModal = document.getElementById("basicModal");
     basicModal.style.display = "none";
     basicModal.classList.toggle("show");
     setInnerDate({
-      //초기화
-      assets_name: "", category_num: "", assets_num: "", userq_title: "", userq_comment: "",
+      assets_name: "",
+      category_num: "",
+      assets_num: "",
+      userq_title: "",
+      userq_comment: "",
     });
+
+    try {
+      // 자산 목록을 다시 불러오는 함수 호출
+      const response = await axios.get(`http://localhost:9191/AssetRequest/AssetRequestListCategory?path=${encodeURIComponent(path)}`,{
+        headers: {
+          Authorization : token
+        },
+      });
+
+      if (inputInnerData.assets_name === "" || inputInnerData.length === 0 && path === "/itassets") {
+        setAssetRequest(response.data);
+      } else {
+        setAssetRequest(inputInnerData);
+      }
+    } catch (error) {
+      console.error("전체 자산 목록을 불러오는 데 실패하였습니다.", error);
+      alert("전체 자산 목록을 불러오는 데 실패하였습니다.");
+    }
   };
   // 사용신청 버튼 눌렀을 때 해당 행의 값 state로 관리
   const [innerData, setInnerDate] = useState({
@@ -350,7 +372,7 @@ const AssetRequestListSW = () => {
       <div>
         <main id="main" className="main">
           <div className="pagetitle">
-            <h1>소프트웨어</h1>
+            <h1>IT자산 목록</h1>
             <nav>
               <ol className="breadcrumb">
                 <li className="breadcrumb-item">
@@ -366,7 +388,7 @@ const AssetRequestListSW = () => {
               <div className="col-lg-12">
                 <div className="card">
                   <div className="card-body">
-                    <h5 className="card-title">전체 자산 수 : </h5>
+                    <h5 className="card-title">소프트웨어</h5>
                     <div className="datatable-wrapper datatable-loading nofooter sortable searchable fixed-columns">
                       <div className="datatable-top">
                         <div className="datatable-dropdown">
@@ -434,7 +456,8 @@ const AssetRequestListSW = () => {
                               index={index}
                               func={handleToggle}
                               handleModal={handleModal}
-                              // handleAssetClick={handleAssetClick} // 클릭 이벤트 추가
+                              currentPage={currentPage}
+                              itemsPerPage={itemsPerPage}
                           />
                       ))}
                       </tbody>
