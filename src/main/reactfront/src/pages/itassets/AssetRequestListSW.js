@@ -171,13 +171,12 @@ const AssetRequestListSW = () => {
 
     try {
       // 자산 목록을 다시 불러오는 함수 호출
-      const response = await axios.get(`http://localhost:9191/AssetRequest/AssetRequestListCategory?path=${encodeURIComponent(path)}`,{
+      const response = await axios.get(`http://localhost:9191/AssetRequest/AssetRequestListCategory?path=${encodeURIComponent(path)}`, {
         headers: {
-          Authorization : token
+          Authorization: token,
         },
       });
-
-      if (inputInnerData.assets_name === "" || inputInnerData.length === 0 && path === "/itassets") {
+      if (inputInnerData.assets_name === "" || inputInnerData.length === 0) {
         setAssetRequest(response.data);
       } else {
         setAssetRequest(inputInnerData);

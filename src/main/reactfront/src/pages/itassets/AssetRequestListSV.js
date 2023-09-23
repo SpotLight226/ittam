@@ -172,13 +172,12 @@ const AssetRequestListSV = () => {
 
     try {
       // 자산 목록을 다시 불러오는 함수 호출
-      const response = await axios.get(`http://localhost:9191/AssetRequest/AssetRequestListCategory?path=${encodeURIComponent(path)}`,{
+      const response = await axios.get(`http://localhost:9191/AssetRequest/AssetRequestListCategory?path=${encodeURIComponent(path)}`, {
         headers: {
-          Authorization : token
+          Authorization: token,
         },
       });
-
-      if (inputInnerData.assets_name === "" || inputInnerData.length === 0 && path === "/itassets") {
+      if (inputInnerData.assets_name === "" || inputInnerData.length === 0) {
         setAssetRequest(response.data);
       } else {
         setAssetRequest(inputInnerData);
@@ -188,6 +187,7 @@ const AssetRequestListSV = () => {
       alert("전체 자산 목록을 불러오는 데 실패하였습니다.");
     }
   };
+
   // 사용신청 버튼 눌렀을 때 해당 행의 값 state로 관리
   const [innerData, setInnerDate] = useState({
     username:username || '', assets_name : "", category_num : "", assets_num : "",
