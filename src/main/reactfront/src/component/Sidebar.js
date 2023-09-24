@@ -59,7 +59,7 @@ function Sidebar() {
               data-bs-target="#components-nav"
               data-bs-toggle="collapse"
             >
-              <i className="bi bi-menu-button-wide"></i>
+              <i className="bi bi-server"></i>
               <span>IT 자산 목록</span>
               <i className="bi bi-chevron-down ms-auto"></i>
             </Link>
@@ -157,7 +157,7 @@ function Sidebar() {
               data-bs-target="#forms-nav"
               data-bs-toggle="collapse"
             >
-              <i className="bi bi-journal-text"></i>
+              <i className="bi bi-server"></i>
               <span>IT 자산</span>
               <i className="bi bi-chevron-down ms-auto"></i>
             </Link>
@@ -184,7 +184,7 @@ function Sidebar() {
               data-bs-target="#charts-nav"
               data-bs-toggle="collapse"
             >
-              <i className="bi bi-bar-chart"></i>
+              <i className="bi bi-receipt"></i>
               <span>사용자 신청</span>
               <i className="bi bi-chevron-down ms-auto"></i>
             </Link>
@@ -274,7 +274,7 @@ function Sidebar() {
               data-bs-target="#icons-nav"
               data-bs-toggle="collapse"
             >
-              <i className="bi bi-gem"></i>
+              <i className="bi bi-people"></i>
               <span>사용자 관리</span>
               <i className="bi bi-chevron-down ms-auto"></i>
             </Link>
@@ -318,7 +318,7 @@ function Sidebar() {
 
         <li className="nav-item">
           <Link to="/noticelist" className="nav-link collapsed">
-            <i className="bi bi-person"></i>
+            <i className="bi bi-ui-checks"></i>
             <span>공지사항</span>
           </Link>
         </li>

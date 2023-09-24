@@ -385,6 +385,7 @@ public class User_RequestController {
         System.out.println(requestBody.toString());
         try {
             /////알람관련 추가사항/////
+            System.out.println("구매신청!!!!!!");
             Map<String, Object> map = new HashMap<>();
             map.put("username", requestBody.get("req_username"));
             map.put("userq_num", requestBody.get("userq_NUM"));
