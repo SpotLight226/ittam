@@ -55,7 +55,9 @@ const AssetAllListTable = ({index,func, handleModal, assets_detail_name, current
                 {/*    type="checkbox"*/}
                 {/*/>*/}
             </th>
-            <th scope="row">{(currentPage - 1) * itemsPerPage + index + 1}</th>
+            <th scope="row">
+                {`${(currentPage - 1) * itemsPerPage + index + 1}`.padStart(4, '\u00A0')}
+            </th>
             <td>
                 <Link
                     to="#"
