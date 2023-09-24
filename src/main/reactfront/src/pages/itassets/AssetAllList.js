@@ -14,6 +14,8 @@ const validAssetNames = [ // 유효한 자산명 목록
   '워드', '한글과컴퓨터', '인텔리제이', '키보드', '마우스', '복합기', '프린터', '스캐너', '서버용하드',
 ];
 
+//test
+
 const AssetAllList = () => {
   const { userRole,username} = useContext(tokenInfoContext);
   const token = localStorage.getItem("token");
