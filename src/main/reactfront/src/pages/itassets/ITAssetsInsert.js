@@ -61,7 +61,6 @@ function ITAssetsInsert({
                   <input
                     type="text"
                     className="form-control"
-                    placeholder="MFG"
                     name="sw_mfg"
                     onChange={handleChange}
                     value={formData.sw_mfg}
@@ -78,7 +77,6 @@ function ITAssetsInsert({
                   <input
                     type="text"
                     className="form-control"
-                    placeholder="PRICE"
                     name="sw_price"
                     onChange={handleChange}
                     value={formData.sw_price}
@@ -95,7 +93,6 @@ function ITAssetsInsert({
                   <input
                     type="text"
                     className="form-control"
-                    placeholder="SERIEL"
                     name="sw_spec_seriel"
                     onChange={handleChange}
                     value={formData.sw_spec_seriel}
@@ -114,7 +111,6 @@ function ITAssetsInsert({
                   <input
                     type="date"
                     className="form-control"
-                    placeholder="purchase_date"
                     name="sw_purchase_date"
                     onChange={handleChange}
                     value={formData.sw_purchase_date}
@@ -131,7 +127,6 @@ function ITAssetsInsert({
                   <input
                     type="date"
                     className="form-control"
-                    placeholder="WARRANTY"
                     name="sw_spec_warranty"
                     onChange={handleChange}
                     value={formData.sw_spec_warranty}
@@ -155,7 +150,6 @@ function ITAssetsInsert({
                   <input
                     type="text"
                     className="form-control"
-                    placeholder="MFG"
                     name="etc_mfg"
                     onChange={handleChange}
                     value={formData.etc_mfg}
@@ -175,7 +169,6 @@ function ITAssetsInsert({
                   <input
                     type="text"
                     className="form-control"
-                    placeholder="PRICE"
                     name="etc_price"
                     onChange={handleChange}
                     value={formData.etc_price}
@@ -195,7 +188,6 @@ function ITAssetsInsert({
                   <input
                     type="date"
                     className="form-control"
-                    placeholder="PURCHASE_DATE"
                     name="etc_purchase_date"
                     onChange={handleChange}
                     value={formData.etc_purchase_date}
@@ -215,7 +207,6 @@ function ITAssetsInsert({
                   <input
                     type="date"
                     className="form-control"
-                    placeholder="WARRANTY"
                     name="etc_spec_warranty"
                     onChange={handleChange}
                     value={formData.etc_spec_warranty}
@@ -239,7 +230,6 @@ function ITAssetsInsert({
                   <input
                     type="text"
                     className="form-control"
-                    placeholder="CPU"
                     name="spec_cpu"
                     onChange={handleChange}
                     value={formData.spec_cpu}
@@ -259,7 +249,6 @@ function ITAssetsInsert({
                   <input
                     type="text"
                     className="form-control"
-                    placeholder="RAM"
                     name="spec_ram"
                     onChange={handleChange}
                     value={formData.spec_ram}
@@ -279,7 +268,6 @@ function ITAssetsInsert({
                   <input
                     type="text"
                     className="form-control"
-                    placeholder="MainBoard"
                     name="spec_mainboard"
                     onChange={handleChange}
                     value={formData.spec_mainboard}
@@ -299,7 +287,6 @@ function ITAssetsInsert({
                   <input
                     type="text"
                     className="form-control"
-                    placeholder="Power"
                     name="spec_power"
                     onChange={handleChange}
                     value={formData.spec_power}
@@ -319,7 +306,6 @@ function ITAssetsInsert({
                   <input
                     type="text"
                     className="form-control"
-                    placeholder="GPU"
                     name="spec_gpu"
                     onChange={handleChange}
                     value={formData.spec_gpu}
@@ -339,7 +325,6 @@ function ITAssetsInsert({
                   <input
                     type="text"
                     className="form-control"
-                    placeholder="HDD"
                     name="spec_hdd"
                     onChange={handleChange}
                     value={formData.spec_hdd}
@@ -359,7 +344,6 @@ function ITAssetsInsert({
                   <input
                     type="text"
                     className="form-control"
-                    placeholder="SSD"
                     name="spec_ssd"
                     onChange={handleChange}
                     value={formData.spec_ssd}
@@ -379,7 +363,6 @@ function ITAssetsInsert({
                   <input
                     type="text"
                     className="form-control"
-                    placeholder="OPS"
                     name="spec_ops"
                     onChange={handleChange}
                     value={formData.spec_ops}
@@ -399,7 +382,6 @@ function ITAssetsInsert({
                   <input
                     type="text"
                     className="form-control"
-                    placeholder="seriel"
                     name="spec_seriel"
                     onChange={handleChange}
                     value={formData.spec_seriel}
@@ -421,7 +403,6 @@ function ITAssetsInsert({
                   <input
                     type="text"
                     className="form-control"
-                    placeholder="MFG"
                     name="spec_mfg"
                     onChange={handleChange}
                     value={formData.spec_mfg}
@@ -441,7 +422,6 @@ function ITAssetsInsert({
                   <input
                     type="date"
                     className="form-control"
-                    placeholder="PURCHASE_DATE"
                     name="spec_purchase_date"
                     onChange={handleChange}
                     value={formData.spec_purchase_date}
@@ -461,7 +441,6 @@ function ITAssetsInsert({
                   <input
                     type="date"
                     className="form-control"
-                    placeholder="WARRANTY"
                     name="spec_warranty"
                     onChange={handleChange}
                     value={formData.spec_warranty}
@@ -485,7 +464,6 @@ function ITAssetsInsert({
                   <input
                     type="text"
                     className="form-control"
-                    placeholder="MFG"
                     name="server_mfg"
                     onChange={handleChange}
                     value={formData.server_mfg}
@@ -505,7 +483,6 @@ function ITAssetsInsert({
                   <input
                     type="text"
                     className="form-control"
-                    placeholder="server_capa"
                     name="server_capa"
                     onChange={handleChange}
                     value={formData.server_capa}
@@ -525,7 +502,6 @@ function ITAssetsInsert({
                   <input
                     type="text"
                     className="form-control"
-                    placeholder="PRICE"
                     name="server_price"
                     onChange={handleChange}
                     value={formData.server_price}
@@ -545,7 +521,6 @@ function ITAssetsInsert({
                   <input
                     type="text"
                     className="form-control"
-                    placeholder="INTERFACE"
                     name="server_interface"
                     onChange={handleChange}
                     value={formData.server_interface}
@@ -565,7 +540,6 @@ function ITAssetsInsert({
                   <input
                     type="text"
                     className="form-control"
-                    placeholder="RPM"
                     name="server_rpm"
                     onChange={handleChange}
                     value={formData.server_rpm}
@@ -585,7 +559,6 @@ function ITAssetsInsert({
                   <input
                     type="text"
                     className="form-control"
-                    placeholder="AVERAGE_LIFE"
                     name="server_average_life"
                     onChange={handleChange}
                     value={formData.server_average_life}
@@ -605,7 +578,6 @@ function ITAssetsInsert({
                   <input
                     type="text"
                     className="form-control"
-                    placeholder="DATARECOVERY_LIFE"
                     name="server_datarecovery_life"
                     onChange={handleChange}
                     value={formData.server_datarecovery_life}
@@ -625,7 +597,6 @@ function ITAssetsInsert({
                   <input
                     type="date"
                     className="form-control"
-                    placeholder="PURCHASE_DATE"
                     name="server_purchase_date"
                     onChange={handleChange}
                     value={formData.server_purchase_date}
@@ -645,7 +616,6 @@ function ITAssetsInsert({
                   <input
                     type="date"
                     className="form-control"
-                    placeholder="WARRANTY"
                     name="server_spec_warranty"
                     onChange={handleChange}
                     value={formData.server_spec_warranty}
@@ -655,70 +625,6 @@ function ITAssetsInsert({
               </div>
             </>
           )}
-          {/* {selectedType !== '선택하지않음' && (
-            <>
-              <div className="row mb-3">
-                <label
-                  htmlFor="inputPassword"
-                  className="col-sm-2 col-form-label"
-                >
-                  이름(히든)
-                </label>
-                <div className="col-sm-10">
-                  <input
-                    type="text"
-                    className="form-control"
-                    placeholder="username"
-                    name="username"
-                    onChange={handleChange}
-                    value={username || ''}
-                    required
-                  />
-                </div>
-              </div>
-
-              <div className="row mb-3">
-                <label
-                  htmlFor="inputPassword"
-                  className="col-sm-2 col-form-label"
-                >
-                  제목
-                </label>
-                <div className="col-sm-10">
-                  <input
-                    type="text"
-                    className="form-control"
-                    placeholder="appro_title"
-                    name="appro_title"
-                    onChange={handleChange}
-                    value={formData.appro_title}
-                    required
-                  />
-                </div>
-              </div>
-
-              <div className="row mb-3">
-                <label
-                  htmlFor="inputPassword"
-                  className="col-sm-2 col-form-label"
-                >
-                  내용
-                </label>
-                <div className="col-sm-10">
-                  <input
-                    type="text"
-                    className="form-control"
-                    placeholder="PURCHASE_DATE"
-                    name="appro_comment"
-                    onChange={handleChange}
-                    value={formData.appro_comment}
-                    required
-                  />
-                </div>
-              </div>
-            </>
-          )} */}
-
           <div className="row mb-3">
             <div className="col-sm-10 text-end">
               <button

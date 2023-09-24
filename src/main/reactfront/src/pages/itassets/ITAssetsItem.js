@@ -13,6 +13,7 @@ const ITAssetsItem = ({
   rent_date,
   formatDate,
   item,
+  
 }) => {
   return (
     <tr key={index}>

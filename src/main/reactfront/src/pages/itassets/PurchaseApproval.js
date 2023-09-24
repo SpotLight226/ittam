@@ -83,7 +83,6 @@ function PurchaseApproval({
                   <input
                     type="text"
                     className="form-control"
-                    placeholder="appro_title"
                     name="appro_title"
                     onChange={handleData}
                     value={formapproval.appro_title}
