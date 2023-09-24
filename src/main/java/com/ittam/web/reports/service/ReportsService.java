@@ -37,4 +37,8 @@ public interface ReportsService {
 /////////////////////////////////////////////////
     public Map<String, Integer> getSWMFGNum();
     public Map<String, Integer> getEtcMFGNum();
+    public Map<String, Integer> getServerMFGNum();
+
+//////////////////////////////////////////////
+    public Map<String, Integer> getDepartAsset();
 }

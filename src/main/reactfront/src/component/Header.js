@@ -480,11 +480,11 @@ function Header() {
                 {/*></img>*/}
                 {
                   myInfo.role === 'ROLE_HIGH_ADMIN' ?
-                  <i className="bx bxs-user-circle" style={{fontSize: '40px', color: 'purple'}}></i> :
+                  <i className="bx bxs-user-circle" style={{fontSize: '40px', color: '#483D8B'}}></i> :
                   (
                     myInfo.role === 'ROLE_ADMIN' ?
-                    <i className="bx bxs-user-circle" style={{fontSize: '40px', color: 'green'}}></i> :
-                    <i className="bx bxs-user-circle" style={{fontSize: '40px', color: 'skyblue'}}></i>
+                    <i className="bx bxs-user-circle" style={{fontSize: '40px', color: '#4682B4'}}></i> :
+                    <i className="bx bxs-user-circle" style={{fontSize: '40px', color: '#6495ED'}}></i>
                   )
                 }
                 <span className="d-none d-md-block dropdown-toggle ps-2" style={{fontSize: '20px'}}>

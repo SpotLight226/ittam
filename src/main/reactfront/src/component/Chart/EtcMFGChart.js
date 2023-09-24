@@ -10,7 +10,7 @@ function EtcMFGChart({EtcMFGNum}) {
         type: 'donut',
       },
       labels: ['Logitech', 'Samsung', 'LG', 'Sony', 'Microsoft', 'Corsair', 'Razer', 'AOC', 'Dell', 'HP'],
-      colors:['#4b0082', '#6a5acd', '#9C27B0', '#dda0dd', '#4a6fc3', '#4a6fc3', '#4a6fc3', '#4a6fc3', '#4a6fc3', '#4a6fc3'],
+      colors:['#4b0082', '#6a5acd', '#9C27B0', '#dda0dd', '#4a6fc3', '#AFEEEE', '#00BFFF', '#20B2AA', '#BA55D3', '#DB7093'],
       responsive: [{
         breakpoint: 480,
         options: {
