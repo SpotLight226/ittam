@@ -8,26 +8,11 @@ import AssetDetailModal from "./AssetDetailModal";
 import {AssetAllListOption, AssetETCOption} from "../../constants/OptionList";
 import ControlMenu from "../../component/ControlMenu";
 import {tokenInfoContext} from "../../component/TokenInfoProvider";
+import {BsArrowClockwise} from "react-icons/bs";
 
 const validAssetNames = [ // 유효한 자산명 목록
-  'PC',
-  '소프트웨어',
-  '주변기기',
-  '서버',
-  '데스크탑',
-  '노트북',
-  'Microsoft Office',
-  '파워포인트',
-  '엑셀',
-  '워드',
-  '한글과컴퓨터',
-  '인텔리제이',
-  '키보드',
-  '마우스',
-  '복합기',
-  '프린터',
-  '스캐너',
-  '서버용하드',
+  'PC', '소프트웨어', '주변기기', '서버', '데스크탑', '노트북', 'Microsoft Office', '파워포인트', '엑셀',
+  '워드', '한글과컴퓨터', '인텔리제이', '키보드', '마우스', '복합기', '프린터', '스캐너', '서버용하드',
 ];
 
 const AssetRequestListSV = () => {
@@ -37,15 +22,21 @@ const AssetRequestListSV = () => {
   const [inputText, setInputText] = useState('');
 
   const [inputInnerData, setInputInnerDate] = useState({ // 검색 시 list 관리를 위한 state
-    assets_name : "",
-    assets_status : "",
-    spec_mfg : "",
-    spec_seriel : "",
-    spec_warranty : "",
-    category_name : "",
-    spec_num : "",
-    assets_num : "",
-    assets_detail_name : "",
+    assets_name : "", assets_status : "", spec_mfg : "", spec_seriel : "", spec_warranty : "",
+    category_name : "", spec_num : "", assets_num : "", assets_detail_name : "",
+    //
+    sw_mfg: '', sw_spec_seriel: '', sw_spec_warranty: '', sw_purchase_date: '', sw_price: '',
+    /* etcspec */
+    etc_mfg: '', etc_spec_warranty: '', etc_purchase_date: '', etc_price: '',
+    /* pcspec */
+    spec_cpu: '', spec_ram: '', spec_mainboard: '', spec_power: '', spec_gpu: '', spec_hdd: '', spec_ssd: '', spec_ops: '',
+    // spec_mfg: '',
+    // spec_seriel: '',
+    spec_purchase_date: '',
+    /* serverspec */
+    server_mfg: '', server_spec_warranty: '', server_capa: '', server_price: '', server_purchase_date: '', server_interface: '', server_average_life: '', server_rpm: '', server_datarecovery_life: '',
+    /* 승인요청 */
+    username: '', appro_title: '', appro_comment: '', category_num:''
   });
 
   const url = useLocation(); // 현재 url 가져오기 뒤에 파라미터는 짤라서 쓰시면 될 것 같아요 !
@@ -61,7 +52,7 @@ const AssetRequestListSV = () => {
   };
   const searchAssets = (inputText) => {
     axios({
-      url: 'http://localhost:9191/AssetRequest/AssetRequestSearch',
+      url: 'http://localhost:9191/AssetRequest/AssetRequestSearchSV',
       method: 'post',
       data: {
         inputText: inputText
@@ -172,13 +163,12 @@ const AssetRequestListSV = () => {
 
     try {
       // 자산 목록을 다시 불러오는 함수 호출
-      const response = await axios.get(`http://localhost:9191/AssetRequest/AssetRequestListCategory?path=${encodeURIComponent(path)}`,{
+      const response = await axios.get(`http://localhost:9191/AssetRequest/AssetRequestListCategory?path=${encodeURIComponent(path)}`, {
         headers: {
-          Authorization : token
+          Authorization: token,
         },
       });
-
-      if (inputInnerData.assets_name === "" || inputInnerData.length === 0 && path === "/itassets") {
+      if (inputInnerData.assets_name === "" || inputInnerData.length === 0) {
         setAssetRequest(response.data);
       } else {
         setAssetRequest(inputInnerData);
@@ -188,6 +178,7 @@ const AssetRequestListSV = () => {
       alert("전체 자산 목록을 불러오는 데 실패하였습니다.");
     }
   };
+
   // 사용신청 버튼 눌렀을 때 해당 행의 값 state로 관리
   const [innerData, setInnerDate] = useState({
     username:username || '', assets_name : "", category_num : "", assets_num : "",
@@ -369,6 +360,13 @@ const AssetRequestListSV = () => {
     return sortedList;
   };
 
+  //리셋 버튼
+  const resetBtn = () => {
+    let searchInput = document.getElementById("search-input");
+    setInputInnerDate([]);
+    searchInput.value = "";
+  };
+
   return (
       <div>
         <main id="main" className="main">
@@ -399,6 +397,8 @@ const AssetRequestListSV = () => {
                                 className="datatable-selector"
                                 value={itemsPerPage}
                                 onChange={handleSelectorChange}
+                                style={{ marginLeft: "20px", borderColor: "lightgray" }}
+
                             >
                               <option value="5">5</option>
                               <option value="10">10</option>
@@ -411,9 +411,24 @@ const AssetRequestListSV = () => {
 
                         <div className="datatable-search">
                           <button className="btn btn-primary assetBuytBtn"
-                                  type="button" style={{marginRight:"25px"}}
+                                  // type="button" style={{marginRight:"1025px", marginBottom:"10px"}}
+                                  type="button" style={{marginRight:"7px"}}
                                   data-bs-formtarget="#basicModal"
-                                  onClick={handleToggleBuy} id="assetBuytBtn">+ 구매신청</button>
+                                  onClick={handleToggleBuy} id="assetBuytBtn">+ 구매신청
+                          </button>
+                          <button
+                              type="button"
+                              className="btn btn-primary reset-btn"
+                          >
+                            <BsArrowClockwise
+                                style={{
+                                  width: "30px",
+                                  height: "30px",
+                                  color: "gray",
+                                }}
+                                onClick={resetBtn}
+                            />
+                          </button>
                           <input
                               className="datatable-input"
                               placeholder="검색"

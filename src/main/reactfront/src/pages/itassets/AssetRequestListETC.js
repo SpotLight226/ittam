@@ -8,6 +8,7 @@ import AssetDetailModal from "./AssetDetailModal";
 import {AssetAllListOption, AssetETCOption} from "../../constants/OptionList";
 import ControlMenu from "../../component/ControlMenu";
 import {tokenInfoContext} from "../../component/TokenInfoProvider";
+import {BsArrowClockwise} from "react-icons/bs";
 
 const validAssetNames = [ // 유효한 자산명 목록
   'PC', '소프트웨어', '주변기기', '서버', '데스크탑', '노트북', 'Microsoft Office', '파워포인트', '엑셀',
@@ -50,7 +51,7 @@ const AssetRequestListETC = () => {
   };
   const searchAssets = (inputText) => {
     axios({
-      url: 'http://localhost:9191/AssetRequest/AssetRequestSearch',
+      url: 'http://localhost:9191/AssetRequest/AssetRequestSearchETC',
       method: 'post',
       data: {
         inputText: inputText
@@ -160,13 +161,12 @@ const AssetRequestListETC = () => {
 
     try {
       // 자산 목록을 다시 불러오는 함수 호출
-      const response = await axios.get(`http://localhost:9191/AssetRequest/AssetRequestListCategory?path=${encodeURIComponent(path)}`,{
+      const response = await axios.get(`http://localhost:9191/AssetRequest/AssetRequestListCategory?path=${encodeURIComponent(path)}`, {
         headers: {
-          Authorization : token
+          Authorization: token,
         },
       });
-
-      if (inputInnerData.assets_name === "" || inputInnerData.length === 0 && path === "/itassets") {
+      if (inputInnerData.assets_name === "" || inputInnerData.length === 0) {
         setAssetRequest(response.data);
       } else {
         setAssetRequest(inputInnerData);
@@ -176,6 +176,7 @@ const AssetRequestListETC = () => {
       alert("전체 자산 목록을 불러오는 데 실패하였습니다.");
     }
   };
+
   // 사용신청 버튼 눌렀을 때 해당 행의 값 state로 관리
   const [innerData, setInnerDate] = useState({
     username:username || '', assets_name : "", category_num : "", assets_num : "",
@@ -360,6 +361,13 @@ const AssetRequestListETC = () => {
     return sortedList;
   };
 
+  //리셋 버튼
+  const resetBtn = () => {
+    let searchInput = document.getElementById("search-input");
+    setInputInnerDate([]);
+    searchInput.value = "";
+  };
+
 
   return (
       <div>
@@ -391,6 +399,8 @@ const AssetRequestListETC = () => {
                                 className="datatable-selector"
                                 value={itemsPerPage}
                                 onChange={handleSelectorChange}
+                                style={{ marginLeft: "20px", borderColor: "lightgray" }}
+
                             >
                               <option value="5">5</option>
                               <option value="10">10</option>
@@ -403,9 +413,24 @@ const AssetRequestListETC = () => {
 
                         <div className="datatable-search">
                           <button className="btn btn-primary assetBuytBtn"
-                                  type="button" style={{marginRight:"25px"}}
+                                  // type="button" style={{marginRight:"1025px", marginBottom:"10px"}}
+                                  type="button" style={{marginRight:"7px"}}
                                   data-bs-formtarget="#basicModal"
-                                  onClick={handleToggleBuy} id="assetBuytBtn">+ 구매신청</button>
+                                  onClick={handleToggleBuy} id="assetBuytBtn">+ 구매신청
+                          </button>
+                          <button
+                              type="button"
+                              className="btn btn-primary reset-btn"
+                          >
+                            <BsArrowClockwise
+                                style={{
+                                  width: "30px",
+                                  height: "30px",
+                                  color: "gray",
+                                }}
+                                onClick={resetBtn}
+                            />
+                          </button>
                           <input
                               className="datatable-input"
                               placeholder="검색"

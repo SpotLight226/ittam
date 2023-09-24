@@ -28,6 +28,8 @@ function ITAssets() {
         navigate('/admin/adminMain');
       } else if (userRole === 'ROLE_HIGH_ADMIN') {
         navigate('/highadmin/highAdminMain');
+      } else if (userRole === 'none') {
+        navigate('/');
       }
     }
   }, []);
@@ -162,7 +164,19 @@ function ITAssets() {
       } else {
         setSelectedStatus(value);
       }
+      setCurrentPage(1);
   };
+
+  const [categoryStatus,setCategoryStatus] = useState(null);
+  const handleSelectChange3 = (e) => {
+    const value = e.target.value;
+    if(value === "0") {
+      setCategoryStatus(null);
+    }else{
+      setCategoryStatus(value);
+    }
+    setCurrentPage(1);
+  }
 
   /* 검색기능 */
   const [searchTerm, setSearchTerm] = useState('');
@@ -173,7 +187,11 @@ function ITAssets() {
     ? item.assets_status === selectedStatus
     : true;
 
-    return matchesSearchTerm && selectFilter;
+    const categoryFilter = categoryStatus
+    ? item.category_num === parseInt(categoryStatus)
+    : true;
+
+    return matchesSearchTerm && selectFilter && categoryFilter;
   });
 
   const [searchInput, setSearchInput] = useState('');
@@ -671,6 +689,32 @@ function ITAssets() {
                         </select>
                       </label>
                     </div>
+
+                    <div className="datatable-dropdown assetsDrop" style={{marginLeft: "10px"}}>
+                      <label htmlFor="">
+                        <select
+                          className="datatable-selector"
+                          id="assets-select"
+                          onChange={handleSelectChange3}
+                        >
+                          <option value="0">전체 목록</option>
+                          <option value="5">데스크탑</option>
+                          <option value="6">노트북</option>
+                          <option value="7">Microsoft Office</option>
+                          <option value="8">파워포인트</option>
+                          <option value="9">엑셀</option>
+                          <option value="10">워드</option>
+                          <option value="11">한글과컴퓨터</option>
+                          <option value="12">인텔리제이</option>
+                          <option value="13">키보드</option>
+                          <option value="14">마우스</option>
+                          <option value="15">복합기</option>
+                          <option value="16">프린터</option>
+                          <option value="17">스캐너</option>
+                          <option value="18">서버용하드</option>
+                        </select>
+                      </label>
+                    </div>
                     {/* 검색바 */}
                     <div className="datatable-search">
                       <button
@@ -755,6 +799,7 @@ function ITAssets() {
                           add_date={item.add_date}
                           rent_date={item.rent_date}
                           formatDate={formatDate}
+                          
                         />
                       ))}
                   </tbody>

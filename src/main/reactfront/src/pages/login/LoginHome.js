@@ -6,8 +6,10 @@ import { useNavigate } from 'react-router-dom';
 import base64 from 'base-64';
 import { tokenInfoContext } from '../../component/TokenInfoProvider';
 import { useCookies } from 'react-cookie';
+import Header from '../../component/Header';
+import Sidebar from '../../component/Sidebar';
 
-function LoginHome() {
+function LoginHome({ hideHeaderAndSidebar }) {
   const { handleChange } = React.useContext(tokenInfoContext);
 
   // const {authResponse, setAuthResponse} = useState("");
@@ -18,9 +20,8 @@ function LoginHome() {
   const [emailAuthCompleted, setEmailAuthCompleted] = useState(false); // 이메일 인증 완려 여부
   const [isTimerActive, setIsTimerActive] = useState(false); // 타이머 활성화 여부
   const [emailAuth, SetEmailAuth] = useState(''); // 이메일 인증
-  const [cookies, setCookie] = useCookies(["userId"]); // 쿠키
+  const [cookies, setCookie] = useCookies(['userId']); // 쿠키
   const [rememberME, setRememberME] = useState(false); // 아이디 저장하기 유무
-
 
   const navigate = useNavigate();
 
@@ -190,9 +191,9 @@ function LoginHome() {
         console.log(role);
         handleChange(username, role);
 
-        if(rememberME){
-          console.log("리멤버미 : "+rememberME)
-          setCookie("userId", username); // 쿠키 저장
+        if (rememberME) {
+          console.log('리멤버미 : ' + rememberME);
+          setCookie('userId', username); // 쿠키 저장
         }
 
         alert('로그인 성공');
@@ -201,8 +202,8 @@ function LoginHome() {
           window.location.href = '/user/userMain';
         } else if (role === 'ROLE_ADMIN') {
           window.location.href = '/admin/adminMain';
-        } else if (role === 'ROLE_HIGH_ADMIN'){
-          window.location.href = "highadmin/highAdminMain";
+        } else if (role === 'ROLE_HIGH_ADMIN') {
+          window.location.href = 'highadmin/highAdminMain';
         }
       } else {
         alert('로그인 실패');
@@ -213,321 +214,332 @@ function LoginHome() {
   };
 
   function deleteCookie(name) {
-    document.cookie = name + '=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
+    document.cookie =
+      name + '=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
   }
 
   const handleOnChange = (e) => {
     setRememberME(e.target.checked);
-    if(!e.target.checked){
-      console.log("쿠키삭제");
-      deleteCookie("userId");
+    if (!e.target.checked) {
+      console.log('쿠키삭제');
+      deleteCookie('userId');
     }
-  }
+  };
 
   useEffect(() => {
     if (cookies.userId !== undefined) {
       setUsername(cookies.userId);
       setRememberME(true);
-    } 
+    }
   }, [rememberME]);
 
   return (
-    <div>
-      <main>
-        <div className="container">
-          <section className="section register min-vh-100 d-flex flex-column align-items-center justify-content-center py-4">
-            <div className="container">
-              <div className="row justify-content-center">
-                <div className="col-lg-4 col-md-6 d-flex flex-column align-items-center justify-content-center">
-                  <div className="d-flex justify-content-center py-4">
-                    <a
-                      href="index.html"
-                      className="logo d-flex align-items-center w-auto"
-                    >
-                      <img src="assets/img/ittam2.png" alt=""></img>
-                      <span className="d-none d-lg-block">Ittam</span>
-                    </a>
-                  </div>
-
-                  <div className="card mb-3">
-                    <div className="card-body">
-                      <div className="pt-4 pb-2">
-                        <h5 className="card-title text-center pb-0 fs-4">
-                          Ittam 로그인
-                        </h5>
-                        <p className="text-center small">
-                          자산 시스템에 오신 것을 환영합니다.
-                        </p>
-                      </div>
-
-                      <form
-                        className="row g-3 needs-validation"
-                        onSubmit={login}
+    <>
+      {!hideHeaderAndSidebar && <Header />}
+      {!hideHeaderAndSidebar && <Sidebar />}
+      <div>
+        <main>
+          <div className="container">
+            <section className="section register min-vh-100 d-flex flex-column align-items-center justify-content-center py-4">
+              <div className="container">
+                <div className="row justify-content-center">
+                  <div className="col-lg-4 col-md-6 d-flex flex-column align-items-center justify-content-center">
+                    <div className="d-flex justify-content-center py-4">
+                      <a
+                        href="index.html"
+                        className="logo d-flex align-items-center w-auto"
                       >
-                        <div className="col-12">
-                          <label htmlFor="yourUsername" className="form-label">
-                            사원번호
-                          </label>
-                          <div className="input-group has-validation">
-                            <span
-                              className="input-group-text"
-                              id="inputGroupPrepend"
+                        <img src="assets/img/ittam2.png" alt=""></img>
+                        <span className="d-none d-lg-block">Ittam</span>
+                      </a>
+                    </div>
+
+                    <div className="card mb-3">
+                      <div className="card-body">
+                        <div className="pt-4 pb-2">
+                          <h5 className="card-title text-center pb-0 fs-4">
+                            Ittam 로그인
+                          </h5>
+                          <p className="text-center small">
+                            자산 시스템에 오신 것을 환영합니다.
+                          </p>
+                        </div>
+
+                        <form
+                          className="row g-3 needs-validation"
+                          onSubmit={login}
+                        >
+                          <div className="col-12">
+                            <label
+                              htmlFor="yourUsername"
+                              className="form-label"
                             >
-                              <BsFillPersonCheckFill />
-                            </span>
+                              사원번호
+                            </label>
+                            <div className="input-group has-validation">
+                              <span
+                                className="input-group-text"
+                                id="inputGroupPrepend"
+                              >
+                                <BsFillPersonCheckFill />
+                              </span>
+                              <input
+                                type="text"
+                                name="username"
+                                className="form-control"
+                                id="username"
+                                value={username}
+                                onChange={(e) => setUsername(e.target.value)}
+                                required
+                              />
+                              <div className="invalid-feedback">
+                                Please enter your username.
+                              </div>
+                            </div>
+                          </div>
+
+                          <div className="col-12">
+                            <label
+                              htmlFor="yourPassword"
+                              className="form-label"
+                            >
+                              비밀번호
+                            </label>
                             <input
-                              type="text"
-                              name="username"
+                              type="password"
+                              name="password"
                               className="form-control"
-                              id="username"
-                              value={username}
-                              onChange={(e) => setUsername(e.target.value)}
+                              id="password"
+                              value={password}
+                              onChange={(e) => setPassword(e.target.value)}
                               required
                             />
                             <div className="invalid-feedback">
-                              Please enter your username.
+                              Please enter your password!
                             </div>
                           </div>
-                        </div>
 
-                        <div className="col-12">
-                          <label htmlFor="yourPassword" className="form-label">
-                            비밀번호
-                          </label>
-                          <input
-                            type="password"
-                            name="password"
-                            className="form-control"
-                            id="password"
-                            value={password}
-                            onChange={(e) => setPassword(e.target.value)}
-                            required
-                          />
-                          <div className="invalid-feedback">
-                            Please enter your password!
+                          <div className="col-12">
+                            <div className="form-check">
+                              <input
+                                className="form-check-input"
+                                type="checkbox"
+                                name="remember-me"
+                                id="remember-me"
+                                onChange={(e) => handleOnChange(e)}
+                                checked={rememberME}
+                              />
+                              <label
+                                className="form-check-label"
+                                htmlFor="rememberMe"
+                                name=""
+                              >
+                                아이디 기억하기
+                              </label>
+                            </div>
                           </div>
-                        </div>
-
-                        <div className="col-12">
-                          <div className="form-check">
-                            <input
-                              className="form-check-input"
-                              type="checkbox"
-                              name="remember-me"
-                              id="remember-me"
-                              onChange={(e) => handleOnChange(e)}
-                              checked={rememberME}
-                            />
-                            <label
-                              className="form-check-label"
-                              htmlFor="rememberMe"
-                              name=""
-                            >
-                              아이디 기억하기
-                            </label>
-                          </div>
-                        </div>
-                        <div className="col-12">
-                          <button
-                            className="btn btn-primary w-100"
-                            type="submit"
-                            onClick={login}
-                          >
-                            Login
-                          </button>
-                        </div>
-                        <div className="col-12">
-                          <p className="small mb-0">
-                            비밀번호를 잊어버리셨나요?
+                          <div className="col-12">
                             <button
-                              type="button"
-                              className="btn btn-primary passwordFind"
-                              data-bs-toggle="modal"
-                              data-bs-target="#verticalycentered"
+                              className="btn btn-primary w-100"
+                              type="submit"
+                              onClick={login}
                             >
-                              비밀번호 찾기
+                              Login
                             </button>
-                          </p>
-                        </div>
-                      </form>
+                          </div>
+                          <div className="col-12">
+                            <p className="small mb-0">
+                              비밀번호를 잊어버리셨나요?
+                              <button
+                                type="button"
+                                className="btn btn-primary passwordFind"
+                                data-bs-toggle="modal"
+                                data-bs-target="#verticalycentered"
+                              >
+                                비밀번호 찾기
+                              </button>
+                            </p>
+                          </div>
+                        </form>
+                      </div>
                     </div>
                   </div>
                 </div>
               </div>
-            </div>
-          </section>
-        </div>
-      </main>
-
-      {/* 비밀번호 찾기 모달창 */}
-      <div
-        className="modal fade"
-        id="verticalycentered"
-        tabIndex="-1"
-        style={{ display: 'none' }}
-      >
-        <div className="modal-dialog modal-dialog-centered">
-          <div className="modal-content">
-            <div className="modal-header">
-              <h5 className="modal-title">비밀번호 찾기</h5>
-              <button
-                type="button"
-                className="btn-close"
-                data-bs-dismiss="modal"
-                aria-label="Close"
-              ></button>
-            </div>
-            <div className="modal-body modal-box">
-              <div className="col-12 ">
-                <label htmlFor="yourPassword" className="form-label">
-                  이메일
-                </label>
-                <input
-                  type="email"
-                  name="password"
-                  className="form-control modal-input"
-                  id="yourPassword2"
-                  placeholder="이메일을 입력해주세요."
-                  required
-                />
-              </div>
-              <div className="col-12 auth-box">
-                <label htmlFor="yourPassword" className="form-label">
-                  인증번호
-                </label>
-                <input
-                  type="text"
-                  name="password"
-                  className="form-control modal-input"
-                  id="yourPassword3"
-                  disabled
-                />
-              </div>
-
-              <div className="col-12 emailAuth">
-                {!emailAuthCompleted ? (
-                  <div>
-                    {/* 이메일 인증 타이머 컴포넌트 */}
-
-                    {isTimerActive && (
-                      <EmailAuthTime
-                        onTimeout={handleEmailAuthTimeout}
-                        authBtn={authBtn}
-                      />
-                    )}
-                    <button
-                      className="btn btn-primary w-100 auth"
-                      type="submit"
-                      onClick={authBtn}
-                      id="authBtnContext"
-                    >
-                      인증번호 받기
-                    </button>
-                  </div>
-                ) : (
-                  <div>
-                    <button
-                      className="btn btn-primary w-100 auth"
-                      type="submit"
-                      onClick={authBtn}
-                      id="authBtnContext"
-                    >
-                      인증번호 받기
-                    </button>
-                    {/* 이메일 인증 완료 후 표시할 내용 */}
-                  </div>
-                )}
-              </div>
-            </div>
-
-            <div className="modal-footer">
-              <button
-                type="button"
-                className="btn btn-secondary modalClose"
-                data-bs-dismiss="modal"
-                onClick={handleEmailAuthTimeout}
-              >
-                취소
-              </button>
-            </div>
+            </section>
           </div>
-        </div>
-      </div>
+        </main>
 
-      {/* 비밀번호 초기화 모달창 */}
-      <div
-        className="modal fade"
-        id="passwordReset"
-        tabIndex="-2"
-        style={{ display: 'none' }}
-      >
-        <div className="modal-dialog modal-dialog-centered">
-          <div className="modal-content">
-            <div className="modal-header">
-              <h5 className="modal-title">비밀번호 변경</h5>
-              <button
-                type="button"
-                className="btn-close"
-                data-bs-dismiss="modal"
-                aria-label="Close"
-                onClick={closeBtn}
-              ></button>
-            </div>
-            <div className="modal-body modal-box">
-              <div className="col-12 ">
-                <label htmlFor="yourPassword" className="form-label">
-                  새로운 비밀번호
-                </label>
-                <input
-                  type="text"
-                  name="password"
-                  className="form-control modal-input"
-                  id="passwordReset1"
-                  placeholder="새로운 비밀번호를 입력해주세요."
-                />
-              </div>
-              <div className="col-12 auth-box">
-                <label htmlFor="yourPassword" className="form-label">
-                  비밀번호 확인
-                </label>
-                <input
-                  type="text"
-                  name="password"
-                  className="form-control modal-input"
-                  placeholder="새로운 비밀번호를 다시 입력해주세요."
-                  id="passwordReset2"
-                />
-                {passwordMismatch && (
-                  <span style={{ color: 'red' }}>
-                    비밀번호가 일치하지 않습니다.
-                  </span>
-                )}
-              </div>
-
-              <div className="col-12 emailAuth">
+        {/* 비밀번호 찾기 모달창 */}
+        <div
+          className="modal fade"
+          id="verticalycentered"
+          tabIndex="-1"
+          style={{ display: 'none' }}
+        >
+          <div className="modal-dialog modal-dialog-centered">
+            <div className="modal-content">
+              <div className="modal-header">
+                <h5 className="modal-title">비밀번호 찾기</h5>
                 <button
-                  className="btn btn-primary w-100 auth"
-                  type="submit"
-                  onClick={passwordModify}
+                  type="button"
+                  className="btn-close"
+                  data-bs-dismiss="modal"
+                  aria-label="Close"
+                ></button>
+              </div>
+              <div className="modal-body modal-box">
+                <div className="col-12 ">
+                  <label htmlFor="yourPassword" className="form-label">
+                    이메일
+                  </label>
+                  <input
+                    type="email"
+                    name="password"
+                    className="form-control modal-input"
+                    id="yourPassword2"
+                    placeholder="이메일을 입력해주세요."
+                    required
+                  />
+                </div>
+                <div className="col-12 auth-box">
+                  <label htmlFor="yourPassword" className="form-label">
+                    인증번호
+                  </label>
+                  <input
+                    type="text"
+                    name="password"
+                    className="form-control modal-input"
+                    id="yourPassword3"
+                    disabled
+                  />
+                </div>
+
+                <div className="col-12 emailAuth">
+                  {!emailAuthCompleted ? (
+                    <div>
+                      {/* 이메일 인증 타이머 컴포넌트 */}
+
+                      {isTimerActive && (
+                        <EmailAuthTime
+                          onTimeout={handleEmailAuthTimeout}
+                          authBtn={authBtn}
+                        />
+                      )}
+                      <button
+                        className="btn btn-primary w-100 auth"
+                        type="submit"
+                        onClick={authBtn}
+                        id="authBtnContext"
+                      >
+                        인증번호 받기
+                      </button>
+                    </div>
+                  ) : (
+                    <div>
+                      <button
+                        className="btn btn-primary w-100 auth"
+                        type="submit"
+                        onClick={authBtn}
+                        id="authBtnContext"
+                      >
+                        인증번호 받기
+                      </button>
+                      {/* 이메일 인증 완료 후 표시할 내용 */}
+                    </div>
+                  )}
+                </div>
+              </div>
+
+              <div className="modal-footer">
+                <button
+                  type="button"
+                  className="btn btn-secondary modalClose"
+                  data-bs-dismiss="modal"
+                  onClick={handleEmailAuthTimeout}
                 >
-                  비밀번호 번경
+                  취소
                 </button>
               </div>
             </div>
-            <div className="modal-footer">
-              <button
-                type="button"
-                className="btn btn-secondary modalClose"
-                data-bs-dismiss="modal"
-                onClick={closeBtn}
-              >
-                취소
-              </button>
+          </div>
+        </div>
+
+        {/* 비밀번호 초기화 모달창 */}
+        <div
+          className="modal fade"
+          id="passwordReset"
+          tabIndex="-2"
+          style={{ display: 'none' }}
+        >
+          <div className="modal-dialog modal-dialog-centered">
+            <div className="modal-content">
+              <div className="modal-header">
+                <h5 className="modal-title">비밀번호 변경</h5>
+                <button
+                  type="button"
+                  className="btn-close"
+                  data-bs-dismiss="modal"
+                  aria-label="Close"
+                  onClick={closeBtn}
+                ></button>
+              </div>
+              <div className="modal-body modal-box">
+                <div className="col-12 ">
+                  <label htmlFor="yourPassword" className="form-label">
+                    새로운 비밀번호
+                  </label>
+                  <input
+                    type="text"
+                    name="password"
+                    className="form-control modal-input"
+                    id="passwordReset1"
+                    placeholder="새로운 비밀번호를 입력해주세요."
+                  />
+                </div>
+                <div className="col-12 auth-box">
+                  <label htmlFor="yourPassword" className="form-label">
+                    비밀번호 확인
+                  </label>
+                  <input
+                    type="text"
+                    name="password"
+                    className="form-control modal-input"
+                    placeholder="새로운 비밀번호를 다시 입력해주세요."
+                    id="passwordReset2"
+                  />
+                  {passwordMismatch && (
+                    <span style={{ color: 'red' }}>
+                      비밀번호가 일치하지 않습니다.
+                    </span>
+                  )}
+                </div>
+
+                <div className="col-12 emailAuth">
+                  <button
+                    className="btn btn-primary w-100 auth"
+                    type="submit"
+                    onClick={passwordModify}
+                  >
+                    비밀번호 번경
+                  </button>
+                </div>
+              </div>
+              <div className="modal-footer">
+                <button
+                  type="button"
+                  className="btn btn-secondary modalClose"
+                  data-bs-dismiss="modal"
+                  onClick={closeBtn}
+                >
+                  취소
+                </button>
+              </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
+    </>
   );
 }
 

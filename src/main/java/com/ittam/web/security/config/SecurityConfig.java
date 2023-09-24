@@ -70,7 +70,7 @@ public class SecurityConfig {
                 .antMatchers("/AssetRequest/**")
                 .antMatchers("/UserRequest/**")
                 .antMatchers("/categories/**")
-                .antMatchers("/assets/**")
+                .antMatchers("/itassets/**")
                 .antMatchers("/stock/**")
                 .antMatchers("/mainPage/**")
                 .antMatchers("/reports/**")

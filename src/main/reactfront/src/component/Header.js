@@ -28,16 +28,21 @@ function Header() {
     let hours = now.getHours();
     let minutes = now.getMinutes();
 
-    return todayYear + "-" + (todayMonth >= 10 ? todayMonth : '0'+todayMonth) + "-" + (todayDate >= 10 ? todayDate : '0'+todayDate) +" "+ (hours >= 10?hours : '0'+hours)+':' +
-        (minutes >= 10?minutes:'0'+minutes);
-  }
+    return (
+      todayYear +
+      '-' +
+      (todayMonth >= 10 ? todayMonth : '0' + todayMonth) +
+      '-' +
+      (todayDate >= 10 ? todayDate : '0' + todayDate)
+    );
+  };
 
   const getTokenExpirationDate = (token) => {
-    if(token != undefined){
+    if (token != undefined) {
       let payload = token.substring(
         token.indexOf('.') + 1,
         token.lastIndexOf('.')
-  );
+      );
 
       localStorage.setItem('token', token);
       let dec = JSON.parse(base64.decode(payload));
@@ -49,21 +54,24 @@ function Header() {
   };
 
   const tokenExpirationDate = getTokenExpirationDate(token);
+
   const formatExpirationDate = (expirationDate) => {
-    if (!expirationDate) return "";
+    if (!expirationDate) return '';
     return expirationDate.toLocaleString(); // 원하는 형식으로 날짜를 표시할 수 있습니다.
   };
+
   // 토큰 만료까지 남은 시간을 계산하는 함수
   const calculateTokenRemainingTime = (expirationDate) => {
-    if (!expirationDate) return "";
+    if (!expirationDate) return '';
     const currentTime = new Date();
     const remainingTime = expirationDate - currentTime;
-    if (remainingTime <= 0) return "토큰 만료됨";
-    const minutes = Math.floor((remainingTime % (1000 * 60 * 60)) / (1000 * 60));
+    if (remainingTime <= 0) return '토큰 만료됨';
+    const minutes = Math.floor(
+      (remainingTime % (1000 * 60 * 60)) / (1000 * 60)
+    );
     const seconds = Math.floor((remainingTime % (1000 * 60)) / 1000);
     return `${minutes}분 ${seconds}초`;
   };
-
 
   const getMyInfo = (username) => {
     axios({
@@ -76,82 +84,71 @@ function Header() {
         username: username
       }
     })
-        .then(response => {setMyInfo(response.data); console.log(response.data);})
-        .catch(error => console.log(error))
-  }
+      .then((response) => {
+        setMyInfo(response.data);
+        console.log(response.data);
+      })
+      .catch((error) => console.log(error));
+  };
 
-  const getMyAlarmList =  (username) => {
-     axios({
-        url: "/mainPage/getMyAlarmList",
-        method: "get",
-        headers: {
-          Authorization : token
-        },
-        params: {
-          username: username
-        }
-      }).then(response => {
-        setMyAlarmList(response.data);})
-        .catch(error => console.log(error))
-    };
-
-
+  const getMyAlarmList = (username) => {
+    axios({
+      url: '/mainPage/getMyAlarmList',
+      method: 'get',
+      headers: {
+        Authorization: token,
+      },
+      params: {
+        username: username,
+      },
+    })
+      .then((response) => {
+        setMyAlarmList(response.data);
+        console.log(response.data);
+      })
+      .catch((error) => console.log(error));
+  };
 
   const getMyAlarmCnt = (username) => {
     axios({
-      url: "/mainPage/getMyAlarmCnt",
-      method: "get",
+      url: '/mainPage/getMyAlarmCnt',
+      method: 'get',
       headers: {
-        Authorization : token
+        Authorization: token,
       },
       params: {
-        username: username
-      }
-    }).then(response => {console.log(response.data); setMyAlarmCnt(response.data);})
-        .catch(error => console.log(error))
-  }
-
-
-
+        username: username,
+      },
+    })
+      .then((response) => {
+        console.log(response.data);
+        setMyAlarmCnt(response.data);
+      })
+      .catch((error) => console.log(error));
+  };
 
   const handleMyAlamConfirm = (e, alarm_num, alarm_type) => {
     e.stopPropagation();
     axios({
-      url: "/mainPage/handleMyAlamConfirm",
-      method: "put",
+      url: '/mainPage/handleMyAlamConfirm',
+      method: 'put',
       headers: {
-        Authorization : token
+        Authorization: token,
       },
       params: {
         alarm_num: alarm_num,
-        alarm_type: alarm_type
-      }
-    }).then(response => {
-      console.log(response.data);
-      getMyAlarmList(username);
-      getMyAlarmCnt(username);
-      })
-        .catch(error => console.log(error))
-    alarm_type === '교환' || alarm_type === '반납' ?
-    navigate("/user/userMain_using") :
-        navigate("/user/userMain_request")
-  }
-
-  /////////////////////////////////////////////////
-  const getMyAlarmAdminList =  (username) => {
-    axios({
-      url: "/mainPage/getMyAlarmAdminList",
-      method: "get",
-      headers: {
-        Authorization : token
+        alarm_type: alarm_type,
       },
-      params: {
-        username: username
-      }
-    }).then(response => {
-      console.log(response.data);
-      setMyAlarmAdminList(response.data);})
-        .catch(error => console.log(error))
+    })
+      .then((response) => {
+        console.log(response.data);
+        getMyAlarmList(username);
+        getMyAlarmCnt(username);
+      })
+      .catch((error) => console.log(error));
+    alarm_type === '교환' || alarm_type === '반납'
+      ? navigate('/user/userMain_using')
+      : navigate('/user/userMain_request');
   };
 
   const handleMyAlamAdminConfirm = (e, alarm_num) => {
@@ -194,90 +191,84 @@ function Header() {
 
 
   useEffect(() => {
-    getMyInfo(username);
+    if (tokenExpirationDate) {
+      getMyInfo(username);
+      getMyAlarmList(username);
+      getMyAlarmCnt(username);
+      getMyAlarmAdminList(username);
+      getMyAlarmAdminCnt(username);
 
-    if(userRole === 'ROLE_USER') {
-    getMyAlarmList(username);
-    getMyAlarmCnt(username);
-    } else {
-    getMyAlarmAdminList(username);
-    getMyAlarmAdminCnt(username);
+      // 토큰 만료까지 남은 시간을 1초마다 업데이트하는 코드
+      const intervalId = setInterval(() => {
+        if (tokenExpirationDate) {
+          setTokenExpiration(calculateTokenRemainingTime(tokenExpirationDate));
+        }
+      }, 1000);
+
+      // 컴포넌트가 언마운트될 때 interval 해제
+      return () => {
+        clearInterval(intervalId);
+      };
     }
-
-
-     // 토큰 만료까지 남은 시간을 1초마다 업데이트하는 코드
-     const intervalId = setInterval(() => {
-      if (tokenExpirationDate) {
-        setTokenExpiration(calculateTokenRemainingTime(tokenExpirationDate));
-      }
-    }, 1000);
-
-    // 컴포넌트가 언마운트될 때 interval 해제
-    return () => {
-      clearInterval(intervalId);
-    };
-
   }, []);
 
-  console.log("토큰 만료 시간:", formatExpirationDate(tokenExpirationDate));
+  // console.log('토큰 만료 시간:', formatExpirationDate(tokenExpirationDate));
 
-  if(window.location.pathname === '/') return null
+  if (window.location.pathname === '/') return null;
 
   const handleToggleClick = () => {
     // React에서는 body에 직접 접근하지 않고, 상태를 사용하여 UI를 변경합니다.
     // 여기에서는 상태를 토글하는 방식으로 body의 classList를 변경하는 효과를 달성합니다.
-    document.body.classList.toggle("toggle-sidebar");
+    document.body.classList.toggle('toggle-sidebar');
   };
+
   return (
-      <header id="header" className="header fixed-top d-flex align-items-center">
-        <div className="d-flex align-items-center justify-content-between">
-          <Link to="/" className="logo d-flex align-items-center">
-            <img src="/assets/img/ittam2.png" alt=""></img>
-            <span className="d-none d-lg-block">IT 자산 관리 시스템</span>
-          </Link>
-          <i
-              className="bi bi-list toggle-sidebar-btn"
-              onClick={handleToggleClick}
-          ></i>
-        </div>
-        {/* <!-- End Logo --> */}
+    <header id="header" className="header fixed-top d-flex align-items-center">
+      <div className="d-flex align-items-center justify-content-between">
+        <Link to="/" className="logo d-flex align-items-center">
+          <img src="/assets/img/ittam2.png" alt=""></img>
+          <span className="d-none d-lg-block">IT 자산 관리 시스템</span>
+        </Link>
+        <i
+          className="bi bi-list toggle-sidebar-btn"
+          onClick={handleToggleClick}
+        ></i>
+      </div>
+      {/* <!-- End Logo --> */}
 
+      <div className="search-bar">
+        <form
+          className="search-form d-flex align-items-center"
+          method="POST"
+          action="#"
+        >
+          <input
+            type="text"
+            name="query"
+            placeholder="Search"
+            title="Enter search keyword"
+          ></input>
+          <button type="submit" title="Search">
+            <i className="bi bi-search"></i>
+          </button>
+        </form>
+      </div>
+      {/* <!-- End Search Bar --> */}
 
-        <div className="search-bar">
-          <form
-              className="search-form d-flex align-items-center"
-              method="POST"
-              action="#"
-          >
-            <input
-                type="text"
-                name="query"
-                placeholder="Search"
-                title="Enter search keyword"
-            ></input>
-            <button type="submit" title="Search">
+      <nav className="header-nav ms-auto">
+        <ul className="d-flex align-items-center">
+          <li className="nav-item d-block d-lg-none">
+            <Link to="####" className="nav-link nav-icon search-bar-toggle ">
               <i className="bi bi-search"></i>
-            </button>
-          </form>
-        </div>
-        {/* <!-- End Search Bar --> */}
+            </Link>
+          </li>
+          {/* <!-- End Search Icon--> */}
 
-        <nav className="header-nav ms-auto">
-          <ul className="d-flex align-items-center">
-            <li className="nav-item d-block d-lg-none">
-              <Link to="####" className="nav-link nav-icon search-bar-toggle ">
-                <i className="bi bi-search"></i>
-              </Link>
-            </li>
-            {/* <!-- End Search Icon--> */}
-
-            <div className="token-expiration tokenTime">
-              {tokenExpirationDate && (
-                <span>
-                  {calculateTokenRemainingTime(tokenExpirationDate)}
-                </span>
-              )}
-            </div>
+          <div className="token-expiration tokenTime">
+            {tokenExpirationDate && (
+              <span>{calculateTokenRemainingTime(tokenExpirationDate)}</span>
+            )}
+          </div>
 
             <li className="nav-item dropdown">
               <Link to="####" className="nav-link nav-icon" data-bs-toggle="dropdown">
@@ -356,116 +347,111 @@ function Header() {
                     })
                 )}
 
-                <li>
-                  <hr className="dropdown-divider"></hr>
-                </li>
-                {/*<li className="dropdown-footer">*/}
-                {/*  <Link to="####">Show all notifications</Link>*/}
-                {/*</li>*/}
-              </ul>
-              {/* <!-- End Notification Dropdown Items --> */}
-            </li>
-            {/* <!-- End Notification Nav --> */}
+              <li>
+                <hr className="dropdown-divider"></hr>
+              </li>
+              {/*<li className="dropdown-footer">*/}
+              {/*  <Link to="####">Show all notifications</Link>*/}
+              {/*</li>*/}
+            </ul>
+            {/* <!-- End Notification Dropdown Items --> */}
+          </li>
+          {/* <!-- End Notification Nav --> */}
 
+          <li className="nav-item dropdown">
+            <Link
+              to="####"
+              className="nav-link nav-icon"
+              data-bs-toggle="dropdown"
+            >
+              <i className="bi bi-chat-left-text"></i>
+              <span className="badge bg-success badge-number">3</span>
+            </Link>
+            {/* <!-- End Messages Icon --> */}
 
-
-
-            <li className="nav-item dropdown">
-              <Link to="####"
-                    className="nav-link nav-icon"
-                    data-bs-toggle="dropdown"
-              >
-                <i className="bi bi-chat-left-text"></i>
-                <span className="badge bg-success badge-number">3</span>
-              </Link>
-              {/* <!-- End Messages Icon --> */}
-
-              <ul className="dropdown-menu dropdown-menu-end dropdown-menu-arrow messages">
-                <li className="dropdown-header">
-                  You have 3 new messages
-                  <Link to="####">
+            <ul className="dropdown-menu dropdown-menu-end dropdown-menu-arrow messages">
+              <li className="dropdown-header">
+                You have 3 new messages
+                <Link to="####">
                   <span className="badge rounded-pill bg-primary p-2 ms-2">
                     View all
                   </span>
-                  </Link>
-                </li>
-                <li>
-                  <hr className="dropdown-divider"></hr>
-                </li>
+                </Link>
+              </li>
+              <li>
+                <hr className="dropdown-divider"></hr>
+              </li>
 
-                <li className="message-item">
-                  <Link to="####">
-                    <img
-                        src="/assets/img/messages-1.jpg"
-                        alt=""
-                        className="rounded-circle"
-                    ></img>
-                    <div>
-                      <h4>Maria Hudson</h4>
-                      <p>
-                        Velit asperiores et ducimus soluta repudiandae labore
-                        officia est ut...
-                      </p>
-                      <p>4 hrs. ago</p>
-                    </div>
-                  </Link>
-                </li>
-                <li>
-                  <hr className="dropdown-divider"></hr>
-                </li>
+              <li className="message-item">
+                <Link to="####">
+                  <img
+                    src="/assets/img/messages-1.jpg"
+                    alt=""
+                    className="rounded-circle"
+                  ></img>
+                  <div>
+                    <h4>Maria Hudson</h4>
+                    <p>
+                      Velit asperiores et ducimus soluta repudiandae labore
+                      officia est ut...
+                    </p>
+                    <p>4 hrs. ago</p>
+                  </div>
+                </Link>
+              </li>
+              <li>
+                <hr className="dropdown-divider"></hr>
+              </li>
 
+              <li className="message-item">
+                <Link to="####">
+                  <img
+                    src="/assets/img/messages-2.jpg"
+                    alt=""
+                    className="rounded-circle"
+                  ></img>
+                  <div>
+                    <h4>Anna Nelson</h4>
+                    <p>
+                      Velit asperiores et ducimus soluta repudiandae labore
+                      officia est ut...
+                    </p>
+                    <p>6 hrs. ago</p>
+                  </div>
+                </Link>
+              </li>
+              <li>
+                <hr className="dropdown-divider"></hr>
+              </li>
 
+              <li className="message-item">
+                <Link to="####">
+                  <img
+                    src="/assets/img/messages-3.jpg"
+                    alt=""
+                    className="rounded-circle"
+                  ></img>
+                  <div>
+                    <h4>David Muldon</h4>
+                    <p>
+                      Velit asperiores et ducimus soluta repudiandae labore
+                      officia est ut...
+                    </p>
+                    <p>8 hrs. ago</p>
+                  </div>
+                </Link>
+              </li>
+              <li>
+                <hr className="dropdown-divider"></hr>
+              </li>
 
-
-                <li className="message-item">
-                  <Link to="####">
-                    <img
-                        src="/assets/img/messages-2.jpg"
-                        alt=""
-                        className="rounded-circle"
-                    ></img>
-                    <div>
-                      <h4>Anna Nelson</h4>
-                      <p>
-                        Velit asperiores et ducimus soluta repudiandae labore
-                        officia est ut...
-                      </p>
-                      <p>6 hrs. ago</p>
-                    </div>
-                  </Link>
-                </li>
-                <li>
-                  <hr className="dropdown-divider"></hr>
-                </li>
-
-                <li className="message-item">
-                  <Link to="####">
-                    <img
-                        src="/assets/img/messages-3.jpg"
-                        alt=""
-                        className="rounded-circle"
-                    ></img>
-                    <div>
-                      <h4>David Muldon</h4>
-                      <p>
-                        Velit asperiores et ducimus soluta repudiandae labore
-                        officia est ut...
-                      </p>
-                      <p>8 hrs. ago</p>
-                    </div>
-                  </Link>
-                </li>
-                <li>
-                  <hr className="dropdown-divider"></hr>
-                </li>
-
-                <li className="dropdown-footer">
-                  <Link to="####">Show all messages</Link>
-                </li>
-              </ul>
-              {/* <!-- End Messages Dropdown Items --> */}
-            </li>
-            {/* <!-- End Messages Nav --> */}
+              <li className="dropdown-footer">
+                <Link to="####">Show all messages</Link>
+              </li>
+            </ul>
+            {/* <!-- End Messages Dropdown Items --> */}
+          </li>
+          {/* <!-- End Messages Nav --> */}
 
 
             <li className="nav-item dropdown pe-3">
@@ -490,71 +476,74 @@ function Header() {
                 <span className="d-none d-md-block dropdown-toggle ps-2" style={{fontSize: '20px'}}>
                 {myInfo.user_name}
               </span>
-              </Link>
-              {/* <!-- End Profile Iamge Icon --> */}
+            </Link>
+            {/* <!-- End Profile Iamge Icon --> */}
 
-              <ul className="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
-                <li className="dropdown-header">
-                  <h6>{myInfo.user_name}</h6>
-                  <span>{username}</span>
-                </li>
-                <li>
-                  <hr className="dropdown-divider"></hr>
-                </li>
+            <ul className="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
+              <li className="dropdown-header">
+                <h6>{myInfo.user_name}</h6>
+                <span>{username}</span>
+              </li>
+              <li>
+                <hr className="dropdown-divider"></hr>
+              </li>
 
-                <li>
-                  <Link
-                      to="/mypage"
-                      className="dropdown-item d-flex align-items-center"
-                  >
-                    <i className="bi bi-person"></i>
-                    <span>My Profile</span>
-                  </Link>
-                </li>
-                <li>
-                  <hr className="dropdown-divider"></hr>
-                </li>
+              <li>
+                <Link
+                  to="/mypage"
+                  className="dropdown-item d-flex align-items-center"
+                >
+                  <i className="bi bi-person"></i>
+                  <span>My Profile</span>
+                </Link>
+              </li>
+              <li>
+                <hr className="dropdown-divider"></hr>
+              </li>
 
-                <li>
-                  <Link to="####"
-                        className="dropdown-item d-flex align-items-center"
-                  >
-                    <i className="bi bi-gear"></i>
-                    <span>Account Settings</span>
-                  </Link>
-                </li>
-                <li>
-                  <hr className="dropdown-divider"></hr>
-                </li>
+              <li>
+                <Link
+                  to="####"
+                  className="dropdown-item d-flex align-items-center"
+                >
+                  <i className="bi bi-gear"></i>
+                  <span>Account Settings</span>
+                </Link>
+              </li>
+              <li>
+                <hr className="dropdown-divider"></hr>
+              </li>
 
-                <li>
-                  <Link to="####"
-                        className="dropdown-item d-flex align-items-center"
-                  >
-                    <i className="bi bi-question-circle"></i>
-                    <span>Need Help?</span>
-                  </Link>
-                </li>
-                <li>
-                  <hr className="dropdown-divider"></hr>
-                </li>
+              <li>
+                <Link
+                  to="####"
+                  className="dropdown-item d-flex align-items-center"
+                >
+                  <i className="bi bi-question-circle"></i>
+                  <span>Need Help?</span>
+                </Link>
+              </li>
+              <li>
+                <hr className="dropdown-divider"></hr>
+              </li>
 
-                <li>
-                  <Link to="/logout"
-                        className="dropdown-item d-flex align-items-center"
-                  >
-                    <i className="bi bi-box-arrow-right"></i>
-                    <span>Sign Out</span>
-                  </Link>
-                </li>
-              </ul>
-              {/* <!-- End Profile Dropdown Items --> */}
-            </li>
-            {/* <!-- End Profile Nav --> */}
-          </ul>
-        </nav>
-        {/* <!-- End Icons Navigation --> */}
-      </header>
+              <li>
+                <Link
+                  to="/logout"
+                  className="dropdown-item d-flex align-items-center"
+                >
+                  <i className="bi bi-box-arrow-right"></i>
+                  <span>Sign Out</span>
+                </Link>
+              </li>
+            </ul>
+            {/* <!-- End Profile Dropdown Items --> */}
+          </li>
+          {/* <!-- End Profile Nav --> */}
+        </ul>
+      </nav>
+      {/* <!-- End Icons Navigation --> */}
+    </header>
   );
 }
 
