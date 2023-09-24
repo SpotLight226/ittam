@@ -51,7 +51,7 @@ const AssetRequestListETC = () => {
   };
   const searchAssets = (inputText) => {
     axios({
-      url: 'http://localhost:9191/AssetRequest/AssetRequestSearch',
+      url: 'http://localhost:9191/AssetRequest/AssetRequestSearchETC',
       method: 'post',
       data: {
         inputText: inputText

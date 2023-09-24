@@ -37,7 +37,6 @@ const AssetAllList = () => {
     server_mfg: '', server_spec_warranty: '', server_capa: '', server_price: '', server_purchase_date: '', server_interface: '', server_average_life: '', server_rpm: '', server_datarecovery_life: '',
     /* 승인요청 */
     username: '', appro_title: '', appro_comment: '', category_num:''
-
   });
 
 
