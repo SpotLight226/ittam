@@ -506,26 +506,10 @@ function Reports() {
                       </div>
 
                     </div>
-
-
-
-
-
-
+                    
 
                   </div>
                 </section>
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -534,14 +518,6 @@ function Reports() {
 
           </div>
         </section>
-
-
-
-
-
-
-
-
 
 
       </main>

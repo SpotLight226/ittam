@@ -151,6 +151,24 @@ function Header() {
       : navigate('/user/userMain_request');
   };
 
+
+  /////////////////////////////////////////////////
+  const getMyAlarmAdminList =  (username) => {
+    axios({
+      url: "/mainPage/getMyAlarmAdminList",
+      method: "get",
+      headers: {
+        Authorization : token
+      },
+      params: {
+        username: username
+      }
+    }).then(response => {
+      console.log(response.data);
+      setMyAlarmAdminList(response.data);})
+        .catch(error => console.log(error))
+  };
+
   const handleMyAlamAdminConfirm = (e, alarm_num) => {
     e.stopPropagation();
     axios({
@@ -193,10 +211,13 @@ function Header() {
   useEffect(() => {
     if (tokenExpirationDate) {
       getMyInfo(username);
-      getMyAlarmList(username);
-      getMyAlarmCnt(username);
-      getMyAlarmAdminList(username);
-      getMyAlarmAdminCnt(username);
+      if(userRole === 'ROLE_USER') {
+        getMyAlarmList(username);
+        getMyAlarmCnt(username);
+      } else {
+        getMyAlarmAdminList(username);
+        getMyAlarmAdminCnt(username);
+      }
 
       // 토큰 만료까지 남은 시간을 1초마다 업데이트하는 코드
       const intervalId = setInterval(() => {
