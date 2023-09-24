@@ -7,6 +7,7 @@ import AssetDetailModal from "./AssetDetailModal"
 import {AssetAllListOption} from "../../constants/OptionList";
 import ControlMenu from "../../component/ControlMenu";
 import { tokenInfoContext } from '../../component/TokenInfoProvider';
+import {BsArrowClockwise} from "react-icons/bs";
 
 const validAssetNames = [ // 유효한 자산명 목록
   'PC', '소프트웨어', '주변기기', '서버', '데스크탑', '노트북', 'Microsoft Office', '파워포인트', '엑셀',
@@ -364,6 +365,12 @@ const AssetAllList = () => {
     return sortedList;
   };
 
+  //리셋 버튼
+  const resetBtn = () => {
+    let searchInput = document.getElementById("search-input");
+    setInputInnerDate([]);
+    searchInput.value = "";
+  };
 
   return (
       <div>
@@ -395,7 +402,7 @@ const AssetAllList = () => {
                                 className="datatable-selector"
                                 value={itemsPerPage}
                                 onChange={handleSelectorChange}
-                                style={{ marginRight: "10px", borderColor: "lightgray" }}
+                                style={{ marginLeft: "20px", borderColor: "lightgray" }}
 
                             >
                               <option value="5">5</option>
@@ -420,9 +427,23 @@ const AssetAllList = () => {
                               {/*  + 일괄사용신청*/}
                               {/*</button>*/}
                           <button className="btn btn-primary assetBuytBtn"
-                                  type="button" style={{marginRight:"25px"}}
+                                  // type="button" style={{marginRight:"1025px", marginBottom:"10px"}}
+                                  type="button" style={{marginRight:"7px"}}
                                   data-bs-formtarget="#basicModal"
                                   onClick={handleToggleBuy} id="assetBuytBtn">+ 구매신청
+                          </button>
+                          <button
+                              type="button"
+                              className="btn btn-primary reset-btn"
+                          >
+                            <BsArrowClockwise
+                                style={{
+                                  width: "30px",
+                                  height: "30px",
+                                  color: "gray",
+                                }}
+                                onClick={resetBtn}
+                            />
                           </button>
                           <input
                               className="datatable-input"
