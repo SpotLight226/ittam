@@ -14,6 +14,8 @@ const validAssetNames = [ // 유효한 자산명 목록
   '워드', '한글과컴퓨터', '인텔리제이', '키보드', '마우스', '복합기', '프린터', '스캐너', '서버용하드',
 ];
 
+//test
+
 const AssetAllList = () => {
   const { userRole,username} = useContext(tokenInfoContext);
   const token = localStorage.getItem("token");
@@ -37,7 +39,6 @@ const AssetAllList = () => {
     server_mfg: '', server_spec_warranty: '', server_capa: '', server_price: '', server_purchase_date: '', server_interface: '', server_average_life: '', server_rpm: '', server_datarecovery_life: '',
     /* 승인요청 */
     username: '', appro_title: '', appro_comment: '', category_num:''
-
   });
 
 

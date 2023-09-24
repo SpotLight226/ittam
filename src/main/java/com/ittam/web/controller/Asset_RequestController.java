@@ -73,7 +73,7 @@ public class Asset_RequestController {
     @CrossOrigin(origins = "*", allowedHeaders = "*")
     public ResponseEntity<ArrayList<ITAssetsVO>> AssetRequestSearchPC(@RequestBody Map<String, String> requestBody){
 //        System.out.println(requestBody.toString());
-//        System.out.println("mmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm");
+        System.out.println("mmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm");
         try {
                 ArrayList<ITAssetsVO> data = assetRequestService.AssetRequestSearchPC(requestBody.get("inputText"));
             System.out.println(data + "zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz");

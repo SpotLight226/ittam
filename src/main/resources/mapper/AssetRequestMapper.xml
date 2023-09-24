@@ -81,7 +81,7 @@
          AND a.CATEGORY_NUM != 7
          LEFT JOIN GROUP_CATEGORY c ON a.CATEGORY_NUM = c.CATEGORY_NUM
         WHERE (a.CATEGORY_NUM = 7 OR a.CATEGORY_NUM = 8 OR a.CATEGORY_NUM = 9 OR a.CATEGORY_NUM = 10 OR a.CATEGORY_NUM = 11 OR a.CATEGORY_NUM = 12)
-        AND a.assets_status = '사용가능';
+          AND a.assets_status = '사용가능';
     </select>
 
     <!--    sv-->
@@ -144,13 +144,14 @@
             sv.*,
             c.category_name
         FROM ITASSETS a
+                 INNER JOIN GROUP_CATEGORY c ON a.CATEGORY_NUM = c.CATEGORY_NUM
                  LEFT JOIN PCSPEC pc ON a.spec_num = pc.spec_num
                  LEFT JOIN SWSPEC sw ON a.spec_num = sw.spec_num
                  LEFT JOIN SERVERSPEC sv ON a.spec_num = sv.spec_num
                  LEFT JOIN ETCSPEC etc ON a.spec_num = etc.spec_num
-                 LEFT JOIN GROUP_CATEGORY c ON a.CATEGORY_NUM = c.CATEGORY_NUM
         WHERE (a.CATEGORY_NUM = 5 OR a.CATEGORY_NUM = 6)
           AND a.assets_name LIKE CONCAT('%', #{inputText}, '%');
+
 
     </select>
 
@@ -164,13 +165,15 @@
             sv.*,
             c.category_name
         FROM ITASSETS a
+                 INNER JOIN GROUP_CATEGORY c ON a.CATEGORY_NUM = c.CATEGORY_NUM
                  LEFT JOIN PCSPEC pc ON a.spec_num = pc.spec_num
                  LEFT JOIN SWSPEC sw ON a.spec_num = sw.spec_num
                  LEFT JOIN SERVERSPEC sv ON a.spec_num = sv.spec_num
                  LEFT JOIN ETCSPEC etc ON a.spec_num = etc.spec_num
-                 LEFT JOIN GROUP_CATEGORY c ON a.CATEGORY_NUM = c.CATEGORY_NUM
-        WHERE a.CATEGORY_NUM = 7
-          AND a.assets_name LIKE CONCAT('%', #{inputText}, '%');
+        WHERE (
+                      (a.CATEGORY_NUM = 7 OR a.CATEGORY_NUM = 8 OR a.CATEGORY_NUM = 9 OR a.CATEGORY_NUM = 10 OR a.CATEGORY_NUM = 11 OR a.CATEGORY_NUM = 12)
+                      AND a.assets_name LIKE CONCAT('%', #{inputText}, '%')
+                  );
 
     </select>
 

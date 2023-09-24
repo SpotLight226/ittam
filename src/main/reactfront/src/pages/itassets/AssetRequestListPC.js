@@ -22,14 +22,21 @@ const AssetRequestListPC = () => {
   const [inputText, setInputText] = useState('');
 
   const [inputInnerData, setInputInnerDate] = useState({ // 검색 시 list 관리를 위한 state
-    assets_name : "",
-    assets_status : "",
-    spec_mfg : "",
-    spec_seriel : "",
-    spec_warranty : "",
-    category_name : "",
-    spec_num : "",
-    assets_num : "",
+    assets_name : "", assets_status : "", spec_mfg : "", spec_seriel : "", spec_warranty : "",
+    category_name : "", spec_num : "", assets_num : "", assets_detail_name : "",
+    //
+    sw_mfg: '', sw_spec_seriel: '', sw_spec_warranty: '', sw_purchase_date: '', sw_price: '',
+    /* etcspec */
+    etc_mfg: '', etc_spec_warranty: '', etc_purchase_date: '', etc_price: '',
+    /* pcspec */
+    spec_cpu: '', spec_ram: '', spec_mainboard: '', spec_power: '', spec_gpu: '', spec_hdd: '', spec_ssd: '', spec_ops: '',
+    // spec_mfg: '',
+    // spec_seriel: '',
+    spec_purchase_date: '',
+    /* serverspec */
+    server_mfg: '', server_spec_warranty: '', server_capa: '', server_price: '', server_purchase_date: '', server_interface: '', server_average_life: '', server_rpm: '', server_datarecovery_life: '',
+    /* 승인요청 */
+    username: '', appro_title: '', appro_comment: '', category_num:''
   });
 
   const url = useLocation(); // 현재 url 가져오기 뒤에 파라미터는 짤라서 쓰시면 될 것 같아요 !
@@ -45,7 +52,7 @@ const AssetRequestListPC = () => {
   };
   const searchAssets = (inputText) => {
     axios({
-      url: 'http://localhost:9191/AssetRequest/AssetRequestSearch',
+      url: 'http://localhost:9191/AssetRequest/AssetRequestSearchPC',
       method: 'post',
       data: {
         inputText: inputText
