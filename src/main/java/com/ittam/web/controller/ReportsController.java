@@ -84,4 +84,13 @@ public class ReportsController {
 
         return new ResponseEntity<>(reportsService.getEtcMFGNum(), HttpStatus.OK);
     }
+    @GetMapping("/getServerMFGNum")
+    public ResponseEntity<Map<String, Integer>> getServerMFGNum() {
+
+        return new ResponseEntity<>(reportsService.getServerMFGNum(), HttpStatus.OK);
+    }
+    @GetMapping("/getDepartAsset")
+    public ResponseEntity<Map<String, Integer>> getDepartAsset() {
+        return new ResponseEntity<>(reportsService.getDepartAsset(), HttpStatus.OK);
+    }
 }

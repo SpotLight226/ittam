@@ -2,15 +2,15 @@ import { useState } from "react";
 
 import ReactApexChart from "react-apexcharts";
 
-function EtcMFGChart({EtcMFGNum}) {
+function ServerMFGChart({ServerMFGNum}) {
   const x = {
-    series: [EtcMFGNum.Logitech, EtcMFGNum.Samsung, EtcMFGNum.LG, EtcMFGNum.Sony, EtcMFGNum.Microsoft, EtcMFGNum.Corsair, EtcMFGNum.Razer, EtcMFGNum.AOC, EtcMFGNum.Dell, EtcMFGNum.HP],
+    series: [ServerMFGNum.Western, ServerMFGNum.Toshiba, ServerMFGNum.Seagate, ServerMFGNum.SanDisk , ServerMFGNum.Samsung, ServerMFGNum.Kingston, ServerMFGNum.Crucial],
     options: {
       chart: {
         type: 'donut',
       },
-      labels: ['Logitech', 'Samsung', 'LG', 'Sony', 'Microsoft', 'Corsair', 'Razer', 'AOC', 'Dell', 'HP'],
-      colors:['#4b0082', '#6a5acd', '#9C27B0', '#dda0dd', '#4a6fc3', '#AFEEEE', '#00BFFF', '#20B2AA', '#BA55D3', '#DB7093'],
+      labels: ['Western Digital', 'Toshiba', 'Seagate', 'SanDisk ', 'Samsung', 'Kingston', 'Crucial'],
+      colors:['#4b0082', '#6a5acd', '#9C27B0', '#dda0dd', '#4a6fc3', '#AFEEEE', '#00BFFF'],
       responsive: [{
         breakpoint: 480,
         options: {
@@ -35,4 +35,4 @@ function EtcMFGChart({EtcMFGNum}) {
   )
 }
 
-export default EtcMFGChart;
+export default ServerMFGChart;

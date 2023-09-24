@@ -168,7 +168,7 @@ function HighAdminMain() {
 
                     <Link to="/highAdmin/approveList">
                     <div className="card-body">
-                      <h5 className="card-title" style={{fontWeight: "800"}}>최종자산사용요청 미승인건 <span>| Today</span></h5>
+                      <h5 className="card-title" style={{fontWeight: "800"}}>최종자산사용요청 미승인건 <span>| 전체보기</span></h5>
 
                       <div className="d-flex align-items-center">
                         <div className="card-icon rounded-circle d-flex align-items-center justify-content-center AdminMain-icon">
@@ -191,7 +191,7 @@ function HighAdminMain() {
 
                     <Link to="/itassetsapproval">
                     <div className="card-body">
-                      <h5 className="card-title" style={{fontWeight: "800"}}>최종자산구매요청 미승인건<span>| This Month</span></h5>
+                      <h5 className="card-title" style={{fontWeight: "800"}}>최종자산구매요청 미승인건<span>| 전체보기</span></h5>
 
                       <div className="d-flex align-items-center">
                         <div className="card-icon rounded-circle d-flex align-items-center justify-content-center AdminMain-icon">
@@ -213,7 +213,7 @@ function HighAdminMain() {
                     <div className="card info-card sales-card">
                       <Link to="/itassetsapproval">
                       <div className="card-body">
-                        <h5 className="card-title" style={{fontWeight: "800"}}>폐기 및 수리 요청 미승인건<span>| This Year</span></h5>
+                        <h5 className="card-title" style={{fontWeight: "800"}}>폐기 및 수리 요청 미승인건<span>| 전체보기</span></h5>
 
                         <div className="d-flex align-items-center">
                           <div className="card-icon rounded-circle d-flex align-items-center justify-content-center AdminMain-icon">
@@ -238,7 +238,7 @@ function HighAdminMain() {
 
                     <Link to="/users/userLeave">
                     <div className="card-body">
-                      <h5 className="card-title" style={{fontWeight: "800"}}>퇴사요청 미승인건<span>| This Year</span></h5>
+                      <h5 className="card-title" style={{fontWeight: "800"}}>퇴사요청 미승인건<span>| 전체보기</span></h5>
 
                       <div className="d-flex align-items-center">
                         <div className="card-icon rounded-circle d-flex align-items-center justify-content-center AdminMain-icon">

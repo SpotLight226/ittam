@@ -113,7 +113,7 @@ function UserMain_request() {
                         </thead>
                         <tbody>
                         {
-                            myRequestList.filter(a => a.userq_yn.includes('관리자사용') || (a.userq_yn.includes('사원사용'))).map((a, i) => {
+                            myRequestList.filter(a => a.userq_yn.includes('관리자사용승인') || (a.userq_yn.includes('사원사용'))).map((a, i) => {
                                 return <tr key={i}>
                                     <th scope="row">{i + 1}</th>
                                     <td>{a.userq_yn.includes("사용") ? "사용요청" : "구매요청"}</td>

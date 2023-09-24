@@ -1,16 +1,20 @@
-import React, { useEffect, useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import '../styles/Style.css';
-import axios from 'axios';
+import React, {useContext, useEffect, useState} from "react";
+import {Link, useNavigate} from "react-router-dom";
+import "../styles/Style.css";
+import axios from "axios";
 import base64 from 'base-64';
+import {tokenInfoContext} from "./TokenInfoProvider";
+
 
 function Header() {
-  const token = localStorage.getItem('token');
-  const username = localStorage.getItem('username');
+  const token = localStorage.getItem("token");
+  const { userRole, username } = useContext(tokenInfoContext);
   const [myInfo, setMyInfo] = useState({});
   const [myAlarmList, setMyAlarmList] = useState([]);
+  const [myAlarmAdminList, setMyAlarmAdminList] = useState([]);
   const [myAlarmCnt, setMyAlarmCnt] = useState(0);
-  const [tokenExpiration, setTokenExpiration] = useState(''); // 토큰 만료까지 남은 시간을 상태로 관리
+  const [myAlarmAdminCnt, setMyAlarmAdminCnt] = useState(0);
+  const [tokenExpiration, setTokenExpiration] = useState(""); // 토큰 만료까지 남은 시간을 상태로 관리
 
   const navigate = useNavigate(); // navigate 함수 생성
 
@@ -71,14 +75,14 @@ function Header() {
 
   const getMyInfo = (username) => {
     axios({
-      url: '/mainPage/getMyInfo',
-      method: 'get',
+      url: "/mainPage/getMyInfo",
+      method: "get",
       headers: {
-        Authorization: token,
+        Authorization : token
       },
       params: {
-        username: username,
-      },
+        username: username
+      }
     })
       .then((response) => {
         setMyInfo(response.data);
@@ -147,11 +151,73 @@ function Header() {
       : navigate('/user/userMain_request');
   };
 
+
+  /////////////////////////////////////////////////
+  const getMyAlarmAdminList =  (username) => {
+    axios({
+      url: "/mainPage/getMyAlarmAdminList",
+      method: "get",
+      headers: {
+        Authorization : token
+      },
+      params: {
+        username: username
+      }
+    }).then(response => {
+      console.log(response.data);
+      setMyAlarmAdminList(response.data);})
+        .catch(error => console.log(error))
+  };
+
+  const handleMyAlamAdminConfirm = (e, alarm_num) => {
+    e.stopPropagation();
+    axios({
+      url: "/mainPage/handleMyAlamAdminConfirm",
+      method: "put",
+      headers: {
+        Authorization : token
+      },
+      params: {
+        alarm_num: alarm_num
+      }
+    }).then(response => {
+      console.log(response.data);
+      getMyAlarmAdminList(username);
+      getMyAlarmAdminCnt(username);
+    })
+        .catch(error => console.log(error))
+    // alarm_type === '교환' || alarm_type === '반납' ?
+    //     navigate("/user/userMain_using") :
+    //     navigate("/user/userMain_request")
+  }
+
+  const getMyAlarmAdminCnt = (username) => {
+    axios({
+      url: "/mainPage/getMyAlarmAdminCnt",
+      method: "get",
+      headers: {
+        Authorization : token
+      },
+      params: {
+        username: username
+      }
+    }).then(response => {console.log(response.data); setMyAlarmAdminCnt(response.data);})
+        .catch(error => console.log(error))
+  }
+
+
+
+
   useEffect(() => {
     if (tokenExpirationDate) {
       getMyInfo(username);
-      getMyAlarmList(username);
-      getMyAlarmCnt(username);
+      if(userRole === 'ROLE_USER') {
+        getMyAlarmList(username);
+        getMyAlarmCnt(username);
+      } else {
+        getMyAlarmAdminList(username);
+        getMyAlarmAdminCnt(username);
+      }
 
       // 토큰 만료까지 남은 시간을 1초마다 업데이트하는 코드
       const intervalId = setInterval(() => {
@@ -225,85 +291,82 @@ function Header() {
             )}
           </div>
 
-          <li className="nav-item dropdown">
-            <Link
-              to="####"
-              className="nav-link nav-icon"
-              data-bs-toggle="dropdown"
-            >
-              <i className="bi bi-bell"></i>
-              {myAlarmCnt !== 0 && (
-                <span className="badge bg-primary badge-number">
-                  {myAlarmCnt}
-                </span>
-              )}
-            </Link>
-            {/* <!-- End Notification Icon --> */}
+            <li className="nav-item dropdown">
+              <Link to="####" className="nav-link nav-icon" data-bs-toggle="dropdown">
+                <i className="bi bi-bell"></i>
+                {userRole === 'ROLE_USER' && myAlarmCnt !== 0 && <span className="badge bg-primary badge-number">{myAlarmCnt}</span>}
+                {userRole === 'ROLE_ADMIN' && myAlarmAdminCnt !== 0 && <span className="badge bg-primary badge-number">{myAlarmAdminCnt}</span>}
+              </Link>
+              {/* <!-- End Notification Icon --> */}
 
-            <ul
-              className="dropdown-menu dropdown-menu-end dropdown-menu-arrow notifications"
-              style={{
-                overflowY: 'scroll',
-                maxHeight: '486px',
-                width: '350px',
-              }}
-            >
-              <li className="dropdown-header">
-                {myAlarmCnt}개의 알림이 있습니다.
-                {/*<Link to="####">*/}
-                {/*<span className="badge rounded-pill bg-primary p-2 ms-2">*/}
-                {/*  View all*/}
-                {/*</span>*/}
-                {/*</Link>*/}
-              </li>
-              {myAlarmList.map((a, i) => {
-                return (
-                  <div
-                    onClick={(e) =>
-                      handleMyAlamConfirm(e, a.ALARM_NUM, a.ALARM_TYPE)
-                    }
-                    key={i}
-                    style={{ cursor: 'pointer' }}
-                  >
-                    <li>
-                      <hr className="dropdown-divider"></hr>
-                    </li>
-                    <li className="notification-item">
-                      <i className="bi bi-exclamation-circle text-warning"></i>
-                      {a.ALARM_TYPE === '교환' || a.ALARM_TYPE === '반납' ? (
+              <ul className="dropdown-menu dropdown-menu-end dropdown-menu-arrow notifications" style={{overflowY: 'scroll', maxHeight: '486px', width: '350px'}}>
+                <li className="dropdown-header">
+                   {userRole === 'ROLE_USER' ? myAlarmCnt : myAlarmAdminCnt}개의 알림이 있습니다.
+                </li>
+
+                { userRole === 'ROLE_USER' && (
+
+                  myAlarmList.map((a, i) => {
+                    return <div onClick={(e) => handleMyAlamConfirm(e, a.ALARM_NUM, a.ALARM_TYPE)} key={i} style={{cursor: 'pointer'}}>
+                      <li>
+                        <hr className="dropdown-divider"></hr>
+                      </li>
+                      <li className="notification-item">
+                        <i className="bi bi-exclamation-circle text-warning"></i>
+                        {
+                          a.ALARM_TYPE === '교환' || a.ALARM_TYPE === '반납' ?
                         <div>
-                          <h4>관리자 {a.ALARM_TYPE}처리 완료</h4>
-                          <p>
-                            요청하신 {a.ASSETS_NAME}({a.ASSETS_DETAIL_NAME})의{' '}
-                            {a.ALARM_TYPE} {a.ASSETS_STATUS}처리가
-                            완료되었습니다.
-                          </p>
+                          <h4>관리자 {a.ALARM_TYPE}{a.ALARM_STATUS}</h4>
+                          <p>요청하신 {a.ASSETS_NAME}({a.ASSETS_DETAIL_NAME})의 {a.ALARM_TYPE}{a.ASSETS_STATUS}이 완료되었습니다.</p>
                           <p>{regdate(a.ALARM_REGDATE)}</p>
-                        </div>
-                      ) : a.ALARM_TYPE === '사용신청' ? (
-                        <div>
-                          <h4>관리자 {a.ALARM_TYPE}처리 완료</h4>
-                          <p>
-                            요청하신 {a.ASSETS_NAME}({a.ASSETS_DETAIL_NAME})의{' '}
-                            {a.ALARM_TYPE} {a.ASSETS_STATUS}처리가
-                            완료되었습니다.
-                          </p>
-                          <p>{regdate(a.ALARM_REGDATE)}</p>
-                        </div>
-                      ) : (
-                        <div>
-                          <h4>관리자 {a.ALARM_TYPE}처리 완료</h4>
-                          <p>
-                            요청하신 {a.USERQ_KIND}의 {a.ALARM_TYPE}{' '}
-                            {a.ASSETS_STATUS}처리가 완료되었습니다.
-                          </p>
-                          <p>{regdate(a.ALARM_REGDATE)}</p>
-                        </div>
-                      )}
-                    </li>
-                  </div>
-                );
-              })}
+                        </div> :(a.ALARM_TYPE === '사용신청' ?
+                              <div>
+                                <h4>관리자 사용{a.ALARM_STATUS}</h4>
+                                <p>요청하신 {a.ASSETS_NAME}({a.ASSETS_DETAIL_NAME})의 {a.ALARM_TYPE} {a.ALARM_STATUS}처리가 완료되었습니다.</p>
+                                <p>{regdate(a.ALARM_REGDATE)}</p>
+                              </div> :
+                                      <div>
+                                        <h4>관리자 구매{a.ALARM_STATUS}</h4>
+                                        <p>요청하신 {a.USERQ_KIND}의 {a.ALARM_TYPE} {a.ASSETS_STATUS}처리가 완료되었습니다.</p>
+                                        <p>{regdate(a.ALARM_REGDATE)}</p>
+                                      </div>
+                              )
+                        }
+                      </li>
+
+                    </div>
+                  })
+
+                )}
+
+
+                { userRole === 'ROLE_ADMIN' && (
+
+                    myAlarmAdminList.map((a, i) => {
+                      return <div onClick={(e) => handleMyAlamAdminConfirm(e, a.ALARM_NUM)} key={i} style={{cursor: 'pointer'}}>
+                        <li>
+                          <hr className="dropdown-divider"></hr>
+                        </li>
+                        <li className="notification-item">
+                          <i className="bi bi-exclamation-circle text-warning"></i>
+                          {
+                            a.ALARM_TYPE === '수리' || a.ALARM_TYPE === '폐기' ?
+                                <div>
+                                  <h4>최종관리자 {a.ALARM_TYPE}{a.ALARM_STATUS}</h4>
+                                  <p>요청하신 {a.ASSETS_NAME}({a.ASSETS_DETAIL_NAME})의 {a.ALARM_TYPE}요청건이 {a.ALARM_STATUS}되었습니다.</p>
+                                  <p>{regdate(a.ALARM_REGDATE)}</p>
+                                </div> :
+                                        <div>
+                                          <h4>최종관리자 구매{a.ALARM_STATUS}</h4>
+                                          <p>요청하신 {a.CATEGORY_NAME}의 {a.ALARM_TYPE}요청건이 {a.ALARM_STATUS}되었습니다.</p>
+                                          <p>{regdate(a.ALARM_REGDATE)}</p>
+                                        </div>
+                          }
+                        </li>
+
+                      </div>
+                    })
+                )}
 
               <li>
                 <hr className="dropdown-divider"></hr>
@@ -411,37 +474,27 @@ function Header() {
           </li>
           {/* <!-- End Messages Nav --> */}
 
-          <li className="nav-item dropdown pe-3">
-            <Link
-              to="####"
-              className="nav-link nav-profile d-flex align-items-center pe-0"
-              data-bs-toggle="dropdown"
-            >
-              {/*<img*/}
-              {/*    src="/assets/img/profile-img.jpg"*/}
-              {/*    alt="Profile"*/}
-              {/*    className="rounded-circle"*/}
-              {/*></img>*/}
-              {myInfo.role === 'ROLE_HIGH_ADMIN' ? (
-                <i
-                  className="bx bxs-user-circle"
-                  style={{ fontSize: '40px', color: 'purple' }}
-                ></i>
-              ) : myInfo.role === 'ROLE_ADMIN' ? (
-                <i
-                  className="bx bxs-user-circle"
-                  style={{ fontSize: '40px', color: 'green' }}
-                ></i>
-              ) : (
-                <i
-                  className="bx bxs-user-circle"
-                  style={{ fontSize: '40px', color: 'skyblue' }}
-                ></i>
-              )}
-              <span
-                className="d-none d-md-block dropdown-toggle ps-2"
-                style={{ fontSize: '20px' }}
+
+            <li className="nav-item dropdown pe-3">
+              <Link to="####"
+                    className="nav-link nav-profile d-flex align-items-center pe-0"
+                    data-bs-toggle="dropdown"
               >
+                {/*<img*/}
+                {/*    src="/assets/img/profile-img.jpg"*/}
+                {/*    alt="Profile"*/}
+                {/*    className="rounded-circle"*/}
+                {/*></img>*/}
+                {
+                  myInfo.role === 'ROLE_HIGH_ADMIN' ?
+                  <i className="bx bxs-user-circle" style={{fontSize: '40px', color: '#483D8B'}}></i> :
+                  (
+                    myInfo.role === 'ROLE_ADMIN' ?
+                    <i className="bx bxs-user-circle" style={{fontSize: '40px', color: '#4682B4'}}></i> :
+                    <i className="bx bxs-user-circle" style={{fontSize: '40px', color: '#6495ED'}}></i>
+                  )
+                }
+                <span className="d-none d-md-block dropdown-toggle ps-2" style={{fontSize: '20px'}}>
                 {myInfo.user_name}
               </span>
             </Link>

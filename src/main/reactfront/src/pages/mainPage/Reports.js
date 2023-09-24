@@ -12,6 +12,7 @@ import DepartAssetChart from "../../component/Chart/DepartAssetChart";
 import AssetRadialBarChart from "../../component/Chart/AssetRadialBarChart";
 import SWMFGChart from '../../component/Chart/SWMFGChart';
 import EtcMFGChart from '../../component/Chart/EtcMFGChart';
+import ServerMFGChart from "../../component/Chart/ServerMFGChart";
 
 function Reports() {
   const token = localStorage.getItem("token");
@@ -25,6 +26,8 @@ function Reports() {
   const [categoryNum, setCategoryNum] = useState();
   const [SWMFGNum, setSWMFGMun] = useState();
   const [EtcMFGNum, setEtcMFGNum] = useState();
+  const [ServerMFGNum, setServerMFGNum] = useState();
+  const [departAssetNum, setDepartAssetNum] = useState();
 
 
 
@@ -167,6 +170,27 @@ function Reports() {
       console.log(error);
     });
   }
+  const getServerMFGNum = () => {
+    axios({
+      url: "/reports/getServerMFGNum",
+      method: 'get',
+      headers: {
+        Authorization : token
+      },
+    }).then(response => {setServerMFGNum(response.data)})
+    .catch(error => console.log(error));
+  }
+
+  const getDepartAsset = () => {
+    axios({
+      url: "/reports/getDepartAsset",
+      method: 'get',
+      headers: {
+        Authorization : token
+      },
+    }).then(response => {setDepartAssetNum(response.data); console.log(response.data)})
+        .catch(error => console.log(error));
+  }
 
 
 
@@ -180,7 +204,9 @@ function Reports() {
     getMFGNum();
     getRadialBarNum();
     getSWMFGNum();
-    // getEtcMFGNum();
+    getEtcMFGNum();
+    getServerMFGNum();
+    getDepartAsset();
   }, [])
 
 
@@ -204,7 +230,7 @@ function Reports() {
               <div className="row">
 
                 {/*  <!-- Sales Card --> */}
-                <div className="col-xxl-3 col-md-3">
+                <div className="col-xxl-4 col-md-4">
                   <div className="card info-card sales-card" style={{ backgroundColor: 'rgb(219 228 245)'}}>
 
 
@@ -226,7 +252,7 @@ function Reports() {
                   </div>
                 </div>{/* <!-- End Sales Card --> */}
                 {/*  <!-- Sales Card --> */}
-                <div className="col-xxl-3 col-md-3">
+                <div className="col-xxl-4 col-md-4">
                   <div className="card info-card sales-card" style={{ backgroundColor: 'rgb(219 228 245)' }}>
 
 
@@ -248,7 +274,7 @@ function Reports() {
                   </div>
                 </div>{/* <!-- End Sales Card --> */}
                 {/*  <!-- Sales Card --> */}
-                <div className="col-xxl-3 col-md-3">
+                <div className="col-xxl-4 col-md-4">
                   <div className="card info-card sales-card" style={{ backgroundColor: 'rgb(219 228 245)' }}>
 
 
@@ -259,7 +285,7 @@ function Reports() {
                       <div className="d-flex align-items-center" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
 
                         <div className="ps-3">
-                          {cardNum != undefined ? <h6 style={{ fontSize: '50px' }}>{Math.round((cardNum.usingAssetsNum / cardNum.allAssetsNum) * 100)}%</h6> :
+                          {cardNum !== undefined ? <h6 style={{ fontSize: '50px' }}>{Math.round((cardNum.usingAssetsNum / cardNum.allAssetsNum) * 100)}%</h6> :
                               <div className="d-flex justify-content-center">
                                 <div className="spinner-border text-primary" role="status">
                                   <span className="visually-hidden">Loading...</span>
@@ -274,27 +300,27 @@ function Reports() {
                   </div>
                 </div>{/* <!-- End Sales Card --> */}
                 {/*  <!-- Sales Card --> */}
-                <div className="col-xxl-3 col-md-3">
-                  <div className="card info-card sales-card" style={{ backgroundColor: 'rgb(219 228 245)' }}>
+                {/*<div className="col-xxl-3 col-md-3">*/}
+                {/*  <div className="card info-card sales-card" style={{ backgroundColor: 'rgb(219 228 245)' }}>*/}
 
 
 
-                    <div className="card-body">
-                      <h5 className="card-title" style={{ fontWeight: "800", fontSize: '20px' }}>이번 달 자산 구매비</h5>
+                {/*    <div className="card-body">*/}
+                {/*      <h5 className="card-title" style={{ fontWeight: "800", fontSize: '20px' }}>이번 달 자산 구매비</h5>*/}
 
-                      <div className="d-flex align-items-center" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                        {/* <div className="card-icon rounded-circle d-flex align-items-center justify-content-center AdminMain-icon">
-                          <i className="bi bi-box-arrow-in-up-right"></i>
-                        </div> */}
-                        <div className="ps-3">
-                          <h6 style={{ fontSize: '50px' }}>256</h6>
-                        </div>
-                      </div>
-                    </div>
+                {/*      <div className="d-flex align-items-center" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>*/}
+                {/*        /!* <div className="card-icon rounded-circle d-flex align-items-center justify-content-center AdminMain-icon">*/}
+                {/*          <i className="bi bi-box-arrow-in-up-right"></i>*/}
+                {/*        </div> *!/*/}
+                {/*        <div className="ps-3">*/}
+                {/*          <h6 style={{ fontSize: '50px' }}>256</h6>*/}
+                {/*        </div>*/}
+                {/*      </div>*/}
+                {/*    </div>*/}
 
 
-                  </div>
-                </div>{/* <!-- End Sales Card --> */}
+                {/*  </div>*/}
+                {/*</div>/!* <!-- End Sales Card --> *!/*/}
 
 
                 <section className="section">
@@ -321,7 +347,12 @@ function Reports() {
                       <div className="card" >
                         <div className="card-body" style={{ backgroundColor: 'rgb(219 228 245)', borderRadius: '8px'  }}>
                           <h5 className="card-title" style={{ fontWeight: "800" }}>부서별 자산 현황</h5>
-                          <DepartAssetChart />
+                          {departAssetNum!== undefined ? <DepartAssetChart departAssetNum={departAssetNum}/> :
+                              <div className="d-flex justify-content-center">
+                                <div className="spinner-border text-primary" role="status">
+                                  <span className="visually-hidden">Loading...</span>
+                                </div>
+                              </div>}
                           
                         </div>
                       </div>
@@ -333,7 +364,7 @@ function Reports() {
                       <div className="card" >
                         <div className="card-body" style={{ backgroundColor: 'rgb(219 228 245)', borderRadius: '8px'  }}>
                           <h5 className="card-title" style={{ fontWeight: "800" }}>자산 현황</h5>
-                          {stickNum != undefined ? <AssetStickChart stickNum={stickNum} /> :
+                          {stickNum !== undefined ? <AssetStickChart stickNum={stickNum} /> :
                               <div className="d-flex justify-content-center">
                                 <div className="spinner-border text-primary" role="status">
                                   <span className="visually-hidden">Loading...</span>
@@ -350,7 +381,7 @@ function Reports() {
                       <div className="card" >
                         <div className="card-body" style={{ backgroundColor: 'rgb(219 228 245)', borderRadius: '8px'  }}>
                           <h5 className="card-title" style={{ fontWeight: "800" }}>카테고리별 사용률</h5>
-                          {categoryNum!=undefined ? <AssetRadialBarChart categoryNum={categoryNum}/> :
+                          {categoryNum!==undefined ? <AssetRadialBarChart categoryNum={categoryNum}/> :
                               <div className="d-flex justify-content-center">
                                 <div className="spinner-border text-primary" role="status">
                                   <span className="visually-hidden">Loading...</span>
@@ -367,13 +398,13 @@ function Reports() {
 
 
 
-                    <i class="bi bi-laptop" style={{fontSize: '30px'}}> PC/노트북</i>
+                    <i className="bi bi-laptop" style={{fontSize: '30px'}}> PC/노트북</i>
                     <div className="col-lg-4">
 
                       <div className="card" >
                         <div className="card-body" style={{ backgroundColor: 'rgb(219 228 245)', borderRadius: '8px'  }}>
                           <h5 className="card-title" style={{ fontWeight: "800" }}>CPU</h5>
-                          {CPUNum != undefined ? <CPUChart CPUNum={CPUNum} /> :
+                          {CPUNum !== undefined ? <CPUChart CPUNum={CPUNum} /> :
                               <div className="d-flex justify-content-center">
                                 <div className="spinner-border text-primary" role="status">
                                   <span className="visually-hidden">Loading...</span>
@@ -390,7 +421,7 @@ function Reports() {
                       <div className="card" >
                         <div className="card-body" style={{ backgroundColor: 'rgb(219 228 245)', borderRadius: '8px'  }}>
                           <h5 className="card-title" style={{ fontWeight: "800" }}>GPU</h5>
-                          {GPUNum != undefined ? <GPUChart GPUNum={GPUNum} /> :
+                          {GPUNum !== undefined ? <GPUChart GPUNum={GPUNum} /> :
                               <div className="d-flex justify-content-center">
                                 <div className="spinner-border text-primary" role="status">
                                   <span className="visually-hidden">Loading...</span>
@@ -407,7 +438,7 @@ function Reports() {
                       <div className="card" >
                         <div className="card-body" style={{ backgroundColor: 'rgb(219 228 245)', borderRadius: '8px' }}>
                           <h5 className="card-title" style={{ fontWeight: "800" }}>제조사</h5>
-                          {MFGNum != undefined ? <MFGChart MFGNum={MFGNum}/> :
+                          {MFGNum !== undefined ? <MFGChart MFGNum={MFGNum}/> :
                           <div className="d-flex justify-content-center">
                           <div className="spinner-border text-primary" role="status">
                             <span className="visually-hidden">Loading...</span>
@@ -421,11 +452,11 @@ function Reports() {
                     </div>
 
                     <div className="col-lg-4">
-                    <i class="bi bi-file-earmark-word" style={{fontSize: '30px'}}> SW</i>
+                    <i className="bi bi-file-earmark-word" style={{fontSize: '30px'}}> SW</i>
                       <div className="card" >
                         <div className="card-body" style={{ backgroundColor: 'rgb(219 228 245)', borderRadius: '8px' }}>
-                          <h5 className="card-title" style={{ fontWeight: "800" }}>제조사</h5>
-                          {SWMFGNum != undefined ? <SWMFGChart SWMFGNum={SWMFGNum}/> :
+                          <h5 className="card-title" style={{ fontWeight: "800" }}>SW 제조사</h5>
+                          {SWMFGNum !== undefined ? <SWMFGChart SWMFGNum={SWMFGNum}/> :
                           <div className="d-flex justify-content-center">
                           <div className="spinner-border text-primary" role="status">
                             <span className="visually-hidden">Loading...</span>
@@ -439,27 +470,11 @@ function Reports() {
                     </div>
 
                     <div className="col-lg-4">
-                    <i class="bi bi-keyboard" style={{fontSize: '30px'}}> 주변기기</i>
+                    <i className="bi bi-keyboard" style={{fontSize: '30px'}}> 주변기기</i>
                       <div className="card" >
                         <div className="card-body" style={{ backgroundColor: 'rgb(219 228 245)', borderRadius: '8px' }}>
-                          <h5 className="card-title" style={{ fontWeight: "800" }}>제조사</h5>
-                          {EtcMFGNum != undefined ? <EtcMFGChart EtcMFGNum={EtcMFGNum}/> :
-                          <div className="d-flex justify-content-center">
-                          <div className="spinner-border text-primary" role="status">
-                            <span className="visually-hidden">Loading...</span>
-                          </div>
-                        </div>
-                          }
-
-                        </div>
-                      </div>
-
-                    </div><div className="col-lg-4">
-                    <i class="bi bi-hdd-stack" style={{fontSize: '30px'}}> 서버</i>
-                      <div className="card" >
-                        <div className="card-body" style={{ backgroundColor: 'rgb(219 228 245)', borderRadius: '8px' }}>
-                          <h5 className="card-title" style={{ fontWeight: "800" }}>제조사</h5>
-                          {SWMFGNum != undefined ? <SWMFGChart SWMFGNum={SWMFGNum}/> :
+                          <h5 className="card-title" style={{ fontWeight: "800" }}>주변기기 제조사</h5>
+                          {EtcMFGNum !== undefined ? <EtcMFGChart EtcMFGNum={EtcMFGNum}/> :
                           <div className="d-flex justify-content-center">
                           <div className="spinner-border text-primary" role="status">
                             <span className="visually-hidden">Loading...</span>
@@ -474,23 +489,27 @@ function Reports() {
 
 
 
+                    <div className="col-lg-4">
+                    <i className="bi bi-hdd-stack" style={{fontSize: '30px'}}> 서버</i>
+                      <div className="card" >
+                        <div className="card-body" style={{ backgroundColor: 'rgb(219 228 245)', borderRadius: '8px' }}>
+                          <h5 className="card-title" style={{ fontWeight: "800" }}>서버 제조사</h5>
+                          {ServerMFGNum !== undefined ? <ServerMFGChart ServerMFGNum={ServerMFGNum}/> :
+                          <div className="d-flex justify-content-center">
+                          <div className="spinner-border text-primary" role="status">
+                            <span className="visually-hidden">Loading...</span>
+                          </div>
+                        </div>
+                          }
 
+                        </div>
+                      </div>
 
+                    </div>
 
 
                   </div>
                 </section>
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -499,14 +518,6 @@ function Reports() {
 
           </div>
         </section>
-
-
-
-
-
-
-
-
 
 
       </main>

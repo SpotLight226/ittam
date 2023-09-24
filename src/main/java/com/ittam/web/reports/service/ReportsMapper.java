@@ -38,4 +38,6 @@ public interface ReportsMapper {
     public List<Map<Object, Object>> getAssetsUsingNum();
     public Integer getSWMFGNum(String swmfg);
     public Integer getEtcMFGNum(String etcmfg);
+    public Integer getServerMFGNum(String servermfg);
+    public Integer getDepartAsset(String depart);
 }

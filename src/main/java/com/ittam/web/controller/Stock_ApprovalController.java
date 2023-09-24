@@ -51,16 +51,6 @@ public class  Stock_ApprovalController {
     public ResponseEntity<Integer> updateITStatus(@RequestBody Map<String, Object> requestData) {
         Map<String, Object> itemData = (Map<String, Object>) requestData.get("item");
 
-        ////////////////알람관련추가사항/////////////////////
-        Map<String, Object> map = new HashMap<>();
-        map.put("alarm_status", "승인");
-        map.put("alarm_type", itemData.get("appro_kind"));
-        map.put("username", itemData.get("username"));
-        map.put("assets_num", itemData.get("assets_num"));
-        map.put("category_num", itemData.get("category_num"));
-        mainPageService.registAlarm_admin(map);
-        ///////////////////////////////////////////////////
-
 
         System.out.println(itemData.toString());
         ITAssetsVO vo = new ITAssetsVO();
@@ -68,12 +58,30 @@ public class  Stock_ApprovalController {
         UserRequestVO vo3 = new UserRequestVO();
         int data = 0;
         if("폐기".equals((String) itemData.get("appro_kind")) || "수리".equals((String) itemData.get("appro_kind"))) {
+            ////////////////알람관련추가사항/////////////////////
+            Map<String, Object> map = new HashMap<>();
+            map.put("alarm_status", "승인");
+            map.put("alarm_type", itemData.get("appro_kind"));
+            map.put("username", itemData.get("username"));
+            map.put("assets_num", itemData.get("assets_num"));
+            map.put("category_num", itemData.get("category_num"));
+            mainPageService.registAlarm_admin(map);
+            ///////////////////////////////////////////////////
             vo2.setAppro_num((int)itemData.get("appro_num"));
             stock_approvalService.ApprovY(vo2);
             vo.setAssets_status((String) itemData.get("appro_kind"));
             vo.setAssets_num((int) itemData.get("assets_num"));
             data = stock_approvalService.updateITStatus(vo);
         }else if("구매".equals((String) itemData.get("appro_kind"))) {
+            /////알람관련 추가사항/////
+            System.out.println("구매신청!!!!!!");
+            Map<String, Object> map = new HashMap<>();
+            map.put("username", itemData.get("username"));
+            map.put("userq_num", itemData.get("userq_num"));
+            map.put("alarm_type", "구매신청");
+            map.put("alarm_status", "승인");
+            mainPageService.registAlarm_req(map);
+            ////////////////////////
 //            if((Integer)itemData.get("assest_num") != 0) {
                 vo2.setAppro_num((int)itemData.get("appro_num"));
                 stock_approvalService.ApprovY(vo2);

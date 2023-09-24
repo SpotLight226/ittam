@@ -179,4 +179,34 @@ public class ReportsServiceImpl implements ReportsService{
         map.put("HP", reportsMapper.getEtcMFGNum("HP"));
         return map;
     }
+
+    @Override
+    public Map<String, Integer> getServerMFGNum() {
+        Map<String, Integer> map = new HashMap<>();
+        map.put("Crucial", reportsMapper.getServerMFGNum("Crucial"));
+        map.put("Kingston", reportsMapper.getServerMFGNum("Kingston"));
+        map.put("Samsung", reportsMapper.getServerMFGNum("Samsung"));
+        map.put("SanDisk", reportsMapper.getServerMFGNum("SanDisk"));
+        map.put("Seagate", reportsMapper.getServerMFGNum("Seagate"));
+        map.put("Toshiba", reportsMapper.getServerMFGNum("Toshiba"));
+        map.put("Western", reportsMapper.getServerMFGNum("Western"));
+        return map;
+    }
+
+    @Override
+    public Map<String, Integer> getDepartAsset() {
+        Map<String, Integer> map = new HashMap<>();
+        map.put("Design", reportsMapper.getDepartAsset("디자인"));
+        map.put("Rnd", reportsMapper.getDepartAsset("연구개발"));
+        map.put("Eng", reportsMapper.getDepartAsset("엔지니어링"));
+        map.put("Fin", reportsMapper.getDepartAsset("재무"));
+        map.put("Pur", reportsMapper.getDepartAsset("구매"));
+        map.put("Sal", reportsMapper.getDepartAsset("영업"));
+        map.put("Dev", reportsMapper.getDepartAsset("개발"));
+        map.put("Mark", reportsMapper.getDepartAsset("마케팅"));
+        map.put("Hr", reportsMapper.getDepartAsset("인사"));
+        map.put("Prod", reportsMapper.getDepartAsset("생산"));
+        return map;
+    }
+
 }

@@ -170,7 +170,7 @@ function AdminMain() {
 
                     <Link to="/admin/approveList">
                     <div className="card-body">
-                      <h5 className="card-title" style={{fontWeight: "800"}}>자산사용요청 미승인건 <span>| Today</span></h5>
+                      <h5 className="card-title" style={{fontWeight: "800"}}>자산사용요청 미승인건 <span>| 전체보기</span></h5>
 
                       <div className="d-flex align-items-center">
                         <div className="card-icon rounded-circle d-flex align-items-center justify-content-center AdminMain-icon">
@@ -193,7 +193,7 @@ function AdminMain() {
 
                     <Link to="/admin/approveBuyList">
                     <div className="card-body">
-                      <h5 className="card-title" style={{fontWeight: "800"}}>자산구매요청 미승인건<span>| This Month</span></h5>
+                      <h5 className="card-title" style={{fontWeight: "800"}}>자산구매요청 미승인건<span>| 전체보기</span></h5>
 
                       <div className="d-flex align-items-center">
                         <div className="card-icon rounded-circle d-flex align-items-center justify-content-center AdminMain-icon">
@@ -215,7 +215,7 @@ function AdminMain() {
                     <div className="card info-card sales-card">
                       <Link to="/admin/returnExchange">
                       <div className="card-body">
-                        <h5 className="card-title" style={{fontWeight: "800"}}>교환 및 반납요청 미승인건<span>| This Year</span></h5>
+                        <h5 className="card-title" style={{fontWeight: "800"}}>교환 및 반납요청 미승인건<span>| 전체보기</span></h5>
 
                         <div className="d-flex align-items-center">
                           <div className="card-icon rounded-circle d-flex align-items-center justify-content-center AdminMain-icon">
@@ -240,7 +240,7 @@ function AdminMain() {
 
                     <Link to="/users/userLeave">
                     <div className="card-body">
-                      <h5 className="card-title" style={{fontWeight: "800"}}>퇴사요청 미승인건<span>| This Year</span></h5>
+                      <h5 className="card-title" style={{fontWeight: "800"}}>퇴사요청 미승인건<span>| 전체보기</span></h5>
 
                       <div className="d-flex align-items-center">
                         <div className="card-icon rounded-circle d-flex align-items-center justify-content-center AdminMain-icon">
@@ -302,73 +302,6 @@ function AdminMain() {
 
                 </div>{/* <!-- End Right side columns --> */}
 
-                {/* <!-- Recent Sales --> */}
-                {/*<div className="col-12">*/}
-                {/*  <div className="card recent-sales overflow-auto">*/}
-
-                {/*    */}
-                {/*    <div class="">*/}
-                {/*      <div class="card-body">*/}
-                {/*        <h5 class="card-title" style={{fontWeight: "800"}}>나의 결재 요청 승인 현황 <Link to="####"><span>| 전체보기</span></Link></h5>*/}
-
-                {/*        <div class="tab-pane fade show active" id="home-justified" role="tabpanel" aria-labelledby="home-tab">*/}
-                {/*          <table className="table table-borderless">*/}
-                {/*            <thead>*/}
-                {/*            <tr>*/}
-                {/*              <th scope="col">#</th>*/}
-                {/*              <th scope="col">요청자</th>*/}
-                {/*              <th scope="col">결재요청사항</th>*/}
-                {/*              <th scope="col">결재종류</th>*/}
-                {/*              <th scope="col">승인여부</th>*/}
-                {/*            </tr>*/}
-                {/*            </thead>*/}
-                {/*            <tbody>*/}
-                {/*            <tr>*/}
-                {/*              <th scope="row"><Link to="####">2457</Link></th>*/}
-                {/*              <td>Brandon Jacob</td>*/}
-                {/*              <td><Link to="####" className="text-primary">At praesentium minu</Link></td>*/}
-                {/*              <td>$64</td>*/}
-                {/*              <td><span className="badge bg-success">승인</span></td>*/}
-                {/*            </tr>*/}
-                {/*            <tr>*/}
-                {/*              <th scope="row"><Link to="####">2458</Link></th>*/}
-                {/*              <td>Bridie Kessler</td>*/}
-                {/*              <td><Link to="####" className="text-primary">Blanditiis dolor omnis similique</Link></td>*/}
-                {/*              <td>$47</td>*/}
-                {/*              <td><span className="badge bg-warning">확인중</span></td>*/}
-                {/*            </tr>*/}
-                {/*            <tr>*/}
-                {/*              <th scope="row"><Link to="####">2049</Link></th>*/}
-                {/*              <td>Ashleigh Langosh</td>*/}
-                {/*              <td><Link to="####" className="text-primary">At recusandae consectetur</Link></td>*/}
-                {/*              <td>$147</td>*/}
-                {/*              <td><span className="badge bg-success">승인</span></td>*/}
-                {/*            </tr>*/}
-                {/*            <tr>*/}
-                {/*              <th scope="row"><Link to="####">2644</Link></th>*/}
-                {/*              <td>Angus Grady</td>*/}
-                {/*              <td><Link to="####" className="text-primar">Ut voluptatem id earum et</Link></td>*/}
-                {/*              <td>$67</td>*/}
-                {/*              <td><span className="badge bg-danger">반려</span></td>*/}
-                {/*            </tr>*/}
-                {/*            <tr>*/}
-                {/*              <th scope="row"><Link to="####">2644</Link></th>*/}
-                {/*              <td>Raheem Lehner</td>*/}
-                {/*              <td><Link to="####" className="text-primary">Sunt similique distinctio</Link></td>*/}
-                {/*              <td>$165</td>*/}
-                {/*              <td><span className="badge bg-success">승인</span></td>*/}
-                {/*            </tr>*/}
-                {/*            </tbody>*/}
-                {/*          </table>*/}
-                {/*        </div>*/}
-
-                {/*      </div>*/}
-                {/*    </div>*/}
-
-
-
-                {/*  </div>*/}
-                {/*</div>/!* <!-- End Recent Sales --> *!/*/}
 
                 {/*  <!-- Top Selling --> */}
                 <div className="col-12">

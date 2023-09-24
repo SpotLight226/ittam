@@ -1,12 +1,12 @@
 import { useState } from 'react';
 import ReactApexChart from "react-apexcharts";
 
-function DepartAssetChart({}) {
+function DepartAssetChart({departAssetNum}) {
 
   const value = {
 
     series: [{
-      data: [400, 430, 448, 470, 540, 580, 690, 1100, 1200, 1380]
+      data: [departAssetNum.Design, departAssetNum.Rnd, departAssetNum.Eng, departAssetNum.Fin, departAssetNum.Pur, departAssetNum.Sal, departAssetNum.Dev, departAssetNum.Mark, departAssetNum.Hr, departAssetNum.Prod]
     }],
     options: {
       chart: {
