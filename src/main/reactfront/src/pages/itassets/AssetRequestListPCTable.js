@@ -38,7 +38,10 @@ const AssetRequestListPCTable = ({index, currentPage, itemsPerPage,
             <th>
                 {/*<input type={"checkbox"}/>*/}
             </th>
-            <th scope="row">{(currentPage - 1) * itemsPerPage + index + 1}</th>
+            <th scope="row">
+                {`${(currentPage - 1) * itemsPerPage + index + 1}`.padStart(3, '\u00A0')}
+            </th>
+
             <td>
                 <Link
                     to="#"
