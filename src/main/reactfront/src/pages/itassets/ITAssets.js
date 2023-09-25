@@ -185,6 +185,8 @@ function ITAssets() {
   const filteredData = data.filter((item) => {
     const matchesSearchTerm = item.assets_name.includes(searchTerm);
 
+  
+
     const selectFilter = selectedStatus
       ? item.assets_status === selectedStatus
       : true;
@@ -194,9 +196,11 @@ function ITAssets() {
       : true;
 
     return matchesSearchTerm && selectFilter && categoryFilter;
-  });
+});
 
-  const [searchInput, setSearchInput] = useState("");
+const [searchInput, setSearchInput] = useState("");
+
+
 
   const handleSearchKeyPress = (event) => {
     if (event.key === "Enter") {
