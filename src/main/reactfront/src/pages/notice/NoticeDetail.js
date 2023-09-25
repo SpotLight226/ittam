@@ -286,11 +286,12 @@ function NoticeDetail() {
                       justifyContent: "center",
                       alignItems: "center",
                     }}
-                  ><Link to="/noticelist">
+                  ><Link to="/noticeuser">
                   <button className="btn btn-primary listBtn" type="button" style={{ marginRight: "10px" }}>
                   목록
                   </button>
-                  </Link></div>
+                  </Link>
+                  </div>
                     )} 
 
 
