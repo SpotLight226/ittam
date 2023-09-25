@@ -31,7 +31,7 @@ function UserMain_request() {
     const [myInfo, setMyInfo] = useState({});
 
     const count_using = myRequestList.filter(a => a.userq_yn.includes('관리자사용승인') || (a.userq_yn.includes('사원사용'))).length;
-    const count_buy = myRequestList.filter(a => a.userq_yn.includes('구매') && (a.userq_yn.includes('반려') || a.userq_yn.includes('최종구매승인'))).length;
+    const count_buy = myRequestList.filter(a => a.userq_yn.includes('구매') && (a.userq_yn.includes('사원구매') || a.userq_yn.includes('관리자구매승인'))).length;
 
     const getMyInfo = (username) => {
         axios({
@@ -117,7 +117,7 @@ function UserMain_request() {
                             <table className="table table-borderless" style={{textAlign: 'center'}}>
                                 <thead>
                                 <tr className="table-light">
-                                    <th scope="col">#</th>
+                                    <th scope="col">번호</th>
                                     <th scope="col">신청종류</th>
                                     <th scope="col">신청자산</th>
                                     <th scope="col">신청제목</th>

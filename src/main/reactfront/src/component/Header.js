@@ -5,6 +5,7 @@ import axios from 'axios';
 import base64 from 'base-64';
 import { tokenInfoContext } from './TokenInfoProvider';
 
+
 function Header() {
   const token = localStorage.getItem('token');
   const { userRole, username } = useContext(tokenInfoContext);
@@ -245,6 +246,8 @@ function Header() {
     document.body.classList.toggle('toggle-sidebar');
   };
 
+
+
   return (
     <header id="header" className="header fixed-top d-flex align-items-center">
       <div className="d-flex align-items-center justify-content-between">
@@ -279,24 +282,6 @@ function Header() {
       </div>
       {/* <!-- End Logo --> */}
 
-      <div className="search-bar">
-        <form
-          className="search-form d-flex align-items-center"
-          method="POST"
-          action="#"
-        >
-          <input
-            type="text"
-            name="query"
-            placeholder="Search"
-            title="Enter search keyword"
-          ></input>
-          <button type="submit" title="Search">
-            <i className="bi bi-search"></i>
-          </button>
-        </form>
-      </div>
-      {/* <!-- End Search Bar --> */}
 
       <nav className="header-nav ms-auto">
         <ul className="d-flex align-items-center">
@@ -456,100 +441,6 @@ function Header() {
           </li>
           {/* <!-- End Notification Nav --> */}
 
-          <li className="nav-item dropdown">
-            <Link
-              to="####"
-              className="nav-link nav-icon"
-              data-bs-toggle="dropdown"
-            >
-              <i className="bi bi-chat-left-text"></i>
-              <span className="badge bg-success badge-number">3</span>
-            </Link>
-            {/* <!-- End Messages Icon --> */}
-
-            <ul className="dropdown-menu dropdown-menu-end dropdown-menu-arrow messages">
-              <li className="dropdown-header">
-                You have 3 new messages
-                <Link to="####">
-                  <span className="badge rounded-pill bg-primary p-2 ms-2">
-                    View all
-                  </span>
-                </Link>
-              </li>
-              <li>
-                <hr className="dropdown-divider"></hr>
-              </li>
-
-              <li className="message-item">
-                <Link to="####">
-                  <img
-                    src="/assets/img/messages-1.jpg"
-                    alt=""
-                    className="rounded-circle"
-                  ></img>
-                  <div>
-                    <h4>Maria Hudson</h4>
-                    <p>
-                      Velit asperiores et ducimus soluta repudiandae labore
-                      officia est ut...
-                    </p>
-                    <p>4 hrs. ago</p>
-                  </div>
-                </Link>
-              </li>
-              <li>
-                <hr className="dropdown-divider"></hr>
-              </li>
-
-              <li className="message-item">
-                <Link to="####">
-                  <img
-                    src="/assets/img/messages-2.jpg"
-                    alt=""
-                    className="rounded-circle"
-                  ></img>
-                  <div>
-                    <h4>Anna Nelson</h4>
-                    <p>
-                      Velit asperiores et ducimus soluta repudiandae labore
-                      officia est ut...
-                    </p>
-                    <p>6 hrs. ago</p>
-                  </div>
-                </Link>
-              </li>
-              <li>
-                <hr className="dropdown-divider"></hr>
-              </li>
-
-              <li className="message-item">
-                <Link to="####">
-                  <img
-                    src="/assets/img/messages-3.jpg"
-                    alt=""
-                    className="rounded-circle"
-                  ></img>
-                  <div>
-                    <h4>David Muldon</h4>
-                    <p>
-                      Velit asperiores et ducimus soluta repudiandae labore
-                      officia est ut...
-                    </p>
-                    <p>8 hrs. ago</p>
-                  </div>
-                </Link>
-              </li>
-              <li>
-                <hr className="dropdown-divider"></hr>
-              </li>
-
-              <li className="dropdown-footer">
-                <Link to="####">Show all messages</Link>
-              </li>
-            </ul>
-            {/* <!-- End Messages Dropdown Items --> */}
-          </li>
-          {/* <!-- End Messages Nav --> */}
 
           <li className="nav-item dropdown pe-3">
             <Link
@@ -609,28 +500,15 @@ function Header() {
                 <hr className="dropdown-divider"></hr>
               </li>
 
-              <li>
-                <Link
-                  to="####"
-                  className="dropdown-item d-flex align-items-center"
-                >
-                  <i className="bi bi-gear"></i>
-                  <span>Account Settings</span>
-                </Link>
-              </li>
-              <li>
-                <hr className="dropdown-divider"></hr>
-              </li>
 
               <li>
-                <Link
-                  to="####"
-                  className="dropdown-item d-flex align-items-center"
-                >
+                <button type="button" className="dropdown-item d-flex align-items-center">
                   <i className="bi bi-question-circle"></i>
                   <span>Need Help?</span>
-                </Link>
+                </button>
               </li>
+
+
               <li>
                 <hr className="dropdown-divider"></hr>
               </li>
@@ -651,6 +529,7 @@ function Header() {
         </ul>
       </nav>
       {/* <!-- End Icons Navigation --> */}
+
     </header>
   );
 }
