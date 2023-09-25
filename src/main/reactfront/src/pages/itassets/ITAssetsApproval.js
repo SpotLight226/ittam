@@ -8,6 +8,7 @@ import ITAssetsApprovalItem from './ITAssetsApprovalItem';
 import { useNavigate } from 'react-router-dom';
 import { tokenInfoContext } from '../../component/TokenInfoProvider';
 import { AiTwotonePrinter } from 'react-icons/ai';
+import ExcelDownload from "../../component/ExcelDownload";
 
 function ITAssetsApproval() {
   const { userRole, username } = useContext(tokenInfoContext);
@@ -233,6 +234,9 @@ function ITAssetsApproval() {
                         onClick={() => window.print()}
                         title="프린트"
                       />
+                    </div>
+                    <div className="excel-control react-icon">
+                        <ExcelDownload page={""} />
                     </div>
                   </div>
                 </div>
