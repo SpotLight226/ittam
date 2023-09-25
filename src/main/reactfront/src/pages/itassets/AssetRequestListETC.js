@@ -159,6 +159,7 @@ const AssetRequestListETC = () => {
       assets_num: "",
       userq_title: "",
       userq_comment: "",
+      username: ""
     });
 
     try {
@@ -203,7 +204,7 @@ const AssetRequestListETC = () => {
       if (response.data) {
         setInnerDate({
           //초기화
-          assets_name: "", category_num: "", assets_num: "", userq_title: "", userq_comment: "",
+          assets_name: "", category_num: "", assets_num: "", userq_title: "", userq_comment: "", username: ""
         });
         handleClose();
         alert("정상적으로 사용 신청이 처리되었습니다.");
@@ -213,7 +214,7 @@ const AssetRequestListETC = () => {
       alert("사용 신청 처리에 실패하였습니다.");
       setInnerDate({
         //초기화
-        assets_name: "", category_num: "", assets_num: "", userq_title: "", userq_comment: "",
+        assets_name: "", category_num: "", assets_num: "", userq_title: "", userq_comment: "", username: ""
       });
     }
   };
@@ -246,7 +247,7 @@ const AssetRequestListETC = () => {
     basicModalBuy.classList.toggle("show");
     setInnerBuyDate({
       //초기화
-      assets_name: "", userq_title: "", userq_comment: "",
+      assets_name: "", userq_title: "", userq_comment: "", username: ""
     });
   };
   const handleBuyChange = (e) => {

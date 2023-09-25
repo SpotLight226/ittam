@@ -167,6 +167,7 @@ const AssetAllList = () => {
       assets_num: "",
       userq_title: "",
       userq_comment: "",
+      username: ""
     });
 
     try {
@@ -243,6 +244,8 @@ const AssetAllList = () => {
     });
 
   }
+
+
   const [innerBuyData, setInnerBuyDate] = useState({ // 승인, 반려 버튼 눌렀을 때 해당 행의 값 state로 관리
     username:username || '', assets_name : "", userq_title :"", userq_comment : "",
   });
@@ -252,7 +255,7 @@ const AssetAllList = () => {
     basicModalBuy.classList.toggle("show");
     setInnerBuyDate({
       //초기화
-      assets_name: "", userq_title: "", userq_comment: "",
+      assets_name: "", userq_title: "", userq_comment: "", username: ""
     });
   };
   const handleBuyChange = (e) => {
@@ -579,7 +582,7 @@ const AssetAllList = () => {
                   <div className="row mb-3">
                     <label className="col-sm-2 col-form-label">신청자</label>
                     <div className="col-sm-10">
-                      <input type="text" className="form-control" name="username" value={innerData.username } disabled />
+                      <input type="text" className="form-control" name="username" value={username } disabled />
                     </div>
                   </div>
                   <div className="row mb-3">
@@ -655,7 +658,7 @@ const AssetAllList = () => {
                   <div className="row mb-3">
                     <label className="col-sm-2 col-form-label">신청자</label>
                     <div className="col-sm-10">
-                      <input type="text" className="form-control" name="username" value={innerData.username || ''} disabled />
+                      <input type="text" className="form-control" name="username" value={username || ''} disabled />
 
                     </div>
                   </div>

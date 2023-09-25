@@ -160,6 +160,7 @@ const AssetRequestListSW = () => {
       assets_num: "",
       userq_title: "",
       userq_comment: "",
+      username: ""
     });
 
     try {
@@ -542,7 +543,7 @@ const AssetRequestListSW = () => {
                   <div className="row mb-3">
                     <label className="col-sm-2 col-form-label">신청자</label>
                     <div className="col-sm-10">
-                      <input type="text" className="form-control" name="username" value={innerData.username || ''} disabled />
+                      <input type="text" className="form-control" name="username" value={username || ''} disabled />
                     </div>
                   </div>
                   <div className="row mb-3">
@@ -618,7 +619,7 @@ const AssetRequestListSW = () => {
                   <div className="row mb-3">
                     <label className="col-sm-2 col-form-label">신청자</label>
                     <div className="col-sm-10">
-                      <input type="text" className="form-control" name="username" value={innerData.username || ''} disabled />
+                      <input type="text" className="form-control" name="username" value={username || ''} disabled />
 
                     </div>
                   </div>
