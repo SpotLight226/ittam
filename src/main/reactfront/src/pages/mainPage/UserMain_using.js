@@ -309,10 +309,10 @@ function UserMain_using() {
                             {a.SW_SPEC_SERIEL!==undefined?a.SW_SPEC_SERIEL+" |":''}
                             {a.SW_SPEC_WARRANTY!==undefined?a.SW_SPEC_WARRANTY+" |":''}
                             {/*{a.SW_PURCHASE_DATE!==undefined?a.SW_PURCHASE_DATE+" |":''}*/}
-                            {a.SW_PRICE!==undefined?a.SW_PRICE+" |":''}
+                            {/*{a.SW_PRICE!==undefined?a.SW_PRICE+" |":''}*/}
                             {a.SERVER_MFG!==undefined?a.SERVER_MFG+" |":''}
-                            {a.SERVER_PRICE!==undefined?a.SERVER_PRICE+" |":''}
-                            {/*{a.SERVER_PURCHASE_DATE!==undefined?a.SERVER_PURCHASE_DATE+" |":''}*/}
+                            {/*{a.SERVER_PRICE!==undefined?a.SERVER_PRICE+" |":''}*/}
+                            {a.SERVER_CAPA!==undefined?a.SERVER_CAPA+" |":''}
                             {a.SERVER_INTERFACE!==undefined?a.SERVER_INTERFACE+" |":''}
                             {a.SERVER_AVERAGE_LIFE!==undefined?a.SERVER_AVERAGE_LIFE+" |":''}
                             {a.SERVER_RPM!==undefined?a.SERVER_RPM+" |":''}
@@ -320,7 +320,8 @@ function UserMain_using() {
                             {a.ETC_MFG!==undefined?a.ETC_MFG+" |":''}
                             {a.ETC_SPEC_WARRANTY!==undefined?a.ETC_SPEC_WARRANTY+" |":''}
                             {/*{a.ETC_PURCHASE_DATE!==undefined?a.ETC_PURCHASE_DATE+" |":''}*/}
-                            {a.ETC_PRICE!==undefined?a.ETC_PRICE+" |":''}</td>
+                            {/*{a.ETC_PRICE!==undefined?a.ETC_PRICE+" |":''}*/}
+                          </td>
                           <td>{rentDate(a.RENT_DATE)}</td>
                           <td>
 

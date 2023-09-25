@@ -346,7 +346,7 @@ function AdminMain() {
                             {a.SPEC_MFG!==undefined?a.SPEC_MFG+" |":''}
                             {a.SPEC_SERIEL!==undefined?a.SPEC_SERIEL+" |":''}
                             {/*{a.SPEC_PURCHASE_DATE!==undefined?a.SPEC_PURCHASE_DATE+" |":''}*/}
-                            {a.SPEC_WARRANTY!==undefined?a.SPEC_WARRANTY+" |":''}
+                            {/*{a.SPEC_WARRANTY!==undefined?a.SPEC_WARRANTY+" |":''}*/}
                             {a.SW_MFG!==undefined?a.SW_MFG+" |":''}
                             {a.SW_SPEC_SERIEL!==undefined?a.SW_SPEC_SERIEL+" |":''}
                             {a.SW_SPEC_WARRANTY!==undefined?a.SW_SPEC_WARRANTY+" |":''}
@@ -354,7 +354,7 @@ function AdminMain() {
                             {a.SW_PRICE!==undefined?a.SW_PRICE+" |":''}
                             {a.SERVER_MFG!==undefined?a.SERVER_MFG+" |":''}
                             {a.SERVER_PRICE!==undefined?a.SERVER_PRICE+" |":''}
-                            {/*{a.SERVER_PURCHASE_DATE!==undefined?a.SERVER_PURCHASE_DATE+" |":''}*/}
+                            {a.SERVER_CAPA!==undefined?a.SERVER_CAPA+" |":''}
                             {a.SERVER_INTERFACE!==undefined?a.SERVER_INTERFACE+" |":''}
                             {a.SERVER_AVERAGE_LIFE!==undefined?a.SERVER_AVERAGE_LIFE+" |":''}
                             {a.SERVER_RPM!==undefined?a.SERVER_RPM+" |":''}

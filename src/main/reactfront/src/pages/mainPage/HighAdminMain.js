@@ -292,64 +292,7 @@ function HighAdminMain() {
                               <span className="visually-hidden">Loading...</span>
                             </div>
                           </div>}
-                      {/*<div className="activity">*/}
 
-                      {/*  <div className="activity-item d-flex">*/}
-                      {/*    <div className="activite-label">32 min</div>*/}
-                      {/*    <i className='bi bi-circle-fill activity-badge text-success align-self-start'></i>*/}
-                      {/*    <div className="activity-content">*/}
-                      {/*      Quia quae rerumbeatae*/}
-                      {/*    </div>*/}
-                      {/*  </div>/!* <!-- End activity item--> *!/*/}
-
-                      {/*  <div className="activity-item d-flex">*/}
-                      {/*    <div className="activite-label">56 min</div>*/}
-                      {/*    <i className='bi bi-circle-fill activity-badge text-danger align-self-start'></i>*/}
-                      {/*    <div className="activity-content">*/}
-                      {/*      Voluptatem blanditiis blanditiis eveniet*/}
-                      {/*    </div>*/}
-                      {/*  </div>/!* <!-- End activity item--> *!/*/}
-
-                      {/*  <div className="activity-item d-flex">*/}
-                      {/*    <div className="activite-label">2 hrs</div>*/}
-                      {/*    <i className='bi bi-circle-fill activity-badge text-primary align-self-start'></i>*/}
-                      {/*    <div className="activity-content">*/}
-                      {/*      Voluptates corrupti molestias voluptatem*/}
-                      {/*    </div>*/}
-                      {/*  </div>/!* <!-- End activity item--> *!/*/}
-
-                      {/*  <div className="activity-item d-flex">*/}
-                      {/*    <div className="activite-label">1 day</div>*/}
-                      {/*    <i className='bi bi-circle-fill activity-badge text-info align-self-start'></i>*/}
-                      {/*    <div className="activity-content">*/}
-                      {/*      Tempore autem saepetempore*/}
-                      {/*    </div>*/}
-                      {/*  </div>/!* <!-- End activity item--> *!/*/}
-
-                      {/*  <div className="activity-item d-flex">*/}
-                      {/*    <div className="activite-label">2 days</div>*/}
-                      {/*    <i className='bi bi-circle-fill activity-badge text-warning align-self-start'></i>*/}
-                      {/*    <div className="activity-content">*/}
-                      {/*      Est sit eum reiciendis exercitationem*/}
-                      {/*    </div>*/}
-                      {/*  </div>/!* <!-- End activity item--> *!/*/}
-
-                      {/*  <div className="activity-item d-flex">*/}
-                      {/*    <div className="activite-label">4 weeks</div>*/}
-                      {/*    <i className='bi bi-circle-fill activity-badge text-muted align-self-start'></i>*/}
-                      {/*    <div className="activity-content">*/}
-                      {/*      Dicta dolorem harum nulla eius. Ut quid*/}
-                      {/*    </div>*/}
-                      {/*  </div>/!* <!-- End activity item--> *!/*/}
-                      {/*  <div className="activity-item d-flex">*/}
-                      {/*    <div className="activite-label">2 months</div>*/}
-                      {/*    <i className='bi bi-circle-fill activity-badge text-muted align-self-start'></i>*/}
-                      {/*    <div className="activity-content">*/}
-                      {/*      Dicta dolorem harum nulla eius. Ut quide*/}
-                      {/*    </div>*/}
-                      {/*  </div>/!* <!-- End activity item--> *!/*/}
-
-                      {/*</div>*/}
 
                     </div>
                   </div>{/* <!-- End Recent Activity --> */}
@@ -357,73 +300,7 @@ function HighAdminMain() {
 
                 </div>{/* <!-- End Right side columns --> */}
 
-                {/* <!-- Recent Sales --> */}
-                {/*<div className="col-12">*/}
-                {/*  <div className="card recent-sales overflow-auto">*/}
 
-                {/*    */}
-                {/*    <div class="">*/}
-                {/*      <div class="card-body">*/}
-                {/*        <h5 class="card-title" style={{fontWeight: "800"}}>나의 결재 요청 승인 현황 <Link to="####"><span>| 전체보기</span></Link></h5>*/}
-
-                {/*        <div class="tab-pane fade show active" id="home-justified" role="tabpanel" aria-labelledby="home-tab">*/}
-                {/*          <table className="table table-borderless">*/}
-                {/*            <thead>*/}
-                {/*            <tr>*/}
-                {/*              <th scope="col">#</th>*/}
-                {/*              <th scope="col">요청자</th>*/}
-                {/*              <th scope="col">결재요청사항</th>*/}
-                {/*              <th scope="col">결재종류</th>*/}
-                {/*              <th scope="col">승인여부</th>*/}
-                {/*            </tr>*/}
-                {/*            </thead>*/}
-                {/*            <tbody>*/}
-                {/*            <tr>*/}
-                {/*              <th scope="row"><Link to="####">2457</Link></th>*/}
-                {/*              <td>Brandon Jacob</td>*/}
-                {/*              <td><Link to="####" className="text-primary">At praesentium minu</Link></td>*/}
-                {/*              <td>$64</td>*/}
-                {/*              <td><span className="badge bg-success">승인</span></td>*/}
-                {/*            </tr>*/}
-                {/*            <tr>*/}
-                {/*              <th scope="row"><Link to="####">2458</Link></th>*/}
-                {/*              <td>Bridie Kessler</td>*/}
-                {/*              <td><Link to="####" className="text-primary">Blanditiis dolor omnis similique</Link></td>*/}
-                {/*              <td>$47</td>*/}
-                {/*              <td><span className="badge bg-warning">확인중</span></td>*/}
-                {/*            </tr>*/}
-                {/*            <tr>*/}
-                {/*              <th scope="row"><Link to="####">2049</Link></th>*/}
-                {/*              <td>Ashleigh Langosh</td>*/}
-                {/*              <td><Link to="####" className="text-primary">At recusandae consectetur</Link></td>*/}
-                {/*              <td>$147</td>*/}
-                {/*              <td><span className="badge bg-success">승인</span></td>*/}
-                {/*            </tr>*/}
-                {/*            <tr>*/}
-                {/*              <th scope="row"><Link to="####">2644</Link></th>*/}
-                {/*              <td>Angus Grady</td>*/}
-                {/*              <td><Link to="####" className="text-primar">Ut voluptatem id earum et</Link></td>*/}
-                {/*              <td>$67</td>*/}
-                {/*              <td><span className="badge bg-danger">반려</span></td>*/}
-                {/*            </tr>*/}
-                {/*            <tr>*/}
-                {/*              <th scope="row"><Link to="####">2644</Link></th>*/}
-                {/*              <td>Raheem Lehner</td>*/}
-                {/*              <td><Link to="####" className="text-primary">Sunt similique distinctio</Link></td>*/}
-                {/*              <td>$165</td>*/}
-                {/*              <td><span className="badge bg-success">승인</span></td>*/}
-                {/*            </tr>*/}
-                {/*            </tbody>*/}
-                {/*          </table>*/}
-                {/*        </div>*/}
-
-                {/*      </div>*/}
-                {/*    </div>*/}
-
-
-
-                {/*  </div>*/}
-                {/*</div>/!* <!-- End Recent Sales --> *!/*/}
 
                 {/*  <!-- Top Selling --> */}
                 <div className="col-12">
@@ -476,7 +353,7 @@ function HighAdminMain() {
                             {a.SW_PRICE!==undefined?a.SW_PRICE+" |":''}
                             {a.SERVER_MFG!==undefined?a.SERVER_MFG+" |":''}
                             {a.SERVER_PRICE!==undefined?a.SERVER_PRICE+" |":''}
-                            {/*{a.SERVER_PURCHASE_DATE!==undefined?a.SERVER_PURCHASE_DATE+" |":''}*/}
+                            {a.SERVER_CAPA!==undefined?a.SERVER_CAPA+" |":''}
                             {a.SERVER_INTERFACE!==undefined?a.SERVER_INTERFACE+" |":''}
                             {a.SERVER_AVERAGE_LIFE!==undefined?a.SERVER_AVERAGE_LIFE+" |":''}
                             {a.SERVER_RPM!==undefined?a.SERVER_RPM+" |":''}
