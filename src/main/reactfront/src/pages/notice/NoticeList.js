@@ -315,7 +315,7 @@ function NoticeList() {
                   
 
                       <div className="datatable-search">
-                      <button type="button" className="btn btn-primary reset-btn"><BsArrowClockwise style={{width : "30px", height : "30px", color : "gray"}}
+                      <button type="button" className="btn btn-primary reset-btn"style={{ marginBottom: "5px" }}><BsArrowClockwise style={{width : "30px", height : "30px", color : "gray"}}
                                                                                                         onClick={resetBtn}/></button>
                         <input
                           type="search"

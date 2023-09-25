@@ -270,6 +270,7 @@ function NoticeUser(){
                       </button>
 
                       <div className="datatable-search">
+                        
                         <input
                           type="search"
                           value={searchText.notice_title}
