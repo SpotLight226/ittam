@@ -274,11 +274,11 @@ const AssetRequestListPC = () => {
           assets_name: "", userq_title: "", userq_comment: "",
         });
         handleBuyClose()
-        alert("정상적으로 사용 신청이 처리되었습니다.");
+        alert("정상적으로 구매 신청이 처리되었습니다.");
       }
     } catch (error) {
-      console.error("사용 신청 처리에 실패하였습니다.", error);
-      alert("사용 신청 처리에 실패하였습니다.");
+      console.error("구매 신청 처리에 실패하였습니다.", error);
+      alert("구매 신청 처리에 실패하였습니다.");
       setInnerBuyDate({
         assets_name: "", userq_title: "", userq_comment: "",
       });
