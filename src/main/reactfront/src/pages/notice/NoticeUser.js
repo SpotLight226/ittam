@@ -48,7 +48,7 @@ function NoticeUser(){
  
      // 검색어를 서버로 보내고 검색 결과를 받아옴
      axios({
-       url: "http://localhost:9191/noticelist/searchTitle", // 검색을 처리할 서버 엔드포인트
+       url: "/noticelist/searchTitle", // 검색을 처리할 서버 엔드포인트
        method: "get",
        headers: {
         Authorization : token
@@ -70,7 +70,7 @@ function NoticeUser(){
  
      // 검색어를 서버로 보내고 검색 결과를 받아옴
      axios({
-       url: "http://localhost:9191/noticelist", // 검색을 처리할 서버 엔드포인트
+       url: "/noticelist", // 검색을 처리할 서버 엔드포인트
        method: "get",
        headers: {
         Authorization : token
@@ -94,7 +94,7 @@ function NoticeUser(){
  
      // 검색어를 서버로 보내고 검색 결과를 받아옴
      axios({
-       url: "http://localhost:9191/noticelist/active", // 검색을 처리할 서버 엔드포인트
+       url: "/noticelist/active", // 검색을 처리할 서버 엔드포인트
        method: "get",
        headers: {
         Authorization : token
@@ -118,7 +118,7 @@ function NoticeUser(){
  
      // 검색어를 서버로 보내고 검색 결과를 받아옴
      axios({
-       url: "http://localhost:9191/noticelist/expire", // 검색을 처리할 서버 엔드포인트
+       url: "/noticelist/expire", // 검색을 처리할 서버 엔드포인트
        method: "get",
        headers: {
          Authorization : token
@@ -160,7 +160,7 @@ function NoticeUser(){
 
  
      axios({
-       url: "http://localhost:9191/noticelist/searchDate", // 검색을 처리할 서버 엔드포인트
+       url: "/noticelist/searchDate", // 검색을 처리할 서버 엔드포인트
        method: "post",
        headers: {
          'Content-Type' : 'application/json;charset=utf-8',
@@ -197,7 +197,7 @@ function NoticeUser(){
  
    const getList = () => {
      axios({
-       url: "http://localhost:9191/noticelist",
+       url: "/noticelist",
        method: "get",
        headers: {
         Authorization : token
@@ -389,7 +389,7 @@ const getProcessedList = () => {
                         />
                       </div>
                       <div className="col-sm-2">
-                      <button className="btn btn-primary searchBtn" type="button" onClick={handleSearchDate} > 
+                      <button className="btn btn-primary searchBtn" style={{marginLeft:"10px"}} type="button" onClick={handleSearchDate} >
                       검색 
                       </button>
                       </div>

@@ -106,7 +106,7 @@ function AdminApproveBuyHandleList() {
       .getElementById('pills-tab')
       .querySelector('.active').textContent;
     axios({
-      url: 'http://localhost:9191/admin/high/UserRequestBuyHandleSearch',
+      url: '/admin/high/UserRequestBuyHandleSearch',
       method: 'post',
       data: {
         inputText: inputText,
@@ -158,7 +158,7 @@ function AdminApproveBuyHandleList() {
     let navText = e.target.innerText;
 
     axios({
-      url: 'http://localhost:9191/admin/high/UserRequestBuyNavSearch',
+      url: '/admin/high/UserRequestBuyNavSearch',
       method: 'post',
       data: {
         navText: '관리자' + navText,
@@ -206,7 +206,7 @@ function AdminApproveBuyHandleList() {
       });
 
       axios({
-        url: 'http://localhost:9191/admin/high/UserRequestBuyCategorySearch',
+        url: '/admin/high/UserRequestBuyCategorySearch',
         method: 'post',
         data: {
           category_num: e.target.value,
@@ -247,7 +247,7 @@ function AdminApproveBuyHandleList() {
 
     if (inputInnerData.username === '' || inputInnerData.length === 0) {
       axios({
-        url: 'http://localhost:9191/admin/high/UserRequestBuyHandlePage',
+        url: '/admin/high/UserRequestBuyHandlePage',
         method: 'get',
         headers: {
           Authorization: token,

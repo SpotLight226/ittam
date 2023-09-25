@@ -56,7 +56,7 @@ const UserLeave = () => {
 
     // 페이지 로딩 시 권한 체크
     checkUserRole();
-  }, [location]);
+  }, [location, userList]);
 
   // 검색 핸들링
   const handleSearchEnter = (event) => {

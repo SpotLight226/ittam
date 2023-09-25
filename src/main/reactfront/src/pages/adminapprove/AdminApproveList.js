@@ -122,7 +122,7 @@ function AdminApprove() {
     // Spring Boot로 승인 요청
     e.preventDefault();
     axios({
-      url: 'http://localhost:9191/admin/high/UserRequestApprove',
+      url: '/admin/high/UserRequestApprove',
       method: 'post',
       data: {
         userq_NUM: userqNUM,
@@ -157,7 +157,7 @@ function AdminApprove() {
     // Spring Boot로 반려 요청
     e.preventDefault();
     axios({
-      url: 'http://localhost:9191/admin/high/UserRequestReturn',
+      url: '/admin/high/UserRequestReturn',
       method: 'post',
       data: {
         userq_NUM: userqNUM,
@@ -198,7 +198,7 @@ function AdminApprove() {
   const SearchForm = (inputText) => {
     // 검색 String boot로 전달
     axios({
-      url: 'http://localhost:9191/admin/high/UserRequestSearch',
+      url: '/admin/high/UserRequestSearch',
       method: 'post',
       data: {
         inputText: inputText,
@@ -260,7 +260,7 @@ function AdminApprove() {
 
     if (inputInnerData.username === '' || inputInnerData.length === 0) {
       axios({
-        url: 'http://localhost:9191/admin/high/UserRequestList',
+        url: '/admin/high/UserRequestList',
         method: 'get',
         headers: {
           Authorization: token,

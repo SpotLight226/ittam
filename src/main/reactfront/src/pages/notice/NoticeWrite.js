@@ -37,7 +37,7 @@ function NoticeWrite() {
     // navigate("/noticelist");
 
     axios({
-      url: 'http://localhost:9191/noticelist/write',
+      url: '/noticelist/write',
       method: 'post',
       headers: {
        'Content-Type': 'multipart/form-data',

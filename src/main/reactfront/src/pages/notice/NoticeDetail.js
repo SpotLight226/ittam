@@ -46,7 +46,7 @@ function NoticeDetail() {
       //   });
 
       axios({
-        url: "http://localhost:9191/noticelist/delete",
+        url: "/noticelist/delete",
         method: "post",
         headers: {
           Authorization : token
@@ -75,7 +75,7 @@ function NoticeDetail() {
         // });
 
         axios({
-          url: "http://localhost:9191/noticelist/deleteimg",
+          url: "/noticelist/deleteimg",
           method: "post",
           headers: {
             Authorization : token
@@ -106,7 +106,7 @@ function NoticeDetail() {
     //     console.log(err);
     //   });
       axios({
-        url: `http://localhost:9191/noticelist/detail/${id}?id=${id}`,
+        url: `/noticelist/detail/${id}?id=${id}`,
         method: "get",
         headers: {
           Authorization : token
@@ -132,7 +132,7 @@ function NoticeDetail() {
       // });
       
       axios({
-        url: `http://localhost:9191/noticelist/detailimg/${id}?id=${id}`,
+        url: `/noticelist/detailimg/${id}?id=${id}`,
         method: "get",
         headers: {
           Authorization : token
@@ -286,11 +286,12 @@ function NoticeDetail() {
                       justifyContent: "center",
                       alignItems: "center",
                     }}
-                  ><Link to="/noticelist">
+                  ><Link to="/noticeuser">
                   <button className="btn btn-primary listBtn" type="button" style={{ marginRight: "10px" }}>
                   목록
                   </button>
-                  </Link></div>
+                  </Link>
+                  </div>
                     )} 
 
 

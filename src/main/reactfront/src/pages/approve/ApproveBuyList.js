@@ -130,7 +130,7 @@ function Approve() {
     e.preventDefault();
     console.log(innerData.userqNUM);
     axios({
-      url: "http://localhost:9191/admin/UserRequestBuyApprove",
+      url: "/admin/UserRequestBuyApprove",
       method: "post",
       data: {
         userq_num: innerData.userqNUM,
@@ -169,7 +169,7 @@ function Approve() {
     // 구매 반려 요청
     e.preventDefault();
     axios({
-      url: "http://localhost:9191/admin/UserRequestBuyReturn",
+      url: "/admin/UserRequestBuyReturn",
       method: "post",
       data: {
         userq_NUM: userqNUM,
@@ -212,7 +212,7 @@ function Approve() {
   const SearchForm = (inputText) => {
     // 구매 검색
     axios({
-      url: "http://localhost:9191/admin/UserRequestBuySearch",
+      url: "/admin/UserRequestBuySearch",
       method: "post",
       data: {
         inputText: inputText,
@@ -273,7 +273,7 @@ function Approve() {
 
     if (inputInnerData.username === "" || inputInnerData.length === 0) {
       axios({
-        url: "http://localhost:9191/admin/UserRequestBuyList",
+        url: "/admin/UserRequestBuyList",
         method: "get",
         headers: {
           Authorization: token,

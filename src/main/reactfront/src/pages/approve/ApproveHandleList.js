@@ -107,7 +107,7 @@ function Approve() {
       .getElementById("pills-tab")
       .querySelector(".active").textContent;
     axios({
-      url: "http://localhost:9191/admin/UserRequestHandleSearch",
+      url: "/admin/UserRequestHandleSearch",
       method: "post",
       data: {
         inputText: inputText,
@@ -160,7 +160,7 @@ function Approve() {
     let navText = e.target.innerText;
 
     axios({
-      url: "http://localhost:9191/admin/UserRequestNavSearch",
+      url: "/admin/UserRequestNavSearch",
       method: "post",
       data: {
         navText: "관리자" + navText,
@@ -209,7 +209,7 @@ function Approve() {
       });
 
       axios({
-        url: "http://localhost:9191/admin/UserRequestCategorySearch",
+        url: "/admin/UserRequestCategorySearch",
         method: "post",
         data: {
           category_num: e.target.value,
@@ -252,7 +252,7 @@ function Approve() {
 
     if (inputInnerData.username === "" || inputInnerData.length === 0) {
       axios({
-        url: "http://localhost:9191/admin/UserRequestHandlePage",
+        url: "/admin/UserRequestHandlePage",
         method: "get",
         headers: {
           Authorization: token,
