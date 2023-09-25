@@ -40,7 +40,6 @@ const AssetRequestListSV = () => {
   });
 
   const url = useLocation();
-  const userId = username;
   const path = url.pathname;
 
 

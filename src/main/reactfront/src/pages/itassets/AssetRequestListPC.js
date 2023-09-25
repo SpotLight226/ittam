@@ -41,7 +41,6 @@ const AssetRequestListPC = () => {
 
   const url = useLocation();
   const path = url.pathname;
-  const userId = username;
 
   // 검색
   const activeEnter = (e) => {

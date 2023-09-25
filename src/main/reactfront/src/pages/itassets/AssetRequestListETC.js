@@ -594,14 +594,22 @@ const AssetRequestListETC = () => {
         </div>
         {/*사용 신청 모달 끝*/}
 
-        {/* 구매 신청 모달창 */}
-        <div className="modal modalmodal2" id="basicModalBuy"
-             style={{display : "none"}} >
-          <div className="card" style={{width: '600px', borderRadius: "8px"}} onClick={(e) => e.stopPropagation()}>
-            <div className="card-body">
-
-              <h5 className="card-title" style={{ paddingBottom: "0px" }}>자산 구매 신청</h5>
-              <hr />
+      {/* 구매 신청 모달창 */}
+      <div
+        className="modal modalmodal2"
+        id="basicModalBuy"
+        style={{ display: 'none' }}
+      >
+        <div
+          className="card"
+          style={{ width: '600px', borderRadius: '8px' }}
+          onClick={(e) => e.stopPropagation()}
+        >
+          <div className="card-body">
+            <h5 className="card-title" style={{ paddingBottom: '0px' }}>
+              자산 구매 신청
+            </h5>
+            <hr />
 
               <form method="post" name="AssetBuyRequestForm" onSubmit={(e) => AssetBuyRequestForm(e)}>
 
