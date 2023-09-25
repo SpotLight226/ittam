@@ -11,6 +11,8 @@ import Pagenation from "../../component/Pagenation";
 import { UserOptionList } from "../../constants/OptionList"; // 옵션들을 정의해둔 list에서 객체로 사용할 옵션을 가져온다
 import ControlMenu from "../../component/ControlMenu";
 import UserLeaveModal from "../../component/Modal/UserLeaveModal";
+import { AiTwotonePrinter } from "react-icons/ai";
+
 
 const UserLeave = () => {
   const userList = useContext(UserStateContext);
@@ -284,7 +286,19 @@ const UserLeave = () => {
           <div className="col-lg-12">
             <div className="card">
               <div className="card-body">
-                <h5 className="card-title">사용자 목록</h5>
+                
+              <div className="row">
+                <div className="col-6">
+                  <h5 className="card-title">사용자 목록</h5>
+                </div>
+                <div className="col-6 text-right">
+                  <div className="print-control react-icon">
+                      <AiTwotonePrinter onClick={() => window.print()}
+                      title="프린트"/>
+                  </div>
+                </div>
+              </div>
+
                 <div className="datatable-wrapper datatable-loading nofooter sortable searchable fixed-columns">
                   <div className="datatable-top">
                     <div className="datatable-dropdown">
@@ -358,6 +372,8 @@ const UserLeave = () => {
                           {...it}
                           idx={idx}
                           onUserClick={handleModalOpen}
+                          currentPage={currentPage}
+                          itemsPerPage={itemsPerPage}
                         />
                       ))}
                   </tbody>

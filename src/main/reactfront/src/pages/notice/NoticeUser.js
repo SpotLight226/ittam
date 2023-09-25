@@ -319,6 +319,7 @@ function NoticeUser(){
                       <div className="datatable-search">
                       <button type="button" className="btn btn-primary reset-btn"style={{ marginBottom: "5px" }}><BsArrowClockwise style={{width : "30px", height : "30px", color : "gray"}}
                                                                                                         onClick={resetBtn}/></button>
+
                         <input
                           type="search"
                           value={searchText.notice_title}
@@ -339,7 +340,7 @@ function NoticeUser(){
                       <tr>
                         <th data-sortable="true">
                           <Link to="#" className="datatable-sorter" >
-                            #
+                            번호
                           </Link>
                         </th>
                         <th data-sortable="true">
@@ -382,6 +383,8 @@ function NoticeUser(){
                           {...item}
                           index={(currentPage - 1) * itemsPerPage + index} // 순번 계산
                           setNoticeData={setNoticeData}
+                          currentPage={currentPage}
+                          itemsPerPage={itemsPerPage}
                         />
                       ))}
                       {/* {noticeList.map((notice) => (

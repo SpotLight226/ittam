@@ -8,13 +8,14 @@ import {AssetAllListOption} from "../../constants/OptionList";
 import ControlMenu from "../../component/ControlMenu";
 import { tokenInfoContext } from '../../component/TokenInfoProvider';
 import {BsArrowClockwise} from "react-icons/bs";
+import { AiTwotonePrinter } from "react-icons/ai";
 
 const validAssetNames = [ // 유효한 자산명 목록
   'PC', '소프트웨어', '주변기기', '서버', '데스크탑', '노트북', 'Microsoft Office', '파워포인트', '엑셀',
   '워드', '한글과컴퓨터', '인텔리제이', '키보드', '마우스', '복합기', '프린터', '스캐너', '서버용하드',
 ];
 
-//test
+
 
 const AssetAllList = () => {
   const { userRole,username} = useContext(tokenInfoContext);
@@ -42,8 +43,9 @@ const AssetAllList = () => {
   });
 
 
-  const url = useLocation(); // 현재 url 가져오기 뒤에 파라미터는 짤라서 쓰시면 될 것 같아요 !
+  const url = useLocation();
   const path = url.pathname;
+  const userId = username;
 
   // 검색
   const activeEnter = (e) => {
@@ -101,8 +103,8 @@ const AssetAllList = () => {
 
   /* 몇개씩 보이고 싶은지 */
   const [itemsPerPage, setItemPerPage] = useState(10); // 페이지당 10개의 아이템  useState(처음에 보이고싶은 개수)
-  const handleSelectorChange = (event) => {
-    setItemPerPage(Number(event.target.value));
+  const handleSelectorChange = (e) => {
+    setItemPerPage(Number(e.target.value));
     // console.log(Number(event.target.value))
   };
 
@@ -373,6 +375,18 @@ const AssetAllList = () => {
     searchInput.value = "";
   };
 
+  //페이징 리셋
+  const [selectedStatus, setSelectedStatus] = useState(null);
+  const handleSelectChange2 = (e) => {
+    const value = e.target.value;
+    if (value === "0") {
+      setSelectedStatus(null);
+    } else {
+      setSelectedStatus(value);
+    }
+    setCurrentPage(1);
+  };
+
   return (
       <div>
         <main id="main" className="main">
@@ -394,7 +408,19 @@ const AssetAllList = () => {
               <div className="col-lg-12">
                 <div className="card">
                   <div className="card-body">
-                    <h5 className="card-title">전체 자산</h5>
+                   
+                  <div className="row">
+                      <div className="col-6">
+                        <h5 className="card-title">전체 자산</h5>
+                      </div>
+                      <div className="col-6 text-right">
+                        <div className="print-control react-icon">
+                           <AiTwotonePrinter onClick={() => window.print()}
+                           title="프린트"/>
+                        </div>
+                      </div>
+                    </div>
+
                     <div className="datatable-wrapper datatable-loading nofooter sortable searchable fixed-columns">
                       <div className="datatable-top">
                         <div className="datatable-dropdown">
@@ -402,9 +428,11 @@ const AssetAllList = () => {
                             <select
                                 className="datatable-selector"
                                 value={itemsPerPage}
-                                onChange={handleSelectorChange}
+                                onChange={(e) => {
+                                  handleSelectorChange(e); // 첫 번째 함수 호출
+                                  handleSelectChange2(e)
+                                }}
                                 style={{ marginLeft: "20px", borderColor: "lightgray" }}
-
                             >
                               <option value="5">5</option>
                               <option value="10">10</option>
@@ -548,7 +576,7 @@ const AssetAllList = () => {
                   <div className="row mb-3">
                     <label className="col-sm-2 col-form-label">신청자</label>
                     <div className="col-sm-10">
-                      <input type="text" className="form-control" name="username" value={username || ''} disabled />
+                      <input type="text" className="form-control" name="username" value={userId || ''} disabled />
                     </div>
                   </div>
                   <div className="row mb-3">
@@ -624,7 +652,7 @@ const AssetAllList = () => {
                   <div className="row mb-3">
                     <label className="col-sm-2 col-form-label">신청자</label>
                     <div className="col-sm-10">
-                      <input type="text" className="form-control" name="username" value={username || ''} disabled />
+                      <input type="text" className="form-control" name="username" value={userId || ''} disabled />
 
                     </div>
                   </div>

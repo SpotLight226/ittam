@@ -7,6 +7,7 @@ import { useContext } from "react";
 import { userInfoContext } from "../../App";
 import { useNavigate } from "react-router-dom";
 import base64 from "base-64"
+import { AiTwotonePrinter } from "react-icons/ai";
 
 function Approve() {
   let username = localStorage.getItem('username');
@@ -274,7 +275,18 @@ function Approve() {
               <div className="col-lg-12">
                 <div className="card">
                   <div className="card-body">
-                    <h5 className="card-title">자산 사용 신청내역 조회</h5>
+                    <div className="row">
+                      <div className="col-6">
+                        <h5 className="card-title">자산 사용 신청내역 조회</h5>
+                      </div>
+                      <div className="col-6 text-right">
+                        <div className="print-control react-icon">
+                           <AiTwotonePrinter onClick={() => window.print()}
+                           title="프린트"/>
+                        </div>
+                      </div>
+                    </div>
+
                     <div className="datatable-wrapper datatable-loading nofooter sortable searchable fixed-columns">
                       <div className="datatable-top">
                         <div className="datatable-dropdown">
@@ -319,10 +331,10 @@ function Approve() {
                     </div>
                     <table className="table datatable">
                       <thead>
-                      <tr>
+                      <tr >
                         <th data-sortable="true">
                           <a href="#" className="datatable-sorter">
-                            #
+                            번호
                           </a>
                         </th>
                         <th data-sortable="true">
@@ -371,6 +383,8 @@ function Approve() {
                               func={handleToggle}
                               funcClose={handleBackToggle}
                               index={index}
+                              currentPage={currentPage}
+                              itemsPerPage={itemsPerPage}
                           />
                       ))}
                       </tbody>
