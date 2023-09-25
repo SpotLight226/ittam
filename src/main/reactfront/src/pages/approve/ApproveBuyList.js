@@ -299,7 +299,7 @@ function Approve() {
                       <tr>
                         <th data-sortable="true">
                           <a href="#" className="datatable-sorter">
-                            #
+                            번호
                           </a>
                         </th>
                         <th data-sortable="true">
@@ -344,7 +344,14 @@ function Approve() {
                           (currentPage - 1) * itemsPerPage,
                           currentPage * itemsPerPage
                       ).map((item,index) => (
-                          <ApproveTable key={index} {...item} func={handleToggle} funcClose={handleBackToggle} index={index}/>
+                          <ApproveTable key={index} {...item}
+                                        func={handleToggle}
+                                        funcClose={handleBackToggle}
+                                        index={index}
+                                        currentPage={currentPage}
+                                        itemsPerPage={itemsPerPage}
+
+                          />
                       ))}
 
 

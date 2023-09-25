@@ -290,7 +290,7 @@ function NoticeUser(){
                       <tr>
                         <th data-sortable="true">
                           <Link to="#" className="datatable-sorter" >
-                            #
+                            번호
                           </Link>
                         </th>
                         <th data-sortable="true">
@@ -333,6 +333,8 @@ function NoticeUser(){
                           {...item}
                           index={(currentPage - 1) * itemsPerPage + index} // 순번 계산
                           setNoticeData={setNoticeData}
+                          currentPage={currentPage}
+                          itemsPerPage={itemsPerPage}
                         />
                       ))}
                       {/* {noticeList.map((notice) => (

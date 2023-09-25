@@ -306,7 +306,7 @@ function Approve() { // 관리자 사용 신청 내역 조회 페이지
                       <tr>
                         <th data-sortable="true">
                           <a href="#" className="datatable-sorter">
-                            #
+                            번호
                           </a>
                         </th>
                         <th data-sortable="true">
@@ -359,7 +359,13 @@ function Approve() { // 관리자 사용 신청 내역 조회 페이지
                           (currentPage - 1) * itemsPerPage,
                           currentPage * itemsPerPage
                       ).map((item,index) => (
-                          <ApproveHandleTable key={index} {...item} index={index} func={handleToggle}/>
+                          <ApproveHandleTable key={index} {...item}
+                                              index={index}
+                                              func={handleToggle}
+                                              currentPage={currentPage}
+                                              itemsPerPage={itemsPerPage}
+
+                          />
                       ))}
 
 

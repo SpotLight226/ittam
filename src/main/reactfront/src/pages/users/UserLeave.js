@@ -358,6 +358,8 @@ const UserLeave = () => {
                           {...it}
                           idx={idx}
                           onUserClick={handleModalOpen}
+                          currentPage={currentPage}
+                          itemsPerPage={itemsPerPage}
                         />
                       ))}
                   </tbody>

@@ -336,7 +336,10 @@ function AdminApprove() {
                           <ApproveTable key={index} {...item}
                                         func={handleToggle}
                                         funcClose={handleBackToggle}
-                                        index={index}/>
+                                        index={index}
+                                        currentPage={currentPage}
+                                        itemsPerPage={itemsPerPage}
+                          />
                       ))}
 
 

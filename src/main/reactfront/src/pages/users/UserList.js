@@ -385,6 +385,8 @@ const UserList = () => {
                           isUser={true}
                           {...it}
                           onUserClick={handleModalOpen}
+                          currentPage={currentPage}
+                          itemsPerPage={itemsPerPage}
                         />
                       ))}
                   </tbody>
