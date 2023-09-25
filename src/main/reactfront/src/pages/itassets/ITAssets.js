@@ -22,7 +22,7 @@ function ITAssets() {
   const token = localStorage.getItem('token');
 
   useEffect(() => {
-    if (userRole !== 'ROLE_ADMIN' && userRole !== 'ROLE_HIGH_ADMIN') {
+    if (userRole !== 'ROLE_ADMIN') {
       if (userRole === 'ROLE_USER') {
         navigate('/user/userMain');
       } else if (userRole === 'ROLE_ADMIN') {
