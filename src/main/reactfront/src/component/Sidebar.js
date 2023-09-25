@@ -229,7 +229,7 @@ function Sidebar() {
               data-bs-target="#high-nav"
               data-bs-toggle="collapse"
             >
-              <i className="bi bi-bar-chart"></i>
+              <i className="bi bi-receipt"></i>
               <span>관리자 신청</span>
               <i className="bi bi-chevron-down ms-auto"></i>
             </Link>
