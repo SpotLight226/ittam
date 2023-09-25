@@ -75,12 +75,16 @@
         update ittam.ITASSETS set username = '', assets_status = '사용가능' where #{targetId}
     </update>
 
-    <delete id="removeAll">
-        delete sa, ur, sr
-            from ittam.STOCK_APPROVAL sa
-            inner join ittam.USER_REQUEST ur on sa.username = ur.username
-            inner join ittam.STOCK_RETURN sr on sa.username = sr.username
-            where sa.username = #{targetId} or ur.username = #{targetId} or sr.username = #{targetId}
+    <delete id="removeFromStockApproval">
+        DELETE FROM ittam.STOCK_APPROVAL WHERE username = #{targetId}
+    </delete>
+
+    <delete id="removeFromUserRequest">
+        DELETE FROM ittam.USER_REQUEST WHERE username = #{targetId}
+    </delete>
+
+    <delete id="removeFromStockReturn">
+        DELETE FROM ittam.STOCK_RETURN WHERE username = #{targetId}
     </delete>
 
     <select id="getSearch" resultType="UserVO">
