@@ -62,7 +62,7 @@ function LoginHome({ hideHeaderAndSidebar }) {
 
       axios({
         // 등록되어있는 이메일 여부 확인
-        url: 'http://localhost:9191/loginPage/passwordFind',
+        url: '/loginPage/passwordFind',
         method: 'post',
         data: {
           emailInput: emailInput,
@@ -79,7 +79,7 @@ function LoginHome({ hideHeaderAndSidebar }) {
 
             axios({
               // 인증번호 전송 axios
-              url: 'http://localhost:9191/loginPage/authSend',
+              url: '/loginPage/authSend',
               method: 'post',
               data: {
                 emailInput: emailInput,
@@ -116,7 +116,7 @@ function LoginHome({ hideHeaderAndSidebar }) {
     if (passwordReset1 === passwordReset2 && passwordReset1 !== '') {
       axios({
         // 인증번호 전송 axios
-        url: 'http://localhost:9191/loginPage/passwordModify',
+        url: '/loginPage/passwordModify',
         method: 'post',
         data: {
           passwordReset: passwordReset1,
@@ -171,7 +171,7 @@ function LoginHome({ hideHeaderAndSidebar }) {
     formData.append('username', username);
     formData.append('password', password);
     try {
-      const response = await fetch('http://localhost:9191/login', {
+      const response = await fetch('/login', {
         method: 'POST',
         body: formData,
       });

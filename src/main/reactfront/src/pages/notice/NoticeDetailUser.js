@@ -25,7 +25,7 @@ function NoticeDetailUser() {
   useEffect(() => {
     // 게시글 데이터를 가져오는 Axios GET 요청을 보냄
     axios
-      .get(`http://localhost:9191/noticelist/detail/${id}?id=${id}`)
+      .get(`/noticelist/detail/${id}?id=${id}`)
       .then((res) => {
         console.log(res.data);
         setNotice(res.data);
@@ -38,7 +38,7 @@ function NoticeDetailUser() {
       // 액시오스로 noticeImgVo 요청해서 noticeImg 담기
       // axios.get
       axios
-      .get(`http://localhost:9191/noticeUser/detailimg/${id}?id=${id}`)
+      .get(`/noticeUser/detailimg/${id}?id=${id}`)
       .then((res) => {
         setNoticeimg(res.data);
       })

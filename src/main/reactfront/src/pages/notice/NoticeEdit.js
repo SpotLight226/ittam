@@ -63,7 +63,7 @@ function NoticeEdit() {
     formData.append("notice_num", location.state.notice_num);
 
     axios({
-      url : 'http://localhost:9191/noticelist/update',
+      url : '/noticelist/update',
       method : 'POST',
       headers: {
         'Content-Type' : 'multipart/form-data',
@@ -87,7 +87,7 @@ function NoticeEdit() {
         // setImgData(data)
        try{
         const response = await axios.get(
-           `http://localhost:9191/noticelist/detailimg/${id}?id=${id}`,
+           `/noticelist/detailimg/${id}?id=${id}`,
           //method: "get",
           {
             headers: {

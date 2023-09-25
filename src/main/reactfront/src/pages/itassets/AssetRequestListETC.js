@@ -118,7 +118,7 @@ const AssetRequestListETC = () => {
   };
   const searchAssets = (inputText) => {
     axios({
-      url: 'http://localhost:9191/AssetRequest/AssetRequestSearchETC',
+      url: '/AssetRequest/AssetRequestSearchETC',
       method: 'post',
       data: {
         inputText: inputText,
@@ -145,7 +145,7 @@ const AssetRequestListETC = () => {
       // Axios를 사용하여 서버로 데이터를 보냅니다.
       axios
         .get(
-          `http://localhost:9191/AssetRequest/AssetRequestListCategory?path=${encodeURIComponent(
+          `/AssetRequest/AssetRequestListCategory?path=${encodeURIComponent(
             path
           )}`,
           {
@@ -253,7 +253,7 @@ const AssetRequestListETC = () => {
     try {
       // 자산 목록을 다시 불러오는 함수 호출
       const response = await axios.get(
-        `http://localhost:9191/AssetRequest/AssetRequestListCategory?path=${encodeURIComponent(
+        `/AssetRequest/AssetRequestListCategory?path=${encodeURIComponent(
           path
         )}`,
         {

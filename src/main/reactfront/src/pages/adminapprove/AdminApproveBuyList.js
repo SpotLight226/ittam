@@ -116,7 +116,7 @@ function AdminBuyApprove() {
     // Spring Boot로 승인 요청
     e.preventDefault();
     axios({
-      url: 'http://localhost:9191/admin/high/UserBuyRequestApprove',
+      url: '/admin/high/UserBuyRequestApprove',
       method: 'post',
       data: {
         userq_NUM: userqNUM,
@@ -150,7 +150,7 @@ function AdminBuyApprove() {
     // Spring Boot로 반려 요청
     e.preventDefault();
     axios({
-      url: 'http://localhost:9191/admin/high/UserBuyRequestReturn',
+      url: '/admin/high/UserBuyRequestReturn',
       method: 'post',
       data: {
         userq_NUM: userqNUM,
@@ -191,7 +191,7 @@ function AdminBuyApprove() {
   const SearchForm = (inputText) => {
     // 검색 String boot로 전달
     axios({
-      url: 'http://localhost:9191/admin/high/UserBuyRequestSearch',
+      url: '/admin/high/UserBuyRequestSearch',
       method: 'post',
       data: {
         inputText: inputText,
@@ -250,7 +250,7 @@ function AdminBuyApprove() {
     }
     if (inputInnerData.username === '' || inputInnerData.length === 0) {
       axios({
-        url: 'http://localhost:9191/admin/high/UserBuyRequestList',
+        url: '/admin/high/UserBuyRequestList',
         method: 'get',
         headers: {
           Authorization: token,

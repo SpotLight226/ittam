@@ -117,7 +117,7 @@ const AssetAllList = () => {
     };
     const searchAssets = (inputText) => {
         axios({
-            url: 'http://localhost:9191/AssetRequest/AssetRequestSearch',
+            url: '/AssetRequest/AssetRequestSearch',
             method: 'post',
             data: {
                 inputText: inputText,
@@ -147,7 +147,7 @@ const AssetAllList = () => {
             (inputInnerData.length === 0 && path === '/itassets')
         ) {
             axios
-                .get('http://localhost:9191/AssetRequest/AssetRequestList', {
+                .get('/AssetRequest/AssetRequestList', {
                     headers: {
                         Authorization: token,
                     },
@@ -248,7 +248,7 @@ const AssetAllList = () => {
         try {
             // 전체 자산 목록을 다시 불러오는 함수 호출
             const response = await axios.get(
-                'http://localhost:9191/AssetRequest/AssetRequestList',
+                '/AssetRequest/AssetRequestList',
                 {
                     headers: {
                         Authorization: token,

@@ -50,7 +50,7 @@ const handleDelete = () => {
       // });
 
       axios({
-        url: "http://localhost:9191/noticelist/delete",
+        url: "/noticelist/delete",
         method: "post",
         headers: {
           Authorization : token
@@ -82,7 +82,7 @@ const handleDelete = () => {
       // });
 
       axios({
-        url: "http://localhost:9191/noticelist/deleteimg",
+        url: "/noticelist/deleteimg",
         method: "post",
         headers: {
           Authorization : token
