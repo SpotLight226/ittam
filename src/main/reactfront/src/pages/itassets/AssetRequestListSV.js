@@ -39,8 +39,8 @@ const AssetRequestListSV = () => {
     username: '', appro_title: '', appro_comment: '', category_num:''
   });
 
-  const url = useLocation(); // 현재 url 가져오기 뒤에 파라미터는 짤라서 쓰시면 될 것 같아요 !
-  // console.log(url.pathname);
+  const url = useLocation();
+  const userId = username;
   const path = url.pathname;
 
 
@@ -97,9 +97,9 @@ const AssetRequestListSV = () => {
 
   /* 몇개씩 보이고 싶은지 */
   const [itemsPerPage, setItemPerPage] = useState(10); // 페이지당 10개의 아이템  useState(처음에 보이고싶은 개수)
-  const handleSelectorChange = (event) => {
-    setItemPerPage(Number(event.target.value));
-    console.log(Number(event.target.value))
+  const handleSelectorChange = (e) => {
+    setItemPerPage(Number(e.target.value));
+    console.log(Number(e.target.value))
   };
 
   /* 페이지네이션 */
@@ -367,6 +367,18 @@ const AssetRequestListSV = () => {
     searchInput.value = "";
   };
 
+  //페이징 리셋
+  const [selectedStatus, setSelectedStatus] = useState(null);
+  const handleSelectChange2 = (e) => {
+    const value = e.target.value;
+    if (value === "0") {
+      setSelectedStatus(null);
+    } else {
+      setSelectedStatus(value);
+    }
+    setCurrentPage(1);
+  };
+
   return (
       <div>
         <main id="main" className="main">
@@ -396,7 +408,10 @@ const AssetRequestListSV = () => {
                             <select
                                 className="datatable-selector"
                                 value={itemsPerPage}
-                                onChange={handleSelectorChange}
+                                onChange={(e) => {
+                                  handleSelectorChange(e); // 첫 번째 함수 호출
+                                  handleSelectChange2(e)
+                                }}
                                 style={{ marginLeft: "20px", borderColor: "lightgray" }}
 
                             >
@@ -528,7 +543,7 @@ const AssetRequestListSV = () => {
                   <div className="row mb-3">
                     <label className="col-sm-2 col-form-label">신청자</label>
                     <div className="col-sm-10">
-                      <input type="text" className="form-control" name="username" value={username || ''} disabled />
+                      <input type="text" className="form-control" name="username" value={userId || ''} disabled />
                     </div>
                   </div>
                   <div className="row mb-3">
@@ -604,7 +619,7 @@ const AssetRequestListSV = () => {
                   <div className="row mb-3">
                     <label className="col-sm-2 col-form-label">신청자</label>
                     <div className="col-sm-10">
-                      <input type="text" className="form-control" name="username" value={username || ''} disabled />
+                      <input type="text" className="form-control" name="username" value={userId || ''} disabled />
 
                     </div>
                   </div>
