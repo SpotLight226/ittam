@@ -350,7 +350,8 @@ function Sidebar() {
         {/* <!-- End Profile Page Nav --> */}
       </ul>
     </aside>
-
+      )}
+  </>
   );
 }
 
