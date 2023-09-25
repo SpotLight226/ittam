@@ -72,7 +72,7 @@
     </select>
 
     <update id="userAssetChange">
-        update ittam.ITASSETS set username = '', assets_status = '사용가능' where #{targetId}
+        update ittam.ITASSETS set username = '', assets_status = '사용가능' where username = #{targetId}
     </update>
 
     <delete id="removeFromStockApproval">
