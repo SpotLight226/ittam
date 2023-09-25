@@ -7,7 +7,7 @@ import ControlMenu from '../../component/ControlMenu';
 import ITAssetsApprovalItem from './ITAssetsApprovalItem';
 import { useNavigate } from 'react-router-dom';
 import { tokenInfoContext } from '../../component/TokenInfoProvider';
-import { AiTwotonePrinter } from "react-icons/ai";
+import { AiTwotonePrinter } from 'react-icons/ai';
 
 function ITAssetsApproval() {
   const { userRole, username } = useContext(tokenInfoContext);
@@ -15,13 +15,15 @@ function ITAssetsApproval() {
   const token = localStorage.getItem('token');
 
   useEffect(() => {
-    if (userRole !== 'ROLE_ADMIN' && userRole !== 'ROLE_HIGH_ADMIN') {
+    if (userRole !== 'ROLE_HIGH_ADMIN') {
       if (userRole === 'ROLE_USER') {
         navigate('/user/userMain');
       } else if (userRole === 'ROLE_ADMIN') {
         navigate('/admin/adminMain');
       } else if (userRole === 'ROLE_HIGH_ADMIN') {
         navigate('/highadmin/highAdminMain');
+      } else if (userRole === 'none') {
+        navigate('/');
       }
     }
   }, []);
@@ -222,16 +224,18 @@ function ITAssetsApproval() {
                   <div className="datatable-top"></div>
                 </div>
                 <div className="row">
-                      <div className="col-6">
-                        <h5 className="card-title">결제 요청</h5>
-                      </div>
-                      <div className="col-6 text-right">
-                        <div className="print-control react-icon">
-                           <AiTwotonePrinter onClick={() => window.print()}
-                           title="프린트"/>
-                        </div>
-                      </div>
+                  <div className="col-6">
+                    <h5 className="card-title">결제 요청</h5>
+                  </div>
+                  <div className="col-6 text-right">
+                    <div className="print-control react-icon">
+                      <AiTwotonePrinter
+                        onClick={() => window.print()}
+                        title="프린트"
+                      />
                     </div>
+                  </div>
+                </div>
 
                 {/* <!-- 데이터 테이블 --> */}
                 <table className="table datatable">
