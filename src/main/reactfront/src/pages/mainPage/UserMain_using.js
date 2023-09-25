@@ -1,40 +1,41 @@
-import '../../styles/Style.css';
-import '../../styles/MainPageStyle/UserStyle.css';
-import React, { useContext, useEffect, useState } from 'react';
-import axios from 'axios';
-import ReturnReqModal from '../../component/Modal/ReturnReqModal';
-import ReturnCancelModal from '../../component/Modal/ReturnCancelModal';
-import { Link, useNavigate } from 'react-router-dom';
-import Pagenation from '../../component/Pagenation';
-import { AiTwotonePrinter } from 'react-icons/ai';
-import { tokenInfoContext } from '../../component/TokenInfoProvider';
+import "../../styles/Style.css";
+import "../../styles/MainPageStyle/UserStyle.css";
+import React, { useContext, useEffect, useState } from "react";
+import axios from "axios";
+import ReturnReqModal from "../../component/Modal/ReturnReqModal";
+import ReturnCancelModal from "../../component/Modal/ReturnCancelModal";
+import { Link, useNavigate } from "react-router-dom";
+import Pagenation from "../../component/Pagenation";
+import { AiTwotonePrinter } from "react-icons/ai";
+import { tokenInfoContext } from "../../component/TokenInfoProvider";
+import ExcelDownload from "../../component/ExcelDownload";
 
 function UserMain_using() {
   const { userRole } = useContext(tokenInfoContext);
   const navigate = useNavigate();
   useEffect(() => {
-    if (userRole !== 'ROLE_USER') {
-      if (userRole === 'ROLE_USER') {
-        navigate('/user/userMain');
-      } else if (userRole === 'ROLE_ADMIN') {
-        navigate('/admin/adminMain');
-      } else if (userRole === 'ROLE_HIGH_ADMIN') {
-        navigate('/highadmin/highAdminMain');
-      } else if (userRole === 'none') {
-        navigate('/');
+    if (userRole !== "ROLE_USER") {
+      if (userRole === "ROLE_USER") {
+        navigate("/user/userMain");
+      } else if (userRole === "ROLE_ADMIN") {
+        navigate("/admin/adminMain");
+      } else if (userRole === "ROLE_HIGH_ADMIN") {
+        navigate("/highadmin/highAdminMain");
+      } else if (userRole === "none") {
+        navigate("/");
       }
     }
   }, []);
-  const token = localStorage.getItem('token');
+  const token = localStorage.getItem("token");
 
   const [openModal, setOpenModal] = useState(false);
   const [openCancelMddal, setOpenCancelModal] = useState(false);
-  const [inputTitle, setInputTitle] = useState('');
-  const [inputComment, setInputComment] = useState('');
+  const [inputTitle, setInputTitle] = useState("");
+  const [inputComment, setInputComment] = useState("");
   const [myAssetNum, setMyAssetNum] = useState(0);
   const [myAssetList, setMyAssetList] = useState([]);
-  const [username, setUsername] = useState('');
-  const [choiceCatogory, setChoiceCategory] = useState('all');
+  const [username, setUsername] = useState("");
+  const [choiceCatogory, setChoiceCategory] = useState("all");
   const [openAlert, setOpenAlert] = useState(false);
   const [openCancelAlert, setOpenCancelAlert] = useState(false);
   const [myInfo, setMyInfo] = useState({});
@@ -44,24 +45,24 @@ function UserMain_using() {
     let todayYear = now.getFullYear();
     let todayMonth = now.getMonth() + 1;
     let todayDate = now.getDate();
-    const week = ['(일)', '(월)', '(화)', '(수)', '(목)', '(금)', '(토)'];
+    const week = ["(일)", "(월)", "(화)", "(수)", "(목)", "(금)", "(토)"];
     let dayOfWeek = week[now.getDay()];
     let hours = now.getHours();
     let minutes = now.getMinutes();
 
     return (
       todayYear +
-      '년 ' +
+      "년 " +
       todayMonth +
-      '월 ' +
+      "월 " +
       todayDate +
-      '일 ' +
+      "일 " +
       dayOfWeek +
-      ' ' +
+      " " +
       hours +
-      '시 ' +
+      "시 " +
       minutes +
-      '분'
+      "분"
     );
   };
 
@@ -70,24 +71,24 @@ function UserMain_using() {
     let todayYear = now.getFullYear();
     let todayMonth = now.getMonth() + 1;
     let todayDate = now.getDate();
-    const week = ['(일)', '(월)', '(화)', '(수)', '(목)', '(금)', '(토)'];
+    const week = ["(일)", "(월)", "(화)", "(수)", "(목)", "(금)", "(토)"];
     let dayOfWeek = week[now.getDay()];
     let hours = now.getHours();
     let minutes = now.getMinutes();
 
     return (
       todayYear +
-      '-' +
-      (todayMonth >= 10 ? todayMonth : '0' + todayMonth) +
-      '-' +
-      (todayDate >= 10 ? todayDate : '0' + todayDate)
+      "-" +
+      (todayMonth >= 10 ? todayMonth : "0" + todayMonth) +
+      "-" +
+      (todayDate >= 10 ? todayDate : "0" + todayDate)
     );
   };
 
   const getMyInfo = (username) => {
     axios({
-      url: '/mainPage/getMyInfo',
-      method: 'get',
+      url: "/mainPage/getMyInfo",
+      method: "get",
       headers: {
         Authorization: token,
       },
@@ -103,19 +104,19 @@ function UserMain_using() {
   };
 
   const [data, setData] = useState({
-    assets_num: '',
+    assets_num: "",
     username: username,
-    return_kind: '교환',
-    return_title: '',
-    return_comment: '',
-    return_date: '',
-    return_status: '',
+    return_kind: "교환",
+    return_title: "",
+    return_comment: "",
+    return_date: "",
+    return_status: "",
   });
 
   const handleChange = (e) => {
-    if (e.target.name === 'return_title') {
+    if (e.target.name === "return_title") {
       setInputTitle(e.target.value);
-    } else if (e.target.name === 'return_comment') {
+    } else if (e.target.name === "return_comment") {
       setInputComment(e.target.value);
     }
 
@@ -139,15 +140,15 @@ function UserMain_using() {
     console.log(returnForm);
 
     axios({
-      url: '/mainPage/returnForm',
-      method: 'post',
+      url: "/mainPage/returnForm",
+      method: "post",
       headers: {
         Authorization: token,
       },
       data: returnForm,
     })
       .then((response) => {
-        alert('신청완료되었습니다.');
+        alert("신청완료되었습니다.");
         console.log(response.data);
 
         setOpenModal(false);
@@ -158,22 +159,22 @@ function UserMain_using() {
       .catch((error) => {
         if (error.response) {
           console.log(error.response);
-          console.log('server responded');
+          console.log("server responded");
         } else if (error.request) {
-          console.log('network error');
+          console.log("network error");
         } else {
           console.log(error);
         }
       });
 
-    setInputTitle('');
-    setInputComment('');
+    setInputTitle("");
+    setInputComment("");
   };
 
   const getMyAssetList = (username) => {
     axios({
-      url: '/mainPage/getMyAssetList',
-      method: 'get',
+      url: "/mainPage/getMyAssetList",
+      method: "get",
       headers: {
         Authorization: token,
       },
@@ -189,7 +190,7 @@ function UserMain_using() {
   };
 
   useEffect(() => {
-    const username = localStorage.getItem('username');
+    const username = localStorage.getItem("username");
     if (username) {
       setUsername(username);
     }
@@ -208,17 +209,17 @@ function UserMain_using() {
   const myAssetListFilter = () => {
     const copyList = [...myAssetList];
     return copyList.filter((a) => {
-      if (choiceCatogory === 'all') {
+      if (choiceCatogory === "all") {
         return a.CATEGORY_NUM >= 1;
-      } else if (choiceCatogory === 'pc') {
+      } else if (choiceCatogory === "pc") {
         return (
           a.CATEGORY_NUM === 5 || a.CATEGORY_NUM === 6 || a.CATEGORY_NUM === 1
         );
-      } else if (choiceCatogory === 'sw') {
+      } else if (choiceCatogory === "sw") {
         return (
           (a.CATEGORY_NUM >= 7 && a.CATEGORY_NUM <= 12) || a.CATEGORY_NUM === 2
         );
-      } else if (choiceCatogory === 'etc') {
+      } else if (choiceCatogory === "etc") {
         return (
           (a.CATEGORY_NUM >= 13 && a.CATEGORY_NUM <= 17) || a.CATEGORY_NUM === 3
         );
@@ -333,13 +334,16 @@ function UserMain_using() {
                   title="프린트"
                 />
               </div>
+              <div className="excel-control react-icon">
+                <ExcelDownload page={""} />
+              </div>
             </div>
           </div>
           {myAssetList.length > 0 ? (
             <>
               <select
                 className="choiceCatogory"
-                style={{ width: '200px', marginBottom: '10px', height: '30px' }}
+                style={{ width: "200px", marginBottom: "10px", height: "30px" }}
                 onChange={(e) => {
                   setChoiceCategory(e.target.value);
                   setCurrentPage(1);
@@ -355,7 +359,7 @@ function UserMain_using() {
               {/* <!-- Default Table --> */}
               <table
                 className="table table-borderless"
-                style={{ textAlign: 'center' }}
+                style={{ textAlign: "center" }}
               >
                 <thead>
                   <tr className="table-light">
@@ -383,71 +387,71 @@ function UserMain_using() {
                           <td>{a.ASSETS_DETAIL_NAME}</td>
                           <td
                             style={{
-                              fontSize: '14px',
-                              color: 'gray',
-                              width: '800px',
+                              fontSize: "14px",
+                              color: "gray",
+                              width: "800px",
                             }}
                           >
-                            {a.SPEC_CPU !== undefined ? a.SPEC_CPU + ' |' : ''}
-                            {a.SPEC_RAM !== undefined ? a.SPEC_RAM + ' |' : ''}
+                            {a.SPEC_CPU !== undefined ? a.SPEC_CPU + " |" : ""}
+                            {a.SPEC_RAM !== undefined ? a.SPEC_RAM + " |" : ""}
                             {a.SPEC_MAINBOARD !== undefined
-                              ? a.SPEC_MAINBOARD + ' |'
-                              : ''}
+                              ? a.SPEC_MAINBOARD + " |"
+                              : ""}
                             {a.SPEC_POWER !== undefined
-                              ? a.SPEC_POWER + ' |'
-                              : ''}
-                            {a.SPEC_GPU !== undefined ? a.SPEC_GPU + ' |' : ''}
-                            {a.SPEC_HDD !== undefined ? a.SPEC_HDD + ' |' : ''}
-                            {a.SPEC_SSD !== undefined ? a.SPEC_SSD + ' |' : ''}
-                            {a.SPEC_OPS !== undefined ? a.SPEC_OPS + ' |' : ''}
-                            {a.SPEC_MFG !== undefined ? a.SPEC_MFG + ' |' : ''}
+                              ? a.SPEC_POWER + " |"
+                              : ""}
+                            {a.SPEC_GPU !== undefined ? a.SPEC_GPU + " |" : ""}
+                            {a.SPEC_HDD !== undefined ? a.SPEC_HDD + " |" : ""}
+                            {a.SPEC_SSD !== undefined ? a.SPEC_SSD + " |" : ""}
+                            {a.SPEC_OPS !== undefined ? a.SPEC_OPS + " |" : ""}
+                            {a.SPEC_MFG !== undefined ? a.SPEC_MFG + " |" : ""}
                             {a.SPEC_SERIEL !== undefined
-                              ? a.SPEC_SERIEL + ' |'
-                              : ''}
+                              ? a.SPEC_SERIEL + " |"
+                              : ""}
                             {/*{a.SPEC_PURCHASE_DATE!==undefined?a.SPEC_PURCHASE_DATE+" |":''}*/}
                             {a.SPEC_WARRANTY !== undefined
-                              ? a.SPEC_WARRANTY + ' |'
-                              : ''}
-                            {a.SW_MFG !== undefined ? a.SW_MFG + ' |' : ''}
+                              ? a.SPEC_WARRANTY + " |"
+                              : ""}
+                            {a.SW_MFG !== undefined ? a.SW_MFG + " |" : ""}
                             {a.SW_SPEC_SERIEL !== undefined
-                              ? a.SW_SPEC_SERIEL + ' |'
-                              : ''}
+                              ? a.SW_SPEC_SERIEL + " |"
+                              : ""}
                             {a.SW_SPEC_WARRANTY !== undefined
-                              ? a.SW_SPEC_WARRANTY + ' |'
-                              : ''}
+                              ? a.SW_SPEC_WARRANTY + " |"
+                              : ""}
                             {/*{a.SW_PURCHASE_DATE!==undefined?a.SW_PURCHASE_DATE+" |":''}*/}
                             {/*{a.SW_PRICE!==undefined?a.SW_PRICE+" |":''}*/}
                             {a.SERVER_MFG !== undefined
-                              ? a.SERVER_MFG + ' |'
-                              : ''}
+                              ? a.SERVER_MFG + " |"
+                              : ""}
                             {/*{a.SERVER_PRICE!==undefined?a.SERVER_PRICE+" |":''}*/}
                             {a.SERVER_CAPA !== undefined
-                              ? a.SERVER_CAPA + ' |'
-                              : ''}
+                              ? a.SERVER_CAPA + " |"
+                              : ""}
                             {a.SERVER_INTERFACE !== undefined
-                              ? a.SERVER_INTERFACE + ' |'
-                              : ''}
+                              ? a.SERVER_INTERFACE + " |"
+                              : ""}
                             {a.SERVER_AVERAGE_LIFE !== undefined
-                              ? a.SERVER_AVERAGE_LIFE + ' |'
-                              : ''}
+                              ? a.SERVER_AVERAGE_LIFE + " |"
+                              : ""}
                             {a.SERVER_RPM !== undefined
-                              ? a.SERVER_RPM + ' |'
-                              : ''}
+                              ? a.SERVER_RPM + " |"
+                              : ""}
                             {a.SERVER_DATARECOVERY_LIFE !== undefined
-                              ? a.SERVER_DATARECOVERY_LIFE + ' |'
-                              : ''}
-                            {a.ETC_MFG !== undefined ? a.ETC_MFG + ' |' : ''}
+                              ? a.SERVER_DATARECOVERY_LIFE + " |"
+                              : ""}
+                            {a.ETC_MFG !== undefined ? a.ETC_MFG + " |" : ""}
                             {a.ETC_SPEC_WARRANTY !== undefined
-                              ? a.ETC_SPEC_WARRANTY + ' |'
-                              : ''}
+                              ? a.ETC_SPEC_WARRANTY + " |"
+                              : ""}
                             {/*{a.ETC_PURCHASE_DATE!==undefined?a.ETC_PURCHASE_DATE+" |":''}*/}
                             {/*{a.ETC_PRICE!==undefined?a.ETC_PRICE+" |":''}*/}
                           </td>
                           <td>{rentDate(a.RENT_DATE)}</td>
                           <td>
                             {a.RETURN_STATUS === undefined ||
-                            a.RETURN_STATUS === '승인' ||
-                            a.RETURN_STATUS === '반려' ? (
+                            a.RETURN_STATUS === "승인" ||
+                            a.RETURN_STATUS === "반려" ? (
                               <button
                                 type="button"
                                 className="userMain-ask userMain-modalBtn"
@@ -463,9 +467,9 @@ function UserMain_using() {
                                 type="button"
                                 className="userMain-ask userMain-modalBtn"
                                 style={{
-                                  backgroundColor: '#b5bfd1',
-                                  paddingLeft: '7px',
-                                  paddingRight: '7px',
+                                  backgroundColor: "#b5bfd1",
+                                  paddingLeft: "7px",
+                                  paddingRight: "7px",
                                 }}
                                 onClick={() => {
                                   setOpenCancelModal(true);
@@ -483,11 +487,11 @@ function UserMain_using() {
               </table>
             </>
           ) : (
-            <div style={{ margin: '0 auto' }}>
+            <div style={{ margin: "0 auto" }}>
               <img
                 src="../assets/img/ittam4.png"
                 alt="iii"
-                style={{ width: '500px' }}
+                style={{ width: "500px" }}
               />
             </div>
           )}

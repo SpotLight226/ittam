@@ -1,54 +1,55 @@
-import { useEffect, useContext, useState, useRef } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
-import { BsArrowClockwise } from 'react-icons/bs';
-import axios from 'axios';
+import { useEffect, useContext, useState, useRef } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
+import { BsArrowClockwise } from "react-icons/bs";
+import axios from "axios";
 
-import { UserStateContext } from './Users';
-import { tokenInfoContext } from '../../component/TokenInfoProvider';
+import { UserStateContext } from "./Users";
+import { tokenInfoContext } from "../../component/TokenInfoProvider";
 
-import UserItem from './UserItem';
-import Pagenation from '../../component/Pagenation';
-import { UserOptionList } from '../../constants/OptionList'; // 옵션들을 정의해둔 list에서 객체로 사용할 옵션을 가져온다
-import ControlMenu from '../../component/ControlMenu';
-import UserLeaveModal from '../../component/Modal/UserLeaveModal';
-import { AiTwotonePrinter } from 'react-icons/ai';
+import UserItem from "./UserItem";
+import Pagenation from "../../component/Pagenation";
+import { UserOptionList } from "../../constants/OptionList"; // 옵션들을 정의해둔 list에서 객체로 사용할 옵션을 가져온다
+import ControlMenu from "../../component/ControlMenu";
+import UserLeaveModal from "../../component/Modal/UserLeaveModal";
+import { AiTwotonePrinter } from "react-icons/ai";
+import ExcelDownload from "../../component/ExcelDownload";
 
 const UserLeave = () => {
   const userList = useContext(UserStateContext);
-  const token = localStorage.getItem('token');
+  const token = localStorage.getItem("token");
   const { userRole } = useContext(tokenInfoContext);
 
-  const filteredList = userList.filter((it) => it.user_leave_yn === 'Y'); // 퇴사 신청한 리스트
+  const filteredList = userList.filter((it) => it.user_leave_yn === "Y"); // 퇴사 신청한 리스트
 
   const navigate = useNavigate();
   const location = useLocation();
 
   // 권한 체크 및 경고 메시지 함수
   const checkUserRole = () => {
-    if (userRole !== 'ROLE_ADMIN' && userRole !== 'ROLE_HIGH_ADMIN') {
-      if (userRole === 'ROLE_USER') {
-        navigate('/user/userMain');
-      } else if (userRole === 'ROLE_ADMIN') {
-        navigate('/admin/adminMain');
-      } else if (userRole === 'ROLE_HIGH_ADMIN') {
-        navigate('/highadmin/highAdminMain');
-      } else if (userRole === 'none') {
-        navigate('/');
+    if (userRole !== "ROLE_ADMIN" && userRole !== "ROLE_HIGH_ADMIN") {
+      if (userRole === "ROLE_USER") {
+        navigate("/user/userMain");
+      } else if (userRole === "ROLE_ADMIN") {
+        navigate("/admin/adminMain");
+      } else if (userRole === "ROLE_HIGH_ADMIN") {
+        navigate("/highadmin/highAdminMain");
+      } else if (userRole === "none") {
+        navigate("/");
       }
     }
   };
 
   // 검색
-  const [inputText, setInputText] = useState(''); // 검색창 value
-  const [searchOption, setSearchOption] = useState('all');
+  const [inputText, setInputText] = useState(""); // 검색창 value
+  const [searchOption, setSearchOption] = useState("all");
   const [searchResult, setSearchResult] = useState([]);
 
   const dataId = useRef(0); // 검색된 데이터에 추가하기 위한 ref
 
   useEffect(() => {
     const queryParams = new URLSearchParams(location.search); // URL 쿼리 문자열 파싱
-    const searchParam = queryParams.get('value') || '';
-    const searchOptionParam = queryParams.get('option') || 'all';
+    const searchParam = queryParams.get("value") || "";
+    const searchOptionParam = queryParams.get("option") || "all";
 
     setInputText(searchParam);
     setSearchOption(searchOptionParam);
@@ -59,7 +60,7 @@ const UserLeave = () => {
 
   // 검색 핸들링
   const handleSearchEnter = (event) => {
-    if (event.key === 'Enter') {
+    if (event.key === "Enter") {
       // URL 업데이트
       const newValue = encodeURIComponent(inputText);
       const newOption = encodeURIComponent(searchOption);
@@ -69,15 +70,15 @@ const UserLeave = () => {
 
       axios({
         url: `/user/userSearch?value=${newValue}&option=${newOption}`,
-        method: 'get',
+        method: "get",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
           Authorization: token,
         },
       })
         .then((res) => {
           const searchData = res.data
-            .filter((it) => it.user_leave_yn === 'Y')
+            .filter((it) => it.user_leave_yn === "Y")
             .map((it) => {
               dataId.current += 1;
               return {
@@ -86,9 +87,9 @@ const UserLeave = () => {
               };
             });
           if (searchData.length < 1) {
-            alert('검색결과가 없습니다');
-            setInputText('');
-            navigate('/user/userLeave');
+            alert("검색결과가 없습니다");
+            setInputText("");
+            navigate("/user/userLeave");
           } else {
             setSearchResult(searchData); // 검색 결과 업데이트
           }
@@ -107,13 +108,13 @@ const UserLeave = () => {
   //// 모달
   const [modalStatus, setModalStatus] = useState(false); // 모달 핸들링 위한 state
   const [modalContent, setModalContent] = useState({
-    username: '',
-    user_name: '',
-    user_email: '',
-    user_depart: '',
-    user_phone: '',
-    role: '',
-    user_leavedate: '',
+    username: "",
+    user_name: "",
+    user_email: "",
+    user_depart: "",
+    user_phone: "",
+    role: "",
+    user_leavedate: "",
   }); // 모달 콘텐츠
 
   // 모달 열기 전 state 설정
@@ -138,13 +139,13 @@ const UserLeave = () => {
   const getModalContent = async (userId) => {
     if (userId) {
       axios({
-        url: '/user/userDetail',
-        method: 'post',
+        url: "/user/userDetail",
+        method: "post",
         data: {
           userId: userId,
         },
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
           Authorization: token,
         },
       })
@@ -162,7 +163,7 @@ const UserLeave = () => {
             user_leavedate: userData.user_joindate,
           });
         })
-        .catch((err) => alert('퇴사 상세정보를 가져오는데 실패했습니다'));
+        .catch((err) => alert("퇴사 상세정보를 가져오는데 실패했습니다"));
     }
   };
   //모달 끝
@@ -172,12 +173,12 @@ const UserLeave = () => {
     const copyOptionList = JSON.parse(JSON.stringify(UserOptionList));
 
     return copyOptionList.filter(
-      (it) => it.value !== 'role' && it.value !== 'date'
+      (it) => it.value !== "role" && it.value !== "date"
     );
   };
 
   // 1. 정렬을 위한 state
-  const [sortType, setSortType] = useState('number'); // 정렬 컬럼 state
+  const [sortType, setSortType] = useState("number"); // 정렬 컬럼 state
   const [checkClass, setCheckClass] = useState(false); // 내림, 오름 차순 선택 state
 
   // 2. 각 정렬 선택에 따른 데이터 정렬 함수
@@ -189,7 +190,7 @@ const UserLeave = () => {
     const compare = (a, b) => {
       // 선택된 컬럼에 대해서 case 별로 분류
       switch (sortType) {
-        case 'number': {
+        case "number": {
           // 번호 : 숫자 비교 => 문자열 일 수도 있으니 parseInt 로 감싼다
           if (checkClass) {
             return parseInt(b.id) - parseInt(a.id); // 오름차순
@@ -197,7 +198,7 @@ const UserLeave = () => {
             return parseInt(a.id) - parseInt(b.id); // 내림차순
           }
         }
-        case 'name': {
+        case "name": {
           // 이름 : 문자열을 사전 순으로 비교한다
           if (checkClass) {
             return b.user_name.localeCompare(a.user_name);
@@ -205,7 +206,7 @@ const UserLeave = () => {
             return a.user_name.localeCompare(b.user_name);
           }
         }
-        case 'id': {
+        case "id": {
           // 사원번호 : 부서 빼고 번호만 비교
           const a_id = parseInt(a.username.slice(3, a.username.length));
           const b_id = parseInt(b.username.slice(3, b.username.length));
@@ -216,7 +217,7 @@ const UserLeave = () => {
             return a_id - b_id;
           }
         }
-        case 'depart': {
+        case "depart": {
           // 부서
           if (checkClass) {
             return b.user_depart.localeCompare(a.user_depart);
@@ -224,7 +225,7 @@ const UserLeave = () => {
             return a.user_depart.localeCompare(b.user_depart);
           }
         }
-        case 'email': {
+        case "email": {
           // 이메일
           if (checkClass) {
             return b.user_email.localeCompare(a.user_email);
@@ -232,7 +233,7 @@ const UserLeave = () => {
             return a.user_email.localeCompare(b.user_email);
           }
         }
-        case 'leaveDate': {
+        case "leaveDate": {
           // 입사일 : Date 를 비교해야 하므로 state의 날짜 문자열을 가지고 와서 새로운 Date 객체에 넣고 getTime()을 사용해 ms로 변환 후 비교
           const a_date = new Date(a.user_joindate).getTime();
           const b_date = new Date(b.user_joindate).getTime();
@@ -258,10 +259,10 @@ const UserLeave = () => {
   const resetBtn = () => {
     // 검색 데이터 초기화
     setSearchResult([]);
-    setInputText('');
+    setInputText("");
 
     // 쿼리 파라미터를 제거하고 기존 주소로 이동
-    navigate('/users/userLeave');
+    navigate("/users/userLeave");
   };
   ////////////////////////
 
@@ -303,6 +304,9 @@ const UserLeave = () => {
                         title="프린트"
                       />
                     </div>
+                    <div className="excel-control react-icon">
+                      <ExcelDownload page={""} />
+                    </div>
                   </div>
                 </div>
 
@@ -330,9 +334,9 @@ const UserLeave = () => {
                       >
                         <BsArrowClockwise
                           style={{
-                            width: '30px',
-                            height: '30px',
-                            color: 'gray',
+                            width: "30px",
+                            height: "30px",
+                            color: "gray",
                           }}
                           onClick={resetBtn}
                         />

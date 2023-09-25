@@ -1,127 +1,128 @@
-import { useContext, useEffect, useState } from 'react';
-import axios from 'axios';
-import ApproveTable from './ApproveTable';
-import { BsArrowClockwise } from 'react-icons/bs';
-import Pagenation from '../../component/Pagenation';
-import { useNavigate } from 'react-router-dom';
-import base64 from 'base-64';
-import { AiTwotonePrinter } from 'react-icons/ai';
-import { tokenInfoContext } from '../../component/TokenInfoProvider';
+import { useContext, useEffect, useState } from "react";
+import axios from "axios";
+import ApproveTable from "./ApproveTable";
+import { BsArrowClockwise } from "react-icons/bs";
+import Pagenation from "../../component/Pagenation";
+import { useNavigate } from "react-router-dom";
+import base64 from "base-64";
+import { AiTwotonePrinter } from "react-icons/ai";
+import { tokenInfoContext } from "../../component/TokenInfoProvider";
+import ExcelDownload from "../../component/ExcelDownload";
 
 function Approve() {
   const { userRole } = useContext(tokenInfoContext);
   const navigate = useNavigate();
   useEffect(() => {
-    if (userRole !== 'ROLE_ADMIN') {
-      if (userRole === 'ROLE_USER') {
-        navigate('/user/userMain');
-      } else if (userRole === 'ROLE_ADMIN') {
-        navigate('/admin/adminMain');
-      } else if (userRole === 'ROLE_HIGH_ADMIN') {
-        navigate('/highadmin/highAdminMain');
-      } else if (userRole === 'none') {
-        navigate('/');
+    if (userRole !== "ROLE_ADMIN") {
+      if (userRole === "ROLE_USER") {
+        navigate("/user/userMain");
+      } else if (userRole === "ROLE_ADMIN") {
+        navigate("/admin/adminMain");
+      } else if (userRole === "ROLE_HIGH_ADMIN") {
+        navigate("/highadmin/highAdminMain");
+      } else if (userRole === "none") {
+        navigate("/");
       }
     }
   }, []);
-  let username = localStorage.getItem('username');
-  const token = localStorage.getItem('token');
+  let username = localStorage.getItem("username");
+  const token = localStorage.getItem("token");
 
   const [userRequest, setUserRequest] = useState([]); // 유저 리스트
   const [msg, setMsg] = useState(); // 리랜더링을 위해 useState 생성해서 응답 메시지 넣기
   const [inputText, setInputText] = useState(); // 검색창 value 값 state로 관리
   const [innerData, setInnerDate] = useState({
     // 승인, 반려 버튼 눌렀을 때 해당 행의 값 state로 관리
-    userqNUM: '',
-    userqKIND: '',
-    userqCOUNT: '',
-    username: '',
-    userqTITLE: '',
-    userqCOMMENT: '',
-    categoryNUM: '',
+    userqNUM: "",
+    userqKIND: "",
+    userqCOUNT: "",
+    username: "",
+    userqTITLE: "",
+    userqCOMMENT: "",
+    categoryNUM: "",
   });
   const [inputInnerData, setInputInnerDate] = useState({
     // 검색 시 list 관리를 위한 state
-    userqNUM: '',
-    userqKIND: '',
-    userqCOUNT: '',
-    username: '',
-    userqTITLE: '',
-    userqCOMMENT: '',
-    categoryNUM: '',
+    userqNUM: "",
+    userqKIND: "",
+    userqCOUNT: "",
+    username: "",
+    userqTITLE: "",
+    userqCOMMENT: "",
+    categoryNUM: "",
   });
   const handleToggle = (e) => {
     // 승인 모달창 핸들러
-    let basicModal = document.getElementById('basicModal');
-    basicModal.classList.toggle('show');
+    let basicModal = document.getElementById("basicModal");
+    basicModal.classList.toggle("show");
     basicModal.style.display =
-      basicModal.style.display !== 'none' ? 'none' : 'block';
+      basicModal.style.display !== "none" ? "none" : "block";
     setInnerDate({
       ...innerData,
-      userqKIND: e.target.closest('.prod-box').querySelector('.userq_KIND')
+      userqKIND: e.target.closest(".prod-box").querySelector(".userq_KIND")
         .textContent,
-      userqCOUNT: e.target.closest('.prod-box').querySelector('.userq_COUNT')
+      userqCOUNT: e.target.closest(".prod-box").querySelector(".userq_COUNT")
         .textContent,
-      username: e.target.closest('.prod-box').querySelector('.user_name')
+      username: e.target.closest(".prod-box").querySelector(".user_name")
         .textContent,
-      userqTITLE: e.target.closest('.prod-box').querySelector('.userq_TITLE')
+      userqTITLE: e.target.closest(".prod-box").querySelector(".userq_TITLE")
         .textContent,
       userqCOMMENT: e.target
-        .closest('.prod-box')
-        .querySelector('.userq_COMMENT').textContent,
-      userqNUM: e.target.closest('.prod-box').querySelector('.userq_NUM')
+        .closest(".prod-box")
+        .querySelector(".userq_COMMENT").textContent,
+      userqNUM: e.target.closest(".prod-box").querySelector(".userq_NUM")
         .textContent,
-      categoryNUM: e.target.closest('.prod-box').querySelector('.category_NUM')
+      categoryNUM: e.target.closest(".prod-box").querySelector(".category_NUM")
         .textContent,
     });
   };
 
   const handleBackToggle = (e) => {
     // 반려 모달창 핸들러
-    let basicModal = document.getElementById('basicModalBack');
-    basicModal.classList.toggle('show');
+    let basicModal = document.getElementById("basicModalBack");
+    basicModal.classList.toggle("show");
     basicModal.style.display =
-      basicModal.style.display !== 'none' ? 'none' : 'block';
+      basicModal.style.display !== "none" ? "none" : "block";
     setInnerDate({
       ...innerData,
-      userqKIND: e.target.closest('.prod-box').querySelector('.userq_KIND')
+      userqKIND: e.target.closest(".prod-box").querySelector(".userq_KIND")
         .textContent,
-      userqCOUNT: e.target.closest('.prod-box').querySelector('.userq_COUNT')
+      userqCOUNT: e.target.closest(".prod-box").querySelector(".userq_COUNT")
         .textContent,
-      username: e.target.closest('.prod-box').querySelector('.user_name')
+      username: e.target.closest(".prod-box").querySelector(".user_name")
         .textContent,
-      userqTITLE: e.target.closest('.prod-box').querySelector('.userq_TITLE')
+      userqTITLE: e.target.closest(".prod-box").querySelector(".userq_TITLE")
         .textContent,
       userqCOMMENT: e.target
-        .closest('.prod-box')
-        .querySelector('.userq_COMMENT').textContent,
-      userqNUM: e.target.closest('.prod-box').querySelector('.userq_NUM')
+        .closest(".prod-box")
+        .querySelector(".userq_COMMENT").textContent,
+      userqNUM: e.target.closest(".prod-box").querySelector(".userq_NUM")
         .textContent,
-      categoryNUM: e.target.closest('.prod-box').querySelector('.category_NUM')
+      categoryNUM: e.target.closest(".prod-box").querySelector(".category_NUM")
         .textContent,
     });
   };
   const handleClose = () => {
     // 승인 모달창 닫는 핸들러
-    let basicModal = document.getElementById('basicModal');
-    basicModal.style.display = 'none';
-    basicModal.classList.toggle('show');
+    let basicModal = document.getElementById("basicModal");
+    basicModal.style.display = "none";
+    basicModal.classList.toggle("show");
   };
 
   const handleApproveClose = () => {
-    let basicModal = document.getElementById('basicModal');
-    basicModal.style.display = 'none';
-    basicModal.classList.toggle('show');
-    let basicApproveModal = document.getElementById('basicApproveModal');
-    basicApproveModal.style.display = 'none';
-    basicApproveModal.classList.toggle('show');
+    let basicModal = document.getElementById("basicModal");
+    basicModal.style.display = "none";
+    basicModal.classList.toggle("show");
+    let basicApproveModal = document.getElementById("basicApproveModal");
+    basicApproveModal.style.display = "none";
+    basicApproveModal.classList.toggle("show");
   };
 
   const handleBackClose = () => {
     // 반려 모달창 닫는 핸들러
-    let basicModalBack = document.getElementById('basicModalBack');
-    basicModalBack.style.display = 'none';
-    basicModalBack.classList.toggle('show');
+    let basicModalBack = document.getElementById("basicModalBack");
+    basicModalBack.style.display = "none";
+    basicModalBack.classList.toggle("show");
   };
 
   const ApproveForm = (e, userqNUM) => {
@@ -129,8 +130,8 @@ function Approve() {
     e.preventDefault();
     console.log(innerData.userqNUM);
     axios({
-      url: 'http://localhost:9191/admin/UserRequestBuyApprove',
-      method: 'post',
+      url: "http://localhost:9191/admin/UserRequestBuyApprove",
+      method: "post",
       data: {
         userq_num: innerData.userqNUM,
         userq_title: innerData.userqTITLE,
@@ -141,13 +142,13 @@ function Approve() {
         username: username,
       },
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
         Authorization: token,
       },
     })
       .then((response) => {
         setMsg(response.data);
-        if (inputInnerData.userqNUM !== '') {
+        if (inputInnerData.userqNUM !== "") {
           setInputInnerDate((prevState) => {
             // userqNUM이 일치하지 않는 요소만 필터링하여 새로운 배열 생성
             const updatedInputInnerData = prevState.filter(
@@ -157,10 +158,10 @@ function Approve() {
           });
         }
         handleClose();
-        alert('정상적으로 사용 승인처리 되었습니다.');
+        alert("정상적으로 사용 승인처리 되었습니다.");
       })
       .catch((error) => {
-        alert('승인처리에 실패하였습니다.');
+        alert("승인처리에 실패하였습니다.");
       });
   };
 
@@ -168,8 +169,8 @@ function Approve() {
     // 구매 반려 요청
     e.preventDefault();
     axios({
-      url: 'http://localhost:9191/admin/UserRequestBuyReturn',
-      method: 'post',
+      url: "http://localhost:9191/admin/UserRequestBuyReturn",
+      method: "post",
       data: {
         userq_NUM: userqNUM,
         username: username,
@@ -177,13 +178,13 @@ function Approve() {
         req_username: innerData.username,
       },
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
         Authorization: token,
       },
     })
       .then((response) => {
         setMsg(response.data);
-        if (inputInnerData.userqNUM !== '') {
+        if (inputInnerData.userqNUM !== "") {
           setInputInnerDate((prevState) => {
             // userqNUM이 일치하지 않는 요소만 필터링하여 새로운 배열 생성
             const updatedInputInnerData = prevState.filter(
@@ -195,49 +196,49 @@ function Approve() {
 
         handleBackClose();
 
-        alert('정상적으로 사용 반려처리 되었습니다.');
+        alert("정상적으로 사용 반려처리 되었습니다.");
       })
       .catch((error) => {
-        alert('반려처리에 실패하였습니다.' + error);
+        alert("반려처리에 실패하였습니다." + error);
       });
   };
   const activeEnter = (e) => {
     // Enter 눌렀을 때 axios 함수 호출
-    if (e.key === 'Enter') {
-      let searchInput = document.getElementById('search-input');
+    if (e.key === "Enter") {
+      let searchInput = document.getElementById("search-input");
       SearchForm(inputText);
     }
   };
   const SearchForm = (inputText) => {
     // 구매 검색
     axios({
-      url: 'http://localhost:9191/admin/UserRequestBuySearch',
-      method: 'post',
+      url: "http://localhost:9191/admin/UserRequestBuySearch",
+      method: "post",
       data: {
         inputText: inputText,
       },
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
         Authorization: token,
       },
     })
       .then((response) => {
         if (response.data.length === 0) {
-          alert('일치하는 내역이 없습니다.');
+          alert("일치하는 내역이 없습니다.");
           resetBtn();
         } else {
           setInputInnerDate(response.data);
         }
       })
       .catch((error) => {
-        alert('검색에 실패하였습니다.');
+        alert("검색에 실패하였습니다.");
       });
   };
   const resetBtn = () => {
     // 리셋 버튼
-    let searchInput = document.getElementById('search-input');
+    let searchInput = document.getElementById("search-input");
     setInputInnerDate([]);
-    searchInput.value = '';
+    searchInput.value = "";
   };
 
   //////////////////////////////////////////////// page
@@ -258,22 +259,22 @@ function Approve() {
 
   useEffect(() => {
     // 랜더링
-    const token = localStorage.getItem('token');
+    const token = localStorage.getItem("token");
     let payload = token.substring(
-      token.indexOf('.') + 1,
-      token.lastIndexOf('.')
+      token.indexOf(".") + 1,
+      token.lastIndexOf(".")
     );
     let dec = JSON.parse(base64.decode(payload));
     let role = dec.role;
-    if (role !== 'ROLE_ADMIN' && role !== 'ROLE_HIGH_ADMIN') {
-      alert('접근 권한이 없습니다.');
+    if (role !== "ROLE_ADMIN" && role !== "ROLE_HIGH_ADMIN") {
+      alert("접근 권한이 없습니다.");
       window.history.back();
     }
 
-    if (inputInnerData.username === '' || inputInnerData.length === 0) {
+    if (inputInnerData.username === "" || inputInnerData.length === 0) {
       axios({
-        url: 'http://localhost:9191/admin/UserRequestBuyList',
-        method: 'get',
+        url: "http://localhost:9191/admin/UserRequestBuyList",
+        method: "get",
         headers: {
           Authorization: token,
         },
@@ -282,7 +283,7 @@ function Approve() {
           setUserRequest(res.data);
         })
         .catch((error) => {
-          alert('데이터 조회에 실패하였습니다.');
+          alert("데이터 조회에 실패하였습니다.");
         });
     } else {
       setUserRequest(inputInnerData);
@@ -321,6 +322,9 @@ function Approve() {
                           title="프린트"
                         />
                       </div>
+                      <div className="excel-control react-icon">
+                        <ExcelDownload page={""} />
+                      </div>
                     </div>
                   </div>
 
@@ -348,9 +352,9 @@ function Approve() {
                         >
                           <BsArrowClockwise
                             style={{
-                              width: '30px',
-                              height: '30px',
-                              color: 'gray',
+                              width: "30px",
+                              height: "30px",
+                              color: "gray",
                             }}
                             onClick={resetBtn}
                           />
@@ -449,7 +453,7 @@ function Approve() {
         className="modal fade"
         id="basicModal"
         tabIndex="-1"
-        style={{ display: 'none' }}
+        style={{ display: "none" }}
         aria-modal="true"
         role="dialog"
       >
@@ -510,7 +514,7 @@ function Approve() {
         className="modal fade"
         id="basicModalBack"
         tabIndex="-1"
-        style={{ display: 'none' }}
+        style={{ display: "none" }}
         aria-modal="true"
         role="dialog"
       >
