@@ -12,7 +12,6 @@ const UserItem = ({
   isUser,
   idx,
   onUserClick,// 모달 열기 함수
-  currentPage, itemsPerPage,
 
 }) => {
   const isClickable = isUser && !user_leavedate; // isUser가 true인 경우에만 클릭 가능하도록 설정
@@ -26,7 +25,7 @@ const UserItem = ({
   return (
     <tr className="prod-box">
         <th scope="row">
-            {`${(currentPage - 1) * itemsPerPage + id}`.padStart(4, '\u00A0')}
+            {`${isUser ? id : idx + 1}`.padStart(4, '\u00A0')}
         </th>
       <td
         className={`userName ${isClickable ? "clickable" : ""}`} // 클릭 가능한 경우에 클래스를 추가
