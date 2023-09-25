@@ -22,7 +22,7 @@ function LoginHome({ hideHeaderAndSidebar }) {
   const [emailAuth, SetEmailAuth] = useState(''); // 이메일 인증
   const [cookies, setCookie] = useCookies(['userId']); // 쿠키
   const [rememberME, setRememberME] = useState(false); // 아이디 저장하기 유무
-
+  const [inputPasswordModify, setInputPasswordModify] = useState("");
   const navigate = useNavigate();
 
   // 이메일 인증 타임아웃 처리
@@ -87,9 +87,9 @@ function LoginHome({ hideHeaderAndSidebar }) {
             })
               .then((response) => {
                 // 인증번호 전송
+                setIsTimerActive(true); // 타이머 활성화
                 console.log('전달된 인증번호 : ' + response.data);
                 SetEmailAuth(response.data);
-                setIsTimerActive(true); // 타이머 활성화
                 return;
               })
               .catch((error) => {
@@ -112,7 +112,11 @@ function LoginHome({ hideHeaderAndSidebar }) {
     let passwordReset1 = document.getElementById('passwordReset1').value;
     let passwordReset2 = document.getElementById('passwordReset2').value;
     let emailInput = document.getElementById('yourPassword2').value;
-
+    console.log(inputPasswordModify);
+    if (inputPasswordModify.length < 8){
+      alert('비밀번호는 최소 8글자 이상으로 입력해주세요.');
+      return;
+    }
     if (passwordReset1 === passwordReset2 && passwordReset1 !== '') {
       axios({
         // 인증번호 전송 axios
@@ -196,7 +200,7 @@ function LoginHome({ hideHeaderAndSidebar }) {
           setCookie('userId', username); // 쿠키 저장
         }
 
-        alert('로그인 성공');
+        alert('반갑습니다.');
         //window.location.href = "/";
         if (role === 'ROLE_USER') {
           window.location.href = '/user/userMain';
@@ -205,10 +209,9 @@ function LoginHome({ hideHeaderAndSidebar }) {
         } else if (role === 'ROLE_HIGH_ADMIN') {
           window.location.href = 'highadmin/highAdminMain';
         }
-      } else {
-        alert('로그인 실패');
-      }
+      } 
     } catch (error) {
+      alert('아이디 또는 비밀번호를 확인해주세요.');
       console.error('로그인 요청 중 오류 발생:', error);
     }
   };
@@ -490,11 +493,13 @@ function LoginHome({ hideHeaderAndSidebar }) {
                     새로운 비밀번호
                   </label>
                   <input
-                    type="text"
+                    type="password"
                     name="password"
                     className="form-control modal-input"
                     id="passwordReset1"
                     placeholder="새로운 비밀번호를 입력해주세요."
+                    value={inputPasswordModify}
+                    onChange={(e) => setInputPasswordModify(e.target.value)}
                   />
                 </div>
                 <div className="col-12 auth-box">
@@ -502,7 +507,7 @@ function LoginHome({ hideHeaderAndSidebar }) {
                     비밀번호 확인
                   </label>
                   <input
-                    type="text"
+                    type="password"
                     name="password"
                     className="form-control modal-input"
                     placeholder="새로운 비밀번호를 다시 입력해주세요."
