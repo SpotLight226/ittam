@@ -10,7 +10,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 
 @Configuration
-@PropertySource("classpath:/aws_setting.properties")
+@PropertySource("classpath:/application-aws.properties")
 public class AWSConfig {
     // apply secret code
     @Value("${cloud.aws.credentials.access-key}")

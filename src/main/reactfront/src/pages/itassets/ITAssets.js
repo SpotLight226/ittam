@@ -13,7 +13,7 @@ import ITAssetsItem from './ITAssetsItem';
 import { BsArrowClockwise } from 'react-icons/bs';
 import { tokenInfoContext } from '../../component/TokenInfoProvider';
 import { useNavigate } from 'react-router-dom';
-import { AiTwotonePrinter } from "react-icons/ai";
+import { AiTwotonePrinter } from 'react-icons/ai';
 
 function ITAssets() {
   const { userRole, username } = useContext(tokenInfoContext);
@@ -160,24 +160,24 @@ function ITAssets() {
   const [selectedStatus, setSelectedStatus] = useState(null);
   const handleSelectChange2 = (e) => {
     const value = e.target.value;
-      if (value === "0") {
-        setSelectedStatus(null);
-      } else {
-        setSelectedStatus(value);
-      }
-      setCurrentPage(1);
+    if (value === '0') {
+      setSelectedStatus(null);
+    } else {
+      setSelectedStatus(value);
+    }
+    setCurrentPage(1);
   };
 
-  const [categoryStatus,setCategoryStatus] = useState(null);
+  const [categoryStatus, setCategoryStatus] = useState(null);
   const handleSelectChange3 = (e) => {
     const value = e.target.value;
-    if(value === "0") {
+    if (value === '0') {
       setCategoryStatus(null);
-    }else{
+    } else {
       setCategoryStatus(value);
     }
     setCurrentPage(1);
-  }
+  };
 
   /* 검색기능 */
   const [searchTerm, setSearchTerm] = useState('');
@@ -185,12 +185,12 @@ function ITAssets() {
     const matchesSearchTerm = item.assets_name.includes(searchTerm);
 
     const selectFilter = selectedStatus
-    ? item.assets_status === selectedStatus
-    : true;
+      ? item.assets_status === selectedStatus
+      : true;
 
     const categoryFilter = categoryStatus
-    ? item.category_num === parseInt(categoryStatus)
-    : true;
+      ? item.category_num === parseInt(categoryStatus)
+      : true;
 
     return matchesSearchTerm && selectFilter && categoryFilter;
   });
@@ -208,6 +208,7 @@ function ITAssets() {
   const [itemsPerPage, setItemPerPage] = useState(10); // 페이지당 10개의 아이템  useState(처음에 보이고싶은 개수)
   const handleSelectorChange = (event) => {
     setItemPerPage(Number(event.target.value));
+    setCurrentPage(1);
   };
 
   const totalPages = Math.ceil(filteredData.length / itemsPerPage);
@@ -655,18 +656,19 @@ function ITAssets() {
           <div className="col-lg-12">
             <div className="card">
               <div className="card-body">
-                
-              <div className="row">
-                      <div className="col-6">
-                        <h5 className="card-title">재고관리</h5>
-                      </div>
-                      <div className="col-6 text-right">
-                        <div className="print-control react-icon">
-                           <AiTwotonePrinter onClick={() => window.print()}
-                           title="프린트"/>
-                        </div>
-                      </div>
+                <div className="row">
+                  <div className="col-6">
+                    <h5 className="card-title">재고관리</h5>
+                  </div>
+                  <div className="col-6 text-right">
+                    <div className="print-control react-icon">
+                      <AiTwotonePrinter
+                        onClick={() => window.print()}
+                        title="프린트"
+                      />
                     </div>
+                  </div>
+                </div>
 
                 <div className="datatable-wrapper datatable-loading nofooter sortable searchable fixed-columns">
                   <div className="datatable-top">
@@ -703,7 +705,10 @@ function ITAssets() {
                       </label>
                     </div>
 
-                    <div className="datatable-dropdown assetsDrop" style={{marginLeft: "10px"}}>
+                    <div
+                      className="datatable-dropdown assetsDrop"
+                      style={{ marginLeft: '10px' }}
+                    >
                       <label htmlFor="">
                         <select
                           className="datatable-selector"
@@ -812,7 +817,6 @@ function ITAssets() {
                           add_date={item.add_date}
                           rent_date={item.rent_date}
                           formatDate={formatDate}
-                          
                         />
                       ))}
                   </tbody>
