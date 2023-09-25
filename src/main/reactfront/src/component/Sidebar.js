@@ -321,17 +321,36 @@ function Sidebar() {
 
             <li className="nav-heading">설정</li>
 
-            <li className="nav-item">
-              <Link to="/noticelist" className="nav-link collapsed">
-                <i className="bi bi-ui-checks"></i>
-                <span>공지사항</span>
-              </Link>
-            </li>
-            {/* <!-- End Profile Page Nav --> */}
-          </ul>
-        </aside>
-      )}
-    </>
+        <li className="nav-item">
+       
+        {userRole == 'ROLE_HIGH_ADMIN' &&  ( 
+          <Link to="/noticelist" className="nav-link collapsed">
+            <i className="bi bi-ui-checks"></i>
+            <span>공지사항</span>
+          </Link>
+        )}
+        
+        {userRole == 'ROLE_ADMIN' &&  ( 
+          <Link to="/noticelist" className="nav-link collapsed">
+            <i className="bi bi-ui-checks"></i>
+            <span>공지사항</span>
+          </Link>
+        )}
+
+        {userRole == 'ROLE_USER' && ( 
+          <Link to="/noticeuser" className="nav-link collapsed">
+            <i className="bi bi-ui-checks"></i>
+            <span>공지사항</span>
+          </Link>
+        )}
+
+
+        
+        </li>
+        {/* <!-- End Profile Page Nav --> */}
+      </ul>
+    </aside>
+
   );
 }
 

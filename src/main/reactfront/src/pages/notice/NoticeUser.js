@@ -4,6 +4,7 @@ import axios from "axios";
 import { Link,useNavigate} from "react-router-dom";
 import NoticeUserTable from "./NoticeUserTable";
 import Pagenation from "../../component/Pagenation";
+import { BsArrowClockwise } from "react-icons/bs";
 
 function NoticeUser(){
 
@@ -77,6 +78,8 @@ function NoticeUser(){
          // 검색 결과를 처리
          console.log(response.data);
          setNoticeList(response.data);
+        // 페이지를 1페이지로 설정
+        setCurrentPage(1);
        })
        .catch((error) => {
          alert("에러 발생: " + error);
@@ -100,6 +103,8 @@ function NoticeUser(){
          // 검색 결과를 처리
          console.log(response.data);
          setNoticeList(response.data);
+        // 페이지를 1페이지로 설정
+        setCurrentPage(1);
        })
        .catch((error) => {
          alert("에러 발생: " + error);
@@ -121,6 +126,8 @@ function NoticeUser(){
          // 검색 결과를 처리
          console.log(response.data);
          setNoticeList(response.data);
+         // 페이지를 1페이지로 설정
+         setCurrentPage(1);
        })
        .catch((error) => {
          alert("에러 발생: " + error);
@@ -132,15 +139,23 @@ function NoticeUser(){
  
      const searchStartDate = document.getElementById("searchStartDate");
      const searchEndDate = document.getElementById("searchEndDate");
- 
-     console.log(searchStartDate.value);
-     console.log(searchEndDate.value);
- 
-     const data = {
-       notice_regdate : searchStartDate.value,
-       notice_enddate : searchEndDate.value
-     }
- 
+
+     const startDate = searchStartDate.value;
+     const endDate = searchEndDate.value;
+    
+    // 시작일과 종료일 중 적어도 하나가 비어 있는 경우
+    if (!startDate || !endDate) {
+      alert('등록일과 만료일을 모두 설정해주세요.');
+      return; // 검색을 중지하고 알림만 표시
+    }
+
+    const data = {
+      notice_regdate: startDate,
+      notice_enddate: endDate,
+    }
+
+
+
  
      axios({
        url: "http://localhost:9191/noticelist/searchDate", // 검색을 처리할 서버 엔드포인트
@@ -218,6 +233,37 @@ function NoticeUser(){
      setCurrentPage(pageNumber);
    };
 
+   const resetBtn = () => {
+    setSearchText({
+      notice_regdate: "",
+      notice_title: "",
+      notice_name: "",
+      notice_enddate: "",
+      notice_content: "",
+      notice_hits: "",
+      notice_num: "",
+    });
+  
+    // 날짜 입력 필드 초기화
+    const searchStartDate = document.getElementById("searchStartDate");
+    const searchEndDate = document.getElementById("searchEndDate");
+  
+    if (searchStartDate && searchEndDate) {
+      searchStartDate.value = "";
+      searchEndDate.value = "";
+    }
+  
+    // 페이지를 다시 로드 (원상태로 돌아감)
+    getList();
+  };
+
+
+
+
+
+
+
+
   return (
     <div>
       <main id="main" className="main">
@@ -246,7 +292,7 @@ function NoticeUser(){
                       </div>
 
                       <div className="tag-element tag-element--faq">
-                        <button className="btn btn-primary" style={{ marginRight: '10px' }} onClick={handleSearchAll}>전체</button>
+                          <button className="btn btn-primary" style={{ marginRight: '10px' }} onClick={handleSearchAll}>전체</button>
                         <button className="btn btn-primary" style={{ marginRight: '10px' }} onClick={handleSearchActive}>진행중</button>
                         <button className="btn btn-primary" style={{ marginRight: '10px' }} onClick={handleSearchExpire}>만료</button>
                       </div>
@@ -264,13 +310,16 @@ function NoticeUser(){
                         className="form-control"
                         />
                       </div>
-
+                      <div className="col-sm-2">
                       <button className="btn btn-primary searchBtn" type="button" onClick={handleSearchDate} > 
                       검색 
                       </button>
+                      </div>
 
                       <div className="datatable-search">
-                        
+                      <button type="button" className="btn btn-primary reset-btn"style={{ marginBottom: "5px" }}><BsArrowClockwise style={{width : "30px", height : "30px", color : "gray"}}
+                                                                                                        onClick={resetBtn}/></button>
+
                         <input
                           type="search"
                           value={searchText.notice_title}

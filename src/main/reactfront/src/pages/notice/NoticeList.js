@@ -86,6 +86,8 @@ function NoticeList() {
         // 검색 결과를 처리
         console.log(response.data);
         setNoticeList(response.data);
+        // 페이지를 1페이지로 설정
+        setCurrentPage(1);
       })
       .catch((error) => {
         alert("에러 발생: " + error);
@@ -108,6 +110,8 @@ function NoticeList() {
         // 검색 결과를 처리
         console.log(response.data);
         setNoticeList(response.data);
+       // 페이지를 1페이지로 설정
+       setCurrentPage(1);
       })
       .catch((error) => {
         alert("에러 발생: " + error);
@@ -130,6 +134,8 @@ function NoticeList() {
         // 검색 결과를 처리
         console.log(response.data);
         setNoticeList(response.data);
+        // 페이지를 1페이지로 설정
+        setCurrentPage(1);
       })
       .catch((error) => {
         alert("에러 발생: " + error);
