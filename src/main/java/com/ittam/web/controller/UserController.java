@@ -81,7 +81,6 @@ public class UserController {
     }
 
     // 사용자 퇴사 처리
-    // 사용자 퇴사 처리
     @CrossOrigin(origins = "*", allowedHeaders = "*")
     @PostMapping("/userRemove")
     public ResponseEntity<String> userRemove(@RequestBody Map<String, String> requestData) {
@@ -90,15 +89,10 @@ public class UserController {
 
 
         try {
-            int result = userService.userRemove(targetId); // 사용자 삭제
-            if (result != 1) { // 실패시
-                throw new Exception("퇴사 처리에 실패했습니다");
-            }
-
             int userAssetCount = userService.userFindAsset(targetId); // 사용 중인 자산 확인
             if (userAssetCount != 0) { // 사용 중인 자산이 있다면
                 int changeResult = userService.userAssetChange(targetId); // 자산의 상태를 변경
-                if (changeResult != 1) { // 실패시
+                if (changeResult == 0) { // 실패시
                     throw new Exception("사용 중인 자산 반환에 실패했습니다");
                 }
             }
@@ -109,10 +103,22 @@ public class UserController {
             int userReturnCount = userService.userFindReturn(targetId);
 
             // 각 테이블에 신청 이 있다면
-            if (userApprovalCount != 0 || userRequestCount != 0 || userReturnCount != 0) {
-                userService.removeFromUserRequest(targetId);
+            if(userApprovalCount != 0 ){
                 userService.removeFromStockApproval(targetId);
+            }
+
+            if(userRequestCount != 0){
+                userService.removeFromUserRequest(targetId);
+            }
+
+            if(userReturnCount != 0){
                 userService.removeFromStockReturn(targetId);
+            }
+            
+            // 마지막 사용자 삭제
+            int result = userService.userRemove(targetId); // 사용자 삭제
+            if (result != 1) { // 실패시
+                throw new Exception("퇴사 처리에 실패했습니다");
             }
 
             String msg = "퇴사 처리가 완료되었습니다";
