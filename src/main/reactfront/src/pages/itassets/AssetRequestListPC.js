@@ -9,6 +9,8 @@ import {AssetAllListOption, AssetETCOption} from "../../constants/OptionList";
 import ControlMenu from "../../component/ControlMenu";
 import {tokenInfoContext} from "../../component/TokenInfoProvider";
 import {BsArrowClockwise} from "react-icons/bs";
+import { AiTwotonePrinter } from "react-icons/ai";
+import ExcelDownload from '../../component/ExcelDownload';
 
 const validAssetNames = [ // 유효한 자산명 목록
   'PC', '소프트웨어', '주변기기', '서버', '데스크탑', '노트북', 'Microsoft Office', '파워포인트', '엑셀',
@@ -401,7 +403,20 @@ const AssetRequestListPC = () => {
               <div className="col-lg-12">
                 <div className="card">
                   <div className="card-body">
-                    <h5 className="card-title">PC/노트북</h5>
+                  <div className="row">
+                      <div className="col-6">
+                        <h5 className="card-title">PC/노트북</h5>
+                      </div>
+                      <div className="col-6 text-right">
+                        <div className="print-control react-icon">
+                           <AiTwotonePrinter onClick={() => window.print()}
+                           title="프린트"/>
+                        </div>
+                        <div className="excel-control react-icon">
+                          <ExcelDownload page={"assetPCList"} />
+                        </div>
+                      </div>
+                  </div>
                     <div className="datatable-wrapper datatable-loading nofooter sortable searchable fixed-columns">
                       <div className="datatable-top">
                         <div className="datatable-dropdown">

@@ -321,6 +321,9 @@ function Approve() {
                           onClick={() => window.print()}
                           title="프린트"
                         />
+                        <div className="excel-control react-icon">
+                          <ExcelDownload page={""} />
+                        </div>
                       </div>
                       <div className="excel-control react-icon">
                         <ExcelDownload page={""} />

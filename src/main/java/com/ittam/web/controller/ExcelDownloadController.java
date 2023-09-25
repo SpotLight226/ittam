@@ -21,6 +21,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.ByteArrayOutputStream;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 @Controller
 @RequestMapping("/excelDownload")
@@ -36,6 +37,7 @@ public class ExcelDownloadController {
     @GetMapping("/excelDownload.do")
     public ResponseEntity<byte[]> excelDownload(@RequestParam("page") String page, HttpServletResponse response) throws Exception {
 
+
         ByteArrayOutputStream outputStream;
 
         try {
@@ -46,8 +48,8 @@ public class ExcelDownloadController {
                     outputStream = generateUserExcel(response);
                     break;
                 case "assetAllList":
-                   outputStream = generateAssetsAll(response);
-                   break;
+                    outputStream = generateAssetsAll(response);
+                    break;
                 case "assetPCList":
                     outputStream = generatePcAll(response);
                     break;
@@ -57,32 +59,36 @@ public class ExcelDownloadController {
                 case "softwareList":
                     outputStream = generateSoftwareAll(response);
                     break;
-                case "etcList" :
+                case "etcList":
                     outputStream = generateEtcAll(response);
                     break;
                 default:
                     throw new Exception("Invalid page");
             }
 
-            // 리액트는 2진수 byte 로 내보내야 함
-            byte[] bytes = outputStream.toByteArray();
 
-            // 들어온 page 명으로 보냄
-            HttpHeaders headers = new HttpHeaders();
-            headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
-            headers.setContentDisposition(ContentDisposition.builder("attachment")
-                    .filename(page + ".xlsx")
-                    .build());
+        // 리액트는 2진수 byte 로 내보내야 함
+        byte[] bytes = outputStream.toByteArray();
 
-            return new ResponseEntity<>(bytes, headers, HttpStatus.OK);
+        // 들어온 page 명으로 보냄
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
+        headers.setContentDisposition(ContentDisposition.builder("attachment")
+                .filename(page + ".xlsx")
+                .build());
 
-        } catch (Exception e) {
-            e.printStackTrace();
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+        return new ResponseEntity<>(bytes, headers, HttpStatus.OK);
 
+    } catch(
+    Exception e)
 
+    {
+        e.printStackTrace();
+        return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
     }
+
+
+}
 
     // 엑셀 스타일 설정
     private XSSFCellStyle createHeaderStyle(XSSFWorkbook workbook) {
@@ -208,7 +214,7 @@ public class ExcelDownloadController {
 
         return null;
     }
-    
+
     // 전체 자산
     private ByteArrayOutputStream generateAssetsAll(HttpServletResponse res) throws Exception {
         XSSFWorkbook workbook = new XSSFWorkbook();
@@ -275,7 +281,7 @@ public class ExcelDownloadController {
         return outputStream;
 
     }
-    
+
     // pc 리스트
     private ByteArrayOutputStream generatePcAll(HttpServletResponse res) throws Exception {
         XSSFWorkbook workbook = new XSSFWorkbook();
@@ -542,5 +548,6 @@ public class ExcelDownloadController {
         return outputStream;
 
     }
+
 
 }

@@ -1,29 +1,30 @@
-import { useContext, useEffect, useState } from 'react';
-import Pagenation from '../../component/Pagenation';
-import axios from 'axios';
-import ApprovalComment from '../approve/ApprovalComment';
-import { ITAssetsApprovalOptionList } from '../../constants/OptionList';
-import ControlMenu from '../../component/ControlMenu';
-import ITAssetsApprovalItem from './ITAssetsApprovalItem';
-import { useNavigate } from 'react-router-dom';
-import { tokenInfoContext } from '../../component/TokenInfoProvider';
-import { AiTwotonePrinter } from 'react-icons/ai';
+import { useContext, useEffect, useState } from "react";
+import Pagenation from "../../component/Pagenation";
+import axios from "axios";
+import ApprovalComment from "../approve/ApprovalComment";
+import { ITAssetsApprovalOptionList } from "../../constants/OptionList";
+import ControlMenu from "../../component/ControlMenu";
+import ITAssetsApprovalItem from "./ITAssetsApprovalItem";
+import { useNavigate } from "react-router-dom";
+import { tokenInfoContext } from "../../component/TokenInfoProvider";
+import { AiTwotonePrinter } from "react-icons/ai";
+import ExcelDownload from "../../component/ExcelDownload";
 
 function ITAssetsApproval() {
   const { userRole, username } = useContext(tokenInfoContext);
   const navigate = useNavigate();
-  const token = localStorage.getItem('token');
+  const token = localStorage.getItem("token");
 
   useEffect(() => {
-    if (userRole !== 'ROLE_HIGH_ADMIN') {
-      if (userRole === 'ROLE_USER') {
-        navigate('/user/userMain');
-      } else if (userRole === 'ROLE_ADMIN') {
-        navigate('/admin/adminMain');
-      } else if (userRole === 'ROLE_HIGH_ADMIN') {
-        navigate('/highadmin/highAdminMain');
-      } else if (userRole === 'none') {
-        navigate('/');
+    if (userRole !== "ROLE_HIGH_ADMIN") {
+      if (userRole === "ROLE_USER") {
+        navigate("/user/userMain");
+      } else if (userRole === "ROLE_ADMIN") {
+        navigate("/admin/adminMain");
+      } else if (userRole === "ROLE_HIGH_ADMIN") {
+        navigate("/highadmin/highAdminMain");
+      } else if (userRole === "none") {
+        navigate("/");
       }
     }
   }, []);
@@ -32,9 +33,9 @@ function ITAssetsApproval() {
   const [data, setData] = useState([]);
   const stockList = () => {
     axios
-      .get('/stock/getStockApprovalList', {
+      .get("/stock/getStockApprovalList", {
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
           Authorization: token,
         },
       })
@@ -73,11 +74,11 @@ function ITAssetsApproval() {
   const handleSubmit = (item) => {
     axios
       .post(
-        '/stock/updateITStatus',
+        "/stock/updateITStatus",
         { item },
         {
           headers: {
-            'Content-Type': 'application/json',
+            "Content-Type": "application/json",
             Authorization: token,
           },
         }
@@ -94,11 +95,11 @@ function ITAssetsApproval() {
   const handleNsubmit = (item) => {
     axios
       .post(
-        '/stock/approvalN',
+        "/stock/approvalN",
         { item },
         {
           headers: {
-            'Content-Type': 'application/json',
+            "Content-Type": "application/json",
             Authorization: token,
           },
         }
@@ -113,14 +114,14 @@ function ITAssetsApproval() {
 
   function formatDate(dateString) {
     if (!dateString || isNaN(new Date(dateString).getTime())) {
-      return '';
+      return "";
     }
 
     const dateObject = new Date(dateString);
 
     const year = dateObject.getFullYear();
-    const month = String(dateObject.getMonth() + 1).padStart(2, '0');
-    const day = String(dateObject.getDate()).padStart(2, '0');
+    const month = String(dateObject.getMonth() + 1).padStart(2, "0");
+    const day = String(dateObject.getDate()).padStart(2, "0");
 
     return `${year}년 ${month}월 ${day}일 `;
   }
@@ -132,14 +133,14 @@ function ITAssetsApproval() {
 
     return copyOptionList.filter(
       (it) =>
-        it.value !== 'leaveDate' &&
-        it.value !== 'detail' &&
-        it.value !== 'process'
+        it.value !== "leaveDate" &&
+        it.value !== "detail" &&
+        it.value !== "process"
     );
   };
 
   // 1. 정렬을 위한 state
-  const [sortType, setSortType] = useState('number'); // 정렬 컬럼 state
+  const [sortType, setSortType] = useState("number"); // 정렬 컬럼 state
   const [checkClass, setCheckClass] = useState(false); // 내림, 오름 차순 선택 state
 
   const getProcessedList = () => {
@@ -147,14 +148,14 @@ function ITAssetsApproval() {
 
     const compare = (a, b) => {
       switch (sortType) {
-        case 'appro_num': {
+        case "appro_num": {
           if (checkClass) {
             return parseInt(b.appro_num) - parseInt(a.appro_num); // 오름차순
           } else {
             return parseInt(a.appro_num) - parseInt(b.appro_num); // 내림차순
           }
         }
-        case 'username': {
+        case "username": {
           const aExists = a.username !== null && a.username !== undefined;
           const bExists = b.username !== null && b.username !== undefined;
 
@@ -169,21 +170,21 @@ function ITAssetsApproval() {
             return a.username.localeCompare(b.username);
           }
         }
-        case 'appro_title': {
+        case "appro_title": {
           if (checkClass) {
             return b.appro_title.localeCompare(a.appro_title);
           } else {
             return a.appro_title.localeCompare(b.appro_title);
           }
         }
-        case 'appro_kind': {
+        case "appro_kind": {
           if (checkClass) {
             return b.appro_kind.localeCompare(a.appro_kind);
           } else {
             return a.appro_kind.localeCompare(b.appro_kind);
           }
         }
-        case 'appro_date': {
+        case "appro_date": {
           const a_appro_date = new Date(a.appro_date).getTime();
           const b_appro_date = new Date(b.appro_date).getTime();
 
@@ -225,7 +226,9 @@ function ITAssetsApproval() {
                 </div>
                 <div className="row">
                   <div className="col-6">
-                    <h5 className="card-title">구매/수리/폐기 신청내역 조회/처리</h5>
+                    <h5 className="card-title">
+                      구매/수리/폐기 신청내역 조회/처리
+                    </h5>
                   </div>
                   <div className="col-6 text-right">
                     <div className="print-control react-icon">
@@ -233,6 +236,9 @@ function ITAssetsApproval() {
                         onClick={() => window.print()}
                         title="프린트"
                       />
+                    </div>
+                    <div className="excel-control react-icon">
+                      <ExcelDownload page={""} />
                     </div>
                   </div>
                 </div>

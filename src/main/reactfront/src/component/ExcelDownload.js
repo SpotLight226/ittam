@@ -2,10 +2,11 @@ import axios from "axios";
 import { BsFillFileEarmarkExcelFill } from "react-icons/bs";
 
 const handleExcelDownload = (page, token) => {
+
   axios({
     url: "/excelDownload/excelDownload.do",
     method: "get",
-    params: { page }, // page 전달
+    params: {page}, // page 전달
     responseType: "blob", // byte형태로 반환을 받음
     headers: {
       "Content-Type": "application/json",
