@@ -7,6 +7,7 @@ import base64 from 'base-64';
 import { AiTwotonePrinter } from 'react-icons/ai';
 import { tokenInfoContext } from '../../component/TokenInfoProvider';
 import { useNavigate } from 'react-router-dom';
+import ExcelDownload from '../../component/ExcelDownload';
 
 function AdminApproveBuyHandleList() {
   // 관리자 사용 신청 내역 조회 페이지
@@ -297,6 +298,9 @@ function AdminApproveBuyHandleList() {
                           onClick={() => window.print()}
                           title="프린트"
                         />
+                      </div>
+                      <div className="excel-control react-icon">
+                        <ExcelDownload page={""} />
                       </div>
                     </div>
                   </div>
