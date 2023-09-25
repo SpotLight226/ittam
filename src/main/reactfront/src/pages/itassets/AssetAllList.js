@@ -309,8 +309,11 @@ const AssetAllList = () => {
     // 각 선택된 링크에 대한 비교함수
     const compare = (a, b) => {
 
-      console.log(a);
-      console.log(b)
+      // console.log(a.spec_seriel)
+      // console.log(a.assets_detail_name);
+      // console.log(a.sw_mfg+"b")
+      // console.log(a.server_mfg+"c")
+      // console.log(a.etc_mfg+"d")
       // 선택된 컬럼에 대해서 case 별로 분류
       switch (sortType) {
         case "number": {
@@ -337,47 +340,68 @@ const AssetAllList = () => {
         }
         case "mfg": {
           if (checkClass) {
-            if(a.spec_mfg != ''){
-              if (checkClass) {
-                return b.spec_mfg.localeCompare(a.spec_mfg);
-              } else {
-                return a.spec_mfg.localeCompare(b.spec_mfg);
-              }
-            }else if(a.sw_mfg != ''){
-              if (checkClass) {
-                return b.sw_mfg.localeCompare(a.sw_mfg);
-              } else {
-                return a.sw_mfg.localeCompare(b.sw_mfg);
-              }
-            }else if(a.sv_mfg != ''){
-              if (checkClass) {
-                return b.sv_mfg.localeCompare(a.sv_mfg);
-              } else {
-                return a.sv_mfg.localeCompare(b.sv_mfg);
-              }
-            }else{
-              if (checkClass) {
-                return b.etc_mfg.localeCompare(a.etc_mfg);
-              } else {
-                return a.etc_mfg.localeCompare(b.etc_mfg);
-              }
+            if (b.spec_mfg !== null && b.spec_mfg !== '') {
+              return b.spec_mfg.localeCompare(a.spec_mfg);
+            } else if (b.sw_mfg !== null && b.sw_mfg !== '') {
+              return b.sw_mfg.localeCompare(a.sw_mfg);
+            } else if (b.server_mfg !== null && b.server_mfg !== '') {
+              return b.server_mfg.localeCompare(a.server_mfg);
+            } else {
+              return b.etc_mfg.localeCompare(a.etc_mfg);
             }
-          } 
+          } else {
+            if (a.spec_mfg !== null && a.spec_mfg !== '') {
+              return a.spec_mfg.localeCompare(b.spec_mfg);
+            } else if (a.sw_mfg !== null && a.sw_mfg !== '') {
+              return a.sw_mfg.localeCompare(b.sw_mfg);
+            } else if (a.server_mfg !== null && a.server_mfg !== '') {
+              return a.server_mfg.localeCompare(b.server_mfg);
+            } else {
+              return a.etc_mfg.localeCompare(b.etc_mfg);
+            }
+          }
         }
-
         case "seriel": {
           // 권한
           if (checkClass) {
-            return b.assets_detail_name.localeCompare(a.assets_detail_name);
+            if (b.spec_seriel !== null && b.spec_seriel !== '') {
+              return b.spec_seriel.localeCompare(a.spec_seriel);
+            } else if (b.assets_detail_name !== null && b.assets_detail_name !== '') {
+              return b.assets_detail_name.localeCompare(a.assets_detail_name);
+            } else {
+              return 0;
+            }
           } else {
-            return a.assets_detail_name.localeCompare(b.assets_detail_name);
+            if (a.spec_seriel !== null && a.spec_seriel !== '') {
+              return a.spec_seriel.localeCompare(b.spec_seriel);
+            } else if (a.assets_detail_name !== null && a.assets_detail_name !== '') {
+              return a.assets_detail_name.localeCompare(b.assets_detail_name);
+            } else {
+              return 0;
+            }
           }
         }
         case "war": {
           if (checkClass) {
-            return b.assets_detail_name.localeCompare(a.assets_detail_name);
+            if (b.spec_warranty !== null && b.spec_warranty !== '') {
+              return b.spec_warranty.localeCompare(a.spec_warranty);
+            } else if (b.sw_spec_warranty !== null && b.sw_spec_warranty !== '') {
+              return b.sw_spec_warranty.localeCompare(a.sw_spec_warranty);
+            } else if (b.server_spec_warranty !== null && b.server_spec_warranty !== '') {
+              return b.server_spec_warranty.localeCompare(a.server_spec_warranty);
+            } else {
+              return b.etc_spec_warranty.localeCompare(a.etc_spec_warranty);
+            }
           } else {
-            return a.assets_detail_name.localeCompare(b.assets_detail_name);
+            if (a.spec_mfg !== null && a.spec_mfg !== '') {
+              return a.spec_mfg.localeCompare(b.spec_mfg);
+            } else if (a.sw_mfg !== null && a.sw_mfg !== '') {
+              return a.sw_mfg.localeCompare(b.sw_mfg);
+            } else if (a.server_mfg !== null && a.server_mfg !== '') {
+              return a.server_mfg.localeCompare(b.server_mfg);
+            } else {
+              return a.etc_mfg.localeCompare(b.etc_mfg);
+            }
           }
         }
         case "category": {
@@ -627,6 +651,7 @@ const AssetAllList = () => {
                              name="userq_title"
                              onChange={handleChange}
                              value={innerData.userq_title}
+                             placeholder={"제목"}
                       />
                       <div className="invalid-tooltip">
                       </div>
@@ -639,7 +664,9 @@ const AssetAllList = () => {
                                 name="userq_comment"
                                 onChange={handleChange}
                                 value={innerData.userq_comment}
+                                placeholder={"신청사유를 간략히 적어주세요"}
                                 required></textarea>
+
                     </div>
                   </div>
                   <div className="row mb-3 userModalAsk-btn">
@@ -705,6 +732,7 @@ const AssetAllList = () => {
                              name="userq_title"
                              onChange={handleBuyChange}
                              value={innerBuyData.userq_title}
+                             placeholder={"제목"}
                       />
                       <div className="invalid-tooltip">
                       </div>

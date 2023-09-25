@@ -564,6 +564,7 @@ const AssetRequestListSV = () => {
                              name="userq_title"
                              onChange={handleChange}
                              value={innerData.userq_title}
+                             placeholder={"제목"}
                       />
                       <div className="invalid-tooltip">
                       </div>
@@ -576,6 +577,7 @@ const AssetRequestListSV = () => {
                                 name="userq_comment"
                                 onChange={handleChange}
                                 value={innerData.userq_comment}
+                                placeholder={"신청사유를 간략히 적어주세요"}
                                 required></textarea>
                     </div>
                   </div>
@@ -642,6 +644,7 @@ const AssetRequestListSV = () => {
                              name="userq_title"
                              onChange={handleBuyChange}
                              value={innerBuyData.userq_title}
+                             placeholder={"제목"}
                       />
                       <div className="invalid-tooltip">
                       </div>
