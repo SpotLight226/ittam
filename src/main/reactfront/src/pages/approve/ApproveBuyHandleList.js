@@ -5,6 +5,8 @@ import { BsArrowClockwise } from "react-icons/bs";
 import Pagenation from "../../component/Pagenation";
 import { useNavigate } from "react-router-dom";
 import base64 from "base-64"
+import { AiTwotonePrinter } from "react-icons/ai";
+
 
 function Approve() { // 관리자 사용 신청 내역 조회 페이지
   let navigate = useNavigate();
@@ -247,7 +249,19 @@ function Approve() { // 관리자 사용 신청 내역 조회 페이지
               <div className="col-lg-12">
                 <div className="card">
                   <div className="card-body">
-                    <h5 className="card-title">자산 구매 처리내역 조회</h5>
+                    
+                  <div className="row">
+                      <div className="col-6">
+                        <h5 className="card-title">자산 구매 처리내역 조회</h5>
+                      </div>
+                      <div className="col-6 text-right">
+                        <div className="print-control react-icon">
+                           <AiTwotonePrinter onClick={() => window.print()}
+                           title="프린트"/>
+                        </div>
+                      </div>
+                    </div>
+
                     <div className="datatable-wrapper datatable-loading nofooter sortable searchable fixed-columns">
                       <div className="datatable-top">
                         <div className="datatable-dropdown">

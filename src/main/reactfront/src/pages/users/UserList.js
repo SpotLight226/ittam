@@ -1,6 +1,8 @@
 import React, { useEffect, useContext, useState, useRef } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { BsArrowClockwise } from "react-icons/bs";
+import { AiTwotonePrinter } from "react-icons/ai";
+
 
 import { UserStateContext } from "./Users";
 import { tokenInfoContext } from "../../component/TokenInfoProvider";
@@ -10,6 +12,8 @@ import ControlMenu from "../../component/ControlMenu";
 import { UserOptionList } from "../../constants/OptionList"; // 옵션들을 정의해둔 list에서 객체로 사용할 옵션을 가져온다
 import UserModal from "../../component/Modal/UserModal";
 import axios from "axios";
+import ExcelDownload from "../../component/ExcelDownload";
+import { useParams } from "react-router-dom/dist";
 
 const UserList = () => {
   const userList = useContext(UserStateContext);
@@ -20,6 +24,9 @@ const UserList = () => {
   const location = useLocation();
 
   const searchRef = useRef();
+
+  // 엑셀을 위한 페이지 주소전달
+  const page = useParams().subPage;
 
   // 권한 체크 및 경고 메시지 함수
   const checkUserRole = () => {
@@ -298,7 +305,19 @@ const UserList = () => {
           <div className="col-lg-12">
             <div className="card">
               <div className="card-body">
-                <h5 className="card-title">사용자 목록</h5>
+                <div className="row">
+                  <div className="col-6">
+                    <h5 className="card-title">사용자 목록</h5>
+                  </div>
+                  <div className="col-6 text-right">
+                    <div className="print-control react-icon">
+                        <AiTwotonePrinter onClick={() => window.print()}/>
+                    </div>
+                    <div className="excel-control react-icon">
+                      <ExcelDownload page={page} />
+                    </div>
+                  </div>
+                </div>
                 <div className="datatable-wrapper datatable-loading nofooter sortable searchable fixed-columns">
                   <div className="datatable-top">
                     <div className="datatable-dropdown">
