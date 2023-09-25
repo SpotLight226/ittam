@@ -39,7 +39,7 @@ const AssetAllList = () => {
     /* serverspec */
     server_mfg: '', server_spec_warranty: '', server_capa: '', server_price: '', server_purchase_date: '', server_interface: '', server_average_life: '', server_rpm: '', server_datarecovery_life: '',
     /* 승인요청 */
-    appro_title: '', appro_comment: '', category_num:''
+    appro_title: '', appro_comment: '', category_num:'', //mfg:'', serial:'',warranty:''
   });
 
 
@@ -308,6 +308,9 @@ const AssetAllList = () => {
 
     // 각 선택된 링크에 대한 비교함수
     const compare = (a, b) => {
+
+      console.log(a);
+      console.log(b)
       // 선택된 컬럼에 대해서 case 별로 분류
       switch (sortType) {
         case "number": {
@@ -334,25 +337,47 @@ const AssetAllList = () => {
         }
         case "mfg": {
           if (checkClass) {
-            return b.spec_mfg.localeCompare(a.spec_mfg);
-          } else {
-            return a.spec_mfg.localeCompare(b.spec_mfg);
-          }
+            if(a.spec_mfg != ''){
+              if (checkClass) {
+                return b.spec_mfg.localeCompare(a.spec_mfg);
+              } else {
+                return a.spec_mfg.localeCompare(b.spec_mfg);
+              }
+            }else if(a.sw_mfg != ''){
+              if (checkClass) {
+                return b.sw_mfg.localeCompare(a.sw_mfg);
+              } else {
+                return a.sw_mfg.localeCompare(b.sw_mfg);
+              }
+            }else if(a.sv_mfg != ''){
+              if (checkClass) {
+                return b.sv_mfg.localeCompare(a.sv_mfg);
+              } else {
+                return a.sv_mfg.localeCompare(b.sv_mfg);
+              }
+            }else{
+              if (checkClass) {
+                return b.etc_mfg.localeCompare(a.etc_mfg);
+              } else {
+                return a.etc_mfg.localeCompare(b.etc_mfg);
+              }
+            }
+          } 
         }
 
         case "seriel": {
           // 권한
           if (checkClass) {
-            return b.spec_seriel.localeCompare(a.spec_seriel);
+            return b.assets_detail_name.localeCompare(a.assets_detail_name);
           } else {
-            return a.spec_seriel.localeCompare(b.spec_seriel);
+            return a.assets_detail_name.localeCompare(b.assets_detail_name);
           }
         }
         case "war": {
           if (checkClass) {
-            return b.spec_warranty.localeCompare(a.spec_warranty);
+            return b.assets_detail_name.localeCompare(a.assets_detail_name);
           } else {
-            return a.spec_warranty.localeCompare(b.spec_warranty);
+            return a.assets_detail_name.localeCompare(b.assets_detail_name);
           }
         }
         case "category": {
@@ -528,6 +553,9 @@ const AssetAllList = () => {
                               handleModal={handleModal}
                               currentPage={currentPage}
                               itemsPerPage={itemsPerPage}
+                              mfg={item.mfg}
+                              serial={item.serial}
+                              warranty={item.warranty}
                           />
                       ))}
                       </tbody>

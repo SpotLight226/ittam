@@ -333,9 +333,9 @@ const AssetRequestListSV = () => {
         case "seriel": {
           // 권한
           if (checkClass) {
-            return b.spec_seriel.localeCompare(a.spec_seriel);
+            return b.assets_detail_name.localeCompare(a.assets_detail_name);
           } else {
-            return a.spec_seriel.localeCompare(b.spec_seriel);
+            return a.assets_detail_name.localeCompare(b.assets_detail_name);
           }
         }
         case "war": {

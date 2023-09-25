@@ -30,7 +30,7 @@ const ITAssetsItem = ({
           data-bs-toggle="modal"
           data-bs-target="#modalDialogScrollable"
         >
-          {assets_name + ' ' + assets_detail_name}
+          {assets_name + ' ' +"("+ assets_detail_name+")"}
         </Link>
       </td>
       <td>{assets_status}</td>
