@@ -1,23 +1,40 @@
 import "../../styles/Style.css";
 import "../../styles/MainPageStyle/UserStyle.css";
-import React, {useEffect, useState} from "react";
+import React, { useContext, useEffect, useState } from "react";
 import axios from "axios";
-import ReturnReqModal from '../../component/Modal/ReturnReqModal';
+import ReturnReqModal from "../../component/Modal/ReturnReqModal";
 import ReturnCancelModal from "../../component/Modal/ReturnCancelModal";
-import {Link} from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Pagenation from "../../component/Pagenation";
 import { AiTwotonePrinter } from "react-icons/ai";
+import { tokenInfoContext } from "../../component/TokenInfoProvider";
+import ExcelDownload from "../../component/ExcelDownload";
 
 function UserMain_using() {
+  const { userRole } = useContext(tokenInfoContext);
+  const navigate = useNavigate();
+  useEffect(() => {
+    if (userRole !== "ROLE_USER") {
+      if (userRole === "ROLE_USER") {
+        navigate("/user/userMain");
+      } else if (userRole === "ROLE_ADMIN") {
+        navigate("/admin/adminMain");
+      } else if (userRole === "ROLE_HIGH_ADMIN") {
+        navigate("/highadmin/highAdminMain");
+      } else if (userRole === "none") {
+        navigate("/");
+      }
+    }
+  }, []);
   const token = localStorage.getItem("token");
 
   const [openModal, setOpenModal] = useState(false);
   const [openCancelMddal, setOpenCancelModal] = useState(false);
-  const [inputTitle, setInputTitle] = useState('');
-  const [inputComment, setInputComment] = useState('');
+  const [inputTitle, setInputTitle] = useState("");
+  const [inputComment, setInputComment] = useState("");
   const [myAssetNum, setMyAssetNum] = useState(0);
   const [myAssetList, setMyAssetList] = useState([]);
-  const [username, setUsername] = useState('');
+  const [username, setUsername] = useState("");
   const [choiceCatogory, setChoiceCategory] = useState("all");
   const [openAlert, setOpenAlert] = useState(false);
   const [openCancelAlert, setOpenCancelAlert] = useState(false);
@@ -28,7 +45,7 @@ function UserMain_using() {
     let todayYear = now.getFullYear();
     let todayMonth = now.getMonth() + 1;
     let todayDate = now.getDate();
-    const week = ['(일)', '(월)', '(화)', '(수)', '(목)', '(금)', '(토)'];
+    const week = ["(일)", "(월)", "(화)", "(수)", "(목)", "(금)", "(토)"];
     let dayOfWeek = week[now.getDay()];
     let hours = now.getHours();
     let minutes = now.getMinutes();

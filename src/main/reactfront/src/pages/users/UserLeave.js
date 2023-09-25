@@ -12,7 +12,7 @@ import { UserOptionList } from "../../constants/OptionList"; // 옵션들을 정
 import ControlMenu from "../../component/ControlMenu";
 import UserLeaveModal from "../../component/Modal/UserLeaveModal";
 import { AiTwotonePrinter } from "react-icons/ai";
-
+import ExcelDownload from "../../component/ExcelDownload";
 
 const UserLeave = () => {
   const userList = useContext(UserStateContext);
@@ -27,8 +27,15 @@ const UserLeave = () => {
   // 권한 체크 및 경고 메시지 함수
   const checkUserRole = () => {
     if (userRole !== "ROLE_ADMIN" && userRole !== "ROLE_HIGH_ADMIN") {
-      alert("권한이 없습니다.");
-      navigate(-1); // 뒤로 이동
+      if (userRole === "ROLE_USER") {
+        navigate("/user/userMain");
+      } else if (userRole === "ROLE_ADMIN") {
+        navigate("/admin/adminMain");
+      } else if (userRole === "ROLE_HIGH_ADMIN") {
+        navigate("/highadmin/highAdminMain");
+      } else if (userRole === "none") {
+        navigate("/");
+      }
     }
   };
 
@@ -286,18 +293,22 @@ const UserLeave = () => {
           <div className="col-lg-12">
             <div className="card">
               <div className="card-body">
-                
-              <div className="row">
-                <div className="col-6">
-                  <h5 className="card-title">사용자 목록</h5>
-                </div>
-                <div className="col-6 text-right">
-                  <div className="print-control react-icon">
-                      <AiTwotonePrinter onClick={() => window.print()}
-                      title="프린트"/>
+                <div className="row">
+                  <div className="col-6">
+                    <h5 className="card-title">사용자 목록</h5>
+                  </div>
+                  <div className="col-6 text-right">
+                    <div className="print-control react-icon">
+                      <AiTwotonePrinter
+                        onClick={() => window.print()}
+                        title="프린트"
+                      />
+                    </div>
+                    <div className="excel-control react-icon">
+                      <ExcelDownload page={""} />
+                    </div>
                   </div>
                 </div>
-              </div>
 
                 <div className="datatable-wrapper datatable-loading nofooter sortable searchable fixed-columns">
                   <div className="datatable-top">

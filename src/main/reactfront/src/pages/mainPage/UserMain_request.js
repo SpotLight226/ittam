@@ -1,12 +1,28 @@
-import "../../styles/Style.css";
+import '../../styles/Style.css';
 
-import {useEffect, useState} from "react";
-import {Link} from "react-router-dom";
-import axios from "axios";
-import ReqDetailModal from "../../component/Modal/ReqDetailModal";
+import { useContext, useEffect, useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import axios from 'axios';
+import ReqDetailModal from '../../component/Modal/ReqDetailModal';
+import { tokenInfoContext } from '../../component/TokenInfoProvider';
 
 function UserMain_request() {
-    const token = localStorage.getItem("token");
+  const { userRole } = useContext(tokenInfoContext);
+  const navigate = useNavigate();
+  useEffect(() => {
+    if (userRole !== 'ROLE_USER') {
+      if (userRole === 'ROLE_USER') {
+        navigate('/user/userMain');
+      } else if (userRole === 'ROLE_ADMIN') {
+        navigate('/admin/adminMain');
+      } else if (userRole === 'ROLE_HIGH_ADMIN') {
+        navigate('/highadmin/highAdminMain');
+      } else if (userRole === 'none') {
+        navigate('/');
+      }
+    }
+  }, []);
+  const token = localStorage.getItem('token');
 
     const [username, setUsername] = useState('');
     const [myRequestList, setMyRequestList] = useState([]);
@@ -15,7 +31,7 @@ function UserMain_request() {
     const [myInfo, setMyInfo] = useState({});
 
     const count_using = myRequestList.filter(a => a.userq_yn.includes('관리자사용승인') || (a.userq_yn.includes('사원사용'))).length;
-    const count_buy = myRequestList.filter(a => a.userq_yn.includes('구매') && (a.userq_yn.includes('반려') || a.userq_yn.includes('최종구매승인'))).length;
+    const count_buy = myRequestList.filter(a => a.userq_yn.includes('구매') && (a.userq_yn.includes('사원구매') || a.userq_yn.includes('관리자구매승인'))).length;
 
     const getMyInfo = (username) => {
         axios({
