@@ -312,7 +312,7 @@ function Header() {
                         <hr className="dropdown-divider"></hr>
                       </li>
                       <li className="notification-item">
-                        <i className="bi bi-exclamation-circle text-warning"></i>
+                        {a.ALARM_STATUS==='승인' ? <i className="bi bi-check-circle text-success"></i> : <i className="bi bi-exclamation-circle text-danger"></i>}
                         {
                           a.ALARM_TYPE === '교환' || a.ALARM_TYPE === '반납' ?
                         <div>
@@ -348,7 +348,7 @@ function Header() {
                           <hr className="dropdown-divider"></hr>
                         </li>
                         <li className="notification-item">
-                          <i className="bi bi-exclamation-circle text-warning"></i>
+                          {a.ALARM_STATUS==='승인' ? <i className="bi bi-check-circle text-success"></i> : <i className="bi bi-exclamation-circle text-danger"></i>}
                           {
                             a.ALARM_TYPE === '수리' || a.ALARM_TYPE === '폐기' ?
                                 <div>
