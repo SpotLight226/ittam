@@ -81,45 +81,45 @@ public class UserController {
     }
 
     // 사용자 퇴사 처리
+    // 사용자 퇴사 처리
     @CrossOrigin(origins = "*", allowedHeaders = "*")
     @PostMapping("/userRemove")
     public ResponseEntity<String> userRemove(@RequestBody Map<String, String> requestData) {
-
-        int changeResult = 2;
-        int removeResult = 2;
 
         String targetId = requestData.get("targetId");
 
 
         try {
             int result = userService.userRemove(targetId); // 사용자 삭제
-            int userAssetCount = userService.userFindAsset(targetId); // 삭제된 사용자가 사용 중이던 자산 확인
+            if (result != 1) { // 실패시
+                throw new Exception("퇴사 처리에 실패했습니다");
+            }
+
+            int userAssetCount = userService.userFindAsset(targetId); // 사용 중인 자산 확인
+            if (userAssetCount != 0) { // 사용 중인 자산이 있다면
+                int changeResult = userService.userAssetChange(targetId); // 자산의 상태를 변경
+                if (changeResult != 1) { // 실패시
+                    throw new Exception("사용 중인 자산 반환에 실패했습니다");
+                }
+            }
+
+            // 각 신청 테이블에서 사용자의 신청이 있는지 확인
             int userApprovalCount = userService.userFindApproval(targetId);
             int userRequestCount = userService.userFindRequest(targetId);
             int userReturnCount = userService.userFindReturn(targetId);
 
-            if (result == 1) {
-                // 삭제가 완료되고, 사용 중이던 자산이 있다면
-                if (userAssetCount != 0) {
-                    changeResult = userService.userAssetChange(targetId); // ItAssets 에서 사용자와 상태를 변경한 결과
-                }
-                // 각 신청 테이블에 삭제된 사용자의 신청이 하나라도 있다면
-                if (userApprovalCount != 0 || userRequestCount != 0 || userReturnCount != 0) {
-                    removeResult = userService.removeAll(targetId);
-                }
-                // 위의 각 처리를 다 통과 했다면 퇴사 처리 메세지를 담아서 반환
-                if (changeResult != 2 && removeResult != 2) {
-                    System.out.println("result = " + result);
-                    System.out.println("removeResult = " + removeResult);
-                    System.out.println("changeResult = " + changeResult);
-
-                }
+            // 각 테이블에 신청 이 있다면
+            if (userApprovalCount != 0 || userRequestCount != 0 || userReturnCount != 0) {
+                userService.removeFromUserRequest(targetId);
+                userService.removeFromStockApproval(targetId);
+                userService.removeFromStockReturn(targetId);
             }
-            String msg = "퇴사 처리되었습니다";
+
+            String msg = "퇴사 처리가 완료되었습니다";
             return ResponseEntity.ok(msg);
 
         } catch (Exception e) {
-            String msg = "퇴사 처리에 실패했습니다";
+            String msg = e.getMessage();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(msg);
         }
     }

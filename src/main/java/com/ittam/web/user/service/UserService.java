@@ -37,7 +37,9 @@ public interface UserService {
     int userAssetChange(String targetId);
 
     // 각 신청 테이블에서 동일한 id 를 삭제한다
-    int removeAll(String targetId);
+    int removeFromStockApproval(String targetId);
+    int removeFromUserRequest(String targetId);
+    int removeFromStockReturn(String targetId);
 
     // 검색
     ArrayList<UserVO> getSearch(String value, String option);

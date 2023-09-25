@@ -77,8 +77,18 @@ public class UserServiceImpl implements UserService{
 
     // 각 신청 테이블에서 동일한 id 를 삭제한다
     @Override
-    public int removeAll(String targetId) {
-        return userMapper.removeAll(targetId);
+    public int removeFromStockApproval(String targetId) {
+        return userMapper.removeFromStockApproval(targetId);
+    }
+
+    @Override
+    public int removeFromUserRequest(String targetId) {
+        return userMapper.removeFromUserRequest(targetId);
+    }
+
+    @Override
+    public int removeFromStockReturn(String targetId) {
+        return userMapper.removeFromStockReturn(targetId);
     }
 
     // 검색
