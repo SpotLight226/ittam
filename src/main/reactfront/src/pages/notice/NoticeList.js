@@ -336,7 +336,7 @@ function NoticeList() {
                       <tr>
                         <th data-sortable="true">
                           <Link to="#" className="datatable-sorter">
-                            #
+                            번호
                           </Link>
                         </th>
                         <th data-sortable="true">
@@ -383,6 +383,8 @@ function NoticeList() {
                           index={(currentPage - 1) * itemsPerPage + index} 
                           setNoticeData={setNoticeData}
                           getList={getList}
+                          currentPage={currentPage}
+                          itemsPerPage={itemsPerPage}
                         />
                       ))}
                       {/* {noticeList.map((notice) => (
