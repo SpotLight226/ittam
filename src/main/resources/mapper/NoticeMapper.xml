@@ -98,8 +98,10 @@
     </select>
 
     <select id="searchNoticeByDate" resultType="NoticeVO" parameterType="NoticeSearchVO">
+    <![CDATA[
         SELECT * FROM NOTICE
-        WHERE DATE_FORMAT(notice_regdate, '%Y-%m-%d') &lt;= #{notice_enddate} AND DATE_FORMAT(notice_enddate, '%Y-%m-%d') &gt;= #{notice_regdate}
+        WHERE DATE_FORMAT(notice_regdate, '%Y-%m-%d') >= #{notice_regdate} AND DATE_FORMAT(notice_enddate, '%Y-%m-%d') <= #{notice_enddate}
+        ]]>
     </select>
 
     <update id="upperNoticeHits" parameterType="java.lang.String">
