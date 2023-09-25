@@ -337,7 +337,13 @@ function AdminBuyApprove() {
                           (currentPage - 1) * itemsPerPage,
                           currentPage * itemsPerPage
                       ).map((item,index) => (
-                          <ApproveTable key={index} {...item} func={handleToggle} funcClose={handleBackToggle} index={index}/>
+                          <ApproveTable key={index} {...item}
+                                        func={handleToggle}
+                                        funcClose={handleBackToggle}
+                                        index={index}
+                                        currentPage={currentPage}
+                                        itemsPerPage={itemsPerPage}
+                          />
                       ))}
 
 
