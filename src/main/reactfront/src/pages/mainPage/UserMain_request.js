@@ -101,7 +101,7 @@ function UserMain_request() {
                             <table className="table table-borderless" style={{textAlign: 'center'}}>
                                 <thead>
                                 <tr className="table-light">
-                                    <th scope="col">#</th>
+                                    <th scope="col">번호</th>
                                     <th scope="col">신청종류</th>
                                     <th scope="col">신청자산</th>
                                     <th scope="col">신청제목</th>
