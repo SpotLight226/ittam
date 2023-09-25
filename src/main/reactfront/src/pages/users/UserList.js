@@ -1,6 +1,8 @@
 import React, { useEffect, useContext, useState, useRef } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { BsArrowClockwise } from "react-icons/bs";
+import { AiTwotonePrinter } from "react-icons/ai";
+
 
 import { UserStateContext } from "./Users";
 import { tokenInfoContext } from "../../component/TokenInfoProvider";
@@ -308,7 +310,10 @@ const UserList = () => {
                     <h5 className="card-title">사용자 목록</h5>
                   </div>
                   <div className="col-6 text-right">
-                    <div className="excel-control">
+                    <div className="print-control react-icon">
+                        <AiTwotonePrinter onClick={() => window.print()}/>
+                    </div>
+                    <div className="excel-control react-icon">
                       <ExcelDownload page={page} />
                     </div>
                   </div>
