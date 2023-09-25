@@ -132,8 +132,9 @@ const handleClickEvent = () => {
   return (
     <Fragment>
       <tr className="prod-box NoticeListTable" ref={noticeElem}>
-        <th scope="row">
-          {`${(currentPage - 1) * itemsPerPage + index + 1}`.padStart(4, '\u00A0')}
+        <th scope="row" style={{ textAlign: 'center' }}>
+          {/* {`${(currentPage - 1) * itemsPerPage + index + 1}`.padStart(4, '\u00A0')} */}
+          {index + 1}
         </th>
         <td className="notice_regdate">{formatDate(notice_regdate)}</td>
         <td

@@ -37,12 +37,11 @@ const AssetRequestListETC = () => {
     /* serverspec */
     server_mfg: '', server_spec_warranty: '', server_capa: '', server_price: '', server_purchase_date: '', server_interface: '', server_average_life: '', server_rpm: '', server_datarecovery_life: '',
     /* 승인요청 */
-    username: '', appro_title: '', appro_comment: '', category_num:''
+    appro_title: '', appro_comment: '', category_num:''
   });
 
   const url = useLocation();
   const path = url.pathname;
-  const userId = username;
 
   // 검색
   const activeEnter = (e) => {
@@ -133,11 +132,13 @@ const AssetRequestListETC = () => {
   };
   //사용 신청 모달창
   const handleToggle = (e) => { // 승인 모달창 핸들러
+    const username = localStorage.getItem('username');
     let basicModal = document.getElementById("basicModal");
     basicModal.classList.toggle("show");
     basicModal.style.display = ((basicModal.style.display !== 'none') ? 'none' : 'block');
     setInnerDate({
       ...innerData,
+      username: username,
       assets_name: e.target.closest(".prod-box").querySelector(".assets_name").textContent,
       category_num: e.target.closest(".prod-box").querySelector(".category_num").textContent,
       assets_num: e.target.closest(".prod-box").querySelector(".assets_num").textContent,
@@ -219,6 +220,7 @@ const AssetRequestListETC = () => {
 
   // 구매 사용 신청
   const handleToggleBuy = (e) => { // 구매신청 모달창 핸들러
+    const username = localStorage.getItem('username');
     let basicModal = document.getElementById("basicModalBuy");
     basicModal.classList.toggle("show");
     basicModal.style.display = ((basicModal.style.display !== 'none') ? 'none' : 'block');
@@ -229,7 +231,8 @@ const AssetRequestListETC = () => {
     modal2.style.top = `calc(50% - ${modal2.clientHeight / 2}px)`;
 
     setInnerBuyDate({
-      ...innerBuyData
+      ...innerBuyData,
+      username: username
     });
   }
   // 구매신청 버튼 눌렀을 때 해당 행의 값 state로 관리
@@ -544,7 +547,7 @@ const AssetRequestListETC = () => {
                   <div className="row mb-3">
                     <label className="col-sm-2 col-form-label">신청자</label>
                     <div className="col-sm-10">
-                      <input type="text" className="form-control" name="username" value={userId || ''} disabled />
+                      <input type="text" className="form-control" name="username" value={innerData.username || ''} disabled />
                     </div>
                   </div>
                   <div className="row mb-3">
@@ -620,7 +623,7 @@ const AssetRequestListETC = () => {
                   <div className="row mb-3">
                     <label className="col-sm-2 col-form-label">신청자</label>
                     <div className="col-sm-10">
-                      <input type="text" className="form-control" name="username" value={userId || ''} disabled />
+                      <input type="text" className="form-control" name="username" value={innerData.username || ''} disabled />
 
                     </div>
                   </div>

@@ -134,11 +134,13 @@ const AssetRequestListSW = () => {
   };
   //사용 신청 모달창
   const handleToggle = (e) => { // 승인 모달창 핸들러
+    const username = localStorage.getItem('username');
     let basicModal = document.getElementById("basicModal");
     basicModal.classList.toggle("show");
     basicModal.style.display = ((basicModal.style.display !== 'none') ? 'none' : 'block');
     setInnerDate({
       ...innerData,
+      username: username,
       assets_name: e.target.closest(".prod-box").querySelector(".assets_name").textContent,
       category_num: e.target.closest(".prod-box").querySelector(".category_num").textContent,
       assets_num: e.target.closest(".prod-box").querySelector(".assets_num").textContent,
@@ -541,7 +543,7 @@ const AssetRequestListSW = () => {
                   <div className="row mb-3">
                     <label className="col-sm-2 col-form-label">신청자</label>
                     <div className="col-sm-10">
-                      <input type="text" className="form-control" name="username" value={userId || ''} disabled />
+                      <input type="text" className="form-control" name="username" value={innerData.username || ''} disabled />
                     </div>
                   </div>
                   <div className="row mb-3">
@@ -617,7 +619,7 @@ const AssetRequestListSW = () => {
                   <div className="row mb-3">
                     <label className="col-sm-2 col-form-label">신청자</label>
                     <div className="col-sm-10">
-                      <input type="text" className="form-control" name="username" value={userId || ''} disabled />
+                      <input type="text" className="form-control" name="username" value={innerData.username || ''} disabled />
 
                     </div>
                   </div>

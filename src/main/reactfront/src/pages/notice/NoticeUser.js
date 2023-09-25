@@ -389,7 +389,7 @@ const getProcessedList = () => {
                         />
                       </div>
                       <div className="col-sm-2">
-                      <button className="btn btn-primary searchBtn" type="button" onClick={handleSearchDate} > 
+                      <button className="btn btn-primary searchBtn" style={{marginLeft:"10px"}} type="button" onClick={handleSearchDate} >
                       검색 
                       </button>
                       </div>
