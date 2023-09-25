@@ -50,7 +50,7 @@ const handleDelete = () => {
       // });
 
       axios({
-        url: "/noticelist/delete",
+        url: "http://localhost:9191/noticelist/delete",
         method: "post",
         headers: {
           Authorization : token
@@ -82,7 +82,7 @@ const handleDelete = () => {
       // });
 
       axios({
-        url: "/noticelist/deleteimg",
+        url: "http://localhost:9191/noticelist/deleteimg",
         method: "post",
         headers: {
           Authorization : token
@@ -132,7 +132,7 @@ const handleClickEvent = () => {
   return (
     <Fragment>
       <tr className="prod-box NoticeListTable" ref={noticeElem}>
-      <th scope="row" style={{ textAlign: 'center' }}>
+        <th scope="row" style={{ textAlign: 'center' }}>
           {/* {`${(currentPage - 1) * itemsPerPage + index + 1}`.padStart(4, '\u00A0')} */}
           {index + 1}
         </th>
