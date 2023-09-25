@@ -317,12 +317,12 @@ function Header() {
                           a.ALARM_TYPE === '교환' || a.ALARM_TYPE === '반납' ?
                         <div>
                           <h4>관리자 {a.ALARM_TYPE}{a.ALARM_STATUS}</h4>
-                          <p>요청하신 {a.ASSETS_NAME}({a.ASSETS_DETAIL_NAME})의 {a.ALARM_TYPE}{a.ASSETS_STATUS}이 완료되었습니다.</p>
+                          <p>요청하신 {a.ASSETS_NAME}({a.ASSETS_DETAIL_NAME})의 {a.ALARM_TYPE}요청건이 {a.ALARM_STATUS}되었습니다.</p>
                           <p>{regdate(a.ALARM_REGDATE)}</p>
                         </div> :(a.ALARM_TYPE === '사용신청' ?
                               <div>
                                 <h4>관리자 사용{a.ALARM_STATUS}</h4>
-                                <p>요청하신 {a.ASSETS_NAME}({a.ASSETS_DETAIL_NAME})의 {a.ALARM_TYPE} {a.ALARM_STATUS}처리가 완료되었습니다.</p>
+                                <p>요청하신 {a.ASSETS_NAME}({a.ASSETS_DETAIL_NAME})의 {a.ALARM_TYPE}요청건이 {a.ALARM_STATUS}되었습니다.</p>
                                 <p>{regdate(a.ALARM_REGDATE)}</p>
                               </div> :
                                       <div>

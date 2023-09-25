@@ -149,7 +149,7 @@ function ReturnExchange() {
           <table className="table table-borderless" style={{ textAlign: 'center' }}>
             <thead>
               <tr className="table-light">
-                <th scope="col">#</th>
+                <th scope="col">번호</th>
                 <th scope="col">신청종류</th>
                 <th scope="col">사원명</th>
                 <th scope="col">자산명</th>
