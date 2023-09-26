@@ -3,7 +3,7 @@ import axios from "axios";
 import ApproveTable from "./ApproveTable";
 import { BsArrowClockwise } from "react-icons/bs";
 import Pagenation from "../../component/Pagenation";
-import { useNavigate } from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 import base64 from "base-64";
 import { AiTwotonePrinter } from "react-icons/ai";
 import { tokenInfoContext } from "../../component/TokenInfoProvider";
@@ -298,10 +298,10 @@ function Approve() {
           <nav>
             <ol className="breadcrumb">
               <li className="breadcrumb-item">
-                <a href="index.html">Home</a>
+                <Link to="/admin/adminMain">Home</Link>
               </li>
-              <li className="breadcrumb-item">Tables</li>
-              <li className="breadcrumb-item active">Data</li>
+              <li className="breadcrumb-item active">Approval Processing</li>
+
             </ol>
           </nav>
         </div>
