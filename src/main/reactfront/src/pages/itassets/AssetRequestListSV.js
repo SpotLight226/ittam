@@ -9,6 +9,8 @@ import {AssetAllListOption, AssetETCOption} from "../../constants/OptionList";
 import ControlMenu from "../../component/ControlMenu";
 import {tokenInfoContext} from "../../component/TokenInfoProvider";
 import {BsArrowClockwise} from "react-icons/bs";
+import ExcelDownload from "../../component/ExcelDownload";
+import { AiTwotonePrinter } from "react-icons/ai";
 
 const validAssetNames = [ // 유효한 자산명 목록
   'PC', '소프트웨어', '주변기기', '서버', '데스크탑', '노트북', 'Microsoft Office', '파워포인트', '엑셀',
@@ -51,7 +53,7 @@ const AssetRequestListSV = () => {
   };
   const searchAssets = (inputText) => {
     axios({
-      url: 'http://localhost:9191/AssetRequest/AssetRequestSearchSV',
+      url: '/AssetRequest/AssetRequestSearchSV',
       method: 'post',
       data: {
         inputText: inputText
@@ -74,7 +76,7 @@ const AssetRequestListSV = () => {
   useEffect(() => {
     if (inputInnerData.assets_name === "" || inputInnerData.length === 0) {
       // Axios를 사용하여 서버로 데이터를 보냅니다.
-      axios.get(`http://localhost:9191/AssetRequest/AssetRequestListCategory?path=${encodeURIComponent(path)}`,{
+      axios.get(`/AssetRequest/AssetRequestListCategory?path=${encodeURIComponent(path)}`,{
         headers: {
           Authorization : token
         },
@@ -165,7 +167,7 @@ const AssetRequestListSV = () => {
 
     try {
       // 자산 목록을 다시 불러오는 함수 호출
-      const response = await axios.get(`http://localhost:9191/AssetRequest/AssetRequestListCategory?path=${encodeURIComponent(path)}`, {
+      const response = await axios.get(`/AssetRequest/AssetRequestListCategory?path=${encodeURIComponent(path)}`, {
         headers: {
           Authorization: token,
         },
@@ -333,9 +335,9 @@ const AssetRequestListSV = () => {
         case "seriel": {
           // 권한
           if (checkClass) {
-            return b.spec_seriel.localeCompare(a.spec_seriel);
+            return b.assets_detail_name.localeCompare(a.assets_detail_name);
           } else {
-            return a.spec_seriel.localeCompare(b.spec_seriel);
+            return a.assets_detail_name.localeCompare(b.assets_detail_name);
           }
         }
         case "war": {
@@ -383,6 +385,8 @@ const AssetRequestListSV = () => {
     setCurrentPage(1);
   };
 
+  const lastItemIndex = pagesPerGroup * totalPages;
+
   return (
       <div>
         <main id="main" className="main">
@@ -393,8 +397,8 @@ const AssetRequestListSV = () => {
                 <li className="breadcrumb-item">
                   <Link to="index.html">Home</Link>
                 </li>
-                <li className="breadcrumb-item">Tables</li>
-                <li className="breadcrumb-item active">Data</li>
+                <li className="breadcrumb-item">Assets</li>
+                <li className="breadcrumb-item active">Sever</li>
               </ol>
             </nav>
           </div>
@@ -404,7 +408,20 @@ const AssetRequestListSV = () => {
               <div className="col-lg-12">
                 <div className="card">
                   <div className="card-body">
-                    <h5 className="card-title">서버 </h5>
+                  <div className="row">
+                      <div className="col-6">
+                        <h5 className="card-title">서버</h5>
+                      </div>
+                      <div className="col-6 text-right">
+                        <div className="print-control react-icon">
+                           <AiTwotonePrinter onClick={() => window.print()}
+                           title="프린트"/>
+                        </div>
+                        <div className="excel-control react-icon">
+                          <ExcelDownload page={"serverList"} />
+                        </div>
+                      </div>
+                    </div>
                     <div className="datatable-wrapper datatable-loading nofooter sortable searchable fixed-columns">
                       <div className="datatable-top">
                         <div className="datatable-dropdown">
@@ -564,6 +581,7 @@ const AssetRequestListSV = () => {
                              name="userq_title"
                              onChange={handleChange}
                              value={innerData.userq_title}
+                             placeholder={"제목"}
                       />
                       <div className="invalid-tooltip">
                       </div>
@@ -576,6 +594,7 @@ const AssetRequestListSV = () => {
                                 name="userq_comment"
                                 onChange={handleChange}
                                 value={innerData.userq_comment}
+                                placeholder={"신청사유를 간략히 적어주세요"}
                                 required></textarea>
                     </div>
                   </div>
@@ -642,6 +661,7 @@ const AssetRequestListSV = () => {
                              name="userq_title"
                              onChange={handleBuyChange}
                              value={innerBuyData.userq_title}
+                             placeholder={"제목"}
                       />
                       <div className="invalid-tooltip">
                       </div>

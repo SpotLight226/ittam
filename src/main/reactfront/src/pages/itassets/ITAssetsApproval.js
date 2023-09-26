@@ -8,6 +8,7 @@ import ITAssetsApprovalItem from './ITAssetsApprovalItem';
 import {Link, useNavigate} from 'react-router-dom';
 import { tokenInfoContext } from '../../component/TokenInfoProvider';
 import { AiTwotonePrinter } from 'react-icons/ai';
+import ExcelDownload from "../../component/ExcelDownload";
 
 function ITAssetsApproval() {
   const { userRole, username } = useContext(tokenInfoContext);
@@ -203,7 +204,7 @@ function ITAssetsApproval() {
   return (
     <main id="main" className="main">
       <div className="pagetitle">
-        <h1>구매/수리/폐기 결재요청</h1>
+        <h1>구매/수리/폐기 신청내역 조회/처리</h1>
         <nav>
           <ol className="breadcrumb">
             <li className="breadcrumb-item">
@@ -225,7 +226,7 @@ function ITAssetsApproval() {
                 </div>
                 <div className="row">
                   <div className="col-6">
-                    <h5 className="card-title">결제 요청</h5>
+                    <h5 className="card-title">구매/수리/폐기 신청내역 조회/처리</h5>
                   </div>
                   <div className="col-6 text-right">
                     <div className="print-control react-icon">
@@ -233,6 +234,9 @@ function ITAssetsApproval() {
                         onClick={() => window.print()}
                         title="프린트"
                       />
+                    </div>
+                    <div className="excel-control react-icon">
+                        <ExcelDownload page={""} />
                     </div>
                   </div>
                 </div>

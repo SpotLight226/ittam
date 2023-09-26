@@ -9,6 +9,7 @@ import ControlMenu from "../../component/ControlMenu";
 import { tokenInfoContext } from '../../component/TokenInfoProvider';
 import {BsArrowClockwise} from "react-icons/bs";
 import { AiTwotonePrinter } from "react-icons/ai";
+import ExcelDownload from "../../component/ExcelDownload";
 
 const validAssetNames = [ // 유효한 자산명 목록
   'PC', '소프트웨어', '주변기기', '서버', '데스크탑', '노트북', 'Microsoft Office', '파워포인트', '엑셀',
@@ -39,7 +40,7 @@ const AssetAllList = () => {
     /* serverspec */
     server_mfg: '', server_spec_warranty: '', server_capa: '', server_price: '', server_purchase_date: '', server_interface: '', server_average_life: '', server_rpm: '', server_datarecovery_life: '',
     /* 승인요청 */
-    appro_title: '', appro_comment: '', category_num:''
+    appro_title: '', appro_comment: '', category_num:'', //mfg:'', serial:'',warranty:''
   });
 
 
@@ -54,7 +55,7 @@ const AssetAllList = () => {
   };
   const searchAssets = (inputText) => {
     axios({
-      url: 'http://localhost:9191/AssetRequest/AssetRequestSearch',
+      url: '/AssetRequest/AssetRequestSearch',
       method: 'post',
       data: {
         inputText: inputText,
@@ -80,7 +81,7 @@ const AssetAllList = () => {
   useEffect(() => {
 
     if(inputInnerData.assets_name === "" || inputInnerData.length === 0 && path === "/itassets"){
-      axios.get('http://localhost:9191/AssetRequest/AssetRequestList',{
+      axios.get('/AssetRequest/AssetRequestList',{
         headers: {
           Authorization : token
         },
@@ -172,7 +173,7 @@ const AssetAllList = () => {
 
     try {
       // 전체 자산 목록을 다시 불러오는 함수 호출
-      const response = await axios.get('http://localhost:9191/AssetRequest/AssetRequestList', {
+      const response = await axios.get('/AssetRequest/AssetRequestList', {
         headers: {
           Authorization: token
         },
@@ -308,6 +309,12 @@ const AssetAllList = () => {
 
     // 각 선택된 링크에 대한 비교함수
     const compare = (a, b) => {
+
+      // console.log(a.spec_seriel)
+      // console.log(a.assets_detail_name);
+      // console.log(a.sw_mfg+"b")
+      // console.log(a.server_mfg+"c")
+      // console.log(a.etc_mfg+"d")
       // 선택된 컬럼에 대해서 case 별로 분류
       switch (sortType) {
         case "number": {
@@ -334,25 +341,68 @@ const AssetAllList = () => {
         }
         case "mfg": {
           if (checkClass) {
-            return b.spec_mfg.localeCompare(a.spec_mfg);
+            if (b.spec_mfg !== null && b.spec_mfg !== '') {
+              return b.spec_mfg.localeCompare(a.spec_mfg);
+            } else if (b.sw_mfg !== null && b.sw_mfg !== '') {
+              return b.sw_mfg.localeCompare(a.sw_mfg);
+            } else if (b.server_mfg !== null && b.server_mfg !== '') {
+              return b.server_mfg.localeCompare(a.server_mfg);
+            } else {
+              return b.etc_mfg.localeCompare(a.etc_mfg);
+            }
           } else {
-            return a.spec_mfg.localeCompare(b.spec_mfg);
+            if (a.spec_mfg !== null && a.spec_mfg !== '') {
+              return a.spec_mfg.localeCompare(b.spec_mfg);
+            } else if (a.sw_mfg !== null && a.sw_mfg !== '') {
+              return a.sw_mfg.localeCompare(b.sw_mfg);
+            } else if (a.server_mfg !== null && a.server_mfg !== '') {
+              return a.server_mfg.localeCompare(b.server_mfg);
+            } else {
+              return a.etc_mfg.localeCompare(b.etc_mfg);
+            }
           }
         }
-
         case "seriel": {
           // 권한
           if (checkClass) {
-            return b.spec_seriel.localeCompare(a.spec_seriel);
+            if (b.spec_seriel !== null && b.spec_seriel !== '') {
+              return b.spec_seriel.localeCompare(a.spec_seriel);
+            } else if (b.assets_detail_name !== null && b.assets_detail_name !== '') {
+              return b.assets_detail_name.localeCompare(a.assets_detail_name);
+            } else {
+              return 0;
+            }
           } else {
-            return a.spec_seriel.localeCompare(b.spec_seriel);
+            if (a.spec_seriel !== null && a.spec_seriel !== '') {
+              return a.spec_seriel.localeCompare(b.spec_seriel);
+            } else if (a.assets_detail_name !== null && a.assets_detail_name !== '') {
+              return a.assets_detail_name.localeCompare(b.assets_detail_name);
+            } else {
+              return 0;
+            }
           }
         }
         case "war": {
           if (checkClass) {
-            return b.spec_warranty.localeCompare(a.spec_warranty);
+            if (b.spec_warranty !== null && b.spec_warranty !== '') {
+              return b.spec_warranty.localeCompare(a.spec_warranty);
+            } else if (b.sw_spec_warranty !== null && b.sw_spec_warranty !== '') {
+              return b.sw_spec_warranty.localeCompare(a.sw_spec_warranty);
+            } else if (b.server_spec_warranty !== null && b.server_spec_warranty !== '') {
+              return b.server_spec_warranty.localeCompare(a.server_spec_warranty);
+            } else {
+              return b.etc_spec_warranty.localeCompare(a.etc_spec_warranty);
+            }
           } else {
-            return a.spec_warranty.localeCompare(b.spec_warranty);
+            if (a.spec_mfg !== null && a.spec_mfg !== '') {
+              return a.spec_mfg.localeCompare(b.spec_mfg);
+            } else if (a.sw_mfg !== null && a.sw_mfg !== '') {
+              return a.sw_mfg.localeCompare(b.sw_mfg);
+            } else if (a.server_mfg !== null && a.server_mfg !== '') {
+              return a.server_mfg.localeCompare(b.server_mfg);
+            } else {
+              return a.etc_mfg.localeCompare(b.etc_mfg);
+            }
           }
         }
         case "category": {
@@ -393,6 +443,10 @@ const AssetAllList = () => {
     setCurrentPage(1);
   };
 
+  const lastItemIndex = pagesPerGroup * totalPages;
+
+
+
   return (
       <div>
         <main id="main" className="main">
@@ -403,8 +457,8 @@ const AssetAllList = () => {
                 <li className="breadcrumb-item">
                   <Link to="index.html">Home</Link>
                 </li>
-                <li className="breadcrumb-item">Tables</li>
-                <li className="breadcrumb-item active">Data</li>
+                <li className="breadcrumb-item">Assets</li>
+                <li className="breadcrumb-item active">All Assets</li>
               </ol>
             </nav>
           </div>
@@ -423,6 +477,9 @@ const AssetAllList = () => {
                         <div className="print-control react-icon">
                            <AiTwotonePrinter onClick={() => window.print()}
                            title="프린트"/>
+                        </div>
+                        <div className="excel-control react-icon">
+                          <ExcelDownload page={"assetAllList"} />
                         </div>
                       </div>
                     </div>
@@ -528,6 +585,9 @@ const AssetAllList = () => {
                               handleModal={handleModal}
                               currentPage={currentPage}
                               itemsPerPage={itemsPerPage}
+                              mfg={item.mfg}
+                              serial={item.serial}
+                              warranty={item.warranty}
                           />
                       ))}
                       </tbody>
@@ -599,6 +659,7 @@ const AssetAllList = () => {
                              name="userq_title"
                              onChange={handleChange}
                              value={innerData.userq_title}
+                             placeholder={"제목"}
                       />
                       <div className="invalid-tooltip">
                       </div>
@@ -611,7 +672,9 @@ const AssetAllList = () => {
                                 name="userq_comment"
                                 onChange={handleChange}
                                 value={innerData.userq_comment}
+                                placeholder={"신청사유를 간략히 적어주세요"}
                                 required></textarea>
+
                     </div>
                   </div>
                   <div className="row mb-3 userModalAsk-btn">
@@ -677,6 +740,7 @@ const AssetAllList = () => {
                              name="userq_title"
                              onChange={handleBuyChange}
                              value={innerBuyData.userq_title}
+                             placeholder={"제목"}
                       />
                       <div className="invalid-tooltip">
                       </div>
