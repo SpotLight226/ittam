@@ -23,7 +23,7 @@ function ITAssets() {
   const token = localStorage.getItem("token");
 
   useEffect(() => {
-    if (userRole !== "ROLE_ADMIN") {
+    if (userRole !== "ROLE_ADMIN" && userRole !== 'ROLE_HIGH_ADMIN') {
       if (userRole === "ROLE_USER") {
         navigate("/user/userMain");
       } else if (userRole === "ROLE_ADMIN") {
@@ -607,10 +607,10 @@ const [searchInput, setSearchInput] = useState("");
         <nav>
           <ol className="breadcrumb">
             <li className="breadcrumb-item">
-              <Link to="/">Home</Link>
+              <Link to="/admin/adminMain">Home</Link>
             </li>
-            <li className="breadcrumb-item">Tables</li>
-            <li className="breadcrumb-item active">Data</li>
+            <li className="breadcrumb-item active">Asset Management</li>
+
           </ol>
         </nav>
       </div>

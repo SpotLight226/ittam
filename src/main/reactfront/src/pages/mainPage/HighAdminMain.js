@@ -298,10 +298,11 @@ function HighAdminMain() {
                 {/*   <!-- Recent Activity --> */}
                 <div className="card">
                   <div className="card-body">
+                    <Link to="/admin/reports">
                     <h5 className="card-title" style={{ fontWeight: '800' }}>
                       전체 자산 사용률 <span>| 전체 리포트 보기</span>
                     </h5>
-
+                    </Link>
                     {cardNum !== undefined ? (
                       <UsingRateChart cardNum={cardNum} />
                     ) : (

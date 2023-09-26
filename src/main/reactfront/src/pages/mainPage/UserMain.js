@@ -240,7 +240,7 @@ function UserMain() {
                     color: '#4154f1',
                   }}
                 ></i>
-                <Link to="/noticeUsergit ">
+                <Link to="/noticeUser">
                   <h5
                     className="card-title"
                     style={{

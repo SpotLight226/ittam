@@ -175,7 +175,7 @@ function AdminMain() {
                   <Link to="/admin/approveList">
                     <div className="card-body">
                       <h5 className="card-title" style={{ fontWeight: '800' }}>
-                        자산사용요청 미승인건 <span>| 전체보기</span>
+                        자산사용신청 미승인건 <span>| 전체보기</span>
                       </h5>
 
                       <div className="d-flex align-items-center">
@@ -198,7 +198,7 @@ function AdminMain() {
                   <Link to="/admin/approveBuyList">
                     <div className="card-body">
                       <h5 className="card-title" style={{ fontWeight: '800' }}>
-                        자산구매요청 미승인건<span>| 전체보기</span>
+                        자산구매신청 미승인건<span>| 전체보기</span>
                       </h5>
 
                       <div className="d-flex align-items-center">
@@ -220,7 +220,7 @@ function AdminMain() {
                   <Link to="/admin/returnExchange">
                     <div className="card-body">
                       <h5 className="card-title" style={{ fontWeight: '800' }}>
-                        교환 및 반납요청 미승인건<span>| 전체보기</span>
+                        교환 및 반납신청 미승인건<span>| 전체보기</span>
                       </h5>
 
                       <div className="d-flex align-items-center">
@@ -243,7 +243,7 @@ function AdminMain() {
                   <Link to="/users/userLeave">
                     <div className="card-body">
                       <h5 className="card-title" style={{ fontWeight: '800' }}>
-                        퇴사요청 미승인건<span>| 전체보기</span>
+                        퇴사신청 미승인건<span>| 전체보기</span>
                       </h5>
 
                       <div className="d-flex align-items-center">
@@ -297,10 +297,11 @@ function AdminMain() {
                 {/*   <!-- Recent Activity --> */}
                 <div className="card">
                   <div className="card-body">
+                    <Link to="/admin/reports">
                     <h5 className="card-title" style={{ fontWeight: '800' }}>
                       전체 자산 사용률 <span>| 전체 리포트 보기</span>
                     </h5>
-
+                    </Link>
                     {cardNum !== undefined ? (
                       <UsingRateChart cardNum={cardNum} />
                     ) : (
@@ -383,78 +384,78 @@ function AdminMain() {
                                 }}
                               >
                                 {a.SPEC_CPU !== undefined
-                                  ? a.SPEC_CPU + ' |'
+                                  ? a.SPEC_CPU + '|'
                                   : ''}
                                 {a.SPEC_RAM !== undefined
-                                  ? a.SPEC_RAM + ' |'
+                                  ? a.SPEC_RAM + '|'
                                   : ''}
                                 {a.SPEC_MAINBOARD !== undefined
-                                  ? a.SPEC_MAINBOARD + ' |'
+                                  ? a.SPEC_MAINBOARD + '|'
                                   : ''}
                                 {a.SPEC_POWER !== undefined
-                                  ? a.SPEC_POWER + ' |'
+                                  ? a.SPEC_POWER + '|'
                                   : ''}
                                 {a.SPEC_GPU !== undefined
-                                  ? a.SPEC_GPU + ' |'
+                                  ? a.SPEC_GPU + '|'
                                   : ''}
                                 {a.SPEC_HDD !== undefined
-                                  ? a.SPEC_HDD + ' |'
+                                  ? a.SPEC_HDD + '|'
                                   : ''}
                                 {a.SPEC_SSD !== undefined
-                                  ? a.SPEC_SSD + ' |'
+                                  ? a.SPEC_SSD + '|'
                                   : ''}
                                 {a.SPEC_OPS !== undefined
-                                  ? a.SPEC_OPS + ' |'
+                                  ? a.SPEC_OPS + '|'
                                   : ''}
                                 {a.SPEC_MFG !== undefined
-                                  ? a.SPEC_MFG + ' |'
+                                  ? a.SPEC_MFG + '|'
                                   : ''}
                                 {a.SPEC_SERIEL !== undefined
-                                  ? a.SPEC_SERIEL + ' |'
+                                  ? a.SPEC_SERIEL + '|'
                                   : ''}
                                 {/*{a.SPEC_PURCHASE_DATE!==undefined?a.SPEC_PURCHASE_DATE+" |":''}*/}
                                 {/*{a.SPEC_WARRANTY!==undefined?a.SPEC_WARRANTY+" |":''}*/}
-                                {a.SW_MFG !== undefined ? a.SW_MFG + ' |' : ''}
+                                {a.SW_MFG !== undefined ? a.SW_MFG + '|' : ''}
                                 {a.SW_SPEC_SERIEL !== undefined
-                                  ? a.SW_SPEC_SERIEL + ' |'
+                                  ? a.SW_SPEC_SERIEL + '|'
                                   : ''}
                                 {a.SW_SPEC_WARRANTY !== undefined
-                                  ? a.SW_SPEC_WARRANTY + ' |'
+                                  ? a.SW_SPEC_WARRANTY + '|'
                                   : ''}
                                 {/*{a.SW_PURCHASE_DATE!==undefined?a.SW_PURCHASE_DATE+" |":''}*/}
                                 {a.SW_PRICE !== undefined
-                                  ? a.SW_PRICE + ' |'
+                                  ? a.SW_PRICE + '|'
                                   : ''}
                                 {a.SERVER_MFG !== undefined
-                                  ? a.SERVER_MFG + ' |'
+                                  ? a.SERVER_MFG + '|'
                                   : ''}
                                 {a.SERVER_PRICE !== undefined
-                                  ? a.SERVER_PRICE + ' |'
+                                  ? a.SERVER_PRICE + '|'
                                   : ''}
                                 {a.SERVER_CAPA !== undefined
-                                  ? a.SERVER_CAPA + ' |'
+                                  ? a.SERVER_CAPA + '|'
                                   : ''}
                                 {a.SERVER_INTERFACE !== undefined
-                                  ? a.SERVER_INTERFACE + ' |'
+                                  ? a.SERVER_INTERFACE + '|'
                                   : ''}
                                 {a.SERVER_AVERAGE_LIFE !== undefined
-                                  ? a.SERVER_AVERAGE_LIFE + ' |'
+                                  ? a.SERVER_AVERAGE_LIFE + '|'
                                   : ''}
                                 {a.SERVER_RPM !== undefined
-                                  ? a.SERVER_RPM + ' |'
+                                  ? a.SERVER_RPM + '|'
                                   : ''}
                                 {a.SERVER_DATARECOVERY_LIFE !== undefined
-                                  ? a.SERVER_DATARECOVERY_LIFE + ' |'
+                                  ? a.SERVER_DATARECOVERY_LIFE + '|'
                                   : ''}
                                 {a.ETC_MFG !== undefined
-                                  ? a.ETC_MFG + ' |'
+                                  ? a.ETC_MFG + '|'
                                   : ''}
                                 {a.ETC_SPEC_WARRANTY !== undefined
-                                  ? a.ETC_SPEC_WARRANTY + ' |'
+                                  ? a.ETC_SPEC_WARRANTY + '|'
                                   : ''}
                                 {/*{a.ETC_PURCHASE_DATE!==undefined?a.ETC_PURCHASE_DATE+" |":''}*/}
                                 {a.ETC_PRICE !== undefined
-                                  ? a.ETC_PRICE + ' |'
+                                  ? a.ETC_PRICE + '|'
                                   : ''}
                               </td>
                               <td>{addDate(a.ADD_DATE)}</td>

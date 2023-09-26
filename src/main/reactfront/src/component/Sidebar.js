@@ -155,6 +155,7 @@ function Sidebar() {
             )}
             {/* <!-- End Components Nav --> */}
             {userRole == 'ROLE_ADMIN' && (
+                <>
               <li className="nav-item">
                 <Link
                   to="####"
@@ -166,6 +167,7 @@ function Sidebar() {
                   <span>IT 자산</span>
                   <i className="bi bi-chevron-down ms-auto"></i>
                 </Link>
+
                 <ul
                   id="forms-nav"
                   className="nav-content collapse "
@@ -179,6 +181,16 @@ function Sidebar() {
                   </li>
                 </ul>
               </li>
+
+                  <li className="nav-item">
+                    <Link to="/admin/returnExchange" className="nav-link collapsed">
+                      <i className="bi bi-check2-square"></i>
+                      <span>교환 및 반납신청</span>
+                    </Link>
+                  </li>
+
+
+                </>
             )}
             {/* <!-- End Forms Nav --> */}
             {userRole == 'ROLE_ADMIN' && (
@@ -224,6 +236,7 @@ function Sidebar() {
                   </li>
                 </ul>
               </li>
+
             )}
 
         {userRole == 'ROLE_HIGH_ADMIN' && (

@@ -89,7 +89,7 @@ function UserMain_request() {
                 <nav>
                     <ol className="breadcrumb">
                         <li className="breadcrumb-item"><Link to="/user/userMain">Home</Link></li>
-                        <li className="breadcrumb-item active">사용 및 구매신청 목록</li>
+                        <li className="breadcrumb-item active">Using & Buy List</li>
                     </ol>
                 </nav>
             </div>

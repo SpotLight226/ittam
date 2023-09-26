@@ -139,7 +139,7 @@ function ReturnExchange() {
               <li className="breadcrumb-item">
                 <Link to="/admin/adminMain">Home</Link>
               </li>
-              <li className="breadcrumb-item active">교환 및 반납 요청</li>
+              <li className="breadcrumb-item active">Return & Exchange</li>
               {/*<li className="breadcrumb-item active">Breadcrumbs</li>*/}
             </ol>
           </nav>

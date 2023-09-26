@@ -53,7 +53,7 @@ const AssetRequestListETC = () => {
   };
   const searchAssets = (inputText) => {
     axios({
-      url: 'http://localhost:9191/AssetRequest/AssetRequestSearchETC',
+      url: '/AssetRequest/AssetRequestSearchETC',
       method: 'post',
       data: {
         inputText: inputText
@@ -76,7 +76,7 @@ const AssetRequestListETC = () => {
   useEffect(() => {
     if (inputInnerData.assets_name === "" || inputInnerData.length === 0) {
       // Axios를 사용하여 서버로 데이터를 보냅니다.
-      axios.get(`http://localhost:9191/AssetRequest/AssetRequestListCategory?path=${encodeURIComponent(path)}`,{
+      axios.get(`/AssetRequest/AssetRequestListCategory?path=${encodeURIComponent(path)}`,{
         headers: {
           Authorization : token
         },
@@ -166,7 +166,7 @@ const AssetRequestListETC = () => {
 
     try {
       // 자산 목록을 다시 불러오는 함수 호출
-      const response = await axios.get(`http://localhost:9191/AssetRequest/AssetRequestListCategory?path=${encodeURIComponent(path)}`, {
+      const response = await axios.get(`/AssetRequest/AssetRequestListCategory?path=${encodeURIComponent(path)}`, {
         headers: {
           Authorization: token,
         },
@@ -387,6 +387,8 @@ const AssetRequestListETC = () => {
     setCurrentPage(1);
   };
 
+  const lastItemIndex = pagesPerGroup * totalPages;
+
   return (
       <div>
         <main id="main" className="main">
@@ -397,8 +399,8 @@ const AssetRequestListETC = () => {
                 <li className="breadcrumb-item">
                   <Link to="index.html">Home</Link>
                 </li>
-                <li className="breadcrumb-item">Tables</li>
-                <li className="breadcrumb-item active">Data</li>
+                <li className="breadcrumb-item">Assets</li>
+                <li className="breadcrumb-item active">ETC</li>
               </ol>
             </nav>
           </div>
