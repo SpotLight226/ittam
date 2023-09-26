@@ -3,7 +3,7 @@ import '../../styles/Style.css';
 import axios from 'axios';
 import LeaveModal from '../../component/Modal/LeaveModal';
 import { tokenInfoContext } from '../../component/TokenInfoProvider';
-import { useNavigate } from 'react-router-dom';
+import {Link, useNavigate} from 'react-router-dom';
 
 function Mypage() {
   const { userRole } = useContext(tokenInfoContext);
@@ -140,10 +140,9 @@ function Mypage() {
         <nav>
           <ol className="breadcrumb">
             <li className="breadcrumb-item">
-              <a href="index.html">Home</a>
+              <Link to="/mypage">Mypage</Link>
             </li>
-            <li className="breadcrumb-item">Components</li>
-            <li className="breadcrumb-item active">Breadcrumbs</li>
+
           </ol>
         </nav>
       </div>

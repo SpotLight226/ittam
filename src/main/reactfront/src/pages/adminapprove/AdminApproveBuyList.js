@@ -6,7 +6,7 @@ import Pagenation from '../../component/Pagenation';
 import base64 from 'base-64';
 import { AiTwotonePrinter } from 'react-icons/ai';
 import { tokenInfoContext } from '../../component/TokenInfoProvider';
-import { useNavigate } from 'react-router-dom';
+import {Link, useNavigate} from 'react-router-dom';
 import ExcelDownload from '../../component/ExcelDownload';
 
 function AdminBuyApprove() {
@@ -276,10 +276,10 @@ function AdminBuyApprove() {
           <nav>
             <ol className="breadcrumb">
               <li className="breadcrumb-item">
-                <a href="index.html">Home</a>
+                <Link to="/highadmin/highAdminMain">Home</Link>
               </li>
-              <li className="breadcrumb-item">Tables</li>
-              <li className="breadcrumb-item active">Data</li>
+              <li className="breadcrumb-item active">Final Approval Processing Result</li>
+
             </ol>
           </nav>
         </div>
@@ -357,7 +357,7 @@ function AdminBuyApprove() {
                       <tr>
                         <th data-sortable="true">
                           <a href="#" className="datatable-sorter">
-                            #
+                            번호
                           </a>
                         </th>
                         <th data-sortable="true">
