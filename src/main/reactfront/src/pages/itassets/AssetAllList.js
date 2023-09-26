@@ -55,7 +55,7 @@ const AssetAllList = () => {
   };
   const searchAssets = (inputText) => {
     axios({
-      url: 'http://localhost:9191/AssetRequest/AssetRequestSearch',
+      url: '/AssetRequest/AssetRequestSearch',
       method: 'post',
       data: {
         inputText: inputText,
@@ -81,7 +81,7 @@ const AssetAllList = () => {
   useEffect(() => {
 
     if(inputInnerData.assets_name === "" || inputInnerData.length === 0 && path === "/itassets"){
-      axios.get('http://localhost:9191/AssetRequest/AssetRequestList',{
+      axios.get('/AssetRequest/AssetRequestList',{
         headers: {
           Authorization : token
         },
@@ -173,7 +173,7 @@ const AssetAllList = () => {
 
     try {
       // 전체 자산 목록을 다시 불러오는 함수 호출
-      const response = await axios.get('http://localhost:9191/AssetRequest/AssetRequestList', {
+      const response = await axios.get('/AssetRequest/AssetRequestList', {
         headers: {
           Authorization: token
         },
@@ -443,6 +443,10 @@ const AssetAllList = () => {
     setCurrentPage(1);
   };
 
+  const lastItemIndex = pagesPerGroup * totalPages;
+
+
+
   return (
       <div>
         <main id="main" className="main">
@@ -453,8 +457,8 @@ const AssetAllList = () => {
                 <li className="breadcrumb-item">
                   <Link to="index.html">Home</Link>
                 </li>
-                <li className="breadcrumb-item">Tables</li>
-                <li className="breadcrumb-item active">Data</li>
+                <li className="breadcrumb-item">Assets</li>
+                <li className="breadcrumb-item active">All Assets</li>
               </ol>
             </nav>
           </div>
