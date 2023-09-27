@@ -5,10 +5,10 @@ import ApprovalComment from '../approve/ApprovalComment';
 import { ITAssetsApprovalOptionList } from '../../constants/OptionList';
 import ControlMenu from '../../component/ControlMenu';
 import ITAssetsApprovalItem from './ITAssetsApprovalItem';
-import {Link, useNavigate} from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { tokenInfoContext } from '../../component/TokenInfoProvider';
 import { AiTwotonePrinter } from 'react-icons/ai';
-import ExcelDownload from "../../component/ExcelDownload";
+import ExcelDownload from '../../component/ExcelDownload';
 
 function ITAssetsApproval() {
   const { userRole, username } = useContext(tokenInfoContext);
@@ -60,7 +60,7 @@ function ITAssetsApproval() {
   /* 페이지네이션 */
   const [itemsPerPage, setItemPerPage] = useState(10);
   const [currentPage, setCurrentPage] = useState(1); // 현재 페이지
-  const totalPages = Math.ceil(1 / itemsPerPage);
+  const totalPages = Math.ceil(data.length / itemsPerPage);
   const pagesPerGroup = 10; // 한 그룹에 표시할 페이지 수
   const currentGroup = Math.ceil(currentPage / pagesPerGroup); // 현재 페이지 그룹
 
@@ -211,7 +211,6 @@ function ITAssetsApproval() {
               <Link to="/highadmin/highAdminMain">Home</Link>
             </li>
             <li className="breadcrumb-item active">Approval Processing</li>
-
           </ol>
         </nav>
       </div>
@@ -226,7 +225,9 @@ function ITAssetsApproval() {
                 </div>
                 <div className="row">
                   <div className="col-6">
-                    <h5 className="card-title">구매/수리/폐기 신청내역 조회/처리</h5>
+                    <h5 className="card-title">
+                      구매/수리/폐기 신청내역 조회/처리
+                    </h5>
                   </div>
                   <div className="col-6 text-right">
                     <div className="print-control react-icon">
@@ -236,7 +237,7 @@ function ITAssetsApproval() {
                       />
                     </div>
                     <div className="excel-control react-icon">
-                        <ExcelDownload page={""} />
+                      <ExcelDownload page={''} />
                     </div>
                   </div>
                 </div>
@@ -247,6 +248,7 @@ function ITAssetsApproval() {
                     <tr>
                       {getProcessedOption().map((it, idx) => (
                         <ControlMenu
+                          key={idx}
                           {...it}
                           checkClass={checkClass}
                           sortType={sortType}
